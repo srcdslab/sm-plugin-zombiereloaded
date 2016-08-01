@@ -217,7 +217,7 @@ void InfectLoad()
 
     // Precache countdown sounds
     int count = 1;
-    float countdownvolume = GetConVarFloat(g_hCvarsList.CVAR_INFECT_MZOMBIE_COUNTDOWN_VOLUME);
+    float countdownvolume = SEffects_GetInfectMZCountdownVolume();
     while (countdownvolume > 0.0)
     {
         Format(sound, sizeof(sound), "sound/zr/countdown/%i.mp3", count);
@@ -859,7 +859,7 @@ public Action InfectCountdown(Handle timer)
         // Print the countdown text to the clients.
         TranslationPrintCenterTextAll(false, "Infect countdown", RoundToNearest(length - counter));
 
-        float countdownvolume = GetConVarFloat(g_hCvarsList.CVAR_INFECT_MZOMBIE_COUNTDOWN_VOLUME);
+        float countdownvolume = SEffects_GetInfectMZCountdownVolume();
         int countdown = RoundToNearest(length - counter);
         if (countdownvolume > 0.0 && g_iInfectCountdownSounds != 0 && countdown > 0 && countdown <= g_iInfectCountdownSounds)
         {

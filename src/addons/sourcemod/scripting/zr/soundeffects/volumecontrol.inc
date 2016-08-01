@@ -83,7 +83,7 @@ void VolumeOnCookiesCached(int client)
 	GetClientCookie(client, zhZSoundVolume, sValue, sizeof(sValue));
 	if (sValue[0] == '\0')
 	{
-        int seffectsvolume = RoundToNearest(GetConVarFloat(g_hCvarsList.CVAR_SEFFECTS_VOLUME) * 100.0);
+        int seffectsvolume = RoundToNearest(SEffects_GetVolume() * 100.0);
         IntToString(seffectsvolume, sValue, sizeof(sValue));
 	}
 	SetZombieVoiceVolume(client, StringToInt(sValue));
@@ -92,7 +92,7 @@ void VolumeOnCookiesCached(int client)
 	GetClientCookie(client, zhCountdownVolume, sValue, sizeof(sValue));
 	if (sValue[0] == '\0') 
 	{
-        int countdownvolume = RoundToNearest(GetConVarFloat(g_hCvarsList.CVAR_INFECT_MZOMBIE_COUNTDOWN_VOLUME) * 100.0);
+        int countdownvolume = RoundToNearest(SEffects_GetInfectMZCountdownVolume() * 100.0);
         IntToString(countdownvolume, sValue, sizeof(sValue));
 	}
 	SetCountDownVolume(client, StringToInt(sValue));
@@ -101,7 +101,7 @@ void VolumeOnCookiesCached(int client)
 	GetClientCookie(client, zhZAmbientVolume, sValue, sizeof(sValue));
 	if (sValue[0] == '\0') 
 	{
-        int ambientvolume = RoundToNearest(GetConVarFloat(g_hCvarsList.CVAR_AMBIENTSOUNDS_VOLUME) * 100.0);
+        int ambientvolume = RoundToNearest(SEffects_GetAmbientSoundsVolume() * 100.0);
         IntToString(ambientvolume, sValue, sizeof(sValue));
 	}
 	SetAmbientVolume(client, StringToInt(sValue));
