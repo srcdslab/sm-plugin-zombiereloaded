@@ -85,16 +85,6 @@ Handle g_tInfectCountdown = INVALID_HANDLE;
 Handle g_hInfectCountdownData = INVALID_HANDLE;
 
 /**
- * Number of available/precached infect countdown sounds.
- */
-int g_iInfectCountdownSounds = 0;
-
-/**
- * Array for storing infect countdown sound client settings.
- */
-int g_aInfectCountdownSoundClients[MAXPLAYERS + 1];
-
-/**
  * Array for flagging client as zombie.
  */
 bool g_bZombie[MAXPLAYERS + 1];
@@ -200,38 +190,6 @@ void InfectLoad()
     // Create mother zombie round-robin cycle storage.
     g_hInfectMotherCycle = SteamidCacheCreate();
     g_hInfectMotherCycleRTD = SteamidCacheCreate();
-
-    // Get infection sound.
-    char sound[PLATFORM_MAX_PATH];
-    GetConVarString(g_hCvarsList.CVAR_INFECT_SOUND, sound, sizeof(sound));
-
-    // If infect sound cvar is not empty.
-    if (sound[0])
-    {
-        // Prepend sound/ to the path.
-        Format(sound, sizeof(sound), "sound/%s", sound);
-
-        // Add sound file to downloads table.
-        AddFileToDownloadsTable(sound);
-    }
-
-    // Precache countdown sounds
-    int count = 1;
-    float countdownvolume = SEffects_GetInfectMZCountdownVolume();
-    while (countdownvolume > 0.0)
-    {
-        Format(sound, sizeof(sound), "sound/zr/countdown/%i.mp3", count);
-        if (!FileExists(sound))
-            break;
-
-        AddFileToDownloadsTable(sound);
-        ReplaceString(sound, sizeof(sound), "sound/", "");
-
-        PrecacheSound(sound);
-
-        count++;
-        g_iInfectCountdownSounds = count;
-    }
 }
 
 /**
@@ -300,8 +258,6 @@ void InfectClientInit(int client)
  */
 void InfectOnClientDisconnect(int client)
 {
-    g_aInfectCountdownSoundClients[client] = false;
-
     // If client is still connecting, then stop.
     if (!IsClientInGame(client))
     {
@@ -859,18 +815,20 @@ public Action InfectCountdown(Handle timer)
         // Print the countdown text to the clients.
         TranslationPrintCenterTextAll(false, "Infect countdown", RoundToNearest(length - counter));
 
-        float countdownvolume = SEffects_GetInfectMZCountdownVolume();
+        float countdownvolume = SEffects_GetVolume();
         int countdown = RoundToNearest(length - counter);
-        if (countdownvolume > 0.0 && g_iInfectCountdownSounds != 0 && countdown > 0 && countdown <= g_iInfectCountdownSounds)
+        int iInfectCountdownSounds = SEffects_GetMax(Countdown);
+        if (countdownvolume > 0.0 && iInfectCountdownSounds != 0 && countdown > 0 && countdown <= iInfectCountdownSounds)
         {
-            char sound[PLATFORM_MAX_PATH];
-            Format(sound, sizeof(sound), "zr/countdown/%i.mp3", countdown);
+            char soundpath[PLATFORM_MAX_PATH];
+            SEffects_GetPath(soundpath, Countdown);
+            Format(soundpath, SOUND_MAX_PATH, soundpath, countdown);
 
             for (int x = 1; x <= MaxClients; x++)
             {
-                if (IsClientInGame(x) && g_aInfectCountdownSoundClients[x] && zfCountdownVolume[x] > 0)
+                if (IsClientInGame(x) && zfZSoundVolume[x] > 0)
                 {
-                    EmitSoundToClient(x, sound, _, _, SNDLEVEL_NORMAL, _, zfCountdownVolume[x]);
+                    EmitSoundToClient(x, soundpath, _, _, SNDLEVEL_NORMAL, _, zfZSoundVolume[x]);
                 }
             }
         }

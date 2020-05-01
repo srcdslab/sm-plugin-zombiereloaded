@@ -121,7 +121,6 @@ enum struct CvarsList
     Handle CVAR_INFECT_FIREBALL;
     Handle CVAR_INFECT_SMOKE;
     Handle CVAR_INFECT_SPARKS;
-    Handle CVAR_INFECT_SOUND;
     Handle CVAR_INFECT_ESPLASH;
     Handle CVAR_INFECT_SHAKE;
     Handle CVAR_INFECT_SHAKE_AMP;
@@ -341,7 +340,6 @@ void CvarsCreate()
     g_hCvarsList.CVAR_INFECT_FIREBALL                  =    CreateConVar("zr_infect_fireball",             "1",                                "Spawn a fireball effect around player on infection. [Dependency: zr_infect_explosion]");
     g_hCvarsList.CVAR_INFECT_SMOKE                     =    CreateConVar("zr_infect_smoke",                "1",                                "Spawn a smoke cloud effect around player on infection. [Dependency: zr_infect_explosion]");
     g_hCvarsList.CVAR_INFECT_SPARKS                    =    CreateConVar("zr_infect_sparks",               "1",                                "Emit sparks from player on infection. [Dependency: zr_infect_explosion]");
-    g_hCvarsList.CVAR_INFECT_SOUND                     =    CreateConVar("zr_infect_sound",                "npc/fast_zombie/fz_scream1.wav",   "Sound, relative to \"sound\" folder, to play from player on infection. ['\"\"' = No sound]");
     g_hCvarsList.CVAR_INFECT_ESPLASH                   =    CreateConVar("zr_infect_esplash",              "1",                                "Emit an energy splash from player on infection.");
     g_hCvarsList.CVAR_INFECT_SHAKE                     =    CreateConVar("zr_infect_shake",                "1",                                "Shake player's view on infect.");
     g_hCvarsList.CVAR_INFECT_SHAKE_AMP                 =    CreateConVar("zr_infect_shake_amp",            "15.0",                             "Amplitude of shaking effect. [Dependency: zr_infect_shake]");
