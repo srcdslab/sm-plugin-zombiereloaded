@@ -116,7 +116,6 @@ enum struct CvarsList
     Handle CVAR_INFECT_MZOMBIE_MIN;
     Handle CVAR_INFECT_MZOMBIE_MAX;
     Handle CVAR_INFECT_MZOMBIE_COUNTDOWN;
-    Handle CVAR_INFECT_MZOMBIE_COUNTDOWN_VOLUME;
     Handle CVAR_INFECT_MZOMBIE_RESPAWN;
     Handle CVAR_INFECT_EXPLOSION;
     Handle CVAR_INFECT_FIREBALL;
@@ -148,18 +147,6 @@ enum struct CvarsList
     Handle CVAR_VEFFECTS_RAGDOLL_REMOVE;
     Handle CVAR_VEFFECTS_RAGDOLL_DISSOLVE;
     Handle CVAR_VEFFECTS_RAGDOLL_DELAY;
-    Handle CVAR_VOICE;
-    Handle CVAR_VOICE_ZOMBIES_MUTE;
-    Handle CVAR_SEFFECTS_MOAN;
-    Handle CVAR_SEFFECTS_GROAN;
-    Handle CVAR_SEFFECTS_DEATH;
-    Handle CVAR_SEFFECTS_COMMAND_LIMIT;
-    Handle CVAR_SEFFECTS_COMMAND_TIMESPAN;
-    Handle CVAR_SEFFECTS_VOLUME;
-    Handle CVAR_AMBIENTSOUNDS;
-    Handle CVAR_AMBIENTSOUNDS_FILE;
-    Handle CVAR_AMBIENTSOUNDS_LENGTH;
-    Handle CVAR_AMBIENTSOUNDS_VOLUME;
     Handle CVAR_ANTISTICK;
     Handle CVAR_ANTISTICK_DEFAULT_WIDTH;
     Handle CVAR_ANTISTICK_FILE_PATH;
@@ -338,7 +325,6 @@ void CvarsCreate()
     g_hCvarsList.CVAR_INFECT_MZOMBIE_MIN                =    CreateConVar("zr_infect_mzombie_min",                 "1",                        "Minimum number of mother zombies. Range mode only, cannot be zero.");
     g_hCvarsList.CVAR_INFECT_MZOMBIE_MAX                =    CreateConVar("zr_infect_mzombie_max",                 "3",                        "Maximum number of mother zombies. Range mode only, cannot be zero.");
     g_hCvarsList.CVAR_INFECT_MZOMBIE_COUNTDOWN          =    CreateConVar("zr_infect_mzombie_countdown",           "0",                        "Counts down to the first infection of the round.  Countdown is printed in the middle of the client's screen.");
-    g_hCvarsList.CVAR_INFECT_MZOMBIE_COUNTDOWN_VOLUME   =    CreateConVar("zr_infect_mzombie_countdown_volume",    "0.8",                      "Default volume of the countdown sound. [1.0 = Max volume | 0.0001 = Not audible | Dependency: zr_infect_mzombie_countdown]");
     g_hCvarsList.CVAR_INFECT_MZOMBIE_RESPAWN            =    CreateConVar("zr_infect_mzombie_respawn",             "0",                        "Teleport mother zombies back to spawn on infect.");
     g_hCvarsList.CVAR_INFECT_SPAWNTIME_MIN              =    CreateConVar("zr_infect_spawntime_min",               "30.0",                     "Minimum time from the start of the round until picking the mother zombie(s).");
     g_hCvarsList.CVAR_INFECT_SPAWNTIME_MAX              =    CreateConVar("zr_infect_spawntime_max",               "50.0",                     "Maximum time from the start of the round until picking the mother zombie(s).");
@@ -440,29 +426,6 @@ void CvarsCreate()
 
 
     // ===========================
-    // Sound Effects (module)
-    // ===========================
-
-    // Voice
-    g_hCvarsList.CVAR_VOICE                            =    CreateConVar("zr_voice",                   "0",                            "(Incomplete) Modify sv_alltalk to obey zombie/human teams instead of t/ct.");
-    g_hCvarsList.CVAR_VOICE_ZOMBIES_MUTE               =    CreateConVar("zr_voice_zombies_mute",      "0",                            "(Incomplete) Only allow humans to communicate, block verbal zombie communication.");
-
-    // Zombie Sounds
-    g_hCvarsList.CVAR_SEFFECTS_MOAN                    =    CreateConVar("zr_seffects_moan",               "30.0",                     "Time between emission of a moan sound from a zombie.");
-    g_hCvarsList.CVAR_SEFFECTS_GROAN                   =    CreateConVar("zr_seffects_groan",              "5",                        "The probability that a groan sound will be emitted from a zombie when shot. ['100' = 1% chance | '50' = 2% chance | '1' = 100% chance]");
-    g_hCvarsList.CVAR_SEFFECTS_DEATH                   =    CreateConVar("zr_seffects_death",              "1",                        "Emit a death sound when a zombie dies.");
-    g_hCvarsList.CVAR_SEFFECTS_COMMAND_LIMIT           =    CreateConVar("zr_seffects_command_limit",      "4",                        "Number of sound commands allowed within the time span, or total limit if time span is disabled. ['0' = Disable sound command limit]");
-    g_hCvarsList.CVAR_SEFFECTS_COMMAND_TIMESPAN        =    CreateConVar("zr_seffects_command_timespan",   "10",                       "Time span for sound command limiter (in seconds). ['0' = Disable time span check | positive number = Time span]");
-    g_hCvarsList.CVAR_SEFFECTS_VOLUME                  =    CreateConVar("zr_seffects_volume",             "0.8",                      "Default volume of the seffects sounds. [1.0 = Max volume | 0.0001 = Not audible]");
-
-    // Ambient Sounds
-    g_hCvarsList.CVAR_AMBIENTSOUNDS                    =    CreateConVar("zr_ambientsounds",           "1",                            "Play an ambient sound to all players during gameplay.");
-    g_hCvarsList.CVAR_AMBIENTSOUNDS_FILE               =    CreateConVar("zr_ambientsounds_file",      "ambient/zr/zr_ambience.mp3",   "Sound file, relative to \"sound\" folder, to play as ambience.  This file is automatically downloaded to clients. [Dependency: zr_ambientsounds]");
-    g_hCvarsList.CVAR_AMBIENTSOUNDS_LENGTH             =    CreateConVar("zr_ambientsounds_length",    "60.0",                         "Length of the ambient sound. [Dependency: zr_ambientsounds]");
-    g_hCvarsList.CVAR_AMBIENTSOUNDS_VOLUME             =    CreateConVar("zr_ambientsounds_volume",    "0.8",                          "Default volume of the ambient sound. [1.0 = Max volume | 0.0001 = Not audible | Dependency: zr_ambientsounds]");
-
-
-    // ===========================
     // Anti-Stick (module)
     // ===========================
     g_hCvarsList.CVAR_ANTISTICK                        =    CreateConVar("zr_antistick",               "1",                    "Automatically unstick players when stuck within each others' collision hull.");
@@ -537,6 +500,7 @@ void CvarsCreate()
     g_hCvarsList.CVAR_KNOCKBACK_MAXVEL                 =    CreateConVar("zr_knockback_maxvel", "0", "Set maximum velocity zombies can get from knockback ['0' = Off].");
 
     ZTele_OnCvarsCreate();
+    SEffects_OnCvarsCreate();
 
     // Auto-generate config file if it doesn't exist, then execute.
     AutoExecConfig(true, "zombiereloaded", "sourcemod/zombiereloaded");

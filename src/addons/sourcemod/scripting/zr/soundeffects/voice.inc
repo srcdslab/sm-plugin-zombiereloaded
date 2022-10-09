@@ -35,7 +35,7 @@ bool g_bVoice;
  */
 void VoiceOnRoundStart()
 {
-    bool voice = GetConVarBool(g_hCvarsList.CVAR_VOICE);
+    bool voice = SEffects_GetVoice();
 
     // If the cvar has changed, then reset the voice permissions.
     if (g_bVoice != voice)

@@ -66,7 +66,7 @@ void AmbientSoundsClientInit(int client)
 bool AmbientSoundsValidateConfig()
 {
     // If ambience is disabled, then stop.
-    bool ambience = GetConVarBool(g_hCvarsList.CVAR_AMBIENTSOUNDS);
+    bool ambience = SEffects_GetAmbientSounds();
     if (!ambience)
     {
         g_bAmbientSounds = false;
@@ -75,7 +75,7 @@ bool AmbientSoundsValidateConfig()
 
     // Get ambient sound file.
     char sound[SOUND_MAX_PATH];
-    GetConVarString(g_hCvarsList.CVAR_AMBIENTSOUNDS_FILE, sound, sizeof(sound));
+    SEffects_GetAmbientSoundsFile(sound);
     Format(sound, sizeof(sound), "sound/%s", sound);
 
     // If file doesn't exist, then log error and stop.
@@ -86,9 +86,9 @@ bool AmbientSoundsValidateConfig()
         return false;
     }
 
-    // If volume is invalid, then log error and stop.
-    float ambientvolume = GetConVarFloat(g_hCvarsList.CVAR_AMBIENTSOUNDS_VOLUME);
-    if (ambientvolume < 0.0)
+    // If volume is muted or invalid, then log error and stop.
+    float ambientvolume = SEffects_GetAmbientSoundsVolume();
+    if (ambientvolume <= 0.0)
     {
         // Log invalid ambient sound volume error.
         LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_SEffects, "Config Validation", "Ambient sound volume specified in \"zr_ambientsounds_volume\" is either muted or invalid.");
@@ -97,7 +97,7 @@ bool AmbientSoundsValidateConfig()
     }
 
     // If length is invalid, then log error and stop.
-    float ambientlength = GetConVarFloat(g_hCvarsList.CVAR_AMBIENTSOUNDS_LENGTH);
+    float ambientlength = SEffects_GetAmbientSoundsLength();
     if (ambientlength <= 0.0)
     {
         // Log invalid ambient sound length error.
@@ -164,7 +164,7 @@ void AmbientSoundsOnClientSpawnPost(int client)
 
     // Get ambient sound file.
     char sound[SOUND_MAX_PATH];
-    GetConVarString(g_hCvarsList.CVAR_AMBIENTSOUNDS_FILE, sound, sizeof(sound));
+    SEffects_GetAmbientSoundsFile(sound);
 
     // Emit ambient sound.
     SEffectsEmitAmbientSound(sound, client);
@@ -192,7 +192,7 @@ void AmbientSoundsRestart()
     }
 
     // Get ambient sound length.
-    float ambientlength = GetConVarFloat(g_hCvarsList.CVAR_AMBIENTSOUNDS_LENGTH);
+    float ambientlength = SEffects_GetAmbientSoundsLength();
 
     // Start ambient sounds timer.
     tAmbientSounds = CreateTimer(ambientlength, AmbientSoundsTimer, _, TIMER_FLAG_NO_MAPCHANGE);
@@ -213,7 +213,7 @@ public Action AmbientSoundsTimer(Handle timer)
 
     // Get ambient sound file.
     char sound[SOUND_MAX_PATH];
-    GetConVarString(g_hCvarsList.CVAR_AMBIENTSOUNDS_FILE, sound, sizeof(sound));
+    SEffects_GetAmbientSoundsFile(sound);
 
     // Stop sound before playing again.
     SEffectsStopAmbientSound(sound);
@@ -222,7 +222,7 @@ public Action AmbientSoundsTimer(Handle timer)
     SEffectsEmitAmbientSound(sound);
 
     // Get ambient sound length.
-    float ambientlength = GetConVarFloat(g_hCvarsList.CVAR_AMBIENTSOUNDS_LENGTH);
+    float ambientlength = SEffects_GetAmbientSoundsLength();
 
     // Start new timer with sound length as delay.
     tAmbientSounds = CreateTimer(ambientlength, AmbientSoundsTimer, _, TIMER_FLAG_NO_MAPCHANGE);
