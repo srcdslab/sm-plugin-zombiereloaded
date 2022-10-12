@@ -35,15 +35,18 @@ Handle SEffectsCvar_CommandTimespan;
 Handle SEffectsCvar_PathMoan;
 Handle SEffectsCvar_PathPain;
 Handle SEffectsCvar_PathDie;
+Handle SEffectsCvar_PathScream;
+Handle SEffectsCvar_PathCountdown;
 Handle SEffectsCvar_MoanMax;
 Handle SEffectsCvar_PainMax;
 Handle SEffectsCvar_DieMax;
+Handle SEffectsCvar_ScreamMax;
+Handle SEffectsCvar_CountdownMax;
 Handle SEffectsCvar_Volume;
 Handle SEffectsCvar_AmbientSounds;
 Handle SEffectsCvar_AmbientSoundsFile;
 Handle SEffectsCvar_AmbientSoundsLength;
 Handle SEffectsCvar_AmbientSoundsVolume;
-Handle SEffectsCvar_InfectMZCountdownVolume;
 
 void SEffects_OnCvarsCreate()
 {
@@ -58,17 +61,20 @@ void SEffects_OnCvarsCreate()
     SEffectsCvar_PathMoan               = CreateConVar("zr_seffects_path_moan",         "npc/zombie/zombie_voice_idle%d.wav",   "Sound, relative to \"sound\" folder, to play from player when moaning.");
     SEffectsCvar_PathPain               = CreateConVar("zr_seffects_path_pain",         "npc/zombie/zombie_pain%d.wav",         "Sound, relative to \"sound\" folder, to play from player when hurt.");
     SEffectsCvar_PathDie                = CreateConVar("zr_seffects_path_die",          "npc/zombie/zombie_die%d.wav",          "Sound, relative to \"sound\" folder, to play from player when killed.");
+    SEffectsCvar_PathScream             = CreateConVar("zr_seffects_path_scream",       "npc/zombie/zombie_scream%d.wav",       "Sound, relative to \"sound\" folder, to play from zombie when infects a human.");
+    SEffectsCvar_PathCountdown          = CreateConVar("zr_seffects_path_countdown",    "zr/countdown/%i.mp3",                  "Sound, relative to \"sound\" folder, to play from player when mother zombie countdown starts.");
+
     SEffectsCvar_MoanMax                = CreateConVar("zr_seffects_moan_max",          "14",                                   "Max moaning sound file index.");
     SEffectsCvar_PainMax                = CreateConVar("zr_seffects_pain_max",          "6",                                    "Max groan sound file index.");
     SEffectsCvar_DieMax                 = CreateConVar("zr_seffects_die_max",           "3",                                    "Max death sound file index.");
+    SEffectsCvar_ScreamMax              = CreateConVar("zr_seffects_scream_max",        "1",                                    "Max scream sound file index.");
+    SEffectsCvar_CountdownMax           = CreateConVar("zr_seffects_countdown_max",     "10",                                   "Max countdown sound file index.");
     SEffectsCvar_Volume                 = CreateConVar("zr_seffects_volume",            "0.8",                                  "Default volume of the seffects sounds. [1.0 = Max volume | 0.0001 = Not audible]");
 
     SEffectsCvar_AmbientSounds          = CreateConVar("zr_ambientsounds",              "1",                                    "Play an ambient sound to all players during gameplay.");
     SEffectsCvar_AmbientSoundsFile      = CreateConVar("zr_ambientsounds_file",         "ambient/zr/zr_ambience.mp3",           "Sound file, relative to \"sound\" folder, to play as ambience.  This file is automatically downloaded to clients. [Dependency: zr_ambientsounds]");
     SEffectsCvar_AmbientSoundsLength    = CreateConVar("zr_ambientsounds_length",       "60.0",                                 "Length of the ambient sound. [Dependency: zr_ambientsounds]");
     SEffectsCvar_AmbientSoundsVolume    = CreateConVar("zr_ambientsounds_volume",       "0.8",                                  "Default volume of the ambient sound. [1.0 = Max volume | 0.0001 = Not audible | Dependency: zr_ambientsounds]");
-
-    SEffectsCvar_InfectMZCountdownVolume = CreateConVar("zr_infect_mzombie_countdown_volume",    "0.8",                         "Default volume of the mother zombie infection countdown sound. [1.0 = Max volume | 0.0001 = Not audible | Dependency: zr_infect_mzombie_countdown]");
 }
 
 bool SEffects_GetVoice()
@@ -118,6 +124,10 @@ void SEffects_GetPath(char[] sound, ZombieSounds soundtype)
             GetConVarString(SEffectsCvar_PathPain, sound, SOUND_MAX_PATH);
         case Death:
             GetConVarString(SEffectsCvar_PathDie, sound, SOUND_MAX_PATH);
+        case Scream:
+            GetConVarString(SEffectsCvar_PathScream, sound, SOUND_MAX_PATH);
+        case Countdown:
+            GetConVarString(SEffectsCvar_PathCountdown, sound, SOUND_MAX_PATH)
     }
 }
 
@@ -131,6 +141,10 @@ int SEffects_GetMax(ZombieSounds soundtype)
             return GetConVarInt(SEffectsCvar_PainMax);
         case Death:
             return GetConVarInt(SEffectsCvar_DieMax);
+        case Scream:
+            return GetConVarInt(SEffectsCvar_ScreamMax);
+        case Countdown:
+            return GetConVarInt(SEffectsCvar_CountdownMax)
     }
 
     return 1;
@@ -146,7 +160,7 @@ bool SEffects_GetAmbientSounds()
     return GetConVarBool(SEffectsCvar_AmbientSounds);
 }
 
-void SEffects_GetAmbientSoundsFile(String:sound[])
+void SEffects_GetAmbientSoundsFile(char[] sound)
 {
     GetConVarString(SEffectsCvar_AmbientSoundsFile, sound, SOUND_MAX_PATH);
 }
@@ -161,7 +175,3 @@ float SEffects_GetAmbientSoundsVolume()
     return GetConVarFloat(SEffectsCvar_AmbientSoundsVolume);
 }
 
-float SEffects_GetInfectMZCountdownVolume()
-{
-    return GetConVarFloat(SEffectsCvar_InfectMZCountdownVolume);
-}

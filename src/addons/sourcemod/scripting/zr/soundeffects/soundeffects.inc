@@ -46,6 +46,7 @@ void SEffectsLoad()
 {
     // Load ambient sound cvars.
     AmbientSoundsLoad();
+    ZombieSoundsLoad();
 }
 
 /**
@@ -167,6 +168,9 @@ void SEffectsOnClientHuman(int client)
  */
 void SEffectsEmitAmbientSound(const char[] sound, int client = -1)
 {
+    if (!sound[0])
+        return;
+
     // Precache sound before playing.
     PrecacheSound(sound);
 
@@ -210,6 +214,9 @@ void SEffectsEmitAmbientSound(const char[] sound, int client = -1)
  */
 void SEffectsStopAmbientSound(const char[] sound)
 {
+    if (!sound[0])
+        return;
+
     // x = client index.
     for (int x = 1; x <= MaxClients; x++)
     {
@@ -240,6 +247,9 @@ void SEffectsStopAmbientSound(const char[] sound)
  */
 void SEffectsEmitSoundFromClient(int client, const char[] sound, int level = SNDLEVEL_NORMAL)
 {
+    if (!sound[0])
+        return;
+
     // Precache sound before playing.
     PrecacheSound(sound);
 

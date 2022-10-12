@@ -28,11 +28,13 @@
 #include <basecomm>
 
 /**
- * @section Defines for min moaning, groan and death sound files index.
+ * @section Defines for min moaning, groan, death, scream and countdown sound files index.
  */
 #define SOUND_MOAN_MIN 1
 #define SOUND_GROAN_MIN 1
 #define SOUND_DEATH_MIN 1
+#define SOUND_SCREAM_MIN 1
+#define SOUND_COUNTDOWN_MIN 1
 /**
  * @endsection
  */
@@ -45,6 +47,8 @@ enum ZombieSounds
     Moan, /** Zombie's moan periodically */
     Groan, /** When zombie is hurt */
     Death, /** When a zombie is killed */
+    Scream, /** When a zombie infects a human */
+    Countdown, /** Mother zombie countdown */
 }
 
 #include "zr/soundeffects/cvars"
@@ -260,6 +264,16 @@ bool ZombieSoundsGetRandomSound(char[] sound, ZombieSounds soundtype)
             // Read path
             SEffects_GetPath(soundpath, Death);
         }
+        // Find scream sound.
+        case Scream:
+        {
+            // Copy min and max
+            soundmin = SOUND_SCREAM_MIN;
+            soundmax = SEffects_GetMax(Scream);
+
+            // Read path
+            SEffects_GetPath(soundpath, Scream);
+        }
         // Invalid case given.
         default:
         {
@@ -325,15 +339,11 @@ void ZombieSoundsMoan(int client)
  */
 void ZombieSoundsScream(int client)
 {
-    char sound[PLATFORM_MAX_PATH];
-    GetConVarString(g_hCvarsList.CVAR_INFECT_SOUND, sound, sizeof(sound));
+    char sound[SOUND_MAX_PATH];
+    ZombieSoundsGetRandomSound(sound, Scream);
 
-    // If cvar contains path, then continue.
-    if (sound[0])
-    {
-        // Emit infect sound from infected client.
-        SEffectsEmitSoundFromClient(client, sound, SNDLEVEL_SCREAMING);
-    }
+    // Emit infect sound from infected client.
+    SEffectsEmitSoundFromClient(client, sound, SNDLEVEL_SCREAMING);
 }
 
 /**
@@ -441,4 +451,53 @@ public Action ZombieSoundsCmdTimer(Handle timer, any client)
 {
     g_SEffectsCommandCount[client] = 0;
     return Plugin_Continue;
+}
+
+/**
+ * Precache zombie sounds
+ */
+void ZombieSoundsLoad()
+{
+    char soundpath[SOUND_MAX_PATH];
+
+    //Moan
+    for (int i = SOUND_MOAN_MIN; i <= SEffects_GetMax(Moan); i++) {
+        SEffects_GetPath(soundpath, Moan);
+        // Format random index into sound path.
+        Format(soundpath, SOUND_MAX_PATH, soundpath, i);
+        PrecacheSound(soundpath, false);
+    }
+    //Groan
+    for (int i = SOUND_GROAN_MIN; i <= SEffects_GetMax(Groan); i++) {
+        SEffects_GetPath(soundpath, Groan);
+        // Format random index into sound path.
+        Format(soundpath, SOUND_MAX_PATH, soundpath, i);
+        PrecacheSound(soundpath, false);
+    }
+    //Death
+    for (int i = SOUND_DEATH_MIN; i <= SEffects_GetMax(Death); i++) {
+        SEffects_GetPath(soundpath, Death);
+        // Format random index into sound path.
+        Format(soundpath, SOUND_MAX_PATH, soundpath, i);
+        PrecacheSound(soundpath, false);
+    }
+    //Scream
+    for (int i = SOUND_SCREAM_MIN; i <= SEffects_GetMax(Scream); i++) {
+        SEffects_GetPath(soundpath, Scream);
+        // Format random index into sound path.
+        Format(soundpath, SOUND_MAX_PATH, soundpath, i);
+        PrecacheSound(soundpath, false);
+    }
+    //Countdown
+    for (int i = SOUND_COUNTDOWN_MIN; i <= SEffects_GetMax(Countdown); i++) {
+        SEffects_GetPath(soundpath, Countdown);
+        // Format random index into sound path.
+        Format(soundpath, SOUND_MAX_PATH, soundpath, i);
+
+        // Format sound path for downloads table
+        char soundpathdownload[SOUND_MAX_PATH+7];
+        Format(soundpathdownload, sizeof(soundpathdownload), "sound/%s", soundpath);
+        AddFileToDownloadsTable(soundpathdownload);
+        PrecacheSound(soundpath, false);
+    }
 }
