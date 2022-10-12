@@ -1,0 +1,76 @@
+name: Build and release sourcemod plugin
+on: 
+  push:
+    tags:
+      - 'v*.*.*'
+    branches:
+      - master
+      - main
+  pull_request:
+    branches:
+      - master
+      - main
+
+jobs:
+  build:
+    name: "Build"
+    runs-on: ${{ matrix.os }}
+    # permissions:
+    #   actions: write
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-20.04]
+        include:
+          - os: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build sourcemod plugin
+        uses: maxime1907/action-sourceknight@v1
+        with:
+          cmd: build
+
+      - name: Upload build archive for test runners
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ runner.os }}
+          path: |
+            .sourceknight/package
+            csgo
+            cstrike
+
+      - name: Automatic latest tag update
+        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
+        uses: anothrNick/github-tag-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CUSTOM_TAG: "latest"
+
+  release:
+    name: Release
+    if: github.ref_type == 'tag'
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+
+      - name: Package
+        run: |
+          version=`echo $GITHUB_REF | sed "s/refs\/tags\///"`
+
+          ls -Rall
+          if [ -d "./Linux/" ]; then
+            cd ./Linux/
+            tar -czf ../${{ github.event.repository.name }}-${version}.tar.gz -T <(\ls -1)
+            cd -
+          fi
+
+      - name: Release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: '*.tar.gz'
+          tag: ${{ github.ref }}
+          file_glob: true
+          overwrite: true
