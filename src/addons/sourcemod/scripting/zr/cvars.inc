@@ -283,7 +283,7 @@ void CvarsCreate()
     // Overlays
     g_hCvarsList.CVAR_CLASSES_OVERLAY_TOGGLE           =    CreateConVar("zr_classes_overlay_toggle",      "1",            "Allow players to toggle class overlay.");
     g_hCvarsList.CVAR_CLASSES_OVERLAY_TOGGLECMDS       =    CreateConVar("zr_classes_overlay_togglecmds",  "nightvision",  "List of commands to hook that players can use to toggle class overlay. [Dependency: zr_classes_overlay_toggle | Delimiter: \",\"]");
-    g_hCvarsList.CVAR_CLASSES_OVERLAY_DEFAULT          =    CreateConVar("zr_classes_overlay_default",     "1",            "Default class overlay toggle state set on connecting player.");
+    g_hCvarsList.CVAR_CLASSES_OVERLAY_DEFAULT          =    CreateConVar("zr_classes_overlay_default",     "0",            "Default class overlay toggle state set on connecting player.");
 
 
     // ===========================
@@ -323,7 +323,7 @@ void CvarsCreate()
     g_hCvarsList.CVAR_INFECT_MZOMBIE_RATIO              =    CreateConVar("zr_infect_mzombie_ratio",               "7",                        "Dynamic mode: Infection ratio. Every n-th player is infected. | Absolute mode: Number of zombies to infect (positive ratio), or number of humans to keep (negative ratio).");
     g_hCvarsList.CVAR_INFECT_MZOMBIE_MIN                =    CreateConVar("zr_infect_mzombie_min",                 "1",                        "Minimum number of mother zombies. Range mode only, cannot be zero.");
     g_hCvarsList.CVAR_INFECT_MZOMBIE_MAX                =    CreateConVar("zr_infect_mzombie_max",                 "3",                        "Maximum number of mother zombies. Range mode only, cannot be zero.");
-    g_hCvarsList.CVAR_INFECT_MZOMBIE_COUNTDOWN          =    CreateConVar("zr_infect_mzombie_countdown",           "0",                        "Counts down to the first infection of the round.  Countdown is printed in the middle of the client's screen.");
+    g_hCvarsList.CVAR_INFECT_MZOMBIE_COUNTDOWN          =    CreateConVar("zr_infect_mzombie_countdown",           "1",                        "Counts down to the first infection of the round.  Countdown is printed in the middle of the client's screen.");
     g_hCvarsList.CVAR_INFECT_MZOMBIE_RESPAWN            =    CreateConVar("zr_infect_mzombie_respawn",             "0",                        "Teleport mother zombies back to spawn on infect.");
     g_hCvarsList.CVAR_INFECT_SPAWNTIME_MIN              =    CreateConVar("zr_infect_spawntime_min",               "30.0",                     "Minimum time from the start of the round until picking the mother zombie(s).");
     g_hCvarsList.CVAR_INFECT_SPAWNTIME_MAX              =    CreateConVar("zr_infect_spawntime_max",               "50.0",                     "Maximum time from the start of the round until picking the mother zombie(s).");

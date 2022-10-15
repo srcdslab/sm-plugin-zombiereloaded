@@ -116,9 +116,6 @@ public void VolumeControlMenu(int client)
 	Format(sItem, sizeof(sItem), "%t", "Ambient");
 	menu.AddItem("2" ,sItem);
 
-	Format(sItem, sizeof(sItem), "%t", "Infect Countdown");
-	menu.AddItem("3" ,sItem);
-
 	menu.ExitBackButton = true;
 	menu.Display(client, MENU_TIME_FOREVER);
 }

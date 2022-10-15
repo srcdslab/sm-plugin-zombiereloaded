@@ -465,6 +465,10 @@ void ZombieSoundsLoad()
         SEffects_GetPath(soundpath, Moan);
         // Format random index into sound path.
         Format(soundpath, SOUND_MAX_PATH, soundpath, i);
+        // Format sound path for downloads table
+        char soundpathdownload[SOUND_MAX_PATH+7];
+        Format(soundpathdownload, sizeof(soundpathdownload), "sound/%s", soundpath);
+        AddFileToDownloadsTable(soundpathdownload);
         PrecacheSound(soundpath, false);
     }
     //Groan
@@ -472,6 +476,10 @@ void ZombieSoundsLoad()
         SEffects_GetPath(soundpath, Groan);
         // Format random index into sound path.
         Format(soundpath, SOUND_MAX_PATH, soundpath, i);
+        // Format sound path for downloads table
+        char soundpathdownload[SOUND_MAX_PATH+7];
+        Format(soundpathdownload, sizeof(soundpathdownload), "sound/%s", soundpath);
+        AddFileToDownloadsTable(soundpathdownload);
         PrecacheSound(soundpath, false);
     }
     //Death
@@ -479,6 +487,10 @@ void ZombieSoundsLoad()
         SEffects_GetPath(soundpath, Death);
         // Format random index into sound path.
         Format(soundpath, SOUND_MAX_PATH, soundpath, i);
+        // Format sound path for downloads table
+        char soundpathdownload[SOUND_MAX_PATH+7];
+        Format(soundpathdownload, sizeof(soundpathdownload), "sound/%s", soundpath);
+        AddFileToDownloadsTable(soundpathdownload);
         PrecacheSound(soundpath, false);
     }
     //Scream
@@ -486,6 +498,10 @@ void ZombieSoundsLoad()
         SEffects_GetPath(soundpath, Scream);
         // Format random index into sound path.
         Format(soundpath, SOUND_MAX_PATH, soundpath, i);
+        // Format sound path for downloads table
+        char soundpathdownload[SOUND_MAX_PATH+7];
+        Format(soundpathdownload, sizeof(soundpathdownload), "sound/%s", soundpath);
+        AddFileToDownloadsTable(soundpathdownload);
         PrecacheSound(soundpath, false);
     }
     //Countdown
