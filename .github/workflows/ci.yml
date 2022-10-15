@@ -22,7 +22,7 @@ jobs:
       - name: Create package
         run: |
           mkdir -p /tmp/package
-          cp -R {.sourceknight/package/*,csgo,cstrike} /tmp/package
+          cp -R {.sourceknight/package/*,common/*} /tmp/package
 
       - name: Upload build archive for test runners
         uses: actions/upload-artifact@v3

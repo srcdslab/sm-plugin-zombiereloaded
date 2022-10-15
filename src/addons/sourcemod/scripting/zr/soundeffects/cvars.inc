@@ -58,10 +58,10 @@ void SEffects_OnCvarsCreate()
     SEffectsCvar_Death                  = CreateConVar("zr_seffects_death",             "1",                                    "Emit a death sound when a zombie dies.");
     SEffectsCvar_CommandLimit           = CreateConVar("zr_seffects_command_limit",     "4",                                    "Number of sound commands allowed within the time span, or total limit if time span is disabled. ['0' = Disable sound command limit]");
     SEffectsCvar_CommandTimespan        = CreateConVar("zr_seffects_command_timespan",  "10",                                   "Time span for sound command limiter (in seconds). ['0' = Disable time span check | positive number = Time span]");
-    SEffectsCvar_PathMoan               = CreateConVar("zr_seffects_path_moan",         "npc/zombie/zombie_voice_idle%d.wav",   "Sound, relative to \"sound\" folder, to play from player when moaning.");
-    SEffectsCvar_PathPain               = CreateConVar("zr_seffects_path_pain",         "npc/zombie/zombie_pain%d.wav",         "Sound, relative to \"sound\" folder, to play from player when hurt.");
-    SEffectsCvar_PathDie                = CreateConVar("zr_seffects_path_die",          "npc/zombie/zombie_die%d.wav",          "Sound, relative to \"sound\" folder, to play from player when killed.");
-    SEffectsCvar_PathScream             = CreateConVar("zr_seffects_path_scream",       "npc/zombie/zombie_scream%d.wav",       "Sound, relative to \"sound\" folder, to play from zombie when infects a human.");
+    SEffectsCvar_PathMoan               = CreateConVar("zr_seffects_path_moan",         "zr/moan/zombie_voice_idle%d.wav",   "Sound, relative to \"sound\" folder, to play from player when moaning.");
+    SEffectsCvar_PathPain               = CreateConVar("zr_seffects_path_pain",         "zr/pain/zombie_pain%d.wav",         "Sound, relative to \"sound\" folder, to play from player when hurt.");
+    SEffectsCvar_PathDie                = CreateConVar("zr_seffects_path_die",          "zr/die/zombie_die%d.wav",          "Sound, relative to \"sound\" folder, to play from player when killed.");
+    SEffectsCvar_PathScream             = CreateConVar("zr_seffects_path_scream",       "zr/scream/zombie_scream%d.wav",       "Sound, relative to \"sound\" folder, to play from zombie when infects a human.");
     SEffectsCvar_PathCountdown          = CreateConVar("zr_seffects_path_countdown",    "zr/countdown/%i.mp3",                  "Sound, relative to \"sound\" folder, to play from player when mother zombie countdown starts.");
 
     SEffectsCvar_MoanMax                = CreateConVar("zr_seffects_moan_max",          "14",                                   "Max moaning sound file index.");
@@ -72,7 +72,7 @@ void SEffects_OnCvarsCreate()
     SEffectsCvar_Volume                 = CreateConVar("zr_seffects_volume",            "0.8",                                  "Default volume of the seffects sounds. [1.0 = Max volume | 0.0001 = Not audible]");
 
     SEffectsCvar_AmbientSounds          = CreateConVar("zr_ambientsounds",              "1",                                    "Play an ambient sound to all players during gameplay.");
-    SEffectsCvar_AmbientSoundsFile      = CreateConVar("zr_ambientsounds_file",         "ambient/zr/zr_ambience.mp3",           "Sound file, relative to \"sound\" folder, to play as ambience.  This file is automatically downloaded to clients. [Dependency: zr_ambientsounds]");
+    SEffectsCvar_AmbientSoundsFile      = CreateConVar("zr_ambientsounds_file",         "zr/ambient/zr_ambience.mp3",           "Sound file, relative to \"sound\" folder, to play as ambience.  This file is automatically downloaded to clients. [Dependency: zr_ambientsounds]");
     SEffectsCvar_AmbientSoundsLength    = CreateConVar("zr_ambientsounds_length",       "60.0",                                 "Length of the ambient sound. [Dependency: zr_ambientsounds]");
     SEffectsCvar_AmbientSoundsVolume    = CreateConVar("zr_ambientsounds_volume",       "0.8",                                  "Default volume of the ambient sound. [1.0 = Max volume | 0.0001 = Not audible | Dependency: zr_ambientsounds]");
 }
