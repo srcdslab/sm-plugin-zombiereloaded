@@ -35,6 +35,7 @@ Handle ZTeleCvar_MaxHuman;
 Handle ZTeleCvar_AutoCancel;
 Handle ZTeleCvar_AutoCancelDistance;
 Handle ZTeleCvar_RandomSpawn;
+Handle ZTeleCvar_Disconnect;
 
 void ZTele_OnCvarsCreate()
 {
@@ -48,6 +49,7 @@ void ZTele_OnCvarsCreate()
     ZTeleCvar_AutoCancel            = CreateConVar("zr_ztele_autocancel",           "1",    "Automatically cancel ZTele if player moves out of a set boundary. [Dependency: zr_ztele_(zombie)/(human)[_(before)/(after)]]");
     ZTeleCvar_AutoCancelDistance    = CreateConVar("zr_ztele_autocancel_distance",  "20",   "Maximum distance, in feet, player is allowed to travel before teleport is cancelled. [Dependency: zr_ztele_autocancel]");
     ZTeleCvar_RandomSpawn           = CreateConVar("zr_ztele_random_spawn",         "0",    "Teleport player to a random spawn point instead of the players initial one, when using ztele.");
+    ZTeleCvar_Disconnect            = CreateConVar("zr_ztele_disconnect",           "1",    "Teleport the new chosen client infected for replace the last zombie disconnected.");
 }
 
 bool ZTele_ZombieCanTeleport()
@@ -98,4 +100,9 @@ float ZTele_GetAutoCancelDistance()
 bool ZTele_IsRandomSpawnEnabled()
 {
     return GetConVarBool(ZTeleCvar_RandomSpawn);
+}
+
+bool ZTele_ChosenClientReplaceDisconnected()
+{
+    return GetConVarBool(ZTeleCvar_Disconnect);
 }
