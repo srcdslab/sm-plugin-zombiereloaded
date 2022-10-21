@@ -341,6 +341,11 @@ void InfectOnClientDisconnect(int client)
     // Infect player.
     InfectHumanToZombie(randclient);
 
+    // Force ztele the client chosen to replace disonnecting zombie
+    bool fztelenew = ZTele_ChosenClientReplaceDisconnected();
+    if (fztelenew)
+        ZTele_TeleportClient(randclient);
+
     // Tell client they have been randomly been chosen to replace disconnecting zombie.
     TranslationPrintToChat(randclient, "Infect disconnect");
 
