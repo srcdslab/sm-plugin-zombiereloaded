@@ -51,7 +51,7 @@ enum ZombieSounds
     Countdown, /** Mother zombie countdown */
 }
 
-#include "zr/soundeffects/cvars"
+#include "cvars"
 
 /**
  * Array for storing zombie moaning timer handles per client.
