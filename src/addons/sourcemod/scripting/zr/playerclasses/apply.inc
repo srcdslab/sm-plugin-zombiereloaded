@@ -498,7 +498,9 @@ public void ClassPreThinkPost(int client)
  */
 void Class_OnPlayerRunCmd(int client, float vel[3])
 {
-    if (!IsClientInGame(client) || !IsPlayerAlive(client))
+    if (!IsClientInGame(client))
+        return;
+    if (!IsPlayerAlive(client))
         return;
 
     // Only modify speed if the prop method is used.
