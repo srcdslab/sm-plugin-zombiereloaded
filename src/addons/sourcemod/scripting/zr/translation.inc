@@ -97,7 +97,7 @@ stock void TranslationPluginFormatString(char[] text, int maxlen, bool color = t
         ReplaceString(text, maxlen, "@green", "{green}");
 
         CFormatColor(text, maxlen, 0);
-        MC_AddWhiteSpace(text, maxlen);
+        CAddWhiteSpace(text, maxlen);
     #else
         ReplaceString(text, maxlen, "@default", TRANSLATION_TEXT_COLOR_DEFAULT);
         ReplaceString(text, maxlen, "@lgreen", TRANSLATION_TEXT_COLOR_LGREEN);
