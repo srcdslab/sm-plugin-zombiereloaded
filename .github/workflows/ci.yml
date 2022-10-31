@@ -32,12 +32,14 @@ jobs:
 
   tag:
     name: Tag
-    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
     needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
+
       - uses: dev-drprasad/delete-tag-and-release@v0.2.0
+        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
         with:
           delete_release: true
           tag_name: latest
@@ -45,6 +47,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: rickstaa/action-create-tag@v1
+        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
         with:
           tag: "latest"
           github_token: ${{ secrets.GITHUB_TOKEN }}
