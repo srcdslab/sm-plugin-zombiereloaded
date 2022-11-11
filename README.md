@@ -2,6 +2,9 @@
 
 Infection/survival style gameplay for sourcemod
 
+## Full Documentation
+https://nide.gg/wiki/zombiereloaded/
+
 ## Commands
 
 ### Public
