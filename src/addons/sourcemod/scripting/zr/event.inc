@@ -128,7 +128,7 @@ public Action EventRoundEnd(Handle event, const char[] name, bool dontBroadcast)
     // Forward event to modules.
     WeaponsOnRoundEnd();
     RoundEndOnRoundEnd(reason);
-    InfectOnRoundEnd();
+    CreateTimer(0.5, InfectOnRoundEnd);
     SEffectsOnRoundEnd();
     RespawnOnRoundEnd();
     ZSpawnOnRoundEnd();
