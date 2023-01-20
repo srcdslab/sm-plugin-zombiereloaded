@@ -543,7 +543,7 @@ void InfectOnRoundFreezeEnd()
 /**
  * The round is ending.
  */
-public Action InfectOnRoundEnd()
+public Action InfectOnRoundEnd(Handle Timer)
 {
     // Stop infect timers if running.
     ZREndTimer(g_tInfect);
