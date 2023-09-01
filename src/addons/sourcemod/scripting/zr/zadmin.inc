@@ -104,7 +104,7 @@ bool ZAdminMenu(int client)
     // Add items to menu.
     SetMenuTitle(menu_zadmin, title);
     AddMenuItem(menu_zadmin, "classmultipliers", classmultipliers, configdraw);
-    AddMenuItem(menu_zadmin, "weapons", weapons, configdraw);
+    AddMenuItem(menu_zadmin, "weapons", weapons, moderatordraw);
     AddMenuItem(menu_zadmin, "hitgroups", hitgroups, hitgroupdraw);
     AddMenuItem(menu_zadmin, "infect", infect, moderatordraw);
     AddMenuItem(menu_zadmin, "zspawn", zspawn, moderatordraw);

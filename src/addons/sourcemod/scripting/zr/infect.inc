@@ -1529,7 +1529,7 @@ public Action InfectInfectCommand(int client, int argc)
     GetCmdArg(1, target, sizeof(target));
 
     // Find a target.
-    result = ProcessTargetString(target, client, targets, sizeof(targets), COMMAND_FILTER_ALIVE , targetname, sizeof(targetname), tn_is_ml);
+    result = ProcessTargetString(target, client, targets, sizeof(targets), COMMAND_FILTER_ALIVE | COMMAND_FILTER_NO_IMMUNITY, targetname, sizeof(targetname), tn_is_ml);
 
     // Check if there was a problem finding a client.
     if (result <= 0)
@@ -1588,7 +1588,7 @@ public Action InfectHumanCommand(int client, int argc)
     GetCmdArg(1, target, sizeof(target));
 
     // Find a target.
-    result = ProcessTargetString(target, client, targets, sizeof(targets), COMMAND_FILTER_ALIVE , targetname, sizeof(targetname), tn_is_ml);
+    result = ProcessTargetString(target, client, targets, sizeof(targets), COMMAND_FILTER_ALIVE | COMMAND_FILTER_NO_IMMUNITY, targetname, sizeof(targetname), tn_is_ml);
 
     // Check if there was a problem finding a client.
     if (result <= 0)

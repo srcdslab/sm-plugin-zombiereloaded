@@ -943,6 +943,10 @@ stock bool ClassFilterMatch(int index, ClassFilter filter, int cachetype = ZR_CL
             if(!flags)
                 return false;
 
+            // Check if user is root then ignore.
+            if(GetUserFlagBits(client) & ADMFLAG_ROOT)
+                return true;
+
             // Check if user doesn't have the required flags.
             if(GetUserFlagBits(client) & flags != flags)
                 return false;
