@@ -36,10 +36,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/nide'
+        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
 
       - uses: dev-drprasad/delete-tag-and-release@v0.2.1
-        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/nide'
+        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
         with:
           delete_release: true
           tag_name: latest
@@ -47,14 +47,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: rickstaa/action-create-tag@v1
-        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/nide'
+        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
         with:
           tag: "latest"
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
   release:
     name: Release
-    if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/nide'
+    if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
     needs: [build, tag]
     runs-on: ubuntu-latest
     steps:
