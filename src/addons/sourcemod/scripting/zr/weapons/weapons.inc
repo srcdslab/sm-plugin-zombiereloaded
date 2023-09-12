@@ -808,8 +808,18 @@ stock WeaponsSlot WeaponsGetActiveWeaponSlot(int client)
  */
 stock void WeaponsForceClientDrop(int client, int weapon)
 {
-    // Force client to drop weapon.
-    CS_DropWeapon(client, weapon, true, false);
+    // Fix: Exception reported: Weapon x is not owned by client x
+    if(IsValidEntity(weapon) && IsValidEdict(weapon))
+    {
+        if(!HasEntProp(weapon, Prop_Send, "m_hOwnerEntity"))
+            return;
+ 
+        if(GetEntProp(weapon, Prop_Send, "m_hOwnerEntity") != -1)
+            return;
+
+         // Force client to drop weapon.
+        CS_DropWeapon(client, weapon, true, false);
+    }
 }
 
 /**
