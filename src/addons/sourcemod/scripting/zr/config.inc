@@ -202,20 +202,32 @@ void ConfigOnCommandsCreate()
  */
 void ConfigLoad()
 {
+	char mapname[256];
 	char mapconfig[PLATFORM_MAX_PATH];
 	
 	// Get map name and format into config path.
-	GetCurrentMap(mapconfig, sizeof(mapconfig));
-	Format(mapconfig, sizeof(mapconfig), "sourcemod/zombiereloaded/%s.cfg", mapconfig);
+	GetCurrentMap(mapname, sizeof(mapname));
+	Format(mapconfig, sizeof(mapconfig), "sourcemod/zombiereloaded/%s.cfg", mapname);
 	
 	// Prepend cfg to path.
 	char path[PLATFORM_MAX_PATH];
 	Format(path, sizeof(path), "cfg/%s", mapconfig);
 	
-	// File doesn't exist, then stop.
-	if (!FileExists(path))
+	// Check if the file exist.
+	bool cfgexists = FileExists(path);
+	if (!cfgexists)
 	{
-		return;
+		// Try to read map name as lower case to prevent issue related to uppercase characters 
+		for (int i = 0; i < strlen(mapname); i++)
+		{
+			mapname[i] = CharToLower(mapname[i]);
+		}
+		Format(mapconfig, sizeof(mapconfig), "sourcemod/zombiereloaded/%s.cfg", mapname);
+		Format(path, sizeof(path), "cfg/%s", mapconfig);
+
+		// File doesn't exist, then stop.
+		if (!cfgexists)
+			return;
 	}
 	
 	// Execute config file.
@@ -252,8 +264,17 @@ void ConfigOnModulesLoaded()
 	bool cfgexists = FileExists(path);
 	if (!cfgexists)
 	{
+		// Try to read map name as lower case to prevent issue related to uppercase characters 
+		for (int i = 0; i < strlen(mapname); i++)
+		{
+			mapname[i] = CharToLower(mapname[i]);
+		}
+		Format(mapconfig, sizeof(mapconfig), "sourcemod/zombiereloaded/%s.post.cfg", mapname);
+		Format(path, sizeof(path), "cfg/%s", mapconfig);
+
 		// File doesn't exist, then stop.
-		return;
+		if (!cfgexists)
+			return;
 	}
 	
 	// Check if ConfigList is available.
