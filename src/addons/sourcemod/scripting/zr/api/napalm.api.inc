@@ -28,8 +28,8 @@
 /**
  * @section Global forward handles.
  */
-new Handle:g_hAPIFwdOnClientIgnite = INVALID_HANDLE;
-new Handle:g_hAPIFwdOnClientIgnited = INVALID_HANDLE;
+Handle g_hAPIFwdOnClientIgnite = INVALID_HANDLE;
+Handle g_hAPIFwdOnClientIgnited = INVALID_HANDLE;
 /**
  * @endsection
  */
@@ -54,7 +54,7 @@ APINapalmInit()
  * @param duration          The burn duration.
  *
  */
-Action:APIOnClientIgnite(&client, &Float:duration)
+Action APIOnClientIgnite(int client, float duration)
 {
     // Start forward call.
     Call_StartForward(g_hAPIFwdOnClientIgnite);
@@ -64,7 +64,7 @@ Action:APIOnClientIgnite(&client, &Float:duration)
     Call_PushFloatRef(duration);
 
     // Get what they returned.
-    new Action:result;
+    Action result;
     Call_Finish(result);
     return result;
 }
@@ -76,7 +76,7 @@ Action:APIOnClientIgnite(&client, &Float:duration)
  * @param duration          The burn duration.
  *
  */
-APIOnClientIgnited(&client, &Float:duration)
+void APIOnClientIgnited(int client, float duration)
 {
     // Start forward call.
     Call_StartForward(g_hAPIFwdOnClientIgnited);
