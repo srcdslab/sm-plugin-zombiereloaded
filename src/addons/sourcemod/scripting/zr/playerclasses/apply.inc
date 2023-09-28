@@ -65,6 +65,9 @@ bool ClassApplyAttributes(int client, bool improved = false)
     ClassApplyHealthRegen(client, classindex, improved);
     ClassApplySpeed(client, classindex);
 
+    // Trigger API forward.
+    APIOnClassAttributesApplied(client, classindex);
+
     return true;
 }
 
@@ -188,6 +191,15 @@ bool ClassApplyModel(int client, int classindex, int cachetype = ZR_CLASS_CACHE_
         }
     }
 
+    // Trigger API forward.
+    Action result = APIOnClassApplyModel(client, modelpath, skinIndex);
+
+    // Check if application should be stopped.
+    if (result == Plugin_Handled)
+    {
+        return false;
+    }
+
     // Check if the model is precached.
     if (!IsModelPrecached(modelpath))
     {
@@ -197,6 +209,9 @@ bool ClassApplyModel(int client, int classindex, int cachetype = ZR_CLASS_CACHE_
 
     SetEntityModel(client, modelpath);
     SetEntProp(client, Prop_Send, "m_nSkin", skinIndex);
+
+    // Trigger API forward.
+    APIOnClassModelApplied(client, modelpath, skinIndex);
 
     return true;
 }
