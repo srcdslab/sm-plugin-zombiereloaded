@@ -507,7 +507,7 @@ void InfectOnRoundFreezeEnd()
 
     // Warmup
     #if defined _TeamManager_include
-    if(g_TeamManagerLoaded && TeamManager_InWarmup())
+    if(g_TeamManagerLoaded && TeamManager_HasWarmup() && TeamManager_InWarmup())
     {
         return;
     }
@@ -570,7 +570,7 @@ public Action InfectMotherZombie(Handle timer)
 
     // Warmup
     #if defined _TeamManager_include
-    if(g_TeamManagerLoaded && TeamManager_InWarmup())
+    if(g_TeamManagerLoaded && TeamManager_HasWarmup() && TeamManager_InWarmup())
     {
         return Plugin_Continue;
     }
