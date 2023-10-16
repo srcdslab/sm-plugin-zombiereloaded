@@ -548,31 +548,44 @@ public Action ZSpawnForceCommand(int client, int argc)
     // Copy value of second (optional) parameter to 'zombie'.
     // It will be false if the parameter wasn't specified.
     bool zombie = view_as<bool>(StringToInt(strZombie));
-    bool success = false;
+
+    // Initialize a flag to track if the action is logged.
+    bool actionLogged = false;
 
     // x = Client index.
     for (int x = 0; x < result; x++)
     {
+        // Verify if client is in a valid team
+        if (!ZRIsClientOnTeam(targets[x], CS_TEAM_T) && !ZRIsClientOnTeam(targets[x], CS_TEAM_CT))
+            continue;
+
         // Spawn client
-        if (ZSpawnClient(targets[x], true, zombie))
+        bool success = ZSpawnClient(targets[x], true, zombie);
         {
-            // Log action to game events.
+            // Log to game events.
             LogEvent(false, LogType_Normal, LOG_GAME_EVENTS, LogModule_ZSpawn, "Force ZSpawn", "\"%L\" force zspawned \"%L\" as %s", client, targets[x], zombie ? "zombie" : "human");
-            LogAction(client, -1, "[ZR] \"%L\" force zspawned \"%L\" as %s.", client, targets[x], zombie ? "zombie" : "human");
 
-            success = true;
+            // Tell admin the outcome of the command.
+            if (success)
+            {
+                // Execute this only if it hasn't been done before.
+                if (!actionLogged)
+                {
+                    if (result > 1)
+                        LogAction(client, -1, "[ZR] \"%L\" force zspawned \"%s\" as %s.", client, targetname, zombie ? "zombie" : "human");
+                    else
+                        LogAction(client, -1, "[ZR] \"%L\" force zspawned \"%L\" as %s.", client, targets[x], zombie ? "zombie" : "human");
+
+                    TranslationReplyToCommand(client, "ZSpawn command force successful", targetname);
+                    TranslationPrintToChatAllExcept(false, false, client, "ZSpawn command force successful public", adminname, targetname, zombie ? "zombie" : "human");
+                    actionLogged = true;
+                }
+            }
+            else
+            {
+                TranslationReplyToCommand(client, "ZSpawn command force unsuccessful", targetname);
+            }
         }
-    }
-
-    // Tell admin the outcome of the command.
-    if (success)
-    {
-        TranslationReplyToCommand(client, "ZSpawn command force successful", targetname);
-        TranslationPrintToChatAllExcept(false, false, client, "ZSpawn command force successful public", adminname, targetname, zombie ? "zombie" : "human");
-    }
-    else
-    {
-        TranslationReplyToCommand(client, "ZSpawn command force unsuccessful", targetname);
     }
 
     return Plugin_Handled;
