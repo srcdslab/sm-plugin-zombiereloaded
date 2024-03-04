@@ -243,6 +243,7 @@ public void OnMapEnd()
     ZombieSoundsOnMapEnd();
     ImmunityOnMapEnd();
     OverlaysOnMapEnd();
+    SEffectsOnMapEnd();
 }
 
 /**
