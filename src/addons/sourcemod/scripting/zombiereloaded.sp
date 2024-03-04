@@ -45,7 +45,7 @@
 
 #include <sdkhooks>
 
-#define VERSION "3.10.1"
+#define VERSION "3.10.2"
 
 // Comment this line to exclude version info command. Enable this if you have
 // the repository and HG installed (Mercurial or TortoiseHG).
@@ -242,6 +242,7 @@ public void OnMapEnd()
     VEffectsOnMapEnd();
     ZombieSoundsOnMapEnd();
     ImmunityOnMapEnd();
+    OverlaysOnMapEnd();
 }
 
 /**
