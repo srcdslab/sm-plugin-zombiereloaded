@@ -52,6 +52,7 @@ void APIClassInit()
     CreateNative("ZR_GetClassByIdentifier", APIGetClassByIdentifier);
     CreateNative("ZR_GetClassDisplayName", APIGetClassDisplayName);
     CreateNative("ZR_GetClassIdentifier", APIGetClassIdentifier);
+    CreateNative("ZR_SendMenuClass", APISendMenuClass);
 
     // Forwards
     g_hAPIFwdOnClassAttributesApplied = CreateGlobalForward("ZR_OnClassAttributesApplied", ET_Ignore, Param_CellByRef, Param_CellByRef);
@@ -287,6 +288,27 @@ public int APIGetClassIdentifier(Handle plugin, int numParams)
     SetNativeString(2, classIdent, maxlen);
 
     return bytes;
+}
+
+/**
+ * Native call function (ZR_SendMenuClass)
+ *
+ * native int ZR_SendMenuClass(int client, int teamid);
+ * See: playerclasses/playerclasses.inc#L68-#L70
+ */
+public int APISendMenuClass(Handle plugin, int numParams)
+{
+    int client = GetNativeCell(1);
+    int teamid = GetNativeCell(2);
+
+    // Send the class menu based on the teamid.
+    // If not provided or invalid teamid, send class main menu
+    if (teamid < ZR_CLASS_TEAM_ZOMBIES || teamid > ZR_CLASS_TEAM_ADMINS)
+        ClassMenuMain(client);
+    else
+        ClassMenuSelect(client, teamid);
+
+    return 0;
 }
 
 /**
