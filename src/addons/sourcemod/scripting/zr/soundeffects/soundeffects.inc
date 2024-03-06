@@ -59,6 +59,19 @@ void SEffectsOnMapStart()
 }
 
 /**
+ * Map is ending.
+ */
+void SEffectsOnMapEnd()
+{
+    // If timer is running, kill it.
+    if (tAmbientSounds != INVALID_HANDLE)
+    {
+        KillTimer(tAmbientSounds);
+        tAmbientSounds = INVALID_HANDLE;
+    }
+}
+
+/**
  * Client is joining the server.
  *
  * @param client    The client index.

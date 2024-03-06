@@ -76,6 +76,19 @@ void OverlaysOnMapStart()
 }
 
 /**
+ * Map is ending.
+ */
+void OverlaysOnMapEnd()
+{
+    // If timer is running, kill it.
+    if (tOverlays != INVALID_HANDLE)
+    {
+        KillTimer(tOverlays);
+        tOverlays = INVALID_HANDLE;
+    }
+}
+
+/**
  * Client is joining the server.
  *
  * @param client    The client index.
