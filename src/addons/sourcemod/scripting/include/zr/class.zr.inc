@@ -140,3 +140,12 @@ native int ZR_GetClassByIdentifier(const char[] classIdent, int cacheType = ZR_C
  * @return              Number of cells written. -1 on error.
  */
 native int ZR_GetClassDisplayName(int index, char[] buffer, int maxlen, int cacheType = ZR_CLASS_CACHE_MODIFIED);
+
+/**
+ * Send the class menu display to the client.
+ *
+ * @param client        The client index.
+ * @param teamid        The teamid (ZR_CLASS_TEAM_ZOMBIES | ZR_CLASS_TEAM_HUMANS | ZR_CLASS_TEAM_ADMINS)
+ * @return              Send Menu Class. If Invalid teamid provided, send class main menu.
+ */
+native int ZR_MenuClass(int client, int teamid = -1);
