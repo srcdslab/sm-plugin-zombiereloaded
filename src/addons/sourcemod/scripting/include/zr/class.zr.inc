@@ -148,4 +148,4 @@ native int ZR_GetClassDisplayName(int index, char[] buffer, int maxlen, int cach
  * @param teamid        The teamid (ZR_CLASS_TEAM_ZOMBIES | ZR_CLASS_TEAM_HUMANS | ZR_CLASS_TEAM_ADMINS)
  * @return              Send Menu Class. If Invalid teamid provided, send class main menu.
  */
-native int ZR_SendMenuClass(int client, int teamid = -1);
+native int ZR_MenuClass(int client, int teamid = -1);

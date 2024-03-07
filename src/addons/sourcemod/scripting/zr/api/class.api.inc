@@ -52,7 +52,7 @@ void APIClassInit()
     CreateNative("ZR_GetClassByIdentifier", APIGetClassByIdentifier);
     CreateNative("ZR_GetClassDisplayName", APIGetClassDisplayName);
     CreateNative("ZR_GetClassIdentifier", APIGetClassIdentifier);
-    CreateNative("ZR_SendMenuClass", APISendMenuClass);
+    CreateNative("ZR_MenuClass", APISendMenuClass);
 
     // Forwards
     g_hAPIFwdOnClassAttributesApplied = CreateGlobalForward("ZR_OnClassAttributesApplied", ET_Ignore, Param_CellByRef, Param_CellByRef);
@@ -291,12 +291,12 @@ public int APIGetClassIdentifier(Handle plugin, int numParams)
 }
 
 /**
- * Native call function (ZR_SendMenuClass)
+ * Native call function (ZR_MenuClass)
  *
- * native int ZR_SendMenuClass(int client, int teamid);
+ * native int ZR_MenuClass(int client, int teamid);
  * See: playerclasses/playerclasses.inc#L68-#L70
  */
-public int APISendMenuClass(Handle plugin, int numParams)
+public int APIMenuClass(Handle plugin, int numParams)
 {
     int client = GetNativeCell(1);
     int teamid = GetNativeCell(2);
