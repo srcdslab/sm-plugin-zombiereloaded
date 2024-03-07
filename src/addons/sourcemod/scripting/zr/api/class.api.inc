@@ -52,7 +52,7 @@ void APIClassInit()
     CreateNative("ZR_GetClassByIdentifier", APIGetClassByIdentifier);
     CreateNative("ZR_GetClassDisplayName", APIGetClassDisplayName);
     CreateNative("ZR_GetClassIdentifier", APIGetClassIdentifier);
-    CreateNative("ZR_MenuClass", APISendMenuClass);
+    CreateNative("ZR_MenuClass", ZR_MenuClass);
 
     // Forwards
     g_hAPIFwdOnClassAttributesApplied = CreateGlobalForward("ZR_OnClassAttributesApplied", ET_Ignore, Param_CellByRef, Param_CellByRef);
