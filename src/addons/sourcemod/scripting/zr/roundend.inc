@@ -138,7 +138,7 @@ void RoundEndOnAllPluginsLoaded()
  */
 void RoundEndOnLibraryAdded(const char[] name)
 {
-    if (StrEqual(name, "sourcetvmanager"))
+    if (strcmp(name, "sourcetvmanager", false) == 0)
     {
         // sourcetvmanager loaded.
         g_SourceTVManagerLoaded = true;
@@ -150,7 +150,7 @@ void RoundEndOnLibraryAdded(const char[] name)
  */
 void RoundEndOnLibraryRemoved(const char[] name)
 {
-    if (StrEqual(name, "sourcetvmanager"))
+    if (strcmp(name, "sourcetvmanager") == 0)
     {
         // sourcetvmanager unloaded.
         g_SourceTVManagerLoaded = false;

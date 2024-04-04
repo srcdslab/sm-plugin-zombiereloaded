@@ -162,7 +162,7 @@ public Action RagdollTimer(Handle timer, any ragdoll)
     // Make sure this edict is still a ragdoll and not become a new valid entity.
     char classname[64];
     GetEdictClassname(ragdoll, classname, sizeof(classname));
-    if (!StrEqual(classname, "cs_ragdoll"))
+    if (strcmp(classname, "cs_ragdoll") != 0)
     {
         return Plugin_Continue;
     }

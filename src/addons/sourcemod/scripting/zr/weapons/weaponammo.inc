@@ -198,40 +198,40 @@ stock void WeaponAmmoSetGrenadeCount(int client, WeaponAmmoGrenadeType type, int
  */
 stock WeaponAmmoGrenadeType WeaponAmmoEntityToGrenadeType(const char[] weaponentity)
 {
-    if (StrEqual(weaponentity, "weapon_hegrenade"))
+    if (strcmp(weaponentity, "weapon_hegrenade", false) == 0)
     {
         if (g_Game == Game_CSGO)
             return GrenadeType_HEGrenadeCSGO;
         else
             return GrenadeType_HEGrenade;
     }
-    else if (StrEqual(weaponentity, "weapon_flashbang"))
+    else if (strcmp(weaponentity, "weapon_flashbang", false) == 0)
     {
         if (g_Game == Game_CSGO)
             return GrenadeType_FlashbangCSGO;
         else
             return GrenadeType_Flashbang;
     }
-    else if (StrEqual(weaponentity, "weapon_smokegrenade"))
+    else if (strcmp(weaponentity, "weapon_smokegrenade", false) == 0)
     {
         if (g_Game == Game_CSGO)
             return GrenadeType_SmokegrenadeCSGO;
         else
             return GrenadeType_Smokegrenade;
     }
-    else if (StrEqual(weaponentity, "weapon_molotov"))
+    else if (strcmp(weaponentity, "weapon_molotov", false) == 0)
     {
         return GrenadeType_Incendiary;
     }
-    else if (StrEqual(weaponentity, "weapon_incgrenade"))
+    else if (strcmp(weaponentity, "weapon_incgrenade", false) == 0)
     {
         return GrenadeType_Incendiary;
     }
-    else if (StrEqual(weaponentity, "weapon_decoy"))
+    else if (strcmp(weaponentity, "weapon_decoy", false) == 0)
     {
         return GrenadeType_Decoy;
     }
-    else if (StrEqual(weaponentity, "weapon_tagrenade"))
+    else if (strcmp(weaponentity, "weapon_tagrenade", false) == 0)
     {
         return GrenadeType_Tactical;
     }
@@ -297,7 +297,7 @@ stock bool ZMarketIsGPLoaded()
         hPlugin = ReadPlugin(hPlugins);
 
         GetPluginFilename(hPlugin, strPlugin, sizeof(strPlugin));
-        if (!StrEqual(strPlugin, GRENADE_PACK_FILENAME, false))
+        if (strcmp(strPlugin, GRENADE_PACK_FILENAME, false) != 0)
         {
             continue;
         }

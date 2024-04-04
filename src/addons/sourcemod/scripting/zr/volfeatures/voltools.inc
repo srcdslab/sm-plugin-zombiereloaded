@@ -268,11 +268,11 @@ VolumeFeatureTypes VolGetTypeFromString(const char[] volType)
     }
 
     // Match types.
-    if (StrEqual(volType, "anticamp", false))
+    if (strcmp(volType, "anticamp", false) == 0)
     {
         return VolFeature_Anticamp;
     }
-    else if (StrEqual(volType, "classedit", false))
+    else if (strcmp(volType, "classedit", false) == 0)
     {
         return VolFeature_ClassEdit;
     }

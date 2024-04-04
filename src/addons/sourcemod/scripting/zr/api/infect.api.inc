@@ -223,9 +223,9 @@ void APIOnClientInfected(int client, int attacker, bool motherinfect, bool respa
             static char sTargetname[64];
             GetEntPropString(entity, Prop_Data, "m_iName", sTargetname, sizeof(sTargetname));
 
-            if(client > 0 && StrEqual(sTargetname, "game_playerdie"))
+            if(client > 0 && strcmp(sTargetname, "game_playerdie", false) == 0)
                 AcceptEntityInput(entity, "Use", client, client);
-            else if(attacker > 0 && StrEqual(sTargetname, "game_playerkill"))
+            else if(attacker > 0 && strcmp(sTargetname, "game_playerkill", false) == 0)
                 AcceptEntityInput(entity, "Use", attacker, attacker);
         }
     }

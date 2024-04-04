@@ -170,7 +170,7 @@ public bool ShoppingListRemove(char[] list, int maxlen, const char[] item, const
         // Trim off any whitespace.
         TrimString(items[x]);
 
-        if (StrEqual(item, items[x], false))
+        if (strcmp(item, items[x], false) == 0)
         {
             // Nullify the matching string.
             items[x][0] = 0;
@@ -265,7 +265,7 @@ public bool ShoppingListRemove(char[] list, int maxlen, const char[] item, const
     for (int x = maxitems - 1; x >= 0; x--)
     {
         PrintToServer("%d %s", x, items[x]);
-        if (StrEqual(items[x], item, false))
+        if (strcmp(items[x], item, false) == 0)
         {
             strcopy(items[x], maxitemlen, "");
             success = true;

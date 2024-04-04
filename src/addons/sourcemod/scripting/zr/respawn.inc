@@ -101,7 +101,7 @@ void RespawnOnClientDeath(int client, int attacker, const char[] weapon)
     }
 
     // If player was infected, then stop.
-    if (StrEqual(weapon, "zombie_claws_of_death", false))
+    if (strcmp(weapon, "zombie_claws_of_death", false) == 0)
     {
         return;
     }

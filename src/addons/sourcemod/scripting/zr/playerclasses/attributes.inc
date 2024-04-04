@@ -1207,127 +1207,127 @@ stock float ClassGetJumpDistance(int index, int cachetype = ZR_CLASS_CACHE_PLAYE
 stock int ClassAttributeNameToFlag(const char[] attributename)
 {
     // Check attribute names.
-    if (StrEqual(attributename, "enabled", false))
+    if (strcmp(attributename, "enabled", false) == 0)
     {
         return ZR_CLASS_ENABLED;
     }
-    else if (StrEqual(attributename, "team", false))
+    else if (strcmp(attributename, "team", false) == 0)
     {
         return ZR_CLASS_TEAM;
     }
-    else if (StrEqual(attributename, "team_default", false))
+    else if (strcmp(attributename, "team_default", false) == 0)
     {
         return ZR_CLASS_TEAM_DEFAULT;
     }
-    else if (StrEqual(attributename, "flags", false))
+    else if (strcmp(attributename, "flags", false) == 0)
     {
         return ZR_CLASS_FLAGS;
     }
-    else if (StrEqual(attributename, "group", false))
+    else if (strcmp(attributename, "group", false) == 0)
     {
         return ZR_CLASS_GROUP;
     }
-    else if (StrEqual(attributename, "sm_flags", false))
+    else if (strcmp(attributename, "sm_flags", false) == 0)
     {
         return ZR_CLASS_SM_FLAGS;
     }
-    else if (StrEqual(attributename, "name", false))
+    else if (strcmp(attributename, "name", false) == 0)
     {
         return ZR_CLASS_NAME;
     }
-    else if (StrEqual(attributename, "description", false))
+    else if (strcmp(attributename, "description", false) == 0)
     {
         return ZR_CLASS_DESCRIPTION;
     }
-    else if (StrEqual(attributename, "model_path", false))
+    else if (strcmp(attributename, "model_path", false) == 0)
     {
         return ZR_CLASS_MODEL_PATH;
     }
-    else if (StrEqual(attributename, "model_skin_index", false))
+    else if (strcmp(attributename, "model_skin_index", false) == 0)
     {
         return ZR_CLASS_MODEL_SKIN_INDEX;
     }
-    else if (StrEqual(attributename, "alpha_initial", false))
+    else if (strcmp(attributename, "alpha_initial", false) == 0)
     {
         return ZR_CLASS_ALPHA_INITIAL;
     }
-    else if (StrEqual(attributename, "alpha_damaged", false))
+    else if (strcmp(attributename, "alpha_damaged", false) == 0)
     {
         return ZR_CLASS_ALPHA_DAMAGED;
     }
-    else if (StrEqual(attributename, "alpha_damage", false))
+    else if (strcmp(attributename, "alpha_damage", false) == 0)
     {
         return ZR_CLASS_ALPHA_DAMAGE;
     }
-    else if (StrEqual(attributename, "overlay_path", false))
+    else if (strcmp(attributename, "overlay_path", false) == 0)
     {
         return ZR_CLASS_OVERLAY_PATH;
     }
-    else if (StrEqual(attributename, "nvgs", false))
+    else if (strcmp(attributename, "nvgs", false) == 0)
     {
         return ZR_CLASS_NVGS;
     }
-    else if (StrEqual(attributename, "fov", false))
+    else if (strcmp(attributename, "fov", false) == 0)
     {
         return ZR_CLASS_FOV;
     }
-    else if (StrEqual(attributename, "has_napalm", false))
+    else if (strcmp(attributename, "has_napalm", false) == 0)
     {
         return ZR_CLASS_HAS_NAPALM;
     }
-    else if (StrEqual(attributename, "napalm_time", false))
+    else if (strcmp(attributename, "napalm_time", false) == 0)
     {
         return ZR_CLASS_NAPALM_TIME;
     }
-    else if (StrEqual(attributename, "immunity_mode", false))
+    else if (strcmp(attributename, "immunity_mode", false) == 0)
     {
         return ZR_CLASS_IMMUNITY_MODE;
     }
-    else if (StrEqual(attributename, "immunity_amount", false))
+    else if (strcmp(attributename, "immunity_amount", false) == 0)
     {
         return ZR_CLASS_IMMUNITY_AMOUNT;
     }
-    else if (StrEqual(attributename, "immunity_cooldown", false))
+    else if (strcmp(attributename, "immunity_cooldown", false) == 0)
     {
         return ZR_CLASS_IMMUNITY_COOLDOWN;
     }
-    else if (StrEqual(attributename, "no_fall_damage", false))
+    else if (strcmp(attributename, "no_fall_damage", false) == 0)
     {
         return ZR_CLASS_NO_FALL_DAMAGE;
     }
-    else if (StrEqual(attributename, "health", false))
+    else if (strcmp(attributename, "health", false) == 0)
     {
         return ZR_CLASS_HEALTH;
     }
-    else if (StrEqual(attributename, "health_regen_interval", false))
+    else if (strcmp(attributename, "health_regen_interval", false) == 0)
     {
         return ZR_CLASS_HEALTH_REGEN_INTERVAL;
     }
-    else if (StrEqual(attributename, "health_regen_amount", false))
+    else if (strcmp(attributename, "health_regen_amount", false) == 0)
     {
         return ZR_CLASS_HEALTH_REGEN_AMOUNT;
     }
-    else if (StrEqual(attributename, "health_infect_gain", false))
+    else if (strcmp(attributename, "health_infect_gain", false) == 0)
     {
         return ZR_CLASS_HEALTH_INFECT_GAIN;
     }
-    else if (StrEqual(attributename, "kill_bonus", false))
+    else if (strcmp(attributename, "kill_bonus", false) == 0)
     {
         return ZR_CLASS_KILL_BONUS;
     }
-    else if (StrEqual(attributename, "speed", false))
+    else if (strcmp(attributename, "speed", false) == 0)
     {
         return ZR_CLASS_SPEED;
     }
-    else if (StrEqual(attributename, "knockback", false))
+    else if (strcmp(attributename, "knockback", false) == 0)
     {
         return ZR_CLASS_KNOCKBACK;
     }
-    else if (StrEqual(attributename, "jump_height", false))
+    else if (strcmp(attributename, "jump_height", false) == 0)
     {
         return ZR_CLASS_JUMP_HEIGHT;
     }
-    else if (StrEqual(attributename, "jump_distance", false))
+    else if (strcmp(attributename, "jump_distance", false) == 0)
     {
         return ZR_CLASS_JUMP_DISTANCE;
     }
@@ -1346,39 +1346,39 @@ stock int ClassAttributeNameToFlag(const char[] attributename)
 stock ClassMultipliers ClassAttributeNameToMultiplier(const char[] attributename)
 {
     // Check attribute names.
-    if (StrEqual(attributename, "napalm_time", false))
+    if (strcmp(attributename, "napalm_time", false) == 0)
     {
         return ClassM_NapalmTime;
     }
-    else if (StrEqual(attributename, "health", false))
+    else if (strcmp(attributename, "health", false) == 0)
     {
         return ClassM_Health;
     }
-    else if (StrEqual(attributename, "health_regen_interval", false))
+    else if (strcmp(attributename, "health_regen_interval", false) == 0)
     {
         return ClassM_HealthRegenInterval;
     }
-    else if (StrEqual(attributename, "health_regen_amount", false))
+    else if (strcmp(attributename, "health_regen_amount", false) == 0)
     {
         return ClassM_HealthRegenAmount;
     }
-    else if (StrEqual(attributename, "health_infect_gain", false))
+    else if (strcmp(attributename, "health_infect_gain", false) == 0)
     {
         return ClassM_HealthInfectGain;
     }
-    else if (StrEqual(attributename, "speed", false))
+    else if (strcmp(attributename, "speed", false) == 0)
     {
         return ClassM_Speed;
     }
-    else if (StrEqual(attributename, "knockback", false))
+    else if (strcmp(attributename, "knockback", false) == 0)
     {
         return ClassM_Knockback;
     }
-    else if (StrEqual(attributename, "jump_height", false))
+    else if (strcmp(attributename, "jump_height", false) == 0)
     {
         return ClassM_JumpHeight;
     }
-    else if (StrEqual(attributename, "jump_distance", false))
+    else if (strcmp(attributename, "jump_distance", false) == 0)
     {
         return ClassM_JumpDistance;
     }

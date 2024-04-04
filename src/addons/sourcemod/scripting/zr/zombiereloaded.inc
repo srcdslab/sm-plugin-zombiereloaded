@@ -78,13 +78,13 @@ void UpdateGameFolder()
     char gameFolder[PLATFORM_MAX_PATH];
     GetGameFolderName(gameFolder, sizeof(gameFolder));
 
-    if (StrEqual(gameFolder, "cstrike", false))
+    if (strcmp(gameFolder, "cstrike", false) == 0)
     {
         g_Game = Game_CSS;
         PrintToServer("Game detected: cstrike");
         return;
     }
-    else if (StrEqual(gameFolder, "csgo", false))
+    else if (strcmp(gameFolder, "csgo", false) == 0)
     {
         g_Game = Game_CSGO;
         PrintToServer("Game detected: csgo");

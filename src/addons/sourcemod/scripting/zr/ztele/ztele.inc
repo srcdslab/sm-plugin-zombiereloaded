@@ -80,7 +80,7 @@ void ZTeleOnRoundStart()
     while((entity = FindEntityByClassname(entity, "info_player_*")) != INVALID_ENT_REFERENCE)
     {
         GetEntityClassname(entity, classname, sizeof(classname));
-        if (StrEqual(classname, "info_player_terrorist", true) || StrEqual(classname, "info_player_counterterrorist", true))
+        if (strcmp(classname, "info_player_terrorist", true) == 0 || strcmp(classname, "info_player_counterterrorist", true) == 0)
         {
             GetEntPropVector(entity, Prop_Send, "m_vecOrigin", g_vecZTeleSpawnPoints[g_iZTeleSpawnPointsCount][0]);
             GetEntPropVector(entity, Prop_Send, "m_angRotation", g_vecZTeleSpawnPoints[g_iZTeleSpawnPointsCount][1]);

@@ -426,7 +426,7 @@ stock int WeaponsNameToIndex(const char[] weapon)
         WeaponsGetName(x, weaponname, sizeof(weaponname));
 
         // If names match, then return index.
-        if (StrEqual(weapon, weaponname, false))
+        if (strcmp(weapon, weaponname, false) == 0)
         {
             return x;
         }
@@ -472,7 +472,7 @@ stock int WeaponsEntityToDisplay(const char[] entityname, char[] display, int di
             ReplaceString(weaponentity, sizeof(weaponentity), "item_", "");
         }
 
-        if (!StrEqual(entityname, weaponentity, false))
+        if (strcmp(entityname, weaponentity, false) != 0)
         {
             continue;
         }
@@ -729,7 +729,7 @@ stock bool WeaponsClientHasWeapon(int client, const char[] weapon)
 
         // If the weapon's classname matches, then return true.
         GetEdictClassname(weapons[x], classname, sizeof(classname));
-        if (StrEqual(weapon, classname, false))
+        if (strcmp(weapon, classname, false) == 0)
         {
             return true;
         }

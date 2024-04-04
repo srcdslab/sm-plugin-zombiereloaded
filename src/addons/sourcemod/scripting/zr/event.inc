@@ -232,7 +232,7 @@ public Action EventPlayerDeath(Handle event, const char[] name, bool dontBroadca
     GetEventString(event, "weapon", weapon, sizeof(weapon));
 
     // If client is being infected, then stop.
-    if (StrEqual(weapon, "zombie_claws_of_death", false))
+    if (strcmp(weapon, "zombie_claws_of_death", false) == 0)
     {
         return Plugin_Continue;
     }

@@ -633,23 +633,23 @@ stock VolAnticampAction VolAnticampStringToAction(const char[] action)
         return Anticamp_NoAction;
     }
 
-    if (StrEqual(action, "none", false))
+    if (strcmp(action, "none", false) == 0)
     {
         return Anticamp_NoAction;
     }
-    else if (StrEqual(action, "damage", false))
+    else if (strcmp(action, "damage", false) == 0)
     {
         return Anticamp_Damage;
     }
-    else if (StrEqual(action, "slay", false))
+    else if (strcmp(action, "slay", false) == 0)
     {
         return Anticamp_Slay;
     }
-    else if (StrEqual(action, "drug", false))
+    else if (strcmp(action, "drug", false) == 0)
     {
         return Anticamp_Drug;
     }
-    else if (StrEqual(action, "ignite", false))
+    else if (strcmp(action, "ignite", false) == 0)
     {
         return Anticamp_Ignite;
     }
@@ -707,19 +707,19 @@ stock VolAnticampeWarningType VolAnticampStringToWarning(const char[] warning)
         return Anticamp_NoWarning;
     }
 
-    if (StrEqual(warning, "none", false))
+    if (strcmp(warning, "none", false) == 0)
     {
         return Anticamp_NoWarning;
     }
-    else if (StrEqual(warning, "chat", false))
+    else if (strcmp(warning, "chat", false) == 0)
     {
         return Anticamp_Chat;
     }
-    else if (StrEqual(warning, "center", false))
+    else if (strcmp(warning, "center", false) == 0)
     {
         return Anticamp_Center;
     }
-    else if (StrEqual(warning, "menu", false))
+    else if (strcmp(warning, "menu", false) == 0)
     {
         return Anticamp_Menu;
     }
@@ -752,35 +752,35 @@ bool VolAnticampSetAttribute(int dataIndex, const char[] attribName, const char[
     }
 
     // Check attribute names.
-    if (StrEqual(attribName, "interval", false))
+    if (strcmp(attribName, "interval", false) == 0)
     {
         if (VolAnticampSetIntervalString(dataIndex, attribValue))
         {
             return true;
         }
     }
-    else if (StrEqual(attribName, "action", false))
+    else if (strcmp(attribName, "action", false) == 0)
     {
         if (VolAnticampSetActionString(dataIndex, attribValue))
         {
             return true;
         }
     }
-    else if (StrEqual(attribName, "amount", false))
+    else if (strcmp(attribName, "amount", false) == 0)
     {
         if (VolAnticampSetAmountString(dataIndex, attribValue))
         {
             return true;
         }
     }
-    else if (StrEqual(attribName, "warning", false))
+    else if (strcmp(attribName, "warning", false) == 0)
     {
         if (VolAnticampSetWarningString(dataIndex, attribValue))
         {
             return true;
         }
     }
-    else if (StrEqual(attribName, "message", false))
+    else if (strcmp(attribName, "message", false) == 0)
     {
         // Unsupported because of technical limits in command parser. Spaces
         // and quoted strings aren't supported yet.
@@ -831,27 +831,27 @@ bool VolAnticampSetActionString(int dataIndex, const char[] action)
     }
 
     // Check effect string values and apply them to the volume.
-    if (StrEqual(action, "none", false))
+    if (strcmp(action, "none", false) == 0)
     {
         AnticampData[dataIndex].Anticamp_Action = Anticamp_NoAction;
         return true;
     }
-    else if (StrEqual(action, "damage", false))
+    else if (strcmp(action, "damage", false) == 0)
     {
         AnticampData[dataIndex].Anticamp_Action = Anticamp_Damage;
         return true;
     }
-    else if (StrEqual(action, "slay", false))
+    else if (strcmp(action, "slay", false) == 0)
     {
         AnticampData[dataIndex].Anticamp_Action = Anticamp_Slay;
         return true;
     }
-    else if (StrEqual(action, "drug", false))
+    else if (strcmp(action, "drug", false) == 0)
     {
         AnticampData[dataIndex].Anticamp_Action = Anticamp_Drug;
         return true;
     }
-    else if (StrEqual(action, "ignite", false))
+    else if (strcmp(action, "ignite", false) == 0)
     {
         AnticampData[dataIndex].Anticamp_Action = Anticamp_Ignite;
         return true;
@@ -904,22 +904,22 @@ bool VolAnticampSetWarningString(int dataIndex, const char[] warning)
     }
 
     // Check effect string values and apply them to the volume.
-    if (StrEqual(warning, "none", false))
+    if (strcmp(warning, "none", false) == 0)
     {
         AnticampData[dataIndex].Anticamp_Warning = Anticamp_NoWarning;
         return true;
     }
-    else if (StrEqual(warning, "chat", false))
+    else if (strcmp(warning, "chat", false) == 0)
     {
         AnticampData[dataIndex].Anticamp_Warning = Anticamp_Chat;
         return true;
     }
-    else if (StrEqual(warning, "center", false))
+    else if (strcmp(warning, "center", false) == 0)
     {
         AnticampData[dataIndex].Anticamp_Warning = Anticamp_Center;
         return true;
     }
-    else if (StrEqual(warning, "menu", false))
+    else if (strcmp(warning, "menu", false) == 0)
     {
         AnticampData[dataIndex].Anticamp_Warning = Anticamp_Menu;
         return true;

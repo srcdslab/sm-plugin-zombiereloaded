@@ -580,39 +580,39 @@ public int ClassMultiplierSelectHandle(Handle menu, MenuAction action, int clien
             attribute = ClassM_Knockback;
 
             // Convert type.
-            if (StrEqual(attributename, "napalmtime", false))
+            if (strcmp(attributename, "napalmtime", false) == 0)
             {
                 attribute = ClassM_NapalmTime;
             }
-            else if (StrEqual(attributename, "health", false))
+            else if (strcmp(attributename, "health", false) == 0)
             {
                 attribute = ClassM_Health;
             }
-            else if (StrEqual(attributename, "regeninterval", false))
+            else if (strcmp(attributename, "regeninterval", false) == 0)
             {
                 attribute = ClassM_HealthRegenInterval;
             }
-            else if (StrEqual(attributename, "regenamount", false))
+            else if (strcmp(attributename, "regenamount", false) == 0)
             {
                 attribute = ClassM_HealthRegenAmount;
             }
-            else if (StrEqual(attributename, "infectgain", false))
+            else if (strcmp(attributename, "infectgain", false) == 0)
             {
                 attribute = ClassM_HealthInfectGain;
             }
-            else if (StrEqual(attributename, "speed", false))
+            else if (strcmp(attributename, "speed", false) == 0)
             {
                 attribute = ClassM_Speed;
             }
-            else if (StrEqual(attributename, "knockback", false))
+            else if (strcmp(attributename, "knockback", false) == 0)
             {
                 attribute = ClassM_Knockback;
             }
-            else if (StrEqual(attributename, "jumpheight", false))
+            else if (strcmp(attributename, "jumpheight", false) == 0)
             {
                 attribute = ClassM_JumpHeight;
             }
-            else if (StrEqual(attributename, "jumpdistance", false))
+            else if (strcmp(attributename, "jumpdistance", false) == 0)
             {
                 attribute = ClassM_JumpDistance;
             }

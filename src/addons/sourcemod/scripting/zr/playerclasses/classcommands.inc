@@ -116,15 +116,15 @@ public Action ClassDumpCommand(int client, int argc)
     GetCmdArg(1, type, sizeof(type));
 
     // Set cache type depending on parameter setting.
-    if (StrEqual(type, "original", false))
+    if (strcmp(type, "original", false) == 0)
     {
         cachetype = ZR_CLASS_CACHE_ORIGINAL;
     }
-    else if (StrEqual(type, "modified", false))
+    else if (strcmp(type, "modified", false) == 0)
     {
         cachetype = ZR_CLASS_CACHE_MODIFIED;
     }
-    else if (StrEqual(type, "player", false))
+    else if (strcmp(type, "player", false) == 0)
     {
         cachetype = ZR_CLASS_CACHE_PLAYER;
 
@@ -212,11 +212,11 @@ public Action ClassDumpMultipliersCommand(int client, int argc)
 
     // Get team id.
     GetCmdArg(1, arg, sizeof(arg));
-    if (StrEqual(arg, "zombies", false))
+    if (strcmp(arg, "zombies", false) == 0)
     {
         teamid = ZR_CLASS_TEAM_ZOMBIES;
     }
-    else if (StrEqual(arg, "humans", false))
+    else if (strcmp(arg, "humans", false) == 0)
     {
         teamid = ZR_CLASS_TEAM_HUMANS;
     }
@@ -344,22 +344,22 @@ public Action ClassModifyCommand(int client, int argc)
 
     // Check if identifier is a group. Add classes to the class list
     // and use the specified team filter.
-    if (StrEqual(identifier, "all", false))
+    if (strcmp(identifier, "all", false) == 0)
     {
         listresult = ClassAddToArray(classlist);
         isgroup = true;
     }
-    else if (StrEqual(identifier, "humans", false))
+    else if (strcmp(identifier, "humans", false) == 0)
     {
         listresult = ClassAddToArray(classlist, ZR_CLASS_TEAM_HUMANS);
         isgroup = true;
     }
-    else if (StrEqual(identifier, "zombies", false))
+    else if (strcmp(identifier, "zombies", false) == 0)
     {
         listresult = ClassAddToArray(classlist, ZR_CLASS_TEAM_ZOMBIES);
         isgroup = true;
     }
-    else if (StrEqual(identifier, "admins", false))
+    else if (strcmp(identifier, "admins", false) == 0)
     {
         listresult = ClassAddToArray(classlist, ZR_CLASS_TEAM_ADMINS);
         isgroup = true;
@@ -541,11 +541,11 @@ public Action ClassSetMultiplierCommand(int client, int argc)
     GetCmdArg(3, multiplier, sizeof(multiplier));
 
     // Get team id.
-    if (StrEqual(teamname, "zombies", false))
+    if (strcmp(teamname, "zombies", false) == 0)
     {
         teamid = ZR_CLASS_TEAM_ZOMBIES;
     }
-    else if (StrEqual(teamname, "humans", false))
+    else if (strcmp(teamname, "humans", false) == 0)
     {
         teamid = ZR_CLASS_TEAM_HUMANS;
     }

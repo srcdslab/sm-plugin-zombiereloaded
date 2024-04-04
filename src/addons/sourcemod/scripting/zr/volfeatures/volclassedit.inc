@@ -162,14 +162,14 @@ int VolClassEditSetAttribute(int dataIndex, const char[] attribName, const char[
     }
 
     /* Class Editor Attributes */
-    if (StrEqual(attribName, "mode", false))
+    if (strcmp(attribName, "mode", false) == 0)
     {
         if (VolClassEditSetMode(dataIndex, attribValue))
         {
             return true;
         }
     }
-    else if (StrEqual(attribName, "name", false))
+    else if (strcmp(attribName, "name", false) == 0)
     {
         if (VolClassEditSetName(dataIndex, attribValue))
         {
@@ -178,21 +178,21 @@ int VolClassEditSetAttribute(int dataIndex, const char[] attribName, const char[
     }
 
     /* Model */
-    else if (StrEqual(attribName, "alpha_initial", false))
+    else if (strcmp(attribName, "alpha_initial", false) == 0)
     {
         if (VolClassEditSetAlphaInitial(dataIndex, attribValue))
         {
             return true;
         }
     }
-    else if (StrEqual(attribName, "alpha_damaged", false))
+    else if (strcmp(attribName, "alpha_damaged", false) == 0)
     {
         if (VolClassEditSetAlphaDamaged(dataIndex, attribValue))
         {
             return true;
         }
     }
-    else if (StrEqual(attribName, "alpha_damage", false))
+    else if (strcmp(attribName, "alpha_damage", false) == 0)
     {
         if (VolClassEditSetAlphaDamage(dataIndex, attribValue))
         {
@@ -201,21 +201,21 @@ int VolClassEditSetAttribute(int dataIndex, const char[] attribName, const char[
     }
 
     /* Hud */
-    else if (StrEqual(attribName, "overlay_path", false))
+    else if (strcmp(attribName, "overlay_path", false) == 0)
     {
         if (VolClassEditSetOverlayPath(dataIndex, attribValue))
         {
             return true;
         }
     }
-    else if (StrEqual(attribName, "nvgs", false))
+    else if (strcmp(attribName, "nvgs", false) == 0)
     {
         if (VolClassEditSetNvgs(dataIndex, attribValue))
         {
             return true;
         }
     }
-    else if (StrEqual(attribName, "fov", false))
+    else if (strcmp(attribName, "fov", false) == 0)
     {
         if (VolClassEditSetFov(dataIndex, attribValue))
         {
@@ -224,14 +224,14 @@ int VolClassEditSetAttribute(int dataIndex, const char[] attribName, const char[
     }
 
     /* Effects */
-    else if (StrEqual(attribName, "has_napalm", false))
+    else if (strcmp(attribName, "has_napalm", false) == 0)
     {
         if (VolClassEditSetHasNapalm(dataIndex, attribValue))
         {
             return true;
         }
     }
-    else if (StrEqual(attribName, "napalm_time", false))
+    else if (strcmp(attribName, "napalm_time", false) == 0)
     {
         if (VolClassEditSetNapalmTime(dataIndex, attribValue))
         {
@@ -240,84 +240,84 @@ int VolClassEditSetAttribute(int dataIndex, const char[] attribName, const char[
     }
 
     /* Player behavior */
-    else if (StrEqual(attribName, "immunity_mode", false))
+    else if (strcmp(attribName, "immunity_mode", false) == 0)
     {
         if (VolClassEditSetImmunityMode(dataIndex, attribValue))
         {
             return true;
         }
     }
-    else if (StrEqual(attribName, "immunity_amount", false))
+    else if (strcmp(attribName, "immunity_amount", false) == 0)
     {
         if (VolClassEditSetImmunityAmount(dataIndex, attribValue))
         {
             return true;
         }
     }
-    else if (StrEqual(attribName, "immunity_cooldown", false))
+    else if (strcmp(attribName, "immunity_cooldown", false) == 0)
     {
         if (VolClassEditSetImmunityCooldown(dataIndex, attribValue))
         {
             return true;
         }
     }
-    else if (StrEqual(attribName, "no_fall_damage", false))
+    else if (strcmp(attribName, "no_fall_damage", false) == 0)
     {
         if (VolClassEditSetNoFallDamage(dataIndex, attribValue))
         {
             return true;
         }
     }
-    else if (StrEqual(attribName, "health_regen_interval", false))
+    else if (strcmp(attribName, "health_regen_interval", false) == 0)
     {
         if (VolClassEditSetRegenInterval(dataIndex, attribValue))
         {
             return true;
         }
     }
-    else if (StrEqual(attribName, "health_regen_amount", false))
+    else if (strcmp(attribName, "health_regen_amount", false) == 0)
     {
         if (VolClassEditSetRegenAmount(dataIndex, attribValue))
         {
             return true;
         }
     }
-    else if (StrEqual(attribName, "infect_gain", false))
+    else if (strcmp(attribName, "infect_gain", false) == 0)
     {
         if (VolClassEditSetInfectGain(dataIndex, attribValue))
         {
             return true;
         }
     }
-    else if (StrEqual(attribName, "kill_bonus", false))
+    else if (strcmp(attribName, "kill_bonus", false) == 0)
     {
         if (VolClassEditSetKillBonus(dataIndex, attribValue))
         {
             return true;
         }
     }
-    else if (StrEqual(attribName, "speed", false))
+    else if (strcmp(attribName, "speed", false) == 0)
     {
         if (VolClassEditSetSpeed(dataIndex, attribValue))
         {
             return true;
         }
     }
-    else if (StrEqual(attribName, "knockback", false))
+    else if (strcmp(attribName, "knockback", false) == 0)
     {
         if (VolClassEditSetKnockBack(dataIndex, attribValue))
         {
             return true;
         }
     }
-    else if (StrEqual(attribName, "jump_height", false))
+    else if (strcmp(attribName, "jump_height", false) == 0)
     {
         if (VolClassEditSetJumpHeight(dataIndex, attribValue))
         {
             return true;
         }
     }
-    else if (StrEqual(attribName, "jump_distance", false))
+    else if (strcmp(attribName, "jump_distance", false) == 0)
     {
         if (VolClassEditSetJumpDistance(dataIndex, attribValue))
         {
@@ -669,7 +669,7 @@ int VolClassEditFloatToString(float floatVal, char[] buffer, int maxlen, float m
 int VolClassEditStringToHumanStr(char strVal[PLATFORM_MAX_PATH], char[] buffer, int maxlen)
 {
     // Check if the attribute is marked as ignored.
-    if (StrEqual(strVal, "nochange", false))
+    if (strcmp(strVal, "nochange", false) == 0)
     {
         return strcopy(buffer, maxlen, "(no change)");
     }
@@ -691,12 +691,12 @@ bool VolClassEditSetMode(int dataIndex, const char[] value)
         return false;
     }
 
-    if (StrEqual(value, "name", false))
+    if (strcmp(value, "name", false) == 0)
     {
         VolClassEditData[dataIndex].VolClassEdit_Mode = ClassEditMode_Name;
         return true;
     }
-    else if (StrEqual(value, "attributes", false))
+    else if (strcmp(value, "attributes", false) == 0)
     {
         VolClassEditData[dataIndex].VolClassEdit_Mode = ClassEditMode_Attributes;
         return true;
@@ -1185,7 +1185,7 @@ int VolClassEditUpdateAttributes(int client, const ClassEditableAttributes attri
     }
 
     // Overlay path.
-    if (!StrEqual(attributes.ClassEdit_OverlayPath, "nochange"))
+    if (strcmp(attributes.ClassEdit_OverlayPath, "nochange", false) != 0)
     {
         strcopy(ClassPlayerCache[client].Class_OverlayPath, PLATFORM_MAX_PATH, attributes.ClassEdit_OverlayPath);
         numChanges++;
@@ -1328,7 +1328,7 @@ int VolClassEditRestoreAttributes(int client, int classindex, const ClassEditabl
     }
 
     // Overlay path.
-    if (!StrEqual(attributes.ClassEdit_OverlayPath, "nochange"))
+    if (strcmp(attributes.ClassEdit_OverlayPath, "nochange", false) != 0)
     {
         char path[PLATFORM_MAX_PATH];
         ClassGetOverlayPath(classindex, path, sizeof(path), ZR_CLASS_CACHE_MODIFIED);
