@@ -771,31 +771,31 @@ ImmunityMode ImmunityStringToMode(const char[] mode)
         return Immunity_Invalid;
     }
 
-    if (StrEqual(mode, "none", false))
+    if (strcmp(mode, "none", false) == 0)
     {
         return Immunity_None;
     }
-    if (StrEqual(mode, "kill", false))
+    if (strcmp(mode, "kill", false) == 0)
     {
         return Immunity_Kill;
     }
-    else if (StrEqual(mode, "full", false))
+    else if (strcmp(mode, "full", false) == 0)
     {
         return Immunity_Full;
     }
-    else if (StrEqual(mode, "infect", false))
+    else if (strcmp(mode, "infect", false) == 0)
     {
         return Immunity_Infect;
     }
-    else if (StrEqual(mode, "damage", false))
+    else if (strcmp(mode, "damage", false) == 0)
     {
         return Immunity_Damage;
     }
-    else if (StrEqual(mode, "delay", false))
+    else if (strcmp(mode, "delay", false) == 0)
     {
         return Immunity_Delay;
     }
-    else if (StrEqual(mode, "shield", false))
+    else if (strcmp(mode, "shield", false) == 0)
     {
         return Immunity_Shield;
     }

@@ -698,7 +698,7 @@ int VolSetAttributes(int volumeIndex, const char[] attributes)
         LogEvent(_, LogType_Normal, LOG_DEBUG, LogModule_Volfeatures, "Set attribute", "Got parameter: \"%s\" = \"%s\"", attribName, attribValue);
 
         // Check generic attributes.
-        if (StrEqual(attribName, "teamfilter", false))
+        if (strcmp(attribName, "teamfilter", false) == 0)
         {
             // Parse team string value.
             if (VolSetTeamString(volumeIndex, attribValue))
@@ -706,7 +706,7 @@ int VolSetAttributes(int volumeIndex, const char[] attributes)
                 successfulCount++;
             }
         }
-        else if (StrEqual(attribName, "delay", false))
+        else if (strcmp(attribName, "delay", false) == 0)
         {
             // Parse delay string value.
             if (VolSetDelayString(volumeIndex, attribValue))
@@ -714,7 +714,7 @@ int VolSetAttributes(int volumeIndex, const char[] attributes)
                 successfulCount++;
             }
         }
-        else if (StrEqual(attribName, "effect", false))
+        else if (strcmp(attribName, "effect", false) == 0)
         {
             // Parse effect string value.
             if (VolSetEffectString(volumeIndex, attribValue))
@@ -722,7 +722,7 @@ int VolSetAttributes(int volumeIndex, const char[] attributes)
                 successfulCount++;
             }
         }
-        else if (StrEqual(attribName, "effect_color", false))
+        else if (strcmp(attribName, "effect_color", false) == 0)
         {
             // Parse effect color string value.
             if (VolSetEffectColorString(volumeIndex, attribValue))
@@ -730,7 +730,7 @@ int VolSetAttributes(int volumeIndex, const char[] attributes)
                 successfulCount++;
             }
         }
-        else if (StrEqual(attribName, "enabled", false))
+        else if (strcmp(attribName, "enabled", false) == 0)
         {
             // Parse enabled string value.
             if (VolSetEnabledString(volumeIndex, attribValue))

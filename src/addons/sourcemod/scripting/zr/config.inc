@@ -309,7 +309,7 @@ void ConfigOnAllPluginsLoaded()
  */
 void ConfigOnLibraryAdded(const char[] name)
 {
-    if (StrEqual(name, "configlist"))
+    if (strcmp(name, "configlist", false) == 0)
     {
         // ConfigList loaded.
         g_ConfigListAvailable = true;
@@ -321,7 +321,7 @@ void ConfigOnLibraryAdded(const char[] name)
  */
 void ConfigOnLibraryRemoved(const char[] name)
 {
-    if (StrEqual(name, "configlist"))
+    if (strcmp(name, "configlist", false) == 0)
     {
         // ConfigList was unloaded.
         g_ConfigListAvailable = false;
@@ -835,7 +835,7 @@ stock ConfigFile ConfigAliasToConfigFile(const char[] alias)
 		ConfigGetConfigAlias(view_as<ConfigFile>(x), checkalias, sizeof(checkalias));
 		
 		// If alias doesn't match, then stop.
-		if (!StrEqual(alias, checkalias, false))
+		if (strcmp(alias, checkalias, false) != 0)
 		{
 			continue;
 		}
@@ -971,7 +971,7 @@ public Action ConfigReloadAllCommand(int client, int argc)
 stock bool ConfigSettingToBool(const char[] option)
 {
     // If option is equal to "yes," then return true.
-    if (StrEqual(option, "yes", false) || StrEqual(option, "on", false) || StrEqual(option, "1", false))
+    if (strcmp(option, "yes", false) == 0 || strcmp(option, "on", false) == 0 || strcmp(option, "1", false) == 0)
     {
         return true;
     }

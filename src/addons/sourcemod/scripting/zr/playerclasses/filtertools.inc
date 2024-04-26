@@ -119,10 +119,10 @@ stock int ClassValidateAttributes(int classindex, bool logErrors = false)
     else
     {
         // Check for reserved identifier keyworks. These aren't allowed as identifiers.
-        if (StrEqual(identifier, "all", false) ||
-            StrEqual(identifier, "humans", false) ||
-            StrEqual(identifier, "zombies", false) ||
-            StrEqual(identifier, "admins", false))
+        if (strcmp(identifier, "all", false) == 0 ||
+            strcmp(identifier, "humans", false) == 0 ||
+            strcmp(identifier, "zombies", false) == 0 ||
+            strcmp(identifier, "admins", false) == 0)
         {
             flags += ZR_CLASS_IDENTIFIER;
             if (logErrors)
@@ -195,10 +195,10 @@ stock int ClassValidateAttributes(int classindex, bool logErrors = false)
     else
     {
         // Check for reserved name keyworks. These aren't allowed as names.
-        if (StrEqual(name, "all", false) ||
-            StrEqual(name, "humans", false) ||
-            StrEqual(name, "zombies", false) ||
-            StrEqual(name, "admins", false))
+        if (strcmp(name, "all", false) == 0 ||
+            strcmp(name, "humans", false) == 0 ||
+            strcmp(name, "zombies", false) == 0 ||
+            strcmp(name, "admins", false) == 0)
         {
             flags += ZR_CLASS_NAME;
             if (logErrors)
@@ -231,13 +231,13 @@ stock int ClassValidateAttributes(int classindex, bool logErrors = false)
     else
     {
         // Validate only if not a pre-defined setting.
-        if (!StrEqual(model_path, "random", false) &&
-            !StrEqual(model_path, "random_public", false) &&
-            !StrEqual(model_path, "random_hidden", false) &&
-            !StrEqual(model_path, "random_admin", false) &&
-            !StrEqual(model_path, "random_mother_zombie", false) &&
-            !StrEqual(model_path, "default", false) &&
-            !StrEqual(model_path, "no_change", false))
+        if (strcmp(model_path, "random", false) != 0 &&
+            strcmp(model_path, "random_public", false) != 0 &&
+            strcmp(model_path, "random_hidden", false) != 0 &&
+            strcmp(model_path, "random_admin", false) != 0 &&
+            strcmp(model_path, "random_mother_zombie", false) != 0 &&
+            strcmp(model_path, "default", false) != 0 &&
+            strcmp(model_path, "no_change", false) != 0)
         {
             // Check if the file exists.
             if (!FileExists(model_path, false))
@@ -533,7 +533,7 @@ stock int ClassValidateEditableAttributes(ClassEditableAttributes attributes)
     }
 
     // Overlay.
-    if (!StrEqual(attributes.ClassEdit_OverlayPath, "nochange", false))
+    if (strcmp(attributes.ClassEdit_OverlayPath, "nochange", false) != 0)
     {
         char overlay_path[PLATFORM_MAX_PATH];
         char overlay[PLATFORM_MAX_PATH];
@@ -1408,7 +1408,7 @@ stock int ClassGetDefaultSpawnClass(int teamid, ClassFilter filter = ClassNoSpec
     if (strlen(classident) > 0)
     {
         // Check if the user set "random" as default class.
-        if (StrEqual(classident, "random", false))
+        if (strcmp(classident, "random", false) == 0)
         {
             // Get a list of all classes with the specified team ID. Deny
             // classes with special flags.

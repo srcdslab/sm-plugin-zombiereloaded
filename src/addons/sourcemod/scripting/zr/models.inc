@@ -198,7 +198,7 @@ void ModelsLoad()
             strcopy(fileShort, breakpoint, file);
 
             // If this file doesn't match model name, then skip it.
-            if (!StrEqual(name, fileShort, false))
+            if (strcmp(name, fileShort, false) != 0)
             {
                 continue;
             }
@@ -546,11 +546,11 @@ void ModelsGetFullPath(int index, char[] buffer, int maxlen)
  */
 ModelTeam ModelsStringToTeam(const char[] team)
 {
-    if (StrEqual(team, "zombies", false))
+    if (strcmp(team, "zombies", false)  == 0)
     {
         return ModelTeam_Zombies;
     }
-    else if (StrEqual(team, "humans", false))
+    else if (strcmp(team, "humans", false) == 0)
     {
         return ModelTeam_Humans;
     }
@@ -589,23 +589,23 @@ ModelTeam ModelsTeamIdToTeam(int teamid)
  */
 ModelAccess ModelsStringToAccess(const char[] access)
 {
-    if (StrEqual(access, "public", false))
+    if (strcmp(access, "public", false) == 0)
     {
         return ModelAccess_Public;
     }
-    else if (StrEqual(access, "admins", false))
+    else if (strcmp(access, "admins", false) == 0)
     {
         return ModelAccess_Admins;
     }
-    else if (StrEqual(access, "hidden", false))
+    else if (strcmp(access, "hidden", false) == 0)
     {
         return ModelAccess_Hidden;
     }
-    else if (StrEqual(access, "motherzombies", false))
+    else if (strcmp(access, "motherzombies", false) == 0)
     {
         return ModelAccess_MotherZombies;
     }
-    else if (StrEqual(access, "group", false))
+    else if (strcmp(access, "group", false) == 0)
     {
         return ModelAccess_Group;
     }

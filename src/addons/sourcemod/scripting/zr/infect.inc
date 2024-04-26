@@ -137,12 +137,12 @@ void InfectOnAllPluginsLoaded()
  */
 void InfectOnLibraryAdded(const char[] name)
 {
-    if (StrEqual(name, "AFKManager"))
+    if (strcmp(name, "AFKManager", false) == 0)
     {
         // AFKManager loaded.
         g_AFKManagerLoaded = true;
     }
-    else if (StrEqual(name, "TeamManager"))
+    else if (strcmp(name, "TeamManager", false) == 0)
     {
         // TeamManager loaded.
         g_TeamManagerLoaded = true;
@@ -154,12 +154,12 @@ void InfectOnLibraryAdded(const char[] name)
  */
 void InfectOnLibraryRemoved(const char[] name)
 {
-    if (StrEqual(name, "AFKManager"))
+    if (strcmp(name, "AFKManager", false) == 0)
     {
         // AFKManager unloaded.
         g_AFKManagerLoaded = false;
     }
-    else if (StrEqual(name, "TeamManager"))
+    else if (strcmp(name, "TeamManager") == 0)
     {
         // TeamManager unloaded.
         g_TeamManagerLoaded = false;
@@ -461,7 +461,7 @@ void InfectOnClientHurt(int client, int attacker, const char[] weapon)
     }
 
     // If weapon isn't a knife, then stop.
-    if (!StrEqual(weapon, "knife") && !StrEqual(weapon, "bayonet"))
+    if (strcmp(weapon, "knife", false) != 0 && strcmp(weapon, "bayonet", false) != 0)
     {
         return;
     }
@@ -1626,15 +1626,15 @@ InfectMode InfectStringToMode(const char[] mode)
         return InfectMode_Invalid;
     }
 
-    if (StrEqual(mode, "dynamic", false))
+    if (strcmp(mode, "dynamic", false) == 0)
     {
         return InfectMode_Dynamic;
     }
-    else if (StrEqual(mode, "absolute", false))
+    else if (strcmp(mode, "absolute", false) == 0)
     {
         return InfectMode_Absolute;
     }
-    else if (StrEqual(mode, "range", false))
+    else if (strcmp(mode, "range", false) == 0)
     {
         return InfectMode_Range;
     }

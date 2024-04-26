@@ -163,7 +163,7 @@ stock bool ZRIsClientInGroup(int client, const char[] groupName)
             GetAdminGroup(id, group, groupname, sizeof(groupname));
 
             // Compare names.
-            if (StrEqual(groupName, groupname, false))
+            if (strcmp(groupName, groupname, false) == 0)
             {
                 return true;
             }

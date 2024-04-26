@@ -177,7 +177,7 @@ public Action ZMarketBuyCommand(int client, int argc)
         }
         else
         {
-            if(StrEqual(command, zmarketcommand))
+            if(strcmp(command, zmarketcommand, false) == 0)
             {
                 WeaponsGetName(weaponindex, weaponname, sizeof(weaponname));
                 ZMarketEquip(client, weaponname);
@@ -1095,12 +1095,12 @@ stock bool ZMarketEquip(int client, const char[] weapon, bool rebuy = false)
         }
 
         int entity = INVALID_ENT_REFERENCE;
-        if (StrEqual(weaponentity, "item_kevlar"))
+        if (strcmp(weaponentity, "item_kevlar", false) == 0)
         {
             SetEntProp(client, Prop_Send, "m_ArmorValue", 100);
             SetEntProp(client, Prop_Send, "m_bHasHelmet", 1);
         }
-        else if (StrEqual(weaponentity, "item_nvgs"))
+        else if (strcmp(weaponentity, "item_nvgs", false) == 0)
         {
             SetEntProp(client, Prop_Send, "m_bHasNightVision", 1);
         }

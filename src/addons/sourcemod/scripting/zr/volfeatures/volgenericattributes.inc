@@ -44,15 +44,15 @@ stock bool VolSetTeamString(int volumeIndex, const char[] team)
     }
 
     // Convert value.
-    if (StrEqual(team, "all", false))
+    if (strcmp(team, "all", false) == 0)
     {
         teamfilter = VolTeam_All;
     }
-    else if (StrEqual(team, "humans", false))
+    else if (strcmp(team, "humans", false) == 0)
     {
         teamfilter = VolTeam_Humans;
     }
-    else if (StrEqual(team, "zombies", false))
+    else if (strcmp(team, "zombies", false) == 0)
     {
         teamfilter = VolTeam_Zombies;
     }
@@ -159,17 +159,17 @@ stock bool VolSetEffectString(int volumeIndex, const char[] effect)
     }
 
     // Check effect string values and apply them to the volume.
-    if (StrEqual(effect, "none", false))
+    if (strcmp(effect, "none", false) == 0)
     {
         Volumes[volumeIndex].Vol_Effect = VolEffect_None;
         return true;
     }
-    else if (StrEqual(effect, "wireframe", false))
+    else if (strcmp(effect, "wireframe", false) == 0)
     {
         Volumes[volumeIndex].Vol_Effect = VolEffect_Wireframe;
         return true;
     }
-    else if (StrEqual(effect, "smoke", false))
+    else if (strcmp(effect, "smoke", false) == 0)
     {
         Volumes[volumeIndex].Vol_Effect = VolEffect_Smoke;
         return true;
@@ -289,11 +289,11 @@ stock bool VolSetEnabledString(int volumeIndex, const char[] enabled)
     bool val = view_as<bool>(StringToInt(enabled));
 
     // Check yes or no values first.
-    if (StrEqual(enabled, "yes", false))
+    if (strcmp(enabled, "yes", false) == 0)
     {
         val = true;
     }
-    else if (StrEqual(enabled, "no", false))
+    else if (strcmp(enabled, "no", false) == 0)
     {
         val = false;
     }

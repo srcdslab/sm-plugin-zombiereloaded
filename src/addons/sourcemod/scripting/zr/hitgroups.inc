@@ -215,7 +215,7 @@ stock int HitgroupsNameToIndex(char[] hitgroup, int maxlen = 0, bool overwritena
         HitgroupsGetName(x, hitgroupname, sizeof(hitgroupname));
 
         // If names match, then return index.
-        if (StrEqual(hitgroup, hitgroupname, false))
+        if (strcmp(hitgroup, hitgroupname, false) == 0)
         {
             // If 'overwrite' name is true, then overwrite the old string with new.
             if (overwritename)

@@ -373,11 +373,11 @@ void ClassOnClientInfected(int client, bool motherzombie = false) //responsavel 
         // Get default mother zombie setting.
         GetConVarString(g_hCvarsList.CVAR_CLASSES_DEFAULT_M_ZOMB, motherzombiesetting, sizeof(motherzombiesetting));
 
-        if (StrEqual(motherzombiesetting, "disabled", false))
+        if (strcmp(motherzombiesetting, "disabled", false) == 0)
         {
             // Do nothing. Keep current class.
         }
-        else if (StrEqual(motherzombiesetting, "random", false))
+        else if (strcmp(motherzombiesetting, "random", false) == 0)
         {
             // Setup filtering
             // ---------------
@@ -407,7 +407,7 @@ void ClassOnClientInfected(int client, bool motherzombie = false) //responsavel 
                 classindex = motherindex;
             }
         }
-        else if (StrEqual(motherzombiesetting, "motherzombies", false))
+        else if (strcmp(motherzombiesetting, "motherzombies", false) == 0)
         {
             // Setup filtering
             // ---------------

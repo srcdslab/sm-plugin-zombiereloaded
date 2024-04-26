@@ -728,11 +728,11 @@ ClassSpeedMethods ClassGetSpeedMethod()
 
     GetConVarString(g_hCvarsList.CVAR_CLASSES_SPEED_METHOD, speedMethod, sizeof(speedMethod));
 
-    if (StrEqual(speedMethod, "lmv", false))
+    if (strcmp(speedMethod, "lmv", false) == 0)
     {
         return ClassSpeed_LMV;
     }
-    else if (StrEqual(speedMethod, "prop", false))
+    else if (strcmp(speedMethod, "prop", false) == 0)
     {
         return ClassSpeed_Prop;
     }

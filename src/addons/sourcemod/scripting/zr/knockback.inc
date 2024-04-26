@@ -162,7 +162,7 @@ public void KnockbackOnClientHurt(int victim, int attacker, int inflictor, const
     GetClientAbsOrigin(victim, clientloc);
 
     // Check if a grenade was thrown.
-    if (StrEqual(weaponname, "hegrenade"))
+    if (strcmp(weaponname, "hegrenade", false) == 0)
     {
         // Get the location of the grenade.
         if (KnockbackFindExplodingGrenade(attackerloc) == -1)
@@ -357,7 +357,7 @@ int KnockbackFindExplodingGrenade(float heLoc[3])
 
         // If entity isn't a grenade, then stop.
         GetEdictClassname(x, classname, sizeof(classname));
-        if (!StrEqual(classname, "hegrenade_projectile", false))
+        if (strcmp(classname, "hegrenade_projectile", false) != 0)
         {
             continue;
         }

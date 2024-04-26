@@ -276,7 +276,7 @@ public Action DamageOnTakeDamage(int client, int &attacker, int &inflictor, floa
             return Plugin_Continue;
         }
 
-        if (!clientzombie && attackerzombie && !(StrEqual(weaponname, "weapon_bayonet") || strncmp(weaponname, "weapon_knife", 12) == 0))
+        if (!clientzombie && attackerzombie && !(strcmp(weaponname, "weapon_bayonet", false) == 0 || strncmp(weaponname, "weapon_knife", 12) == 0))
         {
             damage = 1.0;
             return Plugin_Changed;

@@ -146,79 +146,79 @@ int LogGetModuleNameString(char[] buffer, int maxlen, LogModules module, bool sh
  */
 LogModules LogGetModule(const char[] moduleName)
 {
-    if (StrEqual(moduleName, "account", false))
+    if (strcmp(moduleName, "account", false) == 0)
     {
         return LogModule_Account;
     }
-    else if (StrEqual(moduleName, "antistick", false))
+    else if (strcmp(moduleName, "antistick", false) == 0)
     {
         return LogModule_AntiStick;
     }
-    else if (StrEqual(moduleName, "config", false))
+    else if (strcmp(moduleName, "config", false) == 0)
     {
         return LogModule_Config;
     }
-    else if (StrEqual(moduleName, "cvars", false))
+    else if (strcmp(moduleName, "cvars", false) == 0)
     {
         return LogModule_Cvars;
     }
-    else if (StrEqual(moduleName, "damage", false))
+    else if (strcmp(moduleName, "damage", false) == 0)
     {
         return LogModule_Damage;
     }
-    else if (StrEqual(moduleName, "downloads", false))
+    else if (strcmp(moduleName, "downloads", false) == 0)
     {
         return LogModule_Downloads;
     }
-    else if (StrEqual(moduleName, "hitgroups", false))
+    else if (strcmp(moduleName, "hitgroups", false) == 0)
     {
         return LogModule_Hitgroups;
     }
-    else if (StrEqual(moduleName, "infect", false))
+    else if (strcmp(moduleName, "infect", false) == 0)
     {
         return LogModule_Infect;
     }
-    else if (StrEqual(moduleName, "models", false))
+    else if (strcmp(moduleName, "models", false) == 0)
     {
         return LogModule_Models;
     }
-    else if (StrEqual(moduleName, "napalm", false))
+    else if (strcmp(moduleName, "napalm", false) == 0)
     {
         return LogModule_Napalm;
     }
-    else if (StrEqual(moduleName, "playerclasses", false))
+    else if (strcmp(moduleName, "playerclasses", false) == 0)
     {
         return LogModule_Playerclasses;
     }
-    else if (StrEqual(moduleName, "veffects", false))
+    else if (strcmp(moduleName, "veffects", false) == 0)
     {
         return LogModule_VEffects;
     }
-    else if (StrEqual(moduleName, "seffects", false))
+    else if (strcmp(moduleName, "seffects", false) == 0)
     {
         return LogModule_SEffects;
     }
-    else if (StrEqual(moduleName, "tools", false))
+    else if (strcmp(moduleName, "tools", false) == 0)
     {
         return LogModule_Tools;
     }
-    else if (StrEqual(moduleName, "volfeatures", false))
+    else if (strcmp(moduleName, "volfeatures", false) == 0)
     {
         return LogModule_Volfeatures;
     }
-    else if (StrEqual(moduleName, "weapons", false))
+    else if (strcmp(moduleName, "weapons", false) == 0)
     {
         return LogModule_Weapons;
     }
-    else if (StrEqual(moduleName, "weaponrestrict", false))
+    else if (strcmp(moduleName, "weaponrestrict", false) == 0)
     {
         return LogModule_Weaponrestrict;
     }
-    else if (StrEqual(moduleName, "zspawn", false))
+    else if (strcmp(moduleName, "zspawn", false) == 0)
     {
         return LogModule_ZSpawn;
     }
-    else if (StrEqual(moduleName, "ztele", false))
+    else if (strcmp(moduleName, "ztele", false) == 0)
     {
         return LogModule_ZTele;
     }

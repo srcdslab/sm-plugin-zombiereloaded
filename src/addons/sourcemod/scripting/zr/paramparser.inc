@@ -371,7 +371,7 @@ stock int ParamFindKey(const ParamParseResult[] params, int maxlen, const char[]
         }
 
         // Match key name.
-        if (StrEqual(params[index].Param_Name, key, caseSensitive))
+        if (strcmp(params[index].Param_Name, key, caseSensitive) == 0)
         {
             // Key found, return the key index.
             return index;
@@ -404,7 +404,7 @@ stock bool ParamHasFlag(const ParamParseResult[] params, int maxlen, const char[
         }
 
         // Match flag name.
-        if (StrEqual(params[index].Param_Name, flag, caseSensitive))
+        if (strcmp(params[index].Param_Name, flag, caseSensitive) == 0)
         {
             // Flag found.
             return true;

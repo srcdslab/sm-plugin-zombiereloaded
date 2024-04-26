@@ -114,7 +114,7 @@ bool ClassApplyModel(int client, int classindex, int cachetype = ZR_CLASS_CACHE_
 
     // Check if the user specified a pre-defined model setting. If so, setup
     // model filter settings.
-    if (StrEqual(modelpath, "random", false))
+    if (strcmp(modelpath, "random", false) == 0)
     {
         // Set access filter flags.
         access = MODEL_ACCESS_PUBLIC | MODEL_ACCESS_ADMINS;
@@ -124,37 +124,37 @@ bool ClassApplyModel(int client, int classindex, int cachetype = ZR_CLASS_CACHE_
 
         isAttributePreset = true;
     }
-    else if (StrEqual(modelpath, "random_public", false))
+    else if (strcmp(modelpath, "random_public", false) == 0)
     {
         access = MODEL_ACCESS_PUBLIC;
         index = -1;
         isAttributePreset = true;
     }
-    else if (StrEqual(modelpath, "random_hidden", false))
+    else if (strcmp(modelpath, "random_hidden", false) == 0)
     {
         access = MODEL_ACCESS_HIDDEN;
         index = -1;
         isAttributePreset = true;
     }
-    else if (StrEqual(modelpath, "random_admin", false))
+    else if (strcmp(modelpath, "random_admin", false) == 0)
     {
         access = MODEL_ACCESS_ADMINS;
         index = -1;
         isAttributePreset = true;
     }
-    else if (StrEqual(modelpath, "random_mother_zombie", false))
+    else if (strcmp(modelpath, "random_mother_zombie", false) == 0)
     {
         access = MODEL_ACCESS_MOTHER_ZOMBIES;
         index = -1;
         isAttributePreset = true;
     }
-    else if (StrEqual(modelpath, "default", false))
+    else if (strcmp(modelpath, "default", false) == 0)
     {
         // Get current model.
         GetClientModel(client, modelpath, sizeof(modelpath));
 
         // Restore original model if not already set.
-        if (!StrEqual(ClassOriginalPlayerModel[client], modelpath))
+        if (strcmp(ClassOriginalPlayerModel[client], modelpath) != 0)
         {
             strcopy(modelpath, sizeof(modelpath), ClassOriginalPlayerModel[client]);
         }
@@ -164,7 +164,7 @@ bool ClassApplyModel(int client, int classindex, int cachetype = ZR_CLASS_CACHE_
             return true;
         }
     }
-    else if (StrEqual(modelpath, "no_change", false))
+    else if (strcmp(modelpath, "no_change", false) == 0)
     {
         // Do nothing.
         return true;

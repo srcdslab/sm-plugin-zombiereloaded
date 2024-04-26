@@ -128,11 +128,11 @@ public int VolumeControlMenuHandler(Menu menu, MenuAction action, int param1, in
 		{
 			char info[32];
 			menu.GetItem(param2, info, sizeof(info));
-			if(StrEqual(info, "1"))
+			if(strcmp(info, "1", false) == 0)
 			{
 				ZombieVoiceVolumeMenu(param1);
 			}
-			else if(StrEqual(info, "2"))
+			else if(strcmp(info, "2") == 0)
 			{
 				AmbientVolumeMenu(param1);
 			}
@@ -202,27 +202,27 @@ public int ZombieVoiceVolumeMenuHandler(Menu menu, MenuAction action, int param1
 		{
 			char info[32];
 			menu.GetItem(param2, info, sizeof(info));
-			if(StrEqual(info, "1"))
+			if(strcmp(info, "1", false) == 0)
 			{
 				SetZombieVoiceVolume(param1, 100);
 				ZombieVoiceVolumeMenu(param1);
 			}
-			else if(StrEqual(info, "2"))
+			else if(strcmp(info, "2") == 0)
 			{
 				SetZombieVoiceVolume(param1, 80);
 				ZombieVoiceVolumeMenu(param1);
 			}
-			else if(StrEqual(info, "3"))
+			else if(strcmp(info, "3") == 0)
 			{
 				SetZombieVoiceVolume(param1, 60);
 				ZombieVoiceVolumeMenu(param1);
 			}
-			else if(StrEqual(info, "4"))
+			else if(strcmp(info, "4") == 0)
 			{
 				SetZombieVoiceVolume(param1, 40);
 				ZombieVoiceVolumeMenu(param1);
 			}
-			else if(StrEqual(info, "5"))
+			else if(strcmp(info, "5") == 0)
 			{
 				SetZombieVoiceVolume(param1, 20);
 				ZombieVoiceVolumeMenu(param1);
@@ -305,27 +305,27 @@ public int AmbientVolumeMenuHandler(Menu menu, MenuAction action, int param1, in
 		{
 			char info[32];
 			menu.GetItem(param2, info, sizeof(info));
-			if(StrEqual(info, "1"))
+			if(strcmp(info, "1", false) == 0)
 			{
 				SetAmbientVolume(param1, 100);
 				AmbientVolumeMenu(param1);
 			}
-			else if(StrEqual(info, "2"))
+			else if(strcmp(info, "2") == 0)
 			{
 				SetAmbientVolume(param1, 80);
 				AmbientVolumeMenu(param1);
 			}
-			else if(StrEqual(info, "3"))
+			else if(strcmp(info, "3") == 0)
 			{
 				SetAmbientVolume(param1, 60);
 				AmbientVolumeMenu(param1);
 			}
-			else if(StrEqual(info, "4"))
+			else if(strcmp(info, "4") == 0)
 			{
 				SetAmbientVolume(param1, 40);
 				AmbientVolumeMenu(param1);
 			}
-			else if(StrEqual(info, "5"))
+			else if(strcmp(info, "5") == 0)
 			{
 				SetAmbientVolume(param1, 20);
 				AmbientVolumeMenu(param1);

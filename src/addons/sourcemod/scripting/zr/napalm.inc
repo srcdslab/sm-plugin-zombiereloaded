@@ -130,7 +130,7 @@ void NapalmOnClientHurt(int client, int attacker, const char[] weapon, int dmg_h
     }
 
     // If weapon is a grenade, then ignite player.
-    if (StrEqual(weapon, "hegrenade", false) || StrEqual(weapon, "inferno", false))
+    if (strcmp(weapon, "hegrenade", false) == 0 || strcmp(weapon, "inferno", false) == 0)
     {
         bool reset = GetConVarBool(g_hCvarsList.CVAR_NAPALM_TIME_RESET);
         int flags = GetEntityFlags(client);
@@ -240,7 +240,7 @@ stock void NapalmExtinguishEntity(int client)
         // Make sure the entity is a flame, so we can extinguish it.
         char classname[64];
         GetEdictClassname(fire, classname, sizeof(classname));
-        if (StrEqual(classname, "entityflame", false))
+        if (strcmp(classname, "entityflame", false)  == 0)
         {
             SetEntPropFloat(fire, Prop_Data, "m_flLifetime", 0.0);
         }
@@ -273,7 +273,7 @@ stock void NapalmIgniteEntity(int client, float time)
         // Make sure the entity is a flame.
         char classname[64];
         GetEdictClassname(fire, classname, sizeof(classname));
-        if (StrEqual(classname, "entityflame", false))
+        if (strcmp(classname, "entityflame", false) == 0)
         {
             SetEntPropFloat(fire, Prop_Data, "m_flLifetime", GetGameTime() + time);
             APIOnClientIgnited(client, time);
