@@ -883,6 +883,9 @@ stock void WeaponsRefreshClientWeapon(int client, WeaponsSlot slot)
  */
 stock void WeaponsRemoveAllClientWeapons(int client, bool weaponsdrop)
 {
+    // Give a new knife to player when he get infected
+    bool removeknife = GetConVarBool(g_hCvarsList.CVAR_WEAPONS_INFECT_REMOVE_KNIFE);
+
     // Get a list of all client's weapon indexes.
     int weapons[Slot_MAXSIZE];
     WeaponsGetClientWeapons(client, weapons);
@@ -901,8 +904,11 @@ stock void WeaponsRemoveAllClientWeapons(int client, bool weaponsdrop)
         if (view_as<WeaponsSlot>(x) == Slot_Melee)
         {
             // Strip knife.
-            RemovePlayerItem(client, weapons[x]);
-            AcceptEntityInput(weapons[x], "Kill");
+            if (removeknife)
+            {
+                RemovePlayerItem(client, weapons[x]);
+                AcceptEntityInput(weapons[x], "Kill");
+            }
             continue;
         }
 
