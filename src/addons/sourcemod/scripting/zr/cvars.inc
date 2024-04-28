@@ -83,6 +83,7 @@ enum struct CvarsList
     Handle CVAR_WEAPONS_ZMARKET_REBUY_AUTO;
     Handle CVAR_WEAPONS_ZMARKET_REBUY_PRIMARY;
     Handle CVAR_WEAPONS_ZMARKET_REBUY_SECONDARY;
+    Handle CVAR_WEAPONS_INFECT_REMOVE_KNIFE;
     Handle CVAR_HITGROUPS;
     Handle CVAR_DAMAGE_HITGROUPS;
     Handle CVAR_DAMAGE_BLOCK_FF;
@@ -307,6 +308,8 @@ void CvarsCreate()
     g_hCvarsList.CVAR_WEAPONS_ZMARKET_REBUY_PRIMARY     =    CreateConVar("zr_weapons_zmarket_rebuy_primary","P90",         "Default primary weapon. [Dependency: zr_weapons_zmarket&zr_weapons_zmarket_rebuy]");
     g_hCvarsList.CVAR_WEAPONS_ZMARKET_REBUY_SECONDARY   =    CreateConVar("zr_weapons_zmarket_rebuy_secondary","Elite",     "Default secondary weapon. [Dependency: zr_weapons_zmarket&zr_weapons_zmarket_rebuy]");
 
+    // Infecting
+    g_hCvarsList.CVAR_WEAPONS_INFECT_REMOVE_KNIFE       =    CreateConVar("zr_weapons_infect_removeknife",  "1",            "Give a new knife weapon when player is infected.");
 
     // ===========================
     // Hitgroups (core)
