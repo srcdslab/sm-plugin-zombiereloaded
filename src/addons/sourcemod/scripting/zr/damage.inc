@@ -231,7 +231,7 @@ public Action DamageOnTakeDamage(int client, int &attacker, int &inflictor, floa
 
     // Get the attacker weapon name.
     char weaponname[64];
-    if(attacker >= 1 && attacker <= MAXPLAYERS)
+    if(attacker && attacker >= 1 && attacker <= MAXPLAYERS && IsClientInGame(attacker))
         GetClientWeapon(attacker, weaponname, sizeof(weaponname));
 
     // If entity is a trigger, then allow damage. (Map is damaging client)
