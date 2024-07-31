@@ -412,6 +412,11 @@
 		"no"		"Gjør en spiller om til et menneske. Syntaks: zr_human <mål> [teleporter - 1/0] [beskyttelse - 1/0]"
 	}
 
+	"Infect command round not started"
+	{
+		"no"		"Kunne ikke utføre infeksjon. Runden har ikke helt startet ennå."
+	}
+
 	"Infect command infect successful"
 	{
 		"no"		"@green{1}@default ble vellykket infisert."

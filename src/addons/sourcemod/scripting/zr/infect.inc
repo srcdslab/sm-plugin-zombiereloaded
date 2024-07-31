@@ -877,6 +877,11 @@ void InfectStopCountdown()
  */
 bool InfectHumanToZombie(int client, int attacker = -1, bool motherinfect = false, bool respawnoverride = false, bool respawn = false)
 {
+    if (!g_bRoundFullyStarted)
+    {
+        return false;
+    }
+
     // Forward pre-event to modules.
     Action result = APIOnClientInfect(client, attacker, motherinfect, respawnoverride, respawn);
 
@@ -1341,6 +1346,12 @@ bool InfectIsClientHuman(int client)
  */
 stock void InfectManualInfect(int client, int[] targets, int count, bool respawnoverride = false, bool respawn = false)
 {
+    if (!g_bRoundFullyStarted)
+    {
+        TranslationReplyToCommand(client, "Infect command round not started");
+        return;
+    }
+
     bool zombiespawned = InfectHasZombieSpawned();
 
     // If zombie hasn't spawned, then make targetted player(s) mother zombies.

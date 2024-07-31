@@ -413,6 +413,11 @@
 		"es"		"Cambiar un cliente a humano. Uso: zr_human <filtro> [resucitar - 1/0] [proteccion - 1/0]"
 	}
 
+	"Infect command round not started"
+	{
+		"es"		"No se pudo realizar la infección. La ronda aún no ha comenzado del todo."
+	}
+
 	"Infect command infect successful"
 	{
 		"es"		"El jugador @green{1} @defaultha sido infectado con exito."

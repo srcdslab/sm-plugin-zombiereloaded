@@ -430,6 +430,11 @@
 		"en"		"Turn a client into a human. Usage: zr_human <filter> [respawn - 1/0] [protect - 1/0]"
 	}
 
+	"Infect command round not started"
+	{
+		"en"		"Could not perform infection. The round has not fully started yet."
+	}
+
 	"Infect command infect successful"
 	{
 		"#format"	"{1:s}"

@@ -55,6 +55,11 @@ enum EligibleCondition
 bool g_bZombieSpawned;
 
 /**
+ * Global variable set to true when the round has fully started.
+ */
+bool g_bRoundFullyStarted;
+
+/**
  * Supported games.
  */
 enum Game
