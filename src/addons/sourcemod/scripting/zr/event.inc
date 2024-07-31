@@ -105,6 +105,8 @@ public Action EventRoundStart(Handle event, const char[] name, bool dontBroadcas
  */
 public Action EventRoundFreezeEnd(Handle event, const char[] name, bool dontBroadcast)
 {
+    g_bRoundFullyStarted = true;
+
     // Forward events to modules.
     RoundEndOnRoundFreezeEnd();
     InfectOnRoundFreezeEnd();
@@ -122,6 +124,8 @@ public Action EventRoundFreezeEnd(Handle event, const char[] name, bool dontBroa
  */
 public Action EventRoundEnd(Handle event, const char[] name, bool dontBroadcast)
 {
+    g_bRoundFullyStarted = false;
+
     // Get all required event info.
     int reason = GetEventInt(event, "reason");
 
