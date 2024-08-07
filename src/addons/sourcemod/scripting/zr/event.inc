@@ -179,6 +179,11 @@ public Action EventPlayerSpawn(Handle event, const char[] name, bool dontBroadca
     // Get all required event info.
     int index = GetClientOfUserId(GetEventInt(event, "userid"));
 
+    // CS:S has a bug: It never verify if client is in a valid team before fire player_spawn event.
+    int iTeam = GetClientTeam(index);
+    if (iTeam != TEAM_CT && iTeam != TEAM_T)
+        return Plugin_Continue;
+
     // Forward event to modules.
     InfectOnClientSpawn(index);     // Some modules depend on this to finish first.
     AccountOnClientSpawn(index);    // Some modules depend on this to finish first.
