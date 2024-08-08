@@ -181,7 +181,7 @@ public Action EventPlayerSpawn(Handle event, const char[] name, bool dontBroadca
 
     // CS:S has a bug: It never verify if client is in a valid team before fire player_spawn event.
     int iTeam = GetClientTeam(index);
-    if (iTeam != CS_TEAM_CT && iTeam != CS_TEAM_T)
+    if (iTeam == CS_TEAM_NONE || iTeam == CS_TEAM_SPEC)
         return Plugin_Continue;
 
     // Forward event to modules.
