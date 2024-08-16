@@ -71,6 +71,7 @@ void EventsHook(bool unhook = false)
 
     // Hook all listeners used by plugin.
     AddCommandListener(CommandPlayerClass, "joinclass");
+    AddCommandListener(CommandPlayerBuy, "buy");
 }
 
 /**
