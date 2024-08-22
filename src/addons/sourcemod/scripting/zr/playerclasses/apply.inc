@@ -513,24 +513,24 @@ public void ClassPreThinkPost(int client)
  */
 void Class_OnPlayerRunCmd(int client, float vel[3])
 {
+    // Only modify speed if the prop method is used.
+    if (ClassSpeedMethod != ClassSpeed_Prop)
+        return;
+
     if (!IsClientInGame(client) || !IsPlayerAlive(client))
         return;
 
-    // Only modify speed if the prop method is used.
-    if (ClassSpeedMethod == ClassSpeed_Prop)
-    {
-        // x-axis speed.
-        if (vel[0] < 0.0)
-            vel[0] = -5000.0;
+    // x-axis speed.
+    if (vel[0] < 0.0)
+        vel[0] = -5000.0;
 
-        else if (vel[0] > 0.0)
-            vel[0] = 5000.0;
+    else if (vel[0] > 0.0)
+        vel[0] = 5000.0;
 
-        // y-axis speed.
-        if (vel[1] < 0.0)
-            vel[1] = -5000.0;
+    // y-axis speed.
+    if (vel[1] < 0.0)
+        vel[1] = -5000.0;
 
-        else if (vel[1] > 0.0)
-            vel[1] = 5000.0;
-    }
+    else if (vel[1] > 0.0)
+        vel[1] = 5000.0;
 }
