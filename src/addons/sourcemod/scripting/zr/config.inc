@@ -254,7 +254,6 @@ void ConfigLoad()
 	// Execute config file - Log action if successful.
 	if (LoadConfigAndExec(path, bSMPath))
 		LogEvent(false, LogType_Normal, LOG_CORE_EVENTS, LogModule_Config, "Map Configs", "Executed map config file: %s", path);
-
 }
 
 /**
