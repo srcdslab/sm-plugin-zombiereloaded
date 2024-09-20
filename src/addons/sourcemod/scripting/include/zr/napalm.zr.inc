@@ -26,6 +26,28 @@
  */
 
 /**
+ * Get if the class has napalm grenades.
+ *
+ * @param client            The client index.
+ * @param cachetype         Optional. See class.zr.inc for details.
+ * @error                   Invalid client index.
+ * 
+ * @return                  True if the class has napalm grenades.
+ */
+native bool ZR_ClassHasNapalm(int client, int cachetype = ZR_CLASS_CACHE_PLAYER);
+
+/**
+ * Get the napalm grenades time from the specified class.
+ *
+ * @param client            The client index.
+ * @param cachetype         Optional. See class.zr.inc for details.
+ * @error                   Invalid client index.
+ * 
+ * @return                  The napalm time. (float)
+ */
+native float ZR_ClassGetNapalmTime(int client, int cachetype = ZR_CLASS_CACHE_PLAYER);
+
+/**
  * Called when a zombie is about to be set on fire.
  *
  * @param client            The client to ignite.
