@@ -236,7 +236,6 @@ void ConfigLoad()
 		{
 			Format(mapconfig, sizeof(mapconfig), "configs/zr/maps/%s.cfg", mapname);
 			BuildPath(Path_SM, path, PLATFORM_MAX_PATH, mapconfig);
-			Format(path, sizeof(path), "addons/sourcemod/%s", mapconfig);
 		}
 		else
 		{
@@ -258,7 +257,7 @@ void ConfigLoad()
 
 /**
  * Workaround to execute file from game/cfgs
- * Or from addons/sourcemo/configs/zr/maps
+ * Or from addons/sourcemod/configs/zr/maps
  */
 bool LoadConfigAndExec(char[] filepath, bool bSMPath = false)
 {
@@ -281,8 +280,22 @@ bool LoadConfigAndExec(char[] filepath, bool bSMPath = false)
 		// Remove any newline or whitespace characters
 		TrimString(line);
 
-		// Skip empty lines or comments
-		if (line[0] == '\0' || StrContains(line, "//") == 0)
+		// Skip empty lines
+		if (line[0] == '\0')
+			continue;
+
+		// Find the position of "//" in the line
+		int commentIndex = StrContains(line, "//", false);
+		
+		// If a comment is found, truncate the line at that point
+		if (commentIndex != -1)
+		{
+			line[commentIndex] = '\0';
+			TrimString(line);
+		}
+
+		// Skip lines that are empty after removing comments
+		if (line[0] == '\0')
 			continue;
 
 		// Execute the command
