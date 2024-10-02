@@ -47,6 +47,7 @@ enum struct CvarsList
     Handle CVAR_LOG_ERROR_OVERRIDE;
     Handle CVAR_LOG_PRINT_ADMINS;
     Handle CVAR_LOG_PRINT_CHAT;
+    Handle CVAR_CONFIG_SM_PATH;
     Handle CVAR_CONFIG_PATH_MODELS;
     Handle CVAR_CONFIG_PATH_DOWNLOADS;
     Handle CVAR_CONFIG_PATH_CLASSES;
@@ -244,6 +245,7 @@ void CvarsCreate()
     // ===========================
     // Config (core)
     // ===========================
+    g_hCvarsList.CVAR_CONFIG_SM_PATH            =    CreateConVar("zr_config_sm_path",             "0",                                    "Path, to Zombie:Reloaded MAPS config files. [0 = cfgs/sourcemod/zombiereloaded | 1 = addons/sourcemod/configs/zr/maps]");
     g_hCvarsList.CVAR_CONFIG_PATH_MODELS        =    CreateConVar("zr_config_path_models",         "configs/zr/models.txt",                "Path, relative to root sourcemod directory, to models config file.");
     g_hCvarsList.CVAR_CONFIG_PATH_DOWNLOADS     =    CreateConVar("zr_config_path_downloads",      "configs/zr/downloads.txt",             "Path, relative to root sourcemod directory, to downloads file.");
     g_hCvarsList.CVAR_CONFIG_PATH_CLASSES       =    CreateConVar("zr_config_path_playerclasses",  "configs/zr/playerclasses.txt",         "Path, relative to root sourcemod directory, to playerclasses config file.");
