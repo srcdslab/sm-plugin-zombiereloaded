@@ -1,0 +1,221 @@
+body
+{
+    background-color: #0f1015;
+}
+
+a:link
+{
+    color: #1A7ABF;
+}
+
+a:visited
+{
+    color: #1A7ABF;
+}
+
+h1
+{
+    font-family: "Verdana", "Arial", "Times";
+    font-size: x-large;
+}
+
+h2
+{
+    font-family: "Courier New", "Verdana", "Arial";
+    font-size: larger;
+    color: #900000;
+    border-bottom-style: solid;
+    border-bottom-color: #900000;
+    border-bottom-width: medium;
+}
+
+h3
+{
+    font-family: "Verdana", "Arial", "Times";
+    font-size: medium;
+    border-bottom-style: dotted;
+    border-bottom-color: #C0C0C0;
+    border-bottom-width: 2px;
+}
+
+h4
+{
+    font-family: "Verdana", "Arial", "Times";
+    font-size: small;
+}
+
+h5
+{
+    font-family: "Verdana", "Arial", "Times";
+    font-size: x-small;
+    color: #909090;
+}
+h6
+{
+    font-family: "Verdana", "Arial", "Times";
+    font-size: small;
+    font-weight: bold;
+    color: #900000;
+}
+
+p, li, td
+{
+    font-family: "Lucida Sans Unicode", "Arial", "Times";
+    font-size: small;
+    color: #404040;
+}
+
+p.headerinfo
+{
+    font-size: small;
+    color: #3c3c3c;
+}
+
+code
+{
+    font-family: "Lucida Console", "Courier New";
+    font-size: small;
+    color: #000000;
+}
+
+.code
+{
+    font-family: "Lucida Console", "Courier New";
+    font-size: small;
+    color: #000000;
+}
+
+.imagetext
+{
+    font-family: "Lucida Sans Unicode", "Arial", "Times";
+    font-size: x-small;
+    color: #000000;
+}
+
+table
+{
+    border-style: solid;
+    border-width: thin;
+    border-color: #c4dde6;
+    
+    background-color: #f0f7f9;
+    
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: auto;
+}
+
+td
+{
+    text-align: left;
+    vertical-align: top;
+    padding: 5px;
+}
+
+td.commandheader
+{
+    border-bottom-style: dashed;
+    border-bottom-width: thin;
+    font-family: "Lucida Console", "Courier New";
+    color: #000000;
+}
+
+td.indent
+{
+    padding-left: 40px;
+}
+
+th
+{
+    font-family: "Verdana", "Arial", "Times";
+    font-size: small;
+    font-weight: bold;
+    color: #900000;
+    vertical-align: top;
+    text-align: left;
+    padding: 5px;
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
+}
+
+caption
+{
+    font-family: "Verdana", "Arial", "Times";
+    font-size: small;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 0.5em;
+}
+
+.namewidth
+{
+    width: 200px;
+}
+
+.tinywidth
+{
+    width: 75px;
+}
+
+.mediumwidth
+{
+    width: 150px;
+}
+
+td.parameter
+{
+    font-family: "Lucida Console", "Courier New";
+    color: #000000;
+    width: 150px;
+}
+
+td.valueoption
+{
+    font-family: "Lucida Console", "Courier New";
+    color: #000000;
+    width: 150px;
+}
+
+.container
+{
+    /*margin-top: 1em;
+    margin-left: 1em;
+    margin-right: auto;
+    margin-bottom: 1em;*/
+    margin: auto;
+    
+    width: 750px;
+}
+
+.content
+{
+    position: relative;
+    bottom: 0.3em;
+    right: 0.3em;
+    
+    padding-left: 1em;
+    padding-right: 1em;
+    
+    background-color: #ffffff;
+    
+    border-style: solid;
+    border-width: thin;
+    border-color: #303030;
+}
+
+.shadow
+{
+    background-color: #b0b0b0;
+}
+
+img
+{
+    border-style: solid;
+    border-color: #000000;
+    border-width: thin;
+}
+
+img.noborder
+{
+    border-style: none;
+}
