@@ -320,11 +320,20 @@ void ConfigOnModulesLoaded()
 	
 	// Get map name and format into config path.
 	GetCurrentMap(mapname, sizeof(mapname));
-	Format(mapconfig, sizeof(mapconfig), "sourcemod/zombiereloaded/%s.post.cfg", mapname);
-	
+	bool bSMPath = GetConVarBool(g_hCvarsList.CVAR_CONFIG_SM_PATH);
+
 	// Prepend cfg to path.
-	Format(path, sizeof(path), "cfg/%s", mapconfig);
-	
+	if (bSMPath)
+	{
+		Format(mapconfig, sizeof(mapconfig), "configs/zr/maps/%s.post.cfg", mapname);
+		BuildPath(Path_SM, path, PLATFORM_MAX_PATH, mapconfig);
+	}
+	else
+	{
+		Format(mapconfig, sizeof(mapconfig), "sourcemod/zombiereloaded/%s.post.cfg", mapname);
+		Format(path, sizeof(path), "cfg/%s", mapconfig);
+	}
+
 	// Workaround for bug 3083 in SourceMod compiler. Having FileExist directly
 	// in the if in this function makes it crash. Storing the result in a
 	// boolean first works.
@@ -338,8 +347,17 @@ void ConfigOnModulesLoaded()
 		{
 			mapname[i] = CharToLower(mapname[i]);
 		}
-		Format(mapconfig, sizeof(mapconfig), "sourcemod/zombiereloaded/%s.post.cfg", mapname);
-		Format(path, sizeof(path), "cfg/%s", mapconfig);
+
+		if (bSMPath)
+		{
+			Format(mapconfig, sizeof(mapconfig), "configs/zr/maps/%s.post.cfg", mapname);
+			BuildPath(Path_SM, path, PLATFORM_MAX_PATH, mapconfig);
+		}
+		else
+		{
+			Format(mapconfig, sizeof(mapconfig), "sourcemod/zombiereloaded/%s.post.cfg", mapname);
+			Format(path, sizeof(path), "cfg/%s", mapconfig);
+		}
 
 		// Check if the new file path exist.
 		cfgexists = FileExists(path);
@@ -355,12 +373,10 @@ void ConfigOnModulesLoaded()
 		// may not exist, but that's ok.
 		ServerCommand("cfglist_exec_list zr_post_exec");
 	}
-	
-	// Execute config file.
-	ServerCommand("exec %s", mapconfig);
-	
-	// Log action.
-	LogEvent(false, LogType_Normal, LOG_CORE_EVENTS, LogModule_Config, "Post Map Configs", "Executed post map config file: %s", path);
+
+	// Execute config file - Log action if successful.
+	if (LoadConfigAndExec(path, bSMPath))
+		LogEvent(false, LogType_Normal, LOG_CORE_EVENTS, LogModule_Config, "Post Map Configs", "Executed post map config file: %s", path);
 }
 
 /**
