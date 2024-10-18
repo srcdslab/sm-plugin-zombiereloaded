@@ -3,7 +3,7 @@
 Infection/survival style gameplay for sourcemod
 
 ### Docs
-Find all cvars details on [online docs](srcdslab.github.io/sm-plugin-zombiereloaded/docs)
+Find all cvars details on [online docs](https://srcdslab.github.io/sm-plugin-zombiereloaded/docs/)
 
 ## Commands
 
