@@ -138,11 +138,18 @@ void ZMarketLoad()
 
 public Action ZMarketBuyCommand(int client, int argc)
 {
+    bool zmarketenabled = GetConVarBool(g_hCvarsList.CVAR_WEAPONS_ZMARKET);
     char command[CONFIG_MAX_LENGTH];
     char zmarketcommand[CONFIG_MAX_LENGTH];
     char weaponname[WEAPONS_MAX_LENGTH];
 
     GetCmdArg(0, command, sizeof(command));
+
+    if (!zmarketenabled)
+    {
+        TranslationPrintToChat(client, "Feature is disabled");
+        return Plugin_Handled;
+    }
 
     int size = GetArraySize(arrayWeapons);
     for (int weaponindex = 0; weaponindex < size; weaponindex++)
