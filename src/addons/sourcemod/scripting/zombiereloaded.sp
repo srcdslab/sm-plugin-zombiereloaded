@@ -45,7 +45,7 @@
 
 #include <sdkhooks>
 
-#define VERSION "3.10.12"
+#define VERSION "3.10.13"
 
 // Comment this line to exclude version info command. Enable this if you have
 // the repository and HG installed (Mercurial or TortoiseHG).

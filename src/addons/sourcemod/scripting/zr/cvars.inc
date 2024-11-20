@@ -104,6 +104,7 @@ enum struct CvarsList
     Handle CVAR_ROUNDEND_OVERLAY_HUMAN;
     Handle CVAR_ROUNDEND_BALANCE_TEAMS;
     Handle CVAR_ROUNDEND_ZOMBIES_WIN;
+    Handle CVAR_ROUNDEND_AUTHID_TYPE;
     Handle CVAR_INFECT_SPAWNTIME_MIN;
     Handle CVAR_INFECT_SPAWNTIME_MAX;
     Handle CVAR_INFECT_CONSECUTIVE_BLOCK;
@@ -386,6 +387,7 @@ void CvarsCreate()
     g_hCvarsList.CVAR_ROUNDEND_OVERLAY_ZOMBIE          =    CreateConVar("zr_roundend_overlays_zombie",    "overlays/zr/zombies_win",      "Overlay, relative to \"materials\" folder, to display when zombies win the round. [Dependency: zr_roundend_overlay]");
     g_hCvarsList.CVAR_ROUNDEND_BALANCE_TEAMS           =    CreateConVar("zr_roundend_balance_teams",      "1",                            "Balances the team every time the round ends. Disable this if you use something else to balance teams.");
     g_hCvarsList.CVAR_ROUNDEND_ZOMBIES_WIN             =    CreateConVar("zr_roundend_zombies_win",        "1",                            "Should zombies win if roundtime runs out.");
+    g_hCvarsList.CVAR_ROUNDEND_AUTHID_TYPE             =    CreateConVar("zr_roundend_authid_type",        "1",                            "AuthID type used [0 = Engine, 1 = Steam2, 2 = Steam3, 3 = Steam64]", FCVAR_NONE, true, 0.0, true, 3.0);
 
 
     // ===========================
