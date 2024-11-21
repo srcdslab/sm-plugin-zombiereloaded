@@ -292,6 +292,8 @@ void RoundEndOnRoundEnd(int reason)
 
 void RoundEndDisplayStats()
 {
+    AuthIdType authType = view_as<AuthIdType>(GetConVarInt(g_hCvarsList.CVAR_ROUNDEND_AUTHID_TYPE));
+
     for(int player = 1; player <= MaxClients; player++)
     {
         if(!IsClientInGame(player) || (IsFakeClient(player) && !IsClientSourceTV(player)))
@@ -306,7 +308,7 @@ void RoundEndDisplayStats()
         FormatEx(sPlayerID, sizeof(sPlayerID), "%d", GetClientUserId(player));
         FormatEx(sPlayerName, sizeof(sPlayerName), "\"%N\"", player);
 
-        if(!GetClientAuthId(player, AuthId_Steam2, sPlayerAuth, sizeof(sPlayerAuth)))
+        if(!GetClientAuthId(player, authType, sPlayerAuth, sizeof(sPlayerAuth)))
             FormatEx(sPlayerAuth, sizeof(sPlayerAuth), "STEAM_ID_PENDING");
 
         if(IsPlayerAlive(player))

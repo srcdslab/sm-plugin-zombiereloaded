@@ -163,6 +163,7 @@ Find all cvars details on [online docs](https://srcdslab.github.io/sm-plugin-zom
 - zr_roundend_overlays_zombie       - "overlays/zr/zombies_win -            Overlay, relative to \"materials\" folder, to display when zombies win the round. [Dependency: zr_roundend_overlay]
 - zr_roundend_balance_teams         - "1" -                                 Balances the team every time the round ends. Disable this if you use something else to balance teams.
 - zr_roundend_zombies_win           - "1" -                                 Should zombies win if roundtime runs out.
+- zr_roundend_authid_type           - "1" -                                 AuthID type used [0 = Engine, 1 = Steam2, 2 = Steam3, 3 = Steam64]
 - zr_account_cashfill               - "1" -                                 Reset player's cash each spawn.
 - zr_account_cashfill_value         - "12000" -                             Amount of cash to set player's account to. [Dependency: zr_account_cashfill]
 - zr_account_cashdmg                - "0" -                                 Attacker receives amount of cash equivalent to the damage that was inflicted.
