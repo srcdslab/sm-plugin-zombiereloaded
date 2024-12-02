@@ -100,6 +100,8 @@ void ZMarketLoad()
 
     char zmarketcommand[CONFIG_MAX_LENGTH];
     char weaponname[WEAPONS_MAX_LENGTH];
+    char commands[8][32];
+    int count;
 
     int size = GetArraySize(arrayWeapons);
     for (int weaponindex = 0; weaponindex < size; weaponindex++)
@@ -111,21 +113,22 @@ void ZMarketLoad()
 
             if (FindCharInString(zmarketcommand, ',') != -1)
             {
-                char commands[8][32];
-                int count = ExplodeString(zmarketcommand, ",", commands, sizeof(commands), sizeof(commands[]));
-
-                for (int i = 0; i < count; i++)
-                {
-                    TrimString(commands[i]);
-                    if (strlen(commands[i]) > 0)
-                    {
-                        RegConsoleCmd(commands[i], ZMarketBuyCommand, weaponname);
-                    }
-                }
+                count = ExplodeString(zmarketcommand, ",", commands, sizeof(commands), sizeof(commands[]));
             }
             else
             {
-                RegConsoleCmd(zmarketcommand, ZMarketBuyCommand, weaponname);
+                count = 1;
+                strcopy(commands[0], sizeof(commands[]), zmarketcommand);
+            }
+
+            // Register each command
+            for (int i = 0; i < count; i++)
+            {
+                TrimString(commands[i]);
+                if (strlen(commands[i]) > 0)
+                {
+                    RegConsoleCmd(commands[i], ZMarketBuyCommand, weaponname);
+                }
             }
         }
     }
@@ -139,6 +142,8 @@ public Action ZMarketBuyCommand(int client, int argc)
     char command[CONFIG_MAX_LENGTH];
     char zmarketcommand[CONFIG_MAX_LENGTH];
     char weaponname[WEAPONS_MAX_LENGTH];
+    char commands[8][32];
+    int count;
 
     GetCmdArg(0, command, sizeof(command));
 
@@ -153,27 +158,26 @@ public Action ZMarketBuyCommand(int client, int argc)
     {
         WeaponsGetZMarketCommand(weaponindex, zmarketcommand, sizeof(zmarketcommand));
 
-        // Split the commands and check each one
-        char commands[8][32];
-        int count = ExplodeString(zmarketcommand, ",", commands, sizeof(commands), sizeof(commands[]));
+        if (FindCharInString(zmarketcommand, ',') != -1)
+        {
+            count = ExplodeString(zmarketcommand, ",", commands, sizeof(commands), sizeof(commands[]));
+        }
+        else
+        {
+            count = 1;
+            strcopy(commands[0], sizeof(commands[]), zmarketcommand);
+        }
 
+        // Check each command
         for (int i = 0; i < count; i++)
         {
             TrimString(commands[i]);
-            if (strcmp(command, commands[i], false) == 0)
+            if (strlen(commands[i]) > 0 && strcmp(command, commands[i], false) == 0)
             {
                 WeaponsGetName(weaponindex, weaponname, sizeof(weaponname));
                 ZMarketEquip(client, weaponname);
                 return Plugin_Handled;
             }
-        }
-
-        // Also check for single command case
-        if (strcmp(command, zmarketcommand, false) == 0)
-        {
-            WeaponsGetName(weaponindex, weaponname, sizeof(weaponname));
-            ZMarketEquip(client, weaponname);
-            return Plugin_Handled;
         }
     }
 
