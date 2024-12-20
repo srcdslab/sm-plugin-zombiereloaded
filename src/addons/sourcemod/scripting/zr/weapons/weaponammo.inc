@@ -72,12 +72,6 @@ enum WeaponAmmoGrenadeType
     GrenadeType_HEGrenade           = 11,   /** CSS - HEGrenade slot */
     GrenadeType_Flashbang           = 12,   /** CSS - Flashbang slot. */
     GrenadeType_Smokegrenade        = 13,   /** CSS - Smokegrenade slot. */
-    GrenadeType_HEGrenadeCSGO       = 14,   /** CSGO - HEGrenade slot. */
-    GrenadeType_FlashbangCSGO       = 15,   /** CSGO - Flashbang slot. */
-    GrenadeType_SmokegrenadeCSGO    = 16,   /** CSGO - Smokegrenade slot. */
-    GrenadeType_Incendiary          = 17,   /** CSGO - Incendiary and Molotov slot. */
-    GrenadeType_Decoy               = 18,   /** CSGO - Decoy slot. */
-    GrenadeType_Tactical            = 22,   /** CSGO - Tactical slot. */
 }
 
 /**
@@ -200,40 +194,15 @@ stock WeaponAmmoGrenadeType WeaponAmmoEntityToGrenadeType(const char[] weaponent
 {
     if (strcmp(weaponentity, "weapon_hegrenade", false) == 0)
     {
-        if (g_Game == Game_CSGO)
-            return GrenadeType_HEGrenadeCSGO;
-        else
-            return GrenadeType_HEGrenade;
+        return GrenadeType_HEGrenade;
     }
     else if (strcmp(weaponentity, "weapon_flashbang", false) == 0)
     {
-        if (g_Game == Game_CSGO)
-            return GrenadeType_FlashbangCSGO;
-        else
-            return GrenadeType_Flashbang;
+        return GrenadeType_Flashbang;
     }
     else if (strcmp(weaponentity, "weapon_smokegrenade", false) == 0)
     {
-        if (g_Game == Game_CSGO)
-            return GrenadeType_SmokegrenadeCSGO;
-        else
-            return GrenadeType_Smokegrenade;
-    }
-    else if (strcmp(weaponentity, "weapon_molotov", false) == 0)
-    {
-        return GrenadeType_Incendiary;
-    }
-    else if (strcmp(weaponentity, "weapon_incgrenade", false) == 0)
-    {
-        return GrenadeType_Incendiary;
-    }
-    else if (strcmp(weaponentity, "weapon_decoy", false) == 0)
-    {
-        return GrenadeType_Decoy;
-    }
-    else if (strcmp(weaponentity, "weapon_tagrenade", false) == 0)
-    {
-        return GrenadeType_Tactical;
+        return GrenadeType_Smokegrenade;
     }
 
     return GrenadeType_Invalid;
@@ -249,7 +218,7 @@ stock int WeaponAmmoGetGrenadeLimit(WeaponAmmoGrenadeType grenadetype)
 {
     switch(grenadetype)
     {
-        case GrenadeType_HEGrenade, GrenadeType_HEGrenadeCSGO:
+        case GrenadeType_HEGrenade:
         {
             // Attempt to find a cvar provided by an outside plugin.
             Handle gplimit = FindConVar(GRENADE_PACK_CVAR_LIMIT);
@@ -257,25 +226,13 @@ stock int WeaponAmmoGetGrenadeLimit(WeaponAmmoGrenadeType grenadetype)
             // If Grenade Pack is loaded and the cvar was found, then get the value of the outside cvar, if not return CS:S default.
             return (g_bGrenadePack && gplimit != INVALID_HANDLE) ? GetConVarInt(gplimit) : WEAPONAMMO_HEGRENADE_LIMIT;
         }
-        case GrenadeType_Flashbang, GrenadeType_FlashbangCSGO:
+        case GrenadeType_Flashbang:
         {
             return WEAPONAMMO_FLASHBANG_LIMIT;
         }
-        case GrenadeType_Smokegrenade, GrenadeType_SmokegrenadeCSGO:
+        case GrenadeType_Smokegrenade:
         {
             return WEAPONAMMO_SMOKEGRENADE_LIMIT;
-        }
-        case GrenadeType_Incendiary:
-        {
-            return WEAPONAMMO_INCENDIARY_LIMIT;
-        }
-        case GrenadeType_Decoy:
-        {
-            return WEAPONAMMO_DECOY_LIMIT;
-        }
-        case GrenadeType_Tactical:
-        {
-            return WEAPONAMMO_TACTICAL_LIMIT;
         }
     }
 

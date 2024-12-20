@@ -41,39 +41,6 @@
 /**
  * @section All round end reasons.
  */
-enum e_RoundEndReason_CSGO
-{
-    /*
-    NOTE/WARNING: these enum values are stored in demo files,
-    they are explicitly numbered for consistency and editing,
-    do not renumber existing elements, always add new elements
-    with different numeric values!
-    */
-    Invalid_Round_End_Reason_CSGO = -1,
-    RoundEndReason_StillInProgress_CSGO,
-    Target_Bombed_CSGO,                      // Target Successfully Bombed!
-    VIP_Escaped_CSGO,						// The VIP has escaped!
-    VIP_Assassinated_CSGO,                   // VIP has been assassinated!
-    Terrorists_Escaped_CSGO,                 // The terrorists have escaped!
-    CTs_PreventEscape_CSGO,                  // The CT's have prevented most of the terrorists from escaping!
-    Escaping_Terrorists_Neutralized_CSGO,    // Escaping terrorists have all been neutralized!
-    Bomb_Defused_CSGO,                       // The bomb has been defused!
-    CTs_Win_CSGO,                            // Counter-Terrorists Win!
-    Terrorists_Win_CSGO,                     // Terrorists Win!
-    Round_Draw_CSGO,                         // Round Draw!
-    All_Hostages_Rescued_CSGO,               // All Hostages have been rescued!
-    Target_Saved_CSGO,                       // Target has been saved!
-    Hostages_Not_Rescued_CSGO,               // Hostages have not been rescued!
-    Terrorists_Not_Escaped_CSGO,             // Terrorists have not escaped!
-    VIP_Not_Escaped_CSGO,                    // VIP has not escaped!
-    Game_Commencing_CSGO,                    // Game Commencing!
-    Terrorists_Surrender_CSGO,
-    CTs_Surrender_CSGO,
-    Terrorists_Planted_CSGO,
-    CTs_ReachedHostage_CSGO,
-    RoundEndReason_Count_CSGO
-};
-
 enum e_RoundEndReason
 {
     Invalid_Round_End_Reason = -1,
@@ -223,14 +190,6 @@ void RoundEndOnRoundFreezeEnd()
     // Convert to seconds.
     roundtime *= 60.0;
 
-    // Subtract one second if running CS: GO to prevent round draw when round
-    // ends. For some reason the timing doesn't match the actual round end.
-    // Thanks to Jargon.
-    if (g_Game == Game_CSGO)
-    {
-        roundtime--;
-    }
-
     // Start timer.
     g_tRoundEnd = CreateTimer(roundtime, RoundEndTimer, _, TIMER_FLAG_NO_MAPCHANGE);
 }
@@ -349,13 +308,11 @@ void RoundEndDisplayStats()
 RoundEndOutcome RoundEndReasonToOutcome(int reason)
 {
     // CTs won the round.
-    if ((g_Game != Game_CSGO && view_as<e_RoundEndReason>(reason) == CTs_Win)
-    || (g_Game == Game_CSGO && view_as<e_RoundEndReason_CSGO>(reason) == CTs_Win_CSGO))
+    if (view_as<e_RoundEndReason>(reason) == CTs_Win)
         return HumansWin;
 
     // Ts won the round.
-    if ((g_Game != Game_CSGO && view_as<e_RoundEndReason>(reason) == Terrorists_Win)
-    || (g_Game == Game_CSGO && view_as<e_RoundEndReason_CSGO>(reason) == Terrorists_Win_CSGO))
+    if (view_as<e_RoundEndReason>(reason) == Terrorists_Win)
         return ZombiesWin;
 
     return HumansWin;

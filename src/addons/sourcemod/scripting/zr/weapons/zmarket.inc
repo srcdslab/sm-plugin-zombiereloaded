@@ -605,7 +605,7 @@ void ZMarketMenuLoadoutWeapons(int client, WeaponsSlot slot)
         if(wslot != slot)
             continue;
 
-        WeaponsGetName(weaponindex, weaponname, sizeof(weaponname), (g_Game == Game_CSGO));
+        WeaponsGetName(weaponindex, weaponname, sizeof(weaponname));
 
         // Get restricted status on the weapon.
         bool restricted = RestrictIsWeaponRestricted(weaponindex);
@@ -799,7 +799,7 @@ void ZMarketMenuTypeWeapons(int client)
         int weaponindex = GetArrayCell(arrayTypeWeapons, x);
 
         // Get name of weapon.
-        WeaponsGetName(weaponindex, typeweapon, sizeof(typeweapon), (g_Game == Game_CSGO));
+        WeaponsGetName(weaponindex, typeweapon, sizeof(typeweapon));
 
         // Get entity name of weapon.
         WeaponsGetEntity(weaponindex, typeweaponentity, sizeof(typeweaponentity));
@@ -1039,7 +1039,7 @@ stock bool ZMarketEquip(int client, const char[] weapon, bool rebuy = false)
 
     // Get the display name for the weapon.
     char weapondisplay[WEAPONS_MAX_LENGTH];
-    WeaponsGetName(weaponindex, weapondisplay, sizeof(weapondisplay), (g_Game == Game_CSGO));
+    WeaponsGetName(weaponindex, weapondisplay, sizeof(weapondisplay));
 
     // Check to make sure the weapon isn't restricted.
     bool restricted = RestrictIsWeaponRestricted(weaponindex);
@@ -1408,15 +1408,6 @@ void ZMarketRebuy(int client, bool autorebuy = false)
 
         if (!RestrictIsWeaponRestricted(WeaponsNameToIndex("Smokegrenade")))
             ZMarketEquip(client, "Smokegrenade", autorebuy);
-
-        if (g_Game == Game_CSGO)
-        {
-            if (!RestrictIsWeaponRestricted(WeaponsNameToIndex("Healthshot")))
-                ZMarketEquip(client, "Healthshot", autorebuy);
-
-            if (!RestrictIsWeaponRestricted(WeaponsNameToIndex("TAGrenade")))
-                ZMarketEquip(client, "TAGrenade", autorebuy);
-        }
     }
 }
 

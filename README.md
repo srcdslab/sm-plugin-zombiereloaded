@@ -107,7 +107,6 @@ Find all cvars details on [online docs](https://srcdslab.github.io/sm-plugin-zom
 - zr_classes_human_select           - "1" -                                 Allow players to select human classes.
 - zr_classes_admin_select           - "1" -                                 Allow admins to select admin mode classes. (Not to be confused by admin-only classes!)
 - zr_classes_speed_method           - "prop" -                              Speed method to use when applying player speed. Do not touch this if you don't know what you're doing! [\"lmv\" = Lagged movement value | \"prop\" = Player speed property]
-- zr_classes_csgo_knockback_boost   - "1" -                                 CS: GO only: Applies an upwards boost if necessary as a workaround for low knock back when standing on the ground. Side effects: Weaker and flying zombies (compensate with lower knock back).
 - zr_classes_menu_autoclose         - "1" -                                 Automatically close class selection menu after selecting a class.
 - zr_classes_overlay_toggle         - "1" -                                 Allow players to toggle class overlay.
 - zr_classes_overlay_togglecmds     - "nightvision" -                       List of commands to hook that players can use to toggle class overlay. [Dependency: zr_classes_overlay_toggle | Delimiter: \",\"]

@@ -160,9 +160,6 @@ void RestrictOnClientSpawn(int client)
     // H4x.  Unfortunately I can't disable this flag early enough for CS:S to give start USP/Glock.
     // So I have to give BOOTLEG weapons.  (Sorry Valve)
 
-    // CS:GO TODO: Move this into separate functions for CS:S and CS:GO. And
-    //             call the correct function.
-
     if (g_bRestrictBlockWeapon[client])
     {
         // Reset block weapons flag.
@@ -170,17 +167,11 @@ void RestrictOnClientSpawn(int client)
 
         if (ZRIsClientOnTeam(client, CS_TEAM_T))
         {
-            if (g_Game == Game_CSGO)
-                GivePlayerItem(client, WEAPONS_SPAWN_CSGO_T_WEAPON);
-            else
-                GivePlayerItem(client, WEAPONS_SPAWN_CSS_T_WEAPON);
+             GivePlayerItem(client, WEAPONS_SPAWN_CSS_T_WEAPON);
         }
         else if (ZRIsClientOnTeam(client, CS_TEAM_CT))
         {
-            if (g_Game == Game_CSGO)
-                GivePlayerItem(client, WEAPONS_SPAWN_CSGO_CT_WEAPON);
-            else
-                GivePlayerItem(client, WEAPONS_SPAWN_CSS_CT_WEAPON);
+            GivePlayerItem(client, WEAPONS_SPAWN_CSS_CT_WEAPON);
         }
     }
 }
