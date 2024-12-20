@@ -40,8 +40,6 @@
  */
 #define WEAPONS_SPAWN_CSS_T_WEAPON "weapon_glock"
 #define WEAPONS_SPAWN_CSS_CT_WEAPON "weapon_usp"
-#define WEAPONS_SPAWN_CSGO_T_WEAPON "weapon_glock"
-#define WEAPONS_SPAWN_CSGO_CT_WEAPON "weapon_hkp2000"
 /**
  * @endsection
  */
@@ -93,7 +91,6 @@ enum WeaponsSlot
     Slot_Projectile     = 3,    /** Projectile (grenades, flashbangs, etc) weapon slot. */
     Slot_Explosive      = 4,    /** Explosive (c4) weapon slot. */
     Slot_NVGs           = 5,    /** NVGs (fake) equipment slot. */
-    Slot_DangerZone     = 11,   /** Dangerzone equipment slot. (CSGO only) */
     Slot_MAXSIZE
 }
 
@@ -478,7 +475,7 @@ stock int WeaponsEntityToDisplay(const char[] entityname, char[] display, int di
         }
 
         // The entity names match, so return display.
-        WeaponsGetName(x, display, displaymaxlen, (g_Game == Game_CSGO));
+        WeaponsGetName(x, display, displaymaxlen, (g_Game != Game_CSS));
 
         // Return the weapon index.
         return x;
@@ -933,13 +930,6 @@ stock void WeaponsRemoveAllClientWeapons(int client, bool weaponsdrop)
 
     // Remove left-over explosives.
     WeaponsClearClientWeaponSlot(client, Slot_Explosive, weaponsdrop);
-
-    // These only exist on CSGO.
-    if (g_Game == Game_CSGO)
-    {
-        // Remove left-over dangerzone items.
-        WeaponsClearClientWeaponSlot(client, Slot_DangerZone, false);
-    }
 
     // Give zombie a new knife. (If you leave the old one there will be glitches with the knife positioning)
     GivePlayerItem(client, "weapon_knife");
