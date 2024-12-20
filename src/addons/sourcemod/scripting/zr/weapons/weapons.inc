@@ -475,7 +475,7 @@ stock int WeaponsEntityToDisplay(const char[] entityname, char[] display, int di
         }
 
         // The entity names match, so return display.
-        WeaponsGetName(x, display, displaymaxlen, (g_Game != Game_CSS));
+        WeaponsGetName(x, display, displaymaxlen);
 
         // Return the weapon index.
         return x;
@@ -501,7 +501,7 @@ stock bool WeaponsIsWeaponValid(const char[] weapon)
  * @param weapon    The string to return name in.
  * @param maxlen    The max length of the string.
  */
-stock void WeaponsGetName(int index, char[] weapon, int maxlen, bool zmarket = false)
+stock void WeaponsGetName(int index, char[] weapon, int maxlen)
 {
     // Get array handle of weapon at given index.
     Handle arrayWeapon = GetArrayCell(arrayWeapons, index);
@@ -512,15 +512,7 @@ stock void WeaponsGetName(int index, char[] weapon, int maxlen, bool zmarket = f
     // Get weapon name.
     GetArrayString(arrayWeapon, view_as<int>(WEAPONS_DATA_NAME), weaponName, maxlen);
 
-    // Get weapon zmarket name.
-    if (zmarket)
-        GetArrayString(arrayWeapon, view_as<int>(WEAPONS_DATA_ZMARKETNAME), marketName, maxlen);
-
-    // Are we in zmarket, and is our name valid?
-    if (zmarket && strlen(marketName))
-        strcopy(weapon, maxlen, marketName);
-    else
-        strcopy(weapon, maxlen, weaponName);
+    strcopy(weapon, maxlen, weaponName);
 }
 
 /**
