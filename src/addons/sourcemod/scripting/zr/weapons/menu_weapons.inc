@@ -241,7 +241,7 @@ void WeaponsMenuTypeWeapons(int client)
         int weaponindex = GetArrayCell(arrayTypeWeapons, x);
 
         // Get name of weapon.
-        WeaponsGetName(weaponindex, typeweapon, sizeof(typeweapon), (g_Game == Game_CSGO));
+        WeaponsGetName(weaponindex, typeweapon, sizeof(typeweapon));
         strcopy(display, sizeof(display), typeweapon);
 
         if (RestrictIsWeaponRestricted(weaponindex))

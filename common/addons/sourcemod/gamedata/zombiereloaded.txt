@@ -1,16 +1,5 @@
 "Games"
 {
-	"csgo"
-	{
-		"Offsets"
-		{
-			"m_LastHitGroup"
-			{
-				"windows"	"1820"
-				"linux"		"1821"
-			}
-		}
-	}
 	"cstrike"
 	{
 		"Offsets"

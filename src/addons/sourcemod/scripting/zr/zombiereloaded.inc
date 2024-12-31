@@ -65,8 +65,7 @@ bool g_bRoundFullyStarted;
 enum Game
 {
     Game_Unknown = -1,
-    Game_CSS,
-    Game_CSGO
+    Game_CSS
 }
 
 /**
@@ -87,12 +86,6 @@ void UpdateGameFolder()
     {
         g_Game = Game_CSS;
         PrintToServer("Game detected: cstrike");
-        return;
-    }
-    else if (strcmp(gameFolder, "csgo", false) == 0)
-    {
-        g_Game = Game_CSGO;
-        PrintToServer("Game detected: csgo");
         return;
     }
 

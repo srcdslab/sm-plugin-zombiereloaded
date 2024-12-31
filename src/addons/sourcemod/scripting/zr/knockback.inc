@@ -33,12 +33,6 @@ float g_fKnockbackVectors[MAXPLAYERS + 1][3];
 float g_fKnockbackVelLimit[MAXPLAYERS + 1] = {-1.0, ...};
 
 /**
- * Minimum upwards boost that is required to push zombies off the ground.
- */
-#define CSGO_KNOCKBACK_BOOST        251.0
-#define CSGO_KNOCKBACK_BOOST_MAX    350.0
-
-/**
  * Client is joining the server.
  *
  * @param client    The client index.
@@ -260,26 +254,6 @@ void KnockbackSetVelocity(int client, const float startpoint[3], const float end
 
 void KnockbackApplyVector(int client, float vector[3], bool limitvel)
 {
-    // CS GO workaround. Apply knock back boost if enabled.
-    if (g_Game == Game_CSGO && GetConVarBool(g_hCvarsList.CVAR_CLASSES_CSGO_KNOCKBACK_BOOST))
-    {
-        int flags = GetEntityFlags(client);
-        float velocity[3];
-        ToolsGetClientVelocity(client, velocity);
-
-        // Remove boost if current velocity is too high.
-        if (velocity[2] > CSGO_KNOCKBACK_BOOST_MAX)
-        {
-            // Don't add extra boost.
-            vector[2] = 0.0;
-        }
-        else if (flags & FL_ONGROUND && vector[2] < CSGO_KNOCKBACK_BOOST)
-        {
-            // Apply minimum boost required to push player off the ground.
-            vector[2] = CSGO_KNOCKBACK_BOOST;
-        }
-    }
-
     // Get their current velocity.
     float velocity[3];
     ToolsGetClientVelocity(client, velocity);
