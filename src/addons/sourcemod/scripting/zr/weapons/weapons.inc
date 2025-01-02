@@ -507,7 +507,6 @@ stock void WeaponsGetName(int index, char[] weapon, int maxlen)
     Handle arrayWeapon = GetArrayCell(arrayWeapons, index);
 
     char weaponName[WEAPONS_MAX_LENGTH];
-    char marketName[WEAPONS_MAX_LENGTH];
 
     // Get weapon name.
     GetArrayString(arrayWeapon, view_as<int>(WEAPONS_DATA_NAME), weaponName, maxlen);
