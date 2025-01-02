@@ -32,7 +32,6 @@
 #include <sdktools>
 #include <clientprefs>
 #include <cstrike>
-#tryinclude <multicolors>
 #define INCLUDED_BY_ZOMBIERELOADED
 #include <zombiereloaded>
 #undef INCLUDED_BY_ZOMBIERELOADED
@@ -45,7 +44,7 @@
 
 #include <sdkhooks>
 
-#define VERSION "3.10.15"
+#define VERSION "3.10.16"
 
 // Comment this line to exclude version info command. Enable this if you have
 // the repository and HG installed (Mercurial or TortoiseHG).
