@@ -40,16 +40,6 @@
 #define TRANSLATION_PHRASE_PREFIX "[ZR]"
 
 /**
- * @section Text color chars.
- */
-#define TRANSLATION_TEXT_COLOR_DEFAULT "\x01"
-#define TRANSLATION_TEXT_COLOR_LGREEN "\x03"
-#define TRANSLATION_TEXT_COLOR_GREEN "\x04"
-/**
- * @endsection
- */
-
-/**
  * Load translations file here.
  */
 void TranslationInit()
@@ -88,17 +78,12 @@ stock void TranslationPluginFormatString(char[] text, int maxlen, bool color = t
     if (color)
     {
         // Format prefix onto the string.
-        Format(text, maxlen, "@green%s @default%s", TRANSLATION_PHRASE_PREFIX, text);
+        Format(text, maxlen, "{green}%s {default}%s", TRANSLATION_PHRASE_PREFIX, text);
 
-        // Replace color tokens with CS:S color chars.
-        ReplaceString(text, maxlen, "@default", TRANSLATION_TEXT_COLOR_DEFAULT);
-        ReplaceString(text, maxlen, "@lgreen", TRANSLATION_TEXT_COLOR_LGREEN);
-        ReplaceString(text, maxlen, "@green", TRANSLATION_TEXT_COLOR_GREEN);
-
-        // Backwards compatibility with multicolors.inc
-        ReplaceString(text, maxlen, "{default}", TRANSLATION_TEXT_COLOR_DEFAULT);
-        ReplaceString(text, maxlen, "{lightgreen}", TRANSLATION_TEXT_COLOR_LGREEN);
-        ReplaceString(text, maxlen, "{green}", TRANSLATION_TEXT_COLOR_GREEN);
+        // Backwards compatibility with old color codes.
+        ReplaceString(text, maxlen, "@default", "{default}");
+        ReplaceString(text, maxlen, "@lgreen", "{lightgreen}");
+        ReplaceString(text, maxlen, "@green", "{green}");
 
         return;
     }
@@ -126,7 +111,7 @@ stock void TranslationPrintToChat(int client, any ...)
     TranslationPluginFormatString(translation, sizeof(translation));
 
     // Print translated phrase to client.
-    PrintToChat(client, translation);
+    CPrintToChat(client, translation);
 }
 
 /**
@@ -180,7 +165,7 @@ stock void TranslationPrintToChatAll(bool server, bool admin, any ...)
         TranslationPluginFormatString(translation, sizeof(translation));
 
         // Print translated phrase to client.
-        PrintToChat(x, translation);
+        CPrintToChat(x, translation);
     }
 }
 
@@ -241,7 +226,7 @@ stock void TranslationPrintToChatAllExcept(bool server, bool admin, int client, 
         TranslationPluginFormatString(translation, sizeof(translation));
 
         // Print translated phrase to client.
-        PrintToChat(x, translation);
+        CPrintToChat(x, translation);
     }
 }
 
