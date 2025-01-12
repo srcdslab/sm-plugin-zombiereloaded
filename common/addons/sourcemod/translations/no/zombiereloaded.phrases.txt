@@ -6,7 +6,7 @@
 
 	"General round objective"
 	{
-		"no"		"Spillet går ut på at @greenmennesker og zombier@default kjemper mot hverandre. Målet for zombiene er å infisere alle med kniven."
+		"no"		"Spillet går ut på at {green}mennesker og zombier{default} kjemper mot hverandre. Målet for zombiene er å infisere alle med kniven."
 	}
 
 	"General zmenu reminder"
@@ -208,7 +208,7 @@
 
 	"Classes random assignment"
 	{
-		"no"		"Du er blitt tilfeldig tildelt klassen @green\"{1}\"@default."
+		"no"		"Du er blitt tilfeldig tildelt klassen {green}\"{1}\"{default}."
 	}
 
 	// Center Text/HUD
@@ -419,42 +419,42 @@
 
 	"Infect command infect successful"
 	{
-		"no"		"@green{1}@default ble vellykket infisert."
+		"no"		"{green}{1}{default} ble vellykket infisert."
 	}
 
 	"Infect command infect successful public"
 	{
-		"no"		"@lgreen{1}@default has infected @green{2}@default." // TODO: Translate
+		"no"		"{lightgreen}{1}{default} has infected {green}{2}{default}." // TODO: Translate
 	}
 
 	"Infect command infect mother successful"
 	{
-		"no"		"@green{1}@default ble vellykket infisert som moderzombie."
+		"no"		"{green}{1}{default} ble vellykket infisert som moderzombie."
 	}
 
 	"Infect command infect mother successful public"
 	{
-		"no"		"@lgreen{1}@default has infected @green{2}@default as the mother zombie." // TODO: Translate
+		"no"		"{lightgreen}{1}{default} has infected {green}{2}{default} as the mother zombie." // TODO: Translate
 	}
 
 	"Infect command infect unsuccessful"
 	{
-		"no"		"@green{1}@default er allerede en zombie."
+		"no"		"{green}{1}{default} er allerede en zombie."
 	}
 
 	"Infect command human successful"
 	{
-		"no"		"@green{1}@default ble vellykket gjort om til et menneske."
+		"no"		"{green}{1}{default} ble vellykket gjort om til et menneske."
 	}
 
 	"Infect command human successful public"
 	{
-		"no"		"@lgreen{1}@default has brought back @green{2}@default as a human." // TODO: Translate
+		"no"		"{lightgreen}{1}{default} has brought back {green}{2}{default} as a human." // TODO: Translate
 	}
 
 	"Infect command human unsuccessful"
 	{
-		"no"		"@green{1}@default er allerede et menneske."
+		"no"		"{green}{1}{default} er allerede et menneske."
 	}
 
 	// ===========================
@@ -527,57 +527,57 @@
 
 	"Restrict weapon"
 	{
-		"no"		"Våpenet @green\"{1}\"@default ble sperret."
+		"no"		"Våpenet {green}\"{1}\"{default} ble sperret."
 	}
 
 	"Unrestrict weapon"
 	{
-		"no"		"Våpenet @green\"{1}\"@default er ikke lenger sperret."
+		"no"		"Våpenet {green}\"{1}\"{default} er ikke lenger sperret."
 	}
 
 	"Restrict weapon stopped"
 	{
-		"no"		"Våpenet @green\"{1}\"@default er allerede sperret."
+		"no"		"Våpenet {green}\"{1}\"{default} er allerede sperret."
 	}
 
 	"Unrestrict weapon stopped"
 	{
-		"no"		"Våpenet @green\"{1}\"@default er ikke sperret."
+		"no"		"Våpenet {green}\"{1}\"{default} er ikke sperret."
 	}
 
 	"Restrict weapon type"
 	{
-		"no"		"Våpentypen @green\"{1}\"@default er sperret."
+		"no"		"Våpentypen {green}\"{1}\"{default} er sperret."
 	}
 
 	"Unrestrict weapon type"
 	{
-		"no"		"Våpentypen @green\"{1}\"@default er ikke lenger sperret."
+		"no"		"Våpentypen {green}\"{1}\"{default} er ikke lenger sperret."
 	}
 
 	"Restrict weapon type stopped"
 	{
-		"no"		"Våpentypen @green\"{1}\"@default er allerede sperret."
+		"no"		"Våpentypen {green}\"{1}\"{default} er allerede sperret."
 	}
 
 	"Unrestrict weapon type stopped"
 	{
-		"no"		"Våpentypen @green\"{1}\"@default er ikke sperret."
+		"no"		"Våpentypen {green}\"{1}\"{default} er ikke sperret."
 	}
 
 	"Restrict weapon untoggleable"
 	{
-		"no"		"Våpenet @green\"{1}\"@default kan ikke sperres."
+		"no"		"Våpenet {green}\"{1}\"{default} kan ikke sperres."
 	}
 
 	"Weapon invalid"
 	{
-		"no"		"Våpenet eller våpentypen @green\"{1}\"@default er ugyldig."
+		"no"		"Våpenet eller våpentypen {green}\"{1}\"{default} er ugyldig."
 	}
 
 	"Weapon is restricted"
 	{
-		"no"		"Våpenet @green{1}@default er sperret."
+		"no"		"Våpenet {green}{1}{default} er sperret."
 	}
 
 	// ZMarket
@@ -589,12 +589,12 @@
 
 	"Weapons zmarket purchase"
 	{
-		"no"		"Du har kjøpt våpenet @green{1}@default. Velg gjenstanden igjen for å kjøpe mer ammunisjon."
+		"no"		"Du har kjøpt våpenet {green}{1}{default}. Velg gjenstanden igjen for å kjøpe mer ammunisjon."
 	}
 
 	"Weapons zmarket purchase max"
 	{
-		"no"		"Våpenet @green{1}@default har en kjøpegrense på @green{2}@default enheter. Vent til neste runde eller gjenoppliving."
+		"no"		"Våpenet {green}{1}{default} har en kjøpegrense på {green}{2}{default} enheter. Vent til neste runde eller gjenoppliving."
 	}
 
 	"Weapons zmarket grenade max"
@@ -979,7 +979,7 @@
 
 	"ZSpawn command force successful public"
 	{
-		"no"		"@lgreen{1}@default has spawned @green{2}@default as a @lgreen{3}@default." // TODO: Translate
+		"no"		"{lightgreen}{1}{default} has spawned {green}{2}{default} as a {lightgreen}{3}{default}." // TODO: Translate
 	}
 
 	"ZSpawn command force unsuccessful"

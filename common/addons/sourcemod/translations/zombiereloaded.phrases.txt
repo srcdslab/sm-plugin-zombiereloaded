@@ -6,7 +6,7 @@
 
 	"General round objective"
 	{
-		"en"		"The game is @greenHumans vs. Zombies@default, the goal for zombies is to infect all humans by knifing them."
+		"en"		"The game is {green}Humans vs. Zombies{default}, the goal for zombies is to infect all humans by knifing them."
 	}
 
 	"General zmenu reminder"
@@ -219,7 +219,7 @@
 	"Classes random assignment"
 	{
 		"#format"	"{1:s}"
-		"en"		"You have randomly been assigned to the @green\"{1}\"@default class."
+		"en"		"You have randomly been assigned to the {green}\"{1}\"{default} class."
 	}
 
 	// Center Text/HUD
@@ -438,49 +438,49 @@
 	"Infect command infect successful"
 	{
 		"#format"	"{1:s}"
-		"en"		"Successfully infected @green{1}@default."
+		"en"		"Successfully infected {green}{1}{default}."
 	}
 
 	"Infect command infect successful public"
 	{
 		"#format"	"{1:s},{2:s}"
-		"en"		"@lgreen{1}@default has infected @green{2}@default."
+		"en"		"{lightgreen}{1}{default} has infected {green}{2}{default}."
 	}
 
 	"Infect command infect mother successful"
 	{
 		"#format"	"{1:s}"
-		"en"		"Successfully infected @green{1}@default as the mother zombie."
+		"en"		"Successfully infected {green}{1}{default} as the mother zombie."
 	}
 
 	"Infect command infect mother successful public"
 	{
 		"#format"	"{1:s},{2:s}"
-		"en"		"@lgreen{1}@default has infected @green{2}@default as the mother zombie."
+		"en"		"{lightgreen}{1}{default} has infected {green}{2}{default} as the mother zombie."
 	}
 
 	"Infect command infect unsuccessful"
 	{
 		"#format"	"{1:s}"
-		"en"		"Could not infect @green{1}@default."
+		"en"		"Could not infect {green}{1}{default}."
 	}
 
 	"Infect command human successful"
 	{
 		"#format"	"{1:s}"
-		"en"		"Successfully brought back @green{1}@default to life."
+		"en"		"Successfully brought back {green}{1}{default} to life."
 	}
 
 	"Infect command human successful public"
 	{
 		"#format"	"{1:s},{2:s}"
-		"en"		"@lgreen{1}@default has brought back @green{2}@default to life."
+		"en"		"{lightgreen}{1}{default} has brought back {green}{2}{default} to life."
 	}
 
 	"Infect command human unsuccessful"
 	{
 		"#format"	"{1:s}"
-		"en"		"Could not bring back @green{1}@default to life."
+		"en"		"Could not bring back {green}{1}{default} to life."
 	}
 
 	// ===========================
@@ -560,67 +560,67 @@
 	"Restrict weapon"
 	{
 		"#format"	"{1:s}"
-		"en"		"Weapon @green\"{1}\"@default has been restricted."
+		"en"		"Weapon {green}\"{1}\"{default} has been restricted."
 	}
 
 	"Unrestrict weapon"
 	{
 		"#format"	"{1:s}"
-		"en"		"Weapon @green\"{1}\"@default has been unrestricted."
+		"en"		"Weapon {green}\"{1}\"{default} has been unrestricted."
 	}
 
 	"Restrict weapon stopped"
 	{
 		"#format"	"{1:s}"
-		"en"		"Weapon @green\"{1}\"@default is already restricted."
+		"en"		"Weapon {green}\"{1}\"{default} is already restricted."
 	}
 
 	"Unrestrict weapon stopped"
 	{
 		"#format"	"{1:s}"
-		"en"		"Weapon @green\"{1}\"@default has no restrictions set."
+		"en"		"Weapon {green}\"{1}\"{default} has no restrictions set."
 	}
 
 	"Restrict weapon type"
 	{
 		"#format"	"{1:s}"
-		"en"		"Weapons of type @green\"{1}\"@default have been restricted."
+		"en"		"Weapons of type {green}\"{1}\"{default} have been restricted."
 	}
 
 	"Unrestrict weapon type"
 	{
 		"#format"	"{1:s}"
-		"en"		"Weapons of type @green\"{1}\"@default have been unrestricted."
+		"en"		"Weapons of type {green}\"{1}\"{default} have been unrestricted."
 	}
 
 	"Restrict weapon type stopped"
 	{
 		"#format"	"{1:s}"
-		"en"		"Weapons of type @green\"{1}\"@default are all already restricted."
+		"en"		"Weapons of type {green}\"{1}\"{default} are all already restricted."
 	}
 
 	"Unrestrict weapon type stopped"
 	{
 		"#format"	"{1:s}"
-		"en"		"Weapons of type @green\"{1}\"@default have no restrictions set."
+		"en"		"Weapons of type {green}\"{1}\"{default} have no restrictions set."
 	}
 
 	"Restrict weapon untoggleable"
 	{
 		"#format"	"{1:s}"
-		"en"		"Weapon @green\"{1}\"@default may not have its restrictions toggled."
+		"en"		"Weapon {green}\"{1}\"{default} may not have its restrictions toggled."
 	}
 
 	"Weapon invalid"
 	{
 		"#format"	"{1:s}"
-		"en"		"Weapon @green\"{1}\"@default is an invalid weapon (type) name."
+		"en"		"Weapon {green}\"{1}\"{default} is an invalid weapon (type) name."
 	}
 
 	"Weapon is restricted"
 	{
 		"#format"	"{1:s}"
-		"en"		"Weapon @green{1}@default is restricted."
+		"en"		"Weapon {green}{1}{default} is restricted."
 	}
 
 	// ZMarket
@@ -633,13 +633,13 @@
 	"Weapons zmarket purchase"
 	{
 		"#format"	"{1:s}"
-		"en"		"You have purchased weapon @green{1}.@default Select item again to buy ammo if you are low."
+		"en"		"You have purchased weapon {green}{1}.{default} Select item again to buy ammo if you are low."
 	}
 
 	"Weapons zmarket purchase max"
 	{
 		"#format"	"{1:s},{2:d}"
-		"en"		"Weapon @green{1}@default has a purchase limit of @green{2}@default.  Wait until you respawn to try again."
+		"en"		"Weapon {green}{1}{default} has a purchase limit of {green}{2}{default}.  Wait until you respawn to try again."
 	}
 
 	"Weapons zmarket grenade max"
@@ -1040,19 +1040,19 @@
 	"ZSpawn command force successful"
 	{
 		"#format"	"{1:s}"
-		"en"		"Successfully spawned @lgreen{1}@default."
+		"en"		"Successfully spawned {lightgreen}{1}{default}."
 	}
 
 	"ZSpawn command force successful public"
 	{
 		"#format"	"{1:s},{2:s},{3:s}"
-		"en"		"@lgreen{1}@default has spawned @green{2}@default as @lgreen{3}@default."
+		"en"		"{lightgreen}{1}{default} has spawned {green}{2}{default} as {lightgreen}{3}{default}."
 	}
 
 	"ZSpawn command force unsuccessful"
 	{
 		"#format"	"{1:s}"
-		"en"		"Could not zspawn @lgreen{1}@default."
+		"en"		"Could not zspawn {lightgreen}{1}{default}."
 	}
 
 	// ===========================
@@ -1120,13 +1120,13 @@
 	"ZTele command force successful"
 	{
 		"#format"	"{1:s}"
-		"en"		"Successfully teleported @lgreen{1}@default."
+		"en"		"Successfully teleported {lightgreen}{1}{default}."
 	}
 
 	"ZTele command force unsuccessful"
 	{
 		"#format"	"{1:s}"
-		"en"		"Could not teleport @lgreen{1}@default."
+		"en"		"Could not teleport {lightgreen}{1}{default}."
 	}
 
 	// ===========================
@@ -1198,7 +1198,7 @@
 	"Set_Countdown_Volume"
 	{
 		"#format"	"{1:d}"
-		"en"		"Set Countdown Volume to @lgreen{1:d}%."
+		"en"		"Set Countdown Volume to {lightgreen}{1:d}%."
 	}
 
 	// Zombie Voice
@@ -1221,7 +1221,7 @@
 	"Set_ZombieVoice_Volume"
 	{
 		"#format"	"{1:d}"
-		"en"		"Set Zombie Voice Volume to @lgreen{1:d}%."
+		"en"		"Set Zombie Voice Volume to {lightgreen}{1:d}%."
 	}
 
 	// Ambient
@@ -1244,7 +1244,7 @@
 	"Set_Ambient_Volume"
 	{
 		"#format"	"{1:d}"
-		"en"		"Set Ambient Volume to @lgreen{1:d}%."
+		"en"		"Set Ambient Volume to {lightgreen}{1:d}%."
 	}
 
 	// ===========================
