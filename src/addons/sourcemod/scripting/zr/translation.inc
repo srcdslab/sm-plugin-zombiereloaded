@@ -438,5 +438,5 @@ stock void TranslationReplyToCommand(int client, any ...)
     }
 
     // Print translated phrase to server or client's chat/console.
-    ReplyToCommand(client, translation);
+    CReplyToCommand(client, translation);
 }
