@@ -243,6 +243,15 @@ bool ZTeleClient(int client, bool force = false)
 // TODO: This function is called externally, move to interface.
 void ZTele_TeleportClient(int client)
 {
+    // Trigger API forward.
+    Action result = APIOnClientZtelePre(client);
+
+    // Check if ztele should be stopped.
+    if (result == Plugin_Handled)
+    {
+        return;
+    }
+
     float resetSpeed[3] = {0.0, 0.0, 0.0};
     // Teleport client.
     if (ZTele_IsRandomSpawnEnabled() && g_iZTeleSpawnPointsCount)
@@ -254,6 +263,8 @@ void ZTele_TeleportClient(int client)
     {
         TeleportEntity(client, g_vecZTeleSpawn[client][0], g_vecZTeleSpawn[client][1], resetSpeed);
     }
+
+    APIOnClientZtelePost(client);
 }
 
 /**

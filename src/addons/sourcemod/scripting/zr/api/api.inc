@@ -46,6 +46,7 @@
 #include "class.api"
 #include "napalm.api"
 #include "knockback.api"
+#include "ztele.api"
 
 /**
  * Initializes all main natives and forwards.
@@ -58,6 +59,7 @@ void APIInit()
     APIClassInit();
     APINapalmInit();
     APIKnockbackInit();
+    APIZteleInit();
 }
 
 /**
