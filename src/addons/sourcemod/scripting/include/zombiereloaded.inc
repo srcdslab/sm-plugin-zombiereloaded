@@ -36,6 +36,7 @@
 #include <zr/class.zr>
 #include <zr/napalm.zr>
 #include <zr/knockback.zr>
+#include <zr/ztele.zr>
 
 public SharedPlugin __pl_zombiereloaded =
 {
@@ -73,5 +74,7 @@ public void __pl_zombiereloaded_SetNTVOptional()
     MarkNativeAsOptional("ZR_SetClientKnockbackScale");
     MarkNativeAsOptional("ZR_SetClientKnockbackMaxForce");
     MarkNativeAsOptional("ZR_SetClientKnockbackMaxVelocity");
+
+    MarkNativeAsOptional("ZR_ZteleClient");
 }
 #endif
