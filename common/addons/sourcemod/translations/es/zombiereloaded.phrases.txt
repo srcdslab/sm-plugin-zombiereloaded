@@ -78,7 +78,7 @@
 
 	"Must be in buyzone"
 	{
-		"es"		"This feature requires that you are in a buyzone." // TODO: Translate
+		"es"		"Esta función requiere que estés en una zona de compra."
 	}
 
 	"Increase by"
@@ -384,14 +384,14 @@
 
 	"Mother zombie infect cycle reset"
 	{
-		"es"		"The mother zombie infection cycle has been reset." // TODO: Translate
+		"es"		"El ciclo de infección del zombi madre ha sido reiniciado."
 	}
 
 	// Center Text
 
 	"Infect countdown"
 	{
-		"es"		"First infection in {1} seconds."
+		"es"		"Primera infección en {1} segundos."
 	}
 
 	// Menu
@@ -425,7 +425,7 @@
 
 	"Infect command infect successful public"
 	{
-		"es"		"{lightgreen}{1}{default} has infected {green}{2}{default}." // TODO: Translate
+		"es"		"{lightgreen}{1}{default} ha infectado a {green}{2}{default}."
 	}
 
 	"Infect command infect mother successful"
@@ -435,7 +435,7 @@
 
 	"Infect command infect mother successful public"
 	{
-		"es"		"{lightgreen}{1}{default} has infected {green}{2}{default} as the mother zombie." // TODO: Translate
+		"es"		"{lightgreen}{1}{default} ha infectado a {green}{2}{default} como el zombi madre."
 	}
 
 	"Infect command infect unsuccessful"
@@ -450,7 +450,7 @@
 
 	"Infect command human successful public"
 	{
-		"es"		"{lightgreen}{1}{default} has brought back {green}{2}{default} as a human." // TODO: Translate
+		"es"		"{lightgreen}{1}{default} ha devuelto a {green}{2}{default} como humano."
 	}
 
 	"Infect command human unsuccessful"
@@ -605,7 +605,7 @@
 
 	"Weapons zmarket not enough money"
 	{
-		"es"		"You have insufficient funds." // TODO: Translate
+		"es"		"No tienes suficiente dinero."
 	}
 
 	"Weapons zmarket updated loadout"
@@ -691,7 +691,7 @@
 
 	"Weapons menu zmarket main edit loadout"
 	{
-		"es"		"Edit Saved Setup" // TODO: Translate
+		"es"		"Editar configuración guardada"
 	}
 
 	"Weapons menu zmarket main rebuy"
@@ -723,12 +723,12 @@
 	"Weapons menu zmarket loadout default"
 	{
 		"#format"	"{1:s}"
-		"es"		"Default ({1})" // TODO: Translate
+		"es"		"Predeterminado ({1})"
 	}
 
 	"Weapons menu zmarket loadout weapons title"
 	{
-		"es"		"ZMarket\nSelect Weapon Loadout:" // TODO: Translate
+		"es"		"ZMarket\nSeleccionar configuración de armas:"
 	}
 
 	"Weapons menu zmarket types title"
@@ -979,7 +979,7 @@
 
 	"ZSpawn command force successful public"
 	{
-		"es"		"{lightgreen}{1}{default} has spawned {green}{2}{default} as a {lightgreen}{3}{default}." // TODO: Translate
+		"es"		"{lightgreen}{1}{default} ha reaparecido a {green}{2}{default} como {lightgreen}{3}{default}."
 	}
 
 	"ZSpawn command force unsuccessful"
