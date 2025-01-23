@@ -45,7 +45,9 @@
 
 #include <sdkhooks>
 
-#define VERSION "3.10.18"
+#define ZR_VER_MAJOR "3"
+#define ZR_VER_MINOR "11"
+#define VERSION "3.11.0"
 
 // Comment this line to exclude version info command. Enable this if you have
 // the repository and HG installed (Mercurial or TortoiseHG).
@@ -179,10 +181,27 @@ public void OnPluginStart()
 public void OnAllPluginsLoaded()
 {
     // Forward event to modules.
+    APIOnAllPluginsLoaded();
     RoundEndOnAllPluginsLoaded();
     WeaponsOnAllPluginsLoaded();
     ConfigOnAllPluginsLoaded();
     InfectOnAllPluginsLoaded();
+}
+
+/**
+ * The plugin status has changed.
+ */
+public void OnPluginPauseChange(bool pause)
+{
+    APIOnPluginStatusChanged(pause);
+}
+
+/**
+ * The plugin is unloading.
+ */
+public void OnPluginEnd()
+{
+	APIOnPluginEnd();
 }
 
 /**
