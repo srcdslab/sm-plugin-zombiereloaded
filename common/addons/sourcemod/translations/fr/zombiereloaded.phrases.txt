@@ -1,0 +1,1095 @@
+"Phrases"
+{
+	// ===========================
+	// General (base)
+	// ===========================
+
+	"General round objective"
+	{
+		"fr"		"Le jeu est {green}Humains vs. Zombies{default}. L'objectif des zombies est d'infecter tous les humains."
+	}
+
+	"General zmenu reminder"
+	{
+		"fr"		"Pour obtenir de l'aide sur les commandes de Zombie:Reloaded, tapez \"{1}{2}\" dans le chat."
+	}
+
+	// ===========================
+	// Generic (base)
+	// ===========================
+
+	// General
+
+	"Literal text"
+	{
+		"fr"		"{1}"
+	}
+
+	"Feature is disabled"
+	{
+		"fr"		"Cette fonctionnalité est désactivée par l'hôte du serveur."
+	}
+
+	"Not enough money"
+	{
+		"fr"		"Vous n'avez pas assez d'argent pour acheter cet article."
+	}
+
+	"Must be player"
+	{
+		"fr"		"Cette fonctionnalité est réservée aux joueurs."
+	}
+
+	"Must be admin"
+	{
+		"fr"		"Cette fonctionnalité est réservée aux administrateurs."
+	}
+
+	"No access to command"
+	{
+		"fr"		"Vous n'êtes pas autorisé à exécuter cette commande."
+	}
+
+	"Must be alive"
+	{
+		"fr"		"Cette fonctionnalité nécessite que vous soyez en vie."
+	}
+
+	"Must be dead"
+	{
+		"fr"		"Cette fonctionnalité nécessite que vous soyez mort."
+	}
+
+	"Must be on team"
+	{
+		"fr"		"Cette fonctionnalité nécessite que vous soyez dans une équipe."
+	}
+
+	"Must be zombie"
+	{
+		"fr"		"Cette fonctionnalité nécessite que vous soyez un zombie."
+	}
+
+	"Must be human"
+	{
+		"fr"		"Cette fonctionnalité nécessite que vous soyez un humain."
+	}
+
+	"Must be in buyzone"
+	{
+		"fr"		"Cette fonctionnalité nécessite que vous soyez dans une zone d'achat."
+	}
+
+	"Increase by"
+	{
+		"fr"		"Augmenté de {1}"
+	}
+
+	"Decrease by"
+	{
+		"fr"		"Diminué de {1}"
+	}
+
+	"Current Value"
+	{
+		"fr"		"Valeur actuelle :"
+	}
+
+	"Zombie"
+	{
+		"fr"		"Zombie"
+	}
+
+	"Human"
+	{
+		"fr"		"Humain"
+	}
+
+	// Menu
+
+	"Menu empty"
+	{
+		"fr"		"(Vide)"
+	}
+
+	// ===========================
+	// Config (core)
+	// ===========================
+
+	// Commands
+
+	"Config command reload syntax"
+	{
+		"fr"		"Synthaxe : zr_reloadconfig <fichier alias1> [fichier alias2] ... - Recharge un fichier de configuration."
+	}
+
+	"Config command reload related commands"
+	{
+		"fr"		"Commandes associées : zr_config_reloadall"
+	}
+
+	"Config command reload syntax aliases"
+	{
+		"fr"		"Alias de fichier :\n* \"{1}\"\n* \"{2}\"\n* \"{3}\"\n* \"{4}\"\n* \"{5}\""
+	}
+
+	"Config command reload invalid"
+	{
+		"fr"		"Alias de fichier invalide : \"{1}\""
+	}
+
+	"Config command reload not loaded"
+	{
+		"fr"		"Le fichier de configuration \"{1}\" n'a pas pu être chargé. (Contenu invalide ou désactivé.)"
+	}
+
+	"Config command reload all stats begin"
+	{
+		"fr"		"Rechargement de tous les fichiers de configuration de Zombie:Reloaded...\n------------------------------------------------"
+	}
+
+	"Config command reload all stats successful"
+	{
+		"fr"		"\"{1}\" - Succès."
+	}
+
+	"Config command reload all stats failed"
+	{
+		"fr"		"\"{1}\" - Échec. (Contenu invalide ou désactivé.)"
+	}
+
+	// ===========================
+	// Log (core)
+	// ===========================
+
+	"Log Generic Flag"
+	{
+		// Max length: 19 characters.
+		"fr"		"Indicateur générique :"
+	}
+
+	"Log Value"
+	{
+		// Max length: 7 characters:
+		"fr"		"Valeur :"
+	}
+
+	"Log Module"
+	{
+		// Max length: 23 characters:
+		"fr"		"Module :"
+	}
+
+	"Log Status"
+	{
+		"fr"		"Statut du filtre :"
+	}
+
+	"Log Module Filtering"
+	{
+		"fr"		"Filtrage du module :"
+	}
+
+	"Log Module Short Name"
+	{
+		"fr"		"Nom court :"
+	}
+
+	// ===========================
+	// Classes
+	// ===========================
+
+	// General
+
+	"Classes admin mode enabled"
+	{
+		"fr"		"Le mode administrateur est activé !"
+	}
+
+	"Classes random assignment"
+	{
+		"fr"		"Vous avez été assigné aléatoirement à la classe {green}\"{1}\"."
+	}
+
+	// Center Text/HUD
+
+	"Classes overlay toggle"
+	{
+		"fr"		"Commandes pour basculer l'overlay : {1}"
+	}
+
+	// Menu
+
+	"Classes menu title"
+	{
+		"fr"		"Sélection de classe :"
+	}
+
+	"Classes menu active"
+	{
+		"fr"		"Actif : {1}"
+	}
+
+	"Classes menu next"
+	{
+		"fr"		"Prochaine apparition : {1}"
+	}
+
+	"Classes menu select zombie"
+	{
+		"fr"		"Sélectionnez la classe de zombie"
+	}
+
+	"Classes menu select human"
+	{
+		"fr"		"Sélectionnez la classe d'humain"
+	}
+
+	"Classes menu select admin"
+	{
+		"fr"		"Sélectionnez la classe d'administrateur"
+	}
+
+	"Classes menu admin mode toggle"
+	{
+		"fr"		"Basculer le mode administrateur"
+	}
+
+	"Classes Menu Team Select Title"
+	{
+		"fr"		"Sélectionnez une équipe :"
+	}
+
+	"Classes Menu Zombies"
+	{
+		"fr"		"Zombies"
+	}
+
+	"Classes Menu Humans"
+	{
+		"fr"		"Humains"
+	}
+
+	"Classes Menu Multiplier Select Title"
+	{
+		"fr"		"Sélectionnez un multiplicateur :"
+	}
+
+	"Classes Menu Adjust Value"
+	{
+		"fr"		"Ajuster la valeur :"
+	}
+
+	// Attributes
+
+	"Classes Attrib Napalm Time"
+	{
+		"fr"		"Durée du napalm"
+	}
+
+	"Classes Attrib Health"
+	{
+		"fr"		"Santé"
+	}
+
+	"Classes Attrib Regen Interval"
+	{
+		"fr"		"Intervalle de régénération de santé"
+	}
+
+	"Classes Attrib Regen Amount"
+	{
+		"fr"		"Quantité de régénération de santé"
+	}
+
+	"Classes Attrib Infect Gain"
+	{
+		"fr"		"Gain de santé lors d'une infection"
+	}
+
+	"Classes Attrib Speed"
+	{
+		"fr"		"Vitesse de course"
+	}
+
+	"Classes Attrib Knockback"
+	{
+		"fr"		"Recul"
+	}
+
+	"Classes Attrib Jump Height"
+	{
+		"fr"		"Hauteur de saut"
+	}
+
+	"Classes Attrib Jump Distance"
+	{
+		"fr"		"Distance de saut"
+	}
+
+	"Classes Selection Not Allowed"
+	{
+		"fr"		"Le changement de classe n'est pas autorisé."
+	}
+
+	// ===========================
+	// Immunity
+	// ===========================
+
+	"Immunity Shield Not Available"
+	{
+		"fr"		"Vous n'avez pas de bouclier."
+	}
+
+	"Immunity Shield Cooldown"
+	{
+		"fr"		"{1} secondes avant que le bouclier ne soit disponible."
+	}
+
+	"Immunity Shield Time Left"
+	{
+		"fr"		"Temps restant avec le bouclier : {1}"
+	}
+
+	// ===========================
+	// Overlays (core)
+	// ===========================
+
+	"Overlays not supported"
+	{
+		"fr"		"Blocage des overlays - DX{1} détecté (DX{2} requis)."
+	}
+
+	// ===========================
+	// Infect (core)
+	// ===========================
+
+	// General
+
+	"Infect infected"
+	{
+		"fr"		"Vous avez été infecté ! Infectez autant d'humains que possible."
+	}
+
+	"Infect human"
+	{
+		"fr"		"Les dieux miséricordieux (connus sous le nom d'administrateurs) ont sauvé votre âme. Trouvez une cachette !"
+	}
+
+	"Infect disconnect"
+	{
+		"fr"		"Le dernier zombie a quitté la partie. Vous avez été choisi comme remplaçant."
+	}
+
+	"Mother zombie infect cycle reset"
+	{
+		"fr"		"Le cycle d'infection du zombie mère a été réinitialisé."
+	}
+
+	// Center Text
+
+	"Infect countdown"
+	{
+		"fr"		"Première infection dans {1} secondes."
+	}
+
+	// Menu
+
+	"Infect menu clients title"
+	{
+		"fr"		"Gestion des joueurs\nBasculer entre zombie et humain :\n[] = Infecté"
+	}
+
+	// Commands
+
+	"Infect command infect syntax"
+	{
+		"fr"		"Infecter un joueur. Syntaxe : zr_infect <cible> [téléportation - 1/0]"
+	}
+
+	"Infect command human syntax"
+	{
+		"fr"		"Transformer un joueur en humain. Syntaxe : zr_human <cible> [téléportation - 1/0] [protection - 1/0]"
+	}
+
+	"Infect command round not started"
+	{
+		"fr"		"Impossible d'effectuer l'infection. La manche n'a pas encore commencé."
+	}
+
+	"Infect command infect successful"
+	{
+		"fr"		"{green}{1}{default} a été infecté avec succès."
+	}
+
+	"Infect command infect successful public"
+	{
+		"fr"		"{lightgreen}{1}{default} a infecté {green}{2}{default}."
+	}
+
+	"Infect command infect mother successful"
+	{
+		"fr"		"{green}{1}{default} a été infecté avec succès en tant que zombie mère."
+	}
+
+	"Infect command infect mother successful public"
+	{
+		"fr"		"{lightgreen}{1}{default} a infecté {green}{2}{default} en tant que zombie mère."
+	}
+
+	"Infect command infect unsuccessful"
+	{
+		"fr"		"{green}{1}{default} est déjà un zombie."
+	}
+
+	"Infect command human successful"
+	{
+		"fr"		"{green}{1}{default} a été transformé en humain avec succès."
+	}
+
+	"Infect command human successful public"
+	{
+		"fr"		"{lightgreen}{1}{default} a ramené {green}{2}{default} en tant qu'humain."
+	}
+
+	"Infect command human unsuccessful"
+	{
+		"fr"		"{green}{1}{default} est déjà un humain."
+	}
+
+	// ===========================
+	// Damage (core)
+	// ===========================
+
+	"Damage suicide intercept"
+	{
+		"fr"		"Tentative de suicide empêchée."
+	}
+
+	// ===========================
+	// Menu (core)
+	// ===========================
+
+	// General
+
+	"Menu main title"
+	{
+		"fr"		"Commandes ZR :\nPréfixez la commande avec \"{1}\" ou \"{2}\" (masqué) dans le chat."
+	}
+
+	"Menu main zadmin"
+	{
+		"fr"		"ZAdmin - Ouvrir le menu d'administration"
+	}
+
+	"Menu main zclass"
+	{
+		"fr"		"ZClass - Modifier les paramètres de classe"
+	}
+
+	"Menu main zcookies"
+	{
+		"fr"		"ZCookies - Modifier vos paramètres enregistrés"
+	}
+
+	"Menu main zspawn"
+	{
+		"fr"		"ZSpawn - Rejoindre immédiatement la partie"
+	}
+
+	"Menu main ztele"
+	{
+		"fr"		"ZTele - Se téléporter au point de départ"
+	}
+
+	"Menu main zhp"
+	{
+		"fr"		"ZHP - Afficher votre niveau de santé actuel"
+	}
+
+	"Menu main zmarket"
+	{
+		"fr"		"ZMarket - Modifier les paramètres des armes"
+	}
+
+	// ===========================
+	// Weapons (core)
+	// ===========================
+
+	// General
+
+	"Zombie cant use weapon"
+	{
+		"fr"		"Les zombies ne peuvent pas utiliser d'armes."
+	}
+
+	// Restrict
+
+	"Restrict weapon"
+	{
+		"fr"		"L'arme {green}\"{1}\"{default} a été restreinte."
+	}
+
+	"Unrestrict weapon"
+	{
+		"fr"		"L'arme {green}\"{1}\"{default} n'est plus restreinte."
+	}
+
+	"Restrict weapon stopped"
+	{
+		"fr"		"L'arme {green}\"{1}\"{default} est déjà restreinte."
+	}
+
+	"Unrestrict weapon stopped"
+	{
+		"fr"		"L'arme {green}\"{1}\"{default} n'est pas restreinte."
+	}
+
+	"Restrict weapon type"
+	{
+		"fr"		"Le type d'arme {green}\"{1}\"{default} a été restreint."
+	}
+
+	"Unrestrict weapon type"
+	{
+		"fr"		"Le type d'arme {green}\"{1}\"{default} n'est plus restreint."
+	}
+
+	"Restrict weapon type stopped"
+	{
+		"fr"		"Le type d'arme {green}\"{1}\"{default} est déjà restreint."
+	}
+
+	"Unrestrict weapon type stopped"
+	{
+		"fr"		"Le type d'arme {green}\"{1}\"{default} n'est pas restreint."
+	}
+
+	"Restrict weapon untoggleable"
+	{
+		"fr"		"L'arme {green}\"{1}\"{default} ne peut pas être restreinte."
+	}
+
+	"Weapon invalid"
+	{
+		"fr"		"L'arme ou le type d'arme {green}\"{1}\"{default} est invalide."
+	}
+
+	"Weapon is restricted"
+	{
+		"fr"		"L'arme {green}{1}{default} est restreinte."
+	}
+
+	// ZMarket
+
+	"Weapons zmarket buyzone"
+	{
+		"fr"		"Vous devez être dans une zone d'achat pour utiliser ZMarket."
+	}
+
+	"Weapons zmarket purchase"
+	{
+		"fr"		"Vous avez acheté l'arme {green}{1}{default}. Sélectionnez à nouveau l'article pour acheter plus de munitions."
+	}
+
+	"Weapons zmarket purchase max"
+	{
+		"fr"		"L'arme {green}{1}{default} a une limite d'achat de {green}{2}{default} unités. Attendez la prochaine manche ou réapparition."
+	}
+
+	"Weapons zmarket grenade max"
+	{
+		"fr"		"Vous ne pouvez porter que {1} grenade(s) de ce type."
+	}
+
+	"Weapons zmarket not enough money"
+	{
+		"fr"		"Vous n'avez pas assez d'argent."
+	}
+
+	"Weapons zmarket updated loadout"
+	{
+		"fr"		"Vous ne pouvez pas acheter d'armes pour le moment, mais votre sélection a été mise à jour."
+	}
+
+	"Weapons zmarket get current loadout"
+	{
+		"fr"		"Sélection mise à jour. Utilisez l'option de rachat pour acheter ces armes à nouveau."
+	}
+
+	// Commands
+
+	"Weapons command restrict syntax"
+	{
+		"fr"		"Restreindre une arme ou un type d'arme. Syntaxe : zr_restrict <arme|type d'arme> [arme|type d'arme] ..."
+	}
+
+	"Weapons command unrestrict syntax"
+	{
+		"fr"		"Supprimer la restriction d'une arme ou d'un type d'arme. Syntaxe : zr_unrestrict <arme|type d'arme> [arme|type d'arme] ..."
+	}
+
+	// Menu (Restrict)
+
+	"Weapons menu restrict main title"
+	{
+		"fr"		"Gestion des armes"
+	}
+
+	"Weapons menu restrict main restrict"
+	{
+		"fr"		"Restrictions d'armes"
+	}
+
+	"Weapons menu restrict main market"
+	{
+		"fr"		"ZMarket"
+	}
+
+	"Weapons menu restrict types title"
+	{
+		"fr"		"Restrictions d'armes\nSélectionnez un type d'arme :"
+	}
+
+	"Weapons menu restrict types weapon type title"
+	{
+		"fr"		"Restrictions d'armes\nType d'arme : {1}\n[] = Restreint"
+	}
+
+	"Weapons menu restrict types restrict all"
+	{
+		"fr"		"Restreindre le type d'arme \"{1}\""
+	}
+
+	"Weapons menu restrict types unrestrict all"
+	{
+		"fr"		"Supprimer la restriction du type d'arme \"{1}\""
+	}
+
+	"Weapons menu restrict zmarket title"
+	{
+		"fr"		"ZMarket\nSélectionnez une option :"
+	}
+
+	"Weapons menu restrict zmarket buyzone"
+	{
+		"fr"		"Uniquement dans les zones d'achat - {1}"
+	}
+
+	// Menu (ZMarket)
+
+	"Weapons menu zmarket main title"
+	{
+		"fr"		"ZMarket"
+	}
+
+	"Weapons menu zmarket main get loadout"
+	{
+		"fr"		"Enregistrer la sélection actuelle"
+	}
+
+	"Weapons menu zmarket main edit loadout"
+	{
+		"fr"		"Modifier la configuration enregistrée"
+	}
+
+	"Weapons menu zmarket main rebuy"
+	{
+		"fr"		"Racheter la sélection enregistrée"
+	}
+
+	"Weapons menu zmarket main weapons list"
+	{
+		"fr"		"Afficher la liste des armes"
+	}
+
+	"Weapons menu zmarket loadout title"
+	{
+		"fr"		"ZMarket\nSélection actuelle :\nSupprimez une arme en la sélectionnant."
+	}
+
+	"Weapons menu zmarket loadout primary"
+	{
+		"fr"		"Arme principale : {1}"
+	}
+
+	"Weapons menu zmarket loadout secondary"
+	{
+		"fr"		"Arme secondaire : {1}"
+	}
+
+	"Weapons menu zmarket loadout default"
+	{
+		"#format"	"{1:s}"
+		"fr"		"Par défaut ({1})"
+	}
+
+	"Weapons menu zmarket loadout weapons title"
+	{
+		"fr"		"ZMarket\nSélectionnez une configuration d'arme :"
+	}
+
+	"Weapons menu zmarket types title"
+	{
+		"fr"		"ZMarket\nSélectionnez un type d'arme :"
+	}
+
+	"Weapons menu zmarket types weapon type title"
+	{
+		"fr"		"ZMarket\nType d'arme : {1}\n[] = Restreint"
+	}
+
+	"Weapons menu zmarket types weapon info"
+	{
+		"fr"		"{1} (${2})\nAchats restants : {3}"
+	}
+
+	"Weapons menu zmarket types weapon ammo"
+	{
+		"fr"		"Munitions"
+	}
+
+	// ===========================
+	// Hitgroups (core)
+	// ===========================
+
+	// Menu
+
+	"Hitgroups menu hitgroups title"
+	{
+		"fr"		"Gestion des groupes de dégâts\nCommandes : zr_hitgroup(_enable_all/_headshots_only)\nSélectionnez un groupe de dégâts à activer/désactiver :"
+	}
+
+	"Hitgroups menu hitgroups enable all"
+	{
+		"fr"		"Activer tous les groupes de dégâts"
+	}
+
+	"Hitgroups menu hitgroups headshots only"
+	{
+		"fr"		"Uniquement les tirs à la tête"
+	}
+
+	// Commands
+
+	"Hitgroups command syntax"
+	{
+		"fr"		"Basculer, activer ou désactiver un groupe de dégâts pour les zombies. Syntaxe : zr_hitgroup <groupe de dégâts> [actif - 1/0]"
+	}
+
+	"Hitgroups command related commands"
+	{
+		"fr"		"Commandes associées : zr_hitgroup_enable_all, zr_hitgroup_headshots_only"
+	}
+
+	"Hitgroups command syntax names"
+	{
+		"fr"		"Noms des groupes de dégâts :"
+	}
+
+	"Hitgroups command successful on"
+	{
+		"fr"		"Les dégâts pour le groupe \"{1}\" sont activés."
+	}
+
+	"Hitgroups command successful off"
+	{
+		"fr"		"Les dégâts pour le groupe \"{1}\" sont désactivés."
+	}
+
+	"Hitgroups command invalid hitgroup"
+	{
+		"fr"		"\"{1}\" n'est pas un groupe de dégâts valide. Utilisez zr_hitgroup pour voir tous les noms de groupes."
+	}
+
+	"Hitgroups command enable all successful"
+	{
+		"fr"		"Tous les groupes de dégâts sont activés."
+	}
+
+	"Hitgroups command headshots only successful"
+	{
+		"fr"		"Les zombies ne peuvent maintenant être blessés que par des tirs à la tête."
+	}
+
+	// ===========================
+	// ZAdmin (core)
+	// ===========================
+
+	"ZAdmin main title"
+	{
+		"fr"		"ZAdmin\nSélectionnez une catégorie :"
+	}
+
+	"ZAdmin main class multipliers"
+	{
+		"fr"		"Multiplicateurs de classe"
+	}
+
+	"ZAdmin main weapons"
+	{
+		"fr"		"Gestion des armes"
+	}
+
+	"ZAdmin main hitgroups"
+	{
+		"fr"		"Gestion des groupes de dégâts"
+	}
+
+	"ZAdmin main zombie"
+	{
+		"fr"		"Gestion des zombies"
+	}
+
+	"ZAdmin main force zspawn"
+	{
+		"fr"		"Forcer ZSpawn"
+	}
+
+	"ZAdmin main force ztele"
+	{
+		"fr"		"Forcer ZTele"
+	}
+
+	// ===========================
+	// AntiStick (module)
+	// ===========================
+
+	// Commands
+
+	"AntiStick command set width syntax"
+	{
+		"fr"		"Définit la largeur de la coque d'un modèle. (Voir zr_antistick_list_models) Syntaxe : zr_antistick_set_width <modèle/joueur> <largeur>"
+	}
+
+	"AntiStick command list models list"
+	{
+		"fr"		"Nom du joueur :                        Modèle :                                              Largeur de la coque :\n-------------------------------------------------------------------------------------------------------------"
+	}
+
+	"AntiStick command list models name"
+	{
+		"fr"		"{1} {2} {3}"
+	}
+
+	"AntiStick command set width successful"
+	{
+		"fr"		"La largeur de la coque pour le modèle \"{1}\" a été modifiée à \"{2}.\""
+	}
+
+	"AntiStick command set width invalid model"
+	{
+		"fr"		"Modèle/joueur invalide spécifié : \"{1}\""
+	}
+
+	"AntiStick command set width invalid width"
+	{
+		"fr"		"Largeur de la coque du modèle spécifiée invalide : \"{1}\""
+	}
+
+	// ===========================
+	// Spawn Protect (module)
+	// ===========================
+
+	// General
+
+	"Spawn protection begin"
+	{
+		"fr"		"Les zombies sont présents, vous êtes protégé et avez {1} secondes pour trouver un endroit sûr."
+	}
+
+	"Spawn protection end"
+	{
+		"fr"		"Vous êtes maintenant vulnérable à l'infection par un zombie."
+	}
+
+	// HUD
+
+	"Spawn Protect"
+	{
+		"fr"		"La protection contre les zombies se termine dans {1} secondes."
+	}
+
+	// ===========================
+	// ZCookies (module)
+	// ===========================
+
+	"ZCookies Menu main title"
+	{
+		"fr"		"ZCookies\nSélectionnez un cookie :"
+	}
+
+	"ZCookies menu main auto-rebuy"
+	{
+		"fr"		"Rachat automatique (ZMarket) : {1}"
+	}
+
+	"ZCookies menu main zhp"
+	{
+		"fr"		"Affichage ZHP : {1}"
+	}
+
+	"ZCookies menu main overlay"
+	{
+		"fr"		"Afficher l'overlay de classe : {1}"
+	}
+
+	"ZCookies zmarket loadout"
+	{
+		"fr"		"Sélection ZMarket"
+	}
+
+	// ===========================
+	// ZSpawn (module)
+	// ===========================
+
+	// General
+
+	"ZSpawn double spawn"
+	{
+		"fr"		"ZSpawn ne peut être utilisé que si vous vous êtes connecté au serveur en cours de manche."
+	}
+
+	"ZSpawn timelimit"
+	{
+		"fr"		"Le délai ({1} secondes) pour utiliser ZSpawn est expiré."
+	}
+
+	// Menu
+
+	"ZSpawn clients title"
+	{
+		"fr"		"Forcer ZSpawn (zr_zspawn_force)\nSélectionnez un joueur :"
+	}
+
+	// Commands
+
+	"ZSpawn command force syntax"
+	{
+		"fr"		"Forcer ZSpawn sur un joueur. Syntaxe : zr_zspawn_force <joueur> ['0' = Humain | '1' = Zombie]"
+	}
+
+	"ZSpawn command force successful"
+	{
+		"fr"		"{1} a été réanimé avec succès."
+	}
+
+	"ZSpawn command force successful public"
+	{
+		"fr"		"{lightgreen}{1}{default} a réanimé {green}{2}{default} en tant que {lightgreen}{3}{default}."
+	}
+
+	"ZSpawn command force unsuccessful"
+	{
+		"fr"		"{1} n'a pas pu être réanimé."
+	}
+
+	// ===========================
+	// ZTele (module)
+	// ===========================
+
+	// General
+
+	"ZTele restricted human"
+	{
+		"fr"		"Les humains ne peuvent pas être téléportés pour le moment."
+	}
+
+	"ZTele max"
+	{
+		"fr"		"Vous avez utilisé toutes vos téléportations ({1}) pour cette manche."
+	}
+
+	"ZTele in progress"
+	{
+		"fr"		"Vous attendez déjà une téléportation."
+	}
+
+	"ZTele autocancel text"
+	{
+		"fr"		"Téléportation annulée. Vous vous êtes déplacé au-delà de la limite autorisée en attendant une téléportation. Distance maximale : {1} pieds."
+	}
+
+	// Center Text
+
+	"ZTele countdown"
+	{
+		"fr"		"Téléportation au point de départ dans {1} secondes."
+	}
+
+	"ZTele autocancel centertext"
+	{
+		"fr"		"Téléportation annulée."
+	}
+
+	"ZTele countdown end"
+	{
+		"fr"		"Téléporté au point de départ. (Nombre : {1}/{2})"
+	}
+
+	// Menu
+
+	"ZTele clients title"
+	{
+		"fr"		"Forcer ZTele (zr_ztele_force)\nSélectionnez un joueur :"
+	}
+
+	// Commands
+
+	"ZTele command force syntax"
+	{
+		"fr"		"Forcer ZTele sur un joueur. Syntaxe : zr_ztele_force <joueur>"
+	}
+
+	"ZTele command force successful"
+	{
+		"fr"		"{1} a été téléporté avec succès."
+	}
+
+	"ZTele command force unsuccessful"
+	{
+		"fr"		"{1} n'a pas pu être téléporté."
+	}
+
+	// ===========================
+	// ZHP (module)
+	// ===========================
+
+	// General
+
+	"ZHP enable"
+	{
+		"fr"		"Affichage de la santé activé. Vous verrez votre santé réelle en tant que zombie."
+	}
+
+	"ZHP disable"
+	{
+		"fr"		"Affichage de la santé désactivé."
+	}
+
+	// HUD
+
+	"Display HP"
+	{
+		"fr"		"Santé : {1}"
+	}
+
+	// ===========================
+	// Volumetric features (module)
+	// ===========================
+
+	"Vol Anticamp Message"
+	{
+		"fr"		"Cette zone est restreinte, veuillez avancer."
+	}
+
+	"Vol Slay"
+	{
+		"fr"		"\"{1}\" a été tué pour avoir campé dans une zone restreinte (ID : {2})."
+	}
+
+	"Vol Ignite"
+	{
+		"fr"		"\"{1}\" a été enflammé pour avoir campé dans une zone restreinte (ID : {2})."
+	}
+}
