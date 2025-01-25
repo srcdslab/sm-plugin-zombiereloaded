@@ -1,0 +1,1095 @@
+"Phrases"
+{
+	// ===========================
+	// General (base)
+	// ===========================
+
+	"General round objective"
+	{
+		"zho"		"遊戲是 {green}人類 vs. 殭屍{default}。殭屍的目標是感染所有人類。"
+	}
+
+	"General zmenu reminder"
+	{
+		"zho"		"要獲取 Zombie:Reloaded 的指令幫助，請在聊天中輸入 \"{1}{2}\"。"
+	}
+
+	// ===========================
+	// Generic (base)
+	// ===========================
+
+	// General
+
+	"Literal text"
+	{
+		"zho"		"{1}"
+	}
+
+	"Feature is disabled"
+	{
+		"zho"		"此功能已被伺服器主機禁用。"
+	}
+
+	"Not enough money"
+	{
+		"zho"		"你沒有足夠的金錢購買此物品。"
+	}
+
+	"Must be player"
+	{
+		"zho"		"此功能僅限玩家使用。"
+	}
+
+	"Must be admin"
+	{
+		"zho"		"此功能僅限管理員使用。"
+	}
+
+	"No access to command"
+	{
+		"zho"		"您無權執行此指令。"
+	}
+
+	"Must be alive"
+	{
+		"zho"		"此功能需要您處於存活狀態。"
+	}
+
+	"Must be dead"
+	{
+		"zho"		"此功能需要您處於死亡狀態。"
+	}
+
+	"Must be on team"
+	{
+		"zho"		"此功能需要您加入一個隊伍。"
+	}
+
+	"Must be zombie"
+	{
+		"zho"		"此功能需要您是殭屍。"
+	}
+
+	"Must be human"
+	{
+		"zho"		"此功能需要您是人類。"
+	}
+
+	"Must be in buyzone"
+	{
+		"zho"		"此功能需要您位於購買區域內。"
+	}
+
+	"Increase by"
+	{
+		"zho"		"增加了 {1}"
+	}
+
+	"Decrease by"
+	{
+		"zho"		"減少了 {1}"
+	}
+
+	"Current Value"
+	{
+		"zho"		"當前值："
+	}
+
+	"Zombie"
+	{
+		"zho"		"殭屍"
+	}
+
+	"Human"
+	{
+		"zho"		"人類"
+	}
+
+	// Menu
+
+	"Menu empty"
+	{
+		"zho"		"(空)"
+	}
+
+	// ===========================
+	// Config (core)
+	// ===========================
+
+	// Commands
+
+	"Config command reload syntax"
+	{
+		"zho"		"語法：zr_reloadconfig <檔案別名1> [檔案別名2] ... - 重新加載配置檔案。"
+	}
+
+	"Config command reload related commands"
+	{
+		"zho"		"相關指令：zr_config_reloadall"
+	}
+
+	"Config command reload syntax aliases"
+	{
+		"zho"		"檔案別名：\n* \"{1}\"\n* \"{2}\"\n* \"{3}\"\n* \"{4}\"\n* \"{5}\""
+	}
+
+	"Config command reload invalid"
+	{
+		"zho"		"無效的檔案別名：\"{1}\""
+	}
+
+	"Config command reload not loaded"
+	{
+		"zho"		"配置檔案 \"{1}\" 無法加載。（內容無效或不匹配。）"
+	}
+
+	"Config command reload all stats begin"
+	{
+		"zho"		"正在重新加載 Zombie:Reloaded 的所有配置檔案...\n------------------------------------------------"
+	}
+
+	"Config command reload all stats successful"
+	{
+		"zho"		"\"{1}\" - 成功。"
+	}
+
+	"Config command reload all stats failed"
+	{
+		"zho"		"\"{1}\" - 失敗。（內容無效或不匹配。）"
+	}
+
+	// ===========================
+	// Log (core)
+	// ===========================
+
+	"Log Generic Flag"
+	{
+		// Max length: 19 characters.
+		"zho"		"通用標誌："
+	}
+
+	"Log Value"
+	{
+		// Max length: 7 characters:
+		"zho"		"值："
+	}
+
+	"Log Module"
+	{
+		// Max length: 23 characters:
+		"zho"		"模組："
+	}
+
+	"Log Status"
+	{
+		"zho"		"過濾器狀態："
+	}
+
+	"Log Module Filtering"
+	{
+		"zho"		"模組過濾："
+	}
+
+	"Log Module Short Name"
+	{
+		"zho"		"簡短名稱："
+	}
+
+	// ===========================
+	// Classes
+	// ===========================
+
+	// General
+
+	"Classes admin mode enabled"
+	{
+		"zho"		"管理員模式已啟用！"
+	}
+
+	"Classes random assignment"
+	{
+		"zho"		"您已被隨機分配到 {green}\"{1}\" 類。"
+	}
+
+	// Center Text/HUD
+
+	"Classes overlay toggle"
+	{
+		"zho"		"切換覆蓋指令：{1}"
+	}
+
+	// Menu
+
+	"Classes menu title"
+	{
+		"zho"		"選擇類別："
+	}
+
+	"Classes menu active"
+	{
+		"zho"		"啟用：{1}"
+	}
+
+	"Classes menu next"
+	{
+		"zho"		"下次出現：{1}"
+	}
+
+	"Classes menu select zombie"
+	{
+		"zho"		"選擇殭屍類別"
+	}
+
+	"Classes menu select human"
+	{
+		"zho"		"選擇人類類別"
+	}
+
+	"Classes menu select admin"
+	{
+		"zho"		"選擇管理員類別"
+	}
+
+	"Classes menu admin mode toggle"
+	{
+		"zho"		"切換管理員模式"
+	}
+
+	"Classes Menu Team Select Title"
+	{
+		"zho"		"選擇隊伍："
+	}
+
+	"Classes Menu Zombies"
+	{
+		"zho"		"殭屍"
+	}
+
+	"Classes Menu Humans"
+	{
+		"zho"		"人類"
+	}
+
+	"Classes Menu Multiplier Select Title"
+	{
+		"zho"		"選擇倍增器："
+	}
+
+	"Classes Menu Adjust Value"
+	{
+		"zho"		"調整值："
+	}
+
+	// Attributes
+
+	"Classes Attrib Napalm Time"
+	{
+		"zho"		"燃燒時間"
+	}
+
+	"Classes Attrib Health"
+	{
+		"zho"		"生命值"
+	}
+
+	"Classes Attrib Regen Interval"
+	{
+		"zho"		"生命值恢復間隔"
+	}
+
+	"Classes Attrib Regen Amount"
+	{
+		"zho"		"生命值恢復量"
+	}
+
+	"Classes Attrib Infect Gain"
+	{
+		"zho"		"感染時獲得的生命值"
+	}
+
+	"Classes Attrib Speed"
+	{
+		"zho"		"移動速度"
+	}
+
+	"Classes Attrib Knockback"
+	{
+		"zho"		"擊退"
+	}
+
+	"Classes Attrib Jump Height"
+	{
+		"zho"		"跳躍高度"
+	}
+
+	"Classes Attrib Jump Distance"
+	{
+		"zho"		"跳躍距離"
+	}
+
+	"Classes Selection Not Allowed"
+	{
+		"zho"		"不允許更改類別。"
+	}
+
+	// ===========================
+	// Immunity
+	// ===========================
+
+	"Immunity Shield Not Available"
+	{
+		"zho"		"您沒有護盾。"
+	}
+
+	"Immunity Shield Cooldown"
+	{
+		"zho"		"護盾將在 {1} 秒後可用。"
+	}
+
+	"Immunity Shield Time Left"
+	{
+		"zho"		"護盾剩餘時間：{1}"
+	}
+
+	// ===========================
+	// Overlays (core)
+	// ===========================
+
+	"Overlays not supported"
+	{
+		"zho"		"阻止覆蓋 - 檢測到 DX{1} (需要 DX{2})"
+	}
+
+	// ===========================
+	// Infect (core)
+	// ===========================
+
+	// General
+
+	"Infect infected"
+	{
+		"zho"		"您已被感染！現在去感染其他玩家吧。"
+	}
+
+	"Infect human"
+	{
+		"zho"		"仁慈的神靈（管理員）復活了您！抓住這個機會！"
+	}
+
+	"Infect disconnect"
+	{
+		"zho"		"最後一個殭屍離開了遊戲，感染傳遞給了您。"
+	}
+
+	"Mother zombie infect cycle reset"
+	{
+		"zho"		"母殭屍的感染週期已重置。"
+	}
+
+	// Center Text
+
+	"Infect countdown"
+	{
+		"zho"		"首次感染將在 {1} 秒後發生。"
+	}
+
+	// Menu
+
+	"Infect menu clients title"
+	{
+		"zho"		"殭屍管理\n啟用感染：\n[] = 已感染"
+	}
+
+	// Commands
+
+	"Infect command infect syntax"
+	{
+		"zho"		"感染玩家。用法：zr_infect <目標> [復活 - 1/0]"
+	}
+
+	"Infect command human syntax"
+	{
+		"zho"		"將玩家變成人類。用法：zr_human <目標> [復活 - 1/0] [保護 - 1/0]"
+	}
+
+	"Infect command round not started"
+	{
+		"zho"		"無法進行感染。回合尚未完全開始。"
+	}
+
+	"Infect command infect successful"
+	{
+		"zho"		"玩家 {green}{1}{default} 已成功感染。"
+	}
+
+	"Infect command infect successful public"
+	{
+		"zho"		"{lightgreen}{1}{default} 感染了 {green}{2}{default}。"
+	}
+
+	"Infect command infect mother successful"
+	{
+		"zho"		"玩家 {green}{1}{default} 已成功感染為母殭屍。"
+	}
+
+	"Infect command infect mother successful public"
+	{
+		"zho"		"{lightgreen}{1}{default} 感染了 {green}{2}{default} 為母殭屍。"
+	}
+
+	"Infect command infect unsuccessful"
+	{
+		"zho"		"玩家 {green}{1}{default} 已經是殭屍了。"
+	}
+
+	"Infect command human successful"
+	{
+		"zho"		"玩家 {green}{1}{default} 已成功變成人類。"
+	}
+
+	"Infect command human successful public"
+	{
+		"zho"		"{lightgreen}{1}{default} 將 {green}{2}{default} 復活為人類。"
+	}
+
+	"Infect command human unsuccessful"
+	{
+		"zho"		"玩家 {green}{1}{default} 已經是人類了。"
+	}
+
+	// ===========================
+	// Damage (core)
+	// ===========================
+
+	"Damage suicide intercept"
+	{
+		"zho"		"自殺嘗試被阻止。"
+	}
+
+	// ===========================
+	// Menu (core)
+	// ===========================
+
+	// General
+
+	"Menu main title"
+	{
+		"zho"		"Zombie:Reloaded 指令：\n在聊天中輸入 \"{1}\" 或 \"{2}\" 以執行指令。"
+	}
+
+	"Menu main zadmin"
+	{
+		"zho"		"ZAdmin - 打開管理員選單"
+	}
+
+	"Menu main zclass"
+	{
+		"zho"		"ZClass - 配置類別參數"
+	}
+
+	"Menu main zcookies"
+	{
+		"zho"		"ZCookies - 修改您的個人設置"
+	}
+
+	"Menu main zspawn"
+	{
+		"zho"		"ZSpawn - 如果您遲到，可以用此功能重生"
+	}
+
+	"Menu main ztele"
+	{
+		"zho"		"ZTele - 如果您被卡住，可以傳送到起點"
+	}
+
+	"Menu main zhp"
+	{
+		"zho"		"ZHP - 顯示您的真實生命值"
+	}
+
+	"Menu main zmarket"
+	{
+		"zho"		"ZMarket - 在這裡購買物品"
+	}
+
+	// ===========================
+	// Weapons (core)
+	// ===========================
+
+	// General
+
+	"Zombie cant use weapon"
+	{
+		"zho"		"殭屍不能使用武器！"
+	}
+
+	// Restrict
+
+	"Restrict weapon"
+	{
+		"zho"		"武器 {green}\"{1}\"{default} 已被限制。"
+	}
+
+	"Unrestrict weapon"
+	{
+		"zho"		"武器 {green}\"{1}\"{default} 的限制已被移除。"
+	}
+
+	"Restrict weapon stopped"
+	{
+		"zho"		"武器 {green}\"{1}\"{default} 已經被限制。"
+	}
+
+	"Unrestrict weapon stopped"
+	{
+		"zho"		"武器 {green}\"{1}\"{default} 沒有被限制。"
+	}
+
+	"Restrict weapon type"
+	{
+		"zho"		"武器類型 {green}\"{1}\"{default} 已被限制。"
+	}
+
+	"Unrestrict weapon type"
+	{
+		"zho"		"武器類型 {green}\"{1}\"{default} 的限制已被移除。"
+	}
+
+	"Restrict weapon type stopped"
+	{
+		"zho"		"武器類型 {green}\"{1}\"{default} 已經被限制。"
+	}
+
+	"Unrestrict weapon type stopped"
+	{
+		"zho"		"武器類型 {green}\"{1}\"{default} 沒有被限制。"
+	}
+
+	"Restrict weapon untoggleable"
+	{
+		"zho"		"武器 {green}\"{1}\"{default} 無法切換限制狀態。"
+	}
+
+	"Weapon invalid"
+	{
+		"zho"		"武器 {green}\"{1}\"{default} 是無效的武器名稱或類型。"
+	}
+
+	"Weapon is restricted"
+	{
+		"zho"		"武器 {green}{1}{default} 已被限制。"
+	}
+
+	// ZMarket
+
+	"Weapons zmarket buyzone"
+	{
+		"zho"		"您必須在購買區域內才能使用 ZMarket。"
+	}
+
+	"Weapons zmarket purchase"
+	{
+		"zho"		"您已購買武器 {green}{1}{default}。如果彈藥不足，請重新選擇該物品。"
+	}
+
+	"Weapons zmarket purchase max"
+	{
+		"zho"		"武器 {green}{1}{default} 的購買限制為 {green}{2}{default}。您需要等待下一次重生才能再次購買。"
+	}
+
+	"Weapons zmarket grenade max"
+	{
+		"zho"		"您只能攜帶 {1} 枚此類手榴彈。"
+	}
+
+	"Weapons zmarket not enough money"
+	{
+		"zho"		"您沒有足夠的資金。"
+	}
+
+	"Weapons zmarket updated loadout"
+	{
+		"zho"		"您目前無法購買武器，但您的預設已更新為此武器。"
+	}
+
+	"Weapons zmarket get current loadout"
+	{
+		"zho"		"當前預設已更新。使用重新購買選項以再次購買這些武器。"
+	}
+
+	// Commands
+
+	"Weapons command restrict syntax"
+	{
+		"zho"		"限制武器或武器類型。用法：zr_restrict <武器|武器類型> [武器2|武器類型2] ..."
+	}
+
+	"Weapons command unrestrict syntax"
+	{
+		"zho"		"移除武器或武器類型的限制。用法：zr_unrestrict <武器|武器類型> [武器2|武器類型2] ..."
+	}
+
+	// Menu (Restrict)
+
+	"Weapons menu restrict main title"
+	{
+		"zho"		"武器管理"
+	}
+
+	"Weapons menu restrict main restrict"
+	{
+		"zho"		"武器限制"
+	}
+
+	"Weapons menu restrict main market"
+	{
+		"zho"		"ZMarket"
+	}
+
+	"Weapons menu restrict types title"
+	{
+		"zho"		"武器限制\n選擇武器類型："
+	}
+
+	"Weapons menu restrict types weapon type title"
+	{
+		"zho"		"武器限制\n武器類型：{1}\n[] = 已限制"
+	}
+
+	"Weapons menu restrict types restrict all"
+	{
+		"zho"		"限制武器類型 {1}"
+	}
+
+	"Weapons menu restrict types unrestrict all"
+	{
+		"zho"		"移除武器類型 {1} 的限制"
+	}
+
+	"Weapons menu restrict zmarket title"
+	{
+		"zho"		"ZMarket\n選擇選項："
+	}
+
+	"Weapons menu restrict zmarket buyzone"
+	{
+		"zho"		"僅限購買區域 - {1}"
+	}
+
+	// Menu (ZMarket)
+
+	"Weapons menu zmarket main title"
+	{
+		"zho"		"ZMarket\n選擇一個選項："
+	}
+
+	"Weapons menu zmarket main get loadout"
+	{
+		"zho"		"保存當前配置"
+	}
+
+	"Weapons menu zmarket main edit loadout"
+	{
+		"zho"		"編輯已保存的配置"
+	}
+
+	"Weapons menu zmarket main rebuy"
+	{
+		"zho"		"重新購買當前配置"
+	}
+
+	"Weapons menu zmarket main weapons list"
+	{
+		"zho"		"購買武器"
+	}
+
+	"Weapons menu zmarket loadout title"
+	{
+		"zho"		"ZMarket\n我的當前配置：\n選擇武器槽以刪除。\n注意：重新購買將使用這些武器。"
+	}
+
+	"Weapons menu zmarket loadout primary"
+	{
+		"zho"		"主武器：{1}"
+	}
+
+	"Weapons menu zmarket loadout secondary"
+	{
+		"zho"		"副武器：{1}"
+	}
+
+	"Weapons menu zmarket loadout default"
+	{
+		"#format"	"{1:s}"
+		"zho"		"默認 ({1})"
+	}
+
+	"Weapons menu zmarket loadout weapons title"
+	{
+		"zho"		"ZMarket\n選擇武器配置："
+	}
+
+	"Weapons menu zmarket types title"
+	{
+		"zho"		"ZMarket\n選擇武器類型："
+	}
+
+	"Weapons menu zmarket types weapon type title"
+	{
+		"zho"		"ZMarket\n武器類型：{1}\n[] = 已限制"
+	}
+
+	"Weapons menu zmarket types weapon info"
+	{
+		"zho"		"{1} (${2})\n剩餘購買次數：{3}"
+	}
+
+	"Weapons menu zmarket types weapon ammo"
+	{
+		"zho"		"彈藥"
+	}
+
+	// ===========================
+	// Hitgroups (core)
+	// ===========================
+
+	// Menu
+
+	"Hitgroups menu hitgroups title"
+	{
+		"zho"		"命中組管理\n指令：zr_hitgroup(_enable_all/_headshots_only)\n選擇一個命中組以啟用/禁用："
+	}
+
+	"Hitgroups menu hitgroups enable all"
+	{
+		"zho"		"啟用所有命中組"
+	}
+
+	"Hitgroups menu hitgroups headshots only"
+	{
+		"zho"		"僅限爆頭"
+	}
+
+	// Commands
+
+	"Hitgroups command syntax"
+	{
+		"zho"		"切換、啟用或禁用殭屍的命中組。用法：zr_hitgroup <命中組別名> [啟用 - 1/0]"
+	}
+
+	"Hitgroups command related commands"
+	{
+		"zho"		"相關指令：zr_hitgroup_enable_all, zr_hitgroup_headshots_only"
+	}
+
+	"Hitgroups command syntax names"
+	{
+		"zho"		"命中組名稱："
+	}
+
+	"Hitgroups command successful on"
+	{
+		"zho"		"命中組 \"{1}\" 的傷害已啟用。"
+	}
+
+	"Hitgroups command successful off"
+	{
+		"zho"		"命中組 \"{1}\" 的傷害已禁用。"
+	}
+
+	"Hitgroups command invalid hitgroup"
+	{
+		"zho"		"\"{1}\" 不是有效的命中組。輸入 zr_hitgroup 查看所有別名。"
+	}
+
+	"Hitgroups command enable all successful"
+	{
+		"zho"		"所有殭屍的命中組傷害已啟用。"
+	}
+
+	"Hitgroups command headshots only successful"
+	{
+		"zho"		"殭屍現在只能通過爆頭受到傷害。"
+	}
+
+	// ===========================
+	// ZAdmin (core)
+	// ===========================
+
+	"ZAdmin main title"
+	{
+		"zho"		"ZAdmin\n選擇類別："
+	}
+
+	"ZAdmin main class multipliers"
+	{
+		"zho"		"類別倍增器"
+	}
+
+	"ZAdmin main weapons"
+	{
+		"zho"		"武器管理"
+	}
+
+	"ZAdmin main hitgroups"
+	{
+		"zho"		"命中組管理"
+	}
+
+	"ZAdmin main zombie"
+	{
+		"zho"		"殭屍管理"
+	}
+
+	"ZAdmin main force zspawn"
+	{
+		"zho"		"強制 ZSpawn"
+	}
+
+	"ZAdmin main force ztele"
+	{
+		"zho"		"強制 ZTele"
+	}
+
+	// ===========================
+	// AntiStick (module)
+	// ===========================
+
+	// Commands
+
+	"AntiStick command set width syntax"
+	{
+		"zho"		"設置模型的碰撞寬度。（查看 zr_antistick_list_models）用法：zr_antistick_set_width <模型/玩家> <寬度>"
+	}
+
+	"AntiStick command list models list"
+	{
+		"zho"		"玩家名稱：                        模型：                                              碰撞寬度：\n-------------------------------------------------------------------------------------------------------------"
+	}
+
+	"AntiStick command list models name"
+	{
+		"zho"		"{1} {2} {3}"
+	}
+
+	"AntiStick command set width successful"
+	{
+		"zho"		"模型 \"{1}\" 的碰撞寬度已更改為 \"{2}\"。"
+	}
+
+	"AntiStick command set width invalid model"
+	{
+		"zho"		"指定的模型/玩家無效：\"{1}\""
+	}
+
+	"AntiStick command set width invalid width"
+	{
+		"zho"		"指定的碰撞寬度無效：\"{1}\""
+	}
+
+	// ===========================
+	// Spawn Protect (module)
+	// ===========================
+
+	// General
+
+	"Spawn protection begin"
+	{
+		"zho"		"殭屍已出現，您有 {1} 秒的保護時間，請找到一個安全的地方。"
+	}
+
+	"Spawn protection end"
+	{
+		"zho"		"您現在可以被殭屍感染。"
+	}
+
+	// HUD
+
+	"Spawn Protect"
+	{
+		"zho"		"殭屍保護將在 {1} 秒後結束。"
+	}
+
+	// ===========================
+	// ZCookies (module)
+	// ===========================
+
+	"ZCookies Menu main title"
+	{
+		"zho"		"ZCookies\n選擇一個 cookie："
+	}
+
+	"ZCookies menu main auto-rebuy"
+	{
+		"zho"		"ZMarket 自動購買：{1}"
+	}
+
+	"ZCookies menu main zhp"
+	{
+		"zho"		"ZHP 顯示：{1}"
+	}
+
+	"ZCookies menu main overlay"
+	{
+		"zho"		"人類/殭屍類別覆蓋顯示：{1}"
+	}
+
+	"ZCookies zmarket loadout"
+	{
+		"zho"		"ZMarket 預設"
+	}
+
+	// ===========================
+	// ZSpawn (module)
+	// ===========================
+
+	// General
+
+	"ZSpawn double spawn"
+	{
+		"zho"		"ZSpawn 只能在您在回合進行中加入時使用。"
+	}
+
+	"ZSpawn timelimit"
+	{
+		"zho"		"使用 ZSpawn 的時間限制（{1} 秒）已過。"
+	}
+
+	// Menu
+
+	"ZSpawn clients title"
+	{
+		"zho"		"強制 ZSpawn (zr_zspawn_force)\n選擇一個玩家："
+	}
+
+	// Commands
+
+	"ZSpawn command force syntax"
+	{
+		"zho"		"強制 ZSpawn 到一個玩家。用法：zr_zspawn_force <玩家> ['0' = 作為人類重生 | '1' = 作為殭屍重生]"
+	}
+
+	"ZSpawn command force successful"
+	{
+		"zho"		"玩家 {1} 已成功重生。"
+	}
+
+	"ZSpawn command force successful public"
+	{
+		"zho"		"{lightgreen}{1}{default} 已將 {green}{2}{default} 重生為 {lightgreen}{3}{default}。"
+	}
+
+	"ZSpawn command force unsuccessful"
+	{
+		"zho"		"玩家 {1} 無法重生。"
+	}
+
+	// ===========================
+	// ZTele (module)
+	// ===========================
+
+	// General
+
+	"ZTele restricted human"
+	{
+		"zho"		"當前人類無法使用 ZTele。"
+	}
+
+	"ZTele max"
+	{
+		"zho"		"您已達到本回合的最大傳送次數（{1} 次）。"
+	}
+
+	"ZTele in progress"
+	{
+		"zho"		"您當前正在等待傳送。"
+	}
+
+	"ZTele autocancel text"
+	{
+		"zho"		"傳送已取消。（限制範圍為 {1} 英尺。）"
+	}
+
+	// Center Text
+
+	"ZTele countdown"
+	{
+		"zho"		"將在 {1} 秒後傳送到起點。"
+	}
+
+	"ZTele autocancel centertext"
+	{
+		"zho"		"傳送已取消。"
+	}
+
+	"ZTele countdown end"
+	{
+		"zho"		"已傳送到起點。（次數：{1}/{2}）"
+	}
+
+	// Menu
+
+	"ZTele clients title"
+	{
+		"zho"		"強制 ZTele (zr_ztele_force)\n選擇一個玩家："
+	}
+
+	// Commands
+
+	"ZTele command force syntax"
+	{
+		"zho"		"強制 ZTele 到一個玩家。用法：zr_ztele_force <玩家>"
+	}
+
+	"ZTele command force successful"
+	{
+		"zho"		"玩家 {1} 已成功傳送。"
+	}
+
+	"ZTele command force unsuccessful"
+	{
+		"zho"		"玩家 {1} 無法傳送。"
+	}
+
+	// ===========================
+	// ZHP (module)
+	// ===========================
+
+	// General
+
+	"ZHP enable"
+	{
+		"zho"		"生命值顯示已啟用，您將在感染後看到您的真實生命值。"
+	}
+
+	"ZHP disable"
+	{
+		"zho"		"生命值顯示已禁用。"
+	}
+
+	// HUD
+
+	"Display HP"
+	{
+		"zho"		"生命值：{1}"
+	}
+
+	// ===========================
+	// Volumetric features (module)
+	// ===========================
+
+	"Vol Anticamp Message"
+	{
+		"zho"		"此區域受限，請移動。"
+	}
+
+	"Vol Slay"
+	{
+		"zho"		"玩家 \"{1}\" 因在受限區域內停留而被擊殺（ID：{2}）。"
+	}
+
+	"Vol Ignite"
+	{
+		"zho"		"玩家 \"{1}\" 因在受限區域內停留而被點燃（ID：{2}）。"
+	}
+}
