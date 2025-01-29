@@ -44,7 +44,7 @@ public Action Command_Version(int client, int argc)
     Format(linebuffer, sizeof(linebuffer), "%s\n\n", ZR_VER_COPYRIGHT);
     StrCat(buffer, sizeof(buffer), linebuffer);
 
-    Format(linebuffer, sizeof(linebuffer), FORMATSTRING, "Version", ZR_VER_VERSION);
+    Format(linebuffer, sizeof(linebuffer), FORMATSTRING, "Version", ZR_VERSION);
     StrCat(buffer, sizeof(buffer), linebuffer);
 
     Format(linebuffer, sizeof(linebuffer), FORMATSTRING, "Compile date", ZR_VER_DATE);

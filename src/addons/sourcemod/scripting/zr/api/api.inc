@@ -49,15 +49,6 @@
 #include "ztele.api"
 
 /**
- * @section Global forward handles.
- */
-Handle g_hAPIFwdOnPluginStatusOK = INVALID_HANDLE;
-Handle g_hAPIFwdOnPluginStatusNotOK = INVALID_HANDLE;
-/**
- * @endsection
- */
-
-/**
  * Initializes all main natives and forwards.
  */
 void APIInit()
@@ -69,51 +60,6 @@ void APIInit()
     APINapalmInit();
     APIKnockbackInit();
     APIZteleInit();
-    APIGlobalInit();
-}
-
-/**
- * Initializes all natives and forwards related to global API.
- */
-void APIGlobalInit()
-{
-    // Global forwards
-    g_hAPIFwdOnPluginStatusOK = CreateGlobalForward("ZR_OnPluginStatusOK", ET_Ignore);
-    g_hAPIFwdOnPluginStatusNotOK = CreateGlobalForward("ZR_OnPluginStatusNotOK", ET_Ignore);
-}
-
-/**
- * All plugins have been loaded.
- */
-void APIOnAllPluginsLoaded()
-{
-    // Trigger API forward.
-    APIOnPluginStatusOK();
-}
-
-/**
- * The plugin status has changed.
- */
-void APIOnPluginStatusChanged(bool pause)
-{
-    // Trigger API forward.
-    if (pause)
-    {
-        APIOnPluginStatusNotOK();
-    }
-    else
-    {
-        APIOnPluginStatusOK();
-    }
-}
-
-/**
- * The plugin is unloading.
- */
-void APIOnPluginEnd()
-{
-    // Trigger API forward.
-    APIOnPluginStatusNotOK();
 }
 
 /**
@@ -153,31 +99,4 @@ stock void APIValidateClientIndex(int client, EligibleCondition alive = Conditio
             ThrowNativeError(SP_ERROR_NATIVE, "Client %d must be dead.", client);
         }
     }
-}
-
-/**
- * Called when the plugin becomes available.
- * 
- * @noreturn
- */
-void APIOnPluginStatusOK()
-{
-    // Start forward call.
-    Call_StartForward(g_hAPIFwdOnPluginStatusOK);
-
-    Call_Finish();
-}
-
-/**
- * Called when the plugin becomes unavailable.
- * This can happen when the plugin is paused or unloaded.
- * 
- * @noreturn
- */
-void APIOnPluginStatusNotOK()
-{
-    // Start forward call.
-    Call_StartForward(g_hAPIFwdOnPluginStatusNotOK);
-
-    Call_Finish();
 }

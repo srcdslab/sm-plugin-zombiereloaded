@@ -38,21 +38,6 @@
 #include <zr/knockback.zr>
 #include <zr/ztele.zr>
 
-/**
- * Called when the plugin becomes available.
- * 
- * @noreturn
- */
-forward void ZR_OnPluginStatusOK();
-
-/**
- * Called when the plugin becomes unavailable.
- * This can happen when the plugin is paused or unloaded.
- * 
- * @noreturn
- */
-forward void ZR_OnPluginStatusNotOK();
-
 public SharedPlugin __pl_zombiereloaded =
 {
     name = "zombiereloaded",

@@ -45,10 +45,6 @@
 
 #include <sdkhooks>
 
-#define ZR_VER_MAJOR "3"
-#define ZR_VER_MINOR "11"
-#define VERSION "3.11.0"
-
 // Comment this line to exclude version info command. Enable this if you have
 // the repository and HG installed (Mercurial or TortoiseHG).
 #define ADD_VERSION_INFO
@@ -58,9 +54,8 @@
 #include "zr/models.h"
 #include "zr/immunityhandler.h"
 
-#if defined ADD_VERSION_INFO
+// Version info.
 #include "zr/hgversion.h"
-#endif
 
 // Core includes.
 #include "zr/zombiereloaded"
@@ -129,7 +124,7 @@ public Plugin myinfo =
     name = "Zombie:Reloaded",
     author = "Greyscale | Richard Helgeby | BotoX | zaCade | Neon | maxime1907 | Franug | Anubis",
     description = "Infection/survival style gameplay",
-    version = VERSION,
+    version = ZR_VERSION,
     url = "http://forums.alliedmods.net/forumdisplay.php?f=132"
 };
 
@@ -181,27 +176,10 @@ public void OnPluginStart()
 public void OnAllPluginsLoaded()
 {
     // Forward event to modules.
-    APIOnAllPluginsLoaded();
     RoundEndOnAllPluginsLoaded();
     WeaponsOnAllPluginsLoaded();
     ConfigOnAllPluginsLoaded();
     InfectOnAllPluginsLoaded();
-}
-
-/**
- * The plugin status has changed.
- */
-public void OnPluginPauseChange(bool pause)
-{
-    APIOnPluginStatusChanged(pause);
-}
-
-/**
- * The plugin is unloading.
- */
-public void OnPluginEnd()
-{
-	APIOnPluginEnd();
 }
 
 /**
