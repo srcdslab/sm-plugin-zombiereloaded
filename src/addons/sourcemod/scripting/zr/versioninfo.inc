@@ -53,9 +53,6 @@ public Action Command_Version(int client, int argc)
     Format(linebuffer, sizeof(linebuffer), FORMATSTRING, "License", ZR_VER_LICENSE);
     StrCat(buffer, sizeof(buffer), linebuffer);
 
-    Format(linebuffer, sizeof(linebuffer), FORMATSTRING, "Build", ZR_VER_REVISION);
-    StrCat(buffer, sizeof(buffer), linebuffer);
-
     Format(linebuffer, sizeof(linebuffer), FORMATSTRING, "Development branch", ZR_VER_BRANCH);
     StrCat(buffer, sizeof(buffer), linebuffer);
 
