@@ -41,19 +41,16 @@ public Action Command_Version(int client, int argc)
     Format(linebuffer, sizeof(linebuffer), "%s\n", ZR_VER_PRODUCT_NAME);
     StrCat(buffer, sizeof(buffer), linebuffer);
 
-    Format(linebuffer, sizeof(linebuffer), "%s\n\n", ZR_VER_COPYRIGHT);
+    Format(linebuffer, sizeof(linebuffer), "%s %s\n\n", ZR_VER_COPYRIGHT, ZR_CONTRIBUTORS);
     StrCat(buffer, sizeof(buffer), linebuffer);
 
-    Format(linebuffer, sizeof(linebuffer), FORMATSTRING, "Version", ZR_VER_VERSION);
+    Format(linebuffer, sizeof(linebuffer), FORMATSTRING, "Version", ZR_VERSION);
     StrCat(buffer, sizeof(buffer), linebuffer);
 
     Format(linebuffer, sizeof(linebuffer), FORMATSTRING, "Compile date", ZR_VER_DATE);
     StrCat(buffer, sizeof(buffer), linebuffer);
 
     Format(linebuffer, sizeof(linebuffer), FORMATSTRING, "License", ZR_VER_LICENSE);
-    StrCat(buffer, sizeof(buffer), linebuffer);
-
-    Format(linebuffer, sizeof(linebuffer), FORMATSTRING, "Build", ZR_VER_REVISION);
     StrCat(buffer, sizeof(buffer), linebuffer);
 
     Format(linebuffer, sizeof(linebuffer), FORMATSTRING, "Development branch", ZR_VER_BRANCH);

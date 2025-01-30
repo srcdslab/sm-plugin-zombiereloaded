@@ -45,8 +45,6 @@
 
 #include <sdkhooks>
 
-#define VERSION "3.10.18"
-
 // Comment this line to exclude version info command. Enable this if you have
 // the repository and HG installed (Mercurial or TortoiseHG).
 #define ADD_VERSION_INFO
@@ -56,9 +54,8 @@
 #include "zr/models.h"
 #include "zr/immunityhandler.h"
 
-#if defined ADD_VERSION_INFO
+// Version info.
 #include "zr/hgversion.h"
-#endif
 
 // Core includes.
 #include "zr/zombiereloaded"
@@ -125,9 +122,9 @@ bool g_bServerStarted = false;
 public Plugin myinfo =
 {
     name = "Zombie:Reloaded",
-    author = "Greyscale | Richard Helgeby | BotoX | zaCade | Neon | maxime1907 | Franug | Anubis",
+    author = ZR_CONTRIBUTORS,
     description = "Infection/survival style gameplay",
-    version = VERSION,
+    version = ZR_VERSION,
     url = "http://forums.alliedmods.net/forumdisplay.php?f=132"
 };
 
