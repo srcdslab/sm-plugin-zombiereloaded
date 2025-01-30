@@ -122,7 +122,7 @@ bool g_bServerStarted = false;
 public Plugin myinfo =
 {
     name = "Zombie:Reloaded",
-    author = "Greyscale | Richard Helgeby | BotoX | zaCade | Neon | maxime1907 | Franug | Anubis",
+    author = ZR_CONTRIBUTORS,
     description = "Infection/survival style gameplay",
     version = ZR_VERSION,
     url = "http://forums.alliedmods.net/forumdisplay.php?f=132"
