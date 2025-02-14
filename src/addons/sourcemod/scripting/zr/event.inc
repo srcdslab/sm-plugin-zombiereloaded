@@ -180,6 +180,12 @@ public Action EventPlayerSpawn(Handle event, const char[] name, bool dontBroadca
     // Get all required event info.
     int index = GetClientOfUserId(GetEventInt(event, "userid"));
 
+    // If client isn't in-game, then stop.
+    if (client <= 0 || client > MaxClients || !IsClientConnected(client) || !IsClientInGame(client))
+    {
+        return Plugin_Continue;
+    }
+
     // CS:S has a bug: It never verify if client is in a valid team before fire player_spawn event.
     int iTeam = GetClientTeam(index);
     if (iTeam == CS_TEAM_NONE || iTeam == CS_TEAM_SPECTATOR)
