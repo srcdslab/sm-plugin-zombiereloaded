@@ -181,7 +181,7 @@ public Action EventPlayerSpawn(Handle event, const char[] name, bool dontBroadca
     int index = GetClientOfUserId(GetEventInt(event, "userid"));
 
     // If client isn't in-game, then stop.
-    if (client <= 0 || client > MaxClients || !IsClientConnected(client) || !IsClientInGame(client))
+    if (index <= 0 || index > MaxClients || !IsClientConnected(index) || !IsClientInGame(index))
     {
         return Plugin_Continue;
     }
