@@ -984,6 +984,12 @@ void DelayedBuyRefund(DataPack hPack)
  */
 stock bool ZMarketEquip(int client, const char[] weapon, bool rebuy = false)
 {
+    // If client isn't in-game, then stop.
+    if (client <= 0 || client > MaxClients || !IsClientConnected(client) || !IsClientInGame(client))
+    {
+        return false;
+    }
+
     // if zombie hasn't spawned yet we're always rebuying:
     bool zmarketfreespawn = GetConVarBool(g_hCvarsList.CVAR_WEAPONS_ZMARKET_FREESPAWN);
     if(zmarketfreespawn && !InfectHasZombieSpawned())
