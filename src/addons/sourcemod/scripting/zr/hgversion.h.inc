@@ -3,8 +3,8 @@
 #define ZR_CONTRIBUTORS         "Greyscale, Richard Helgeby, maxime1907, BotoX, zaCade, .Rushaway, Franug, Anubis"
 #define ZR_VER_BRANCH           "master"
 #define ZR_VER_MAJOR            "3"
-#define ZR_VER_MINOR            "11"
-#define ZR_VER_PATCH            "2"
+#define ZR_VER_MINOR            "12"
+#define ZR_VER_PATCH            "0"
 #define ZR_VERSION              ZR_VER_MAJOR..."."...ZR_VER_MINOR..."."...ZR_VER_PATCH
 #define ZR_VER_LICENSE          "GNU GPL, Version 3"
 #define ZR_VER_DATE             "Wed Jan 30 09:38:56 CEST 2025"
