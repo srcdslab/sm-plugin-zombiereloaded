@@ -340,8 +340,18 @@ public Action DamageOnTakeDamage(int client, int &attacker, int &inflictor, floa
             return Plugin_Continue;
         }
 
+        // Get zombie flag for each client.
+        bool clientzombie = InfectIsClientInfected(client);
+        bool attackerzombie = InfectIsClientInfected(attacker);
+
         // If client is a zombie, then allow damage.
-        if (InfectIsClientInfected(client))
+        if (clientzombie)
+        {
+            return Plugin_Continue;
+        }
+
+        // If client and attacker are not on the same team, then allow damage.
+        if (clientzombie != attackerzombie)
         {
             return Plugin_Continue;
         }
@@ -364,8 +374,18 @@ public Action DamageOnTakeDamage(int client, int &attacker, int &inflictor, floa
             return Plugin_Continue;
         }
 
+        // Get zombie flag for each client.
+        bool clientzombie = InfectIsClientInfected(client);
+        bool attackerzombie = InfectIsClientInfected(attacker);
+
         // If client is a zombie, then allow damage.
-        if (InfectIsClientInfected(client))
+        if (clientzombie)
+        {
+            return Plugin_Continue;
+        }
+
+        // If client and attacker are not on the same team, then allow damage.
+        if (clientzombie != attackerzombie)
         {
             return Plugin_Continue;
         }
