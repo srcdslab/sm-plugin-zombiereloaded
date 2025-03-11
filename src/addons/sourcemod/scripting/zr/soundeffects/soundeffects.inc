@@ -26,11 +26,6 @@
  */
 
 /**
- * Maximum sound path length.
- */
-#define SOUND_MAX_PATH 128
-
-/**
  * Ambient sound channel.
  */
 #define SOUND_AMBIENT_CHANNEL 8

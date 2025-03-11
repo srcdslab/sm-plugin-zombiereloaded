@@ -47,16 +47,6 @@
 #define ZR_CLASS_MAX 64
 
 /**
- * @section Class cache types. Specifies what data array to use.
- */
-#define ZR_CLASS_CACHE_ORIGINAL 0   /** Points ClassData array. A cache that is never changed after loading. */
-#define ZR_CLASS_CACHE_MODIFIED 1   /** Points to ClassDataCache array. Modified by admins or overrides. */
-#define ZR_CLASS_CACHE_PLAYER   2   /** Points to ClassPlayerCache array. Current player attributes. */
-/**
- * @endsection
- */
-
-/**
  * Number of available class teams.
  */
 #define ZR_CLASS_TEAMCOUNT      3
