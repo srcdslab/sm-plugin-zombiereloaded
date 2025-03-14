@@ -1277,9 +1277,8 @@ bool ZMarketGetCurrentLoadout(int client)
  * @param client        The client index.
  * @param rebuyweapons  The string array to copy results from.
  * @param maxweapons    The max amount of weapons in the array.
- * @param maxlen        The max length of each cookie result.
  */
-stock void ZMarketArrayToCookies(int client, char rebuyweapons[ZMARKET_REBUY_WEAPONS_SLOTS_MAX + 1][WEAPONS_MAX_LENGTH], int maxweapons, int maxlen)
+stock void ZMarketArrayToCookies(int client, char rebuyweapons[ZMARKET_REBUY_WEAPONS_SLOTS_MAX + 1][WEAPONS_MAX_LENGTH], int maxweapons)
 {
     char rebuycookiename[32];
     Handle rebuycookie;

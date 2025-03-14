@@ -191,7 +191,7 @@ stock int ParamParseString(ParamParseResult[] buffer, int maxlen, char[] paramSt
                 endpos = ParamFindEndPos(paramString, rawlen, strpos);
 
                 // Extract key name.
-                StrExtract(value, sizeof(value), paramString, strpos, endpos);
+                StrExtract(value, paramString, strpos, endpos);
 
                 // Copy flag to destination buffer.
                 strcopy(buffer[paramcount].Param_Name, PARAM_NAME_MAXLEN, value);
@@ -211,7 +211,7 @@ stock int ParamParseString(ParamParseResult[] buffer, int maxlen, char[] paramSt
                 endpos = ParamFindEndPos(paramString, rawlen, strpos);
 
                 // Extract key name.
-                StrExtract(value, sizeof(value), paramString, strpos, endpos);
+                StrExtract(value, paramString, strpos, endpos);
 
                 // Copy key name to destination buffer.
                 strcopy(buffer[paramcount].Param_Name, PARAM_NAME_MAXLEN, value);
@@ -316,7 +316,7 @@ stock int ParamParseString(ParamParseResult[] buffer, int maxlen, char[] paramSt
                     }
 
                     // Extract value string.
-                    StrExtract(value, sizeof(value), paramString, startpos, endpos);
+                    StrExtract(value, paramString, startpos, endpos);
 
                     // Unescape string (converting "\n" to newline, etc.).
                     StrUnescape(value, sizeof(value));
@@ -487,13 +487,12 @@ stock int ParamFindStartPos(const char[] paramString, int rawlen, int startPos =
  * Extracts a area in a string between two positions.
  *
  * @param buffer    Destination string buffer.
- * @param maxlen    Size of destination buffer.
  * @param source    Source string to extract from.
  * @param startpos  Start position of string to extract.
  * @param endpos    End position of string to extract.
  * @return          Number of cells written.
  */
-stock int StrExtract(char[] buffer, int maxlen, const char[] source, int startpos, int endpos)
+stock int StrExtract(char[] buffer, const char[] source, int startpos, int endpos)
 {
     int len;
 

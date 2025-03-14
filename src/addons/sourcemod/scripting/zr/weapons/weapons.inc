@@ -453,7 +453,7 @@ stock int WeaponsEntityToDisplay(const char[] entityname, char[] display, int di
     char weaponentity[WEAPONS_MAX_LENGTH];
 
     // Initialize string to null.
-    strcopy(display, sizeof(displaymaxlen), "");
+    strcopy(display, displaymaxlen, "");
 
     // x = Array index.
     int size = GetArraySize(arrayWeapons);
