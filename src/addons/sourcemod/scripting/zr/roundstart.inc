@@ -73,7 +73,7 @@ stock void RoundStartKillObjectives()
     for (int x = 0; x <= maxentities; x++)
     {
         // If entity isn't valid, then stop.
-        if(!IsValidEdict(x))
+        if (!IsValidEdict(x))
         {
             continue;
         }
@@ -82,7 +82,7 @@ stock void RoundStartKillObjectives()
         GetEdictClassname(x, classname, sizeof(classname));
 
         // Check if it matches any objective entities, then stop if it doesn't.
-        if(StrContains(ROUNDSTART_OBJECTIVE_ENTITIES, classname) > -1)
+        if (StrContains(ROUNDSTART_OBJECTIVE_ENTITIES, classname) > -1)
         {
             // Entity is an objective, kill it.
             AcceptEntityInput(x, "Kill");

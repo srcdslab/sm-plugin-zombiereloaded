@@ -253,9 +253,9 @@ void RoundEndDisplayStats()
 {
     AuthIdType authType = view_as<AuthIdType>(GetConVarInt(g_hCvarsList.CVAR_ROUNDEND_AUTHID_TYPE));
 
-    for(int player = 1; player <= MaxClients; player++)
+    for (int player = 1; player <= MaxClients; player++)
     {
-        if(!IsClientInGame(player) || (IsFakeClient(player) && !IsClientSourceTV(player)))
+        if (!IsClientInGame(player) || (IsFakeClient(player) && !IsClientSourceTV(player)))
             continue;
 
         static char sPlayerID[8];
@@ -267,22 +267,22 @@ void RoundEndDisplayStats()
         FormatEx(sPlayerID, sizeof(sPlayerID), "%d", GetClientUserId(player));
         FormatEx(sPlayerName, sizeof(sPlayerName), "\"%N\"", player);
 
-        if(!GetClientAuthId(player, authType, sPlayerAuth, sizeof(sPlayerAuth)))
+        if (!GetClientAuthId(player, authType, sPlayerAuth, sizeof(sPlayerAuth)))
             FormatEx(sPlayerAuth, sizeof(sPlayerAuth), "STEAM_ID_PENDING");
 
-        if(IsPlayerAlive(player))
+        if (IsPlayerAlive(player))
             FormatEx(sPlayerState, sizeof(sPlayerState), "alive");
         else
             FormatEx(sPlayerState, sizeof(sPlayerState), "dead");
 
-        if(InfectIsClientInfected(player))
+        if (InfectIsClientInfected(player))
             FormatEx(sPlayerTeam, sizeof(sPlayerTeam), "zombie");
         else
             FormatEx(sPlayerTeam, sizeof(sPlayerTeam), "human");
 
-        for(int client = 1; client <= MaxClients; client++)
+        for (int client = 1; client <= MaxClients; client++)
         {
-            if(!IsClientInGame(client))
+            if (!IsClientInGame(client))
                 continue;
 
             PrintToConsole(client, "# %8s %40s %24s %5s %6s",
@@ -290,7 +290,7 @@ void RoundEndDisplayStats()
         }
 
         #if defined _stvmngr_included
-        if(g_SourceTVManagerLoaded)
+        if (g_SourceTVManagerLoaded)
         {
             SourceTV_PrintToDemoConsole("# %8s %40s %24s %5s %6s",
                 sPlayerID, sPlayerName, sPlayerAuth, sPlayerState, sPlayerTeam);

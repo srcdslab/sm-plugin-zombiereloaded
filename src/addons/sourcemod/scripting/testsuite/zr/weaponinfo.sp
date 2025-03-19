@@ -219,7 +219,7 @@ void ListWeapons(int client, int observer)
     ReplyToCommand(observer, "Offset:\tEntity:\tClassname:");
 
     // Loop through entries in m_hMyWeapons.
-    for(int offset = 0; offset < 128; offset += 4)     // +4 to skip to next entry in array.
+    for (int offset = 0; offset < 128; offset += 4)     // +4 to skip to next entry in array.
     {
         int weapon = GetEntDataEnt2(client, m_hMyWeapons + offset);
 

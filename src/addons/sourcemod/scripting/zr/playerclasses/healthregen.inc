@@ -34,7 +34,7 @@ Handle tHealthRegen[MAXPLAYERS + 1];
  */
 void ClassHealthRegenInit()
 {
-	for (int client = 0; client < MAXPLAYERS + 1; client++)
+	for (int client = 0; client < MaxClients + 1; client++)
 	{
 		tHealthRegen[client] = INVALID_HANDLE;
 	}

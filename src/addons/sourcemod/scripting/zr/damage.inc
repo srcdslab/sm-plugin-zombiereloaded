@@ -135,7 +135,7 @@ public Action DamageTraceAttack(int client, int &attacker, int &inflictor, float
     }
 
     // If client is attacking himself, then stop.
-    if(attacker == client)
+    if (attacker == client)
     {
         return Plugin_Continue;
     }
@@ -231,7 +231,7 @@ public Action DamageOnTakeDamage(int client, int &attacker, int &inflictor, floa
 
     // Get the attacker weapon name.
     char weaponname[64];
-    if(attacker && attacker >= 1 && attacker <= MAXPLAYERS && IsClientInGame(attacker))
+    if (attacker > 0 && attacker <= MaxClients && IsClientInGame(attacker))
         GetClientWeapon(attacker, weaponname, sizeof(weaponname));
 
     // If entity is a trigger, then allow damage. (Map is damaging client)

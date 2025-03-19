@@ -215,7 +215,7 @@ void APIOnClientInfected(int client, int attacker, bool motherinfect, bool respa
     Call_Finish();
 
     // Forward event to map.
-    if(!motherinfect)
+    if (!motherinfect)
     {
         int entity = INVALID_ENT_REFERENCE;
         while((entity = FindEntityByClassname(entity, "trigger_brush")) != INVALID_ENT_REFERENCE)
@@ -223,9 +223,9 @@ void APIOnClientInfected(int client, int attacker, bool motherinfect, bool respa
             static char sTargetname[64];
             GetEntPropString(entity, Prop_Data, "m_iName", sTargetname, sizeof(sTargetname));
 
-            if(client > 0 && strcmp(sTargetname, "game_playerdie", false) == 0)
+            if (client > 0 && strcmp(sTargetname, "game_playerdie", false) == 0)
                 AcceptEntityInput(entity, "Use", client, client);
-            else if(attacker > 0 && strcmp(sTargetname, "game_playerkill", false) == 0)
+            else if (attacker > 0 && strcmp(sTargetname, "game_playerkill", false) == 0)
                 AcceptEntityInput(entity, "Use", attacker, attacker);
         }
     }

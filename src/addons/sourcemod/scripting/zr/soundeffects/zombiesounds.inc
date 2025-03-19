@@ -371,7 +371,7 @@ void ZombieSoundsCmdTimerCheck(int client)
  */
 void ZombieSoundsResetCmdCounters()
 {
-    for (int client = 0; client <= MAXPLAYERS; client++)
+    for (int client = 0; client <= MaxClients; client++)
     {
         g_SEffectsCommandCount[client] = 0;
     }
@@ -382,7 +382,7 @@ void ZombieSoundsResetCmdCounters()
  */
 void ZombieSoundsResetCmdTimers()
 {
-    for (int client = 0; client <= MAXPLAYERS; client++)
+    for (int client = 0; client <= MaxClients; client++)
     {
         ZREndTimer(g_hSEffectsCommandTimer[client]);
     }

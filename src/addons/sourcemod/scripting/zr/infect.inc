@@ -221,26 +221,26 @@ void InfectClientInit(int client)
 
         int players = 0;
         int playersInList = 0;
-        for(int x = 1; x <= MaxClients; x++)
+        for (int x = 1; x <= MaxClients; x++)
         {
-            if(!IsClientInGame(x))
+            if (!IsClientInGame(x))
                 continue;
 
             #if defined _AFKManager_Included
-            if(g_AFKManagerLoaded)
+            if (g_AFKManagerLoaded)
             {
-                if(!IsFakeClient(x) && GetClientIdleTime(x) > 3 * 60)
+                if (!IsFakeClient(x) && GetClientIdleTime(x) > 3 * 60)
                     continue;
             }
             #endif
 
             players++;
 
-            if(SteamidCacheClientExists(g_hInfectMotherCycle, x))
+            if (SteamidCacheClientExists(g_hInfectMotherCycle, x))
                 playersInList++;
         }
 
-        if(players && playersInList)
+        if (players && playersInList)
         {
             float mzombiechance = float(playersInList) / float(players);
             float dice = GetRandomFloat();
@@ -507,7 +507,7 @@ void InfectOnRoundFreezeEnd()
 
     // Warmup
     #if defined _TeamManager_include
-    if(g_TeamManagerLoaded && TeamManager_HasWarmup() && TeamManager_InWarmup())
+    if (g_TeamManagerLoaded && TeamManager_HasWarmup() && TeamManager_InWarmup())
     {
         return;
     }
@@ -570,7 +570,7 @@ public Action InfectMotherZombie(Handle timer)
 
     // Warmup
     #if defined _TeamManager_include
-    if(g_TeamManagerLoaded && TeamManager_HasWarmup() && TeamManager_InWarmup())
+    if (g_TeamManagerLoaded && TeamManager_HasWarmup() && TeamManager_InWarmup())
     {
         return Plugin_Continue;
     }
@@ -687,7 +687,7 @@ public Action InfectMotherZombie(Handle timer)
     }
 
     // Remove mother zombie last flag from all players.
-    for (int client = 0; client <= MAXPLAYERS; client++)
+    for (int client = 0; client <= MaxClients; client++)
     {
         g_bInfectMotherLast[client] = false;
     }
@@ -902,7 +902,7 @@ bool InfectHumanToZombie(int client, int attacker = -1, bool motherinfect = fals
     if (motherinfect)
     {
         g_bInfectMotherLast[client] = infectconsecutiveblock;
-        if(infectroundrobin)
+        if (infectroundrobin)
         {
             SteamidCacheAddClient(g_hInfectMotherCycle, client);
         }
@@ -952,7 +952,7 @@ bool InfectHumanToZombie(int client, int attacker = -1, bool motherinfect = fals
     if (motherinfect)
     {
         bool zombierespawn = GetConVarBool(g_hCvarsList.CVAR_INFECT_MZOMBIE_RESPAWN);
-        if(zombierespawn)
+        if (zombierespawn)
         {
             ZTele_TeleportClient(client);
         }
@@ -966,7 +966,7 @@ bool InfectHumanToZombie(int client, int attacker = -1, bool motherinfect = fals
             ZTele_TeleportClient(client);
         }
         // Teleport to attacker when infected
-        else if(teleport && ZRIsClientValid(attacker))
+        else if (teleport && ZRIsClientValid(attacker))
         {
             // Get client's position.
             float clientloc[3];
@@ -1391,7 +1391,7 @@ stock void InfectManualInfect(int client, int[] targets, int count, bool respawn
     char adminname[MAX_NAME_LENGTH];
 
     // Get admin's name for later use.
-    if(client > 0)
+    if (client > 0)
         GetClientName(client, adminname, sizeof(adminname));
     else
         strcopy(adminname, sizeof(adminname), "Console");
@@ -1435,7 +1435,7 @@ stock void InfectManualInfect(int client, int[] targets, int count, bool respawn
     }
 
     // Tell admin the outcome of the command.
-    if(success)
+    if (success)
     {
         if (!zombiespawned)
         {
@@ -1470,7 +1470,7 @@ stock void InfectManualHuman(int client, int[] targets, int count, bool respawn 
     char adminname[MAX_NAME_LENGTH];
 
     // Get admin's name for later use.
-    if(client > 0)
+    if (client > 0)
         GetClientName(client, adminname, sizeof(adminname));
     else
         strcopy(adminname, sizeof(adminname), "Console");

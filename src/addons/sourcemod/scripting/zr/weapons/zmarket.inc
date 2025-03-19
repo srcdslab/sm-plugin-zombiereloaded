@@ -95,7 +95,7 @@ void ZMarketOnCookiesCreate()
 void ZMarketLoad()
 {
     // Do not register commands multiple times
-    if(g_bZMarketCommandInitialized)
+    if (g_bZMarketCommandInitialized)
         return;
 
     char zmarketcommand[CONFIG_MAX_LENGTH];
@@ -107,7 +107,7 @@ void ZMarketLoad()
     for (int weaponindex = 0; weaponindex < size; weaponindex++)
     {
         WeaponsGetZMarketCommand(weaponindex, zmarketcommand, sizeof(zmarketcommand));
-        if(zmarketcommand[0])
+        if (zmarketcommand[0])
         {
             WeaponsGetName(weaponindex, weaponname, sizeof(weaponname));
 
@@ -248,7 +248,7 @@ void ZMarketOnClientSpawnPost(int client)
     // Rebuy if auto-rebuy is enabled.
     bool rebuy = GetConVarBool(g_hCvarsList.CVAR_WEAPONS_ZMARKET_REBUY);
 
-    if(rebuy)
+    if (rebuy)
         ZMarketCheckRebuy(client);
 }
 
@@ -602,7 +602,7 @@ void ZMarketMenuLoadoutWeapons(int client, WeaponsSlot slot)
         WeaponsSlot wslot = WeaponsGetSlot(weaponindex);
 
         // Does it match with the slot we want?
-        if(wslot != slot)
+        if (wslot != slot)
             continue;
 
         WeaponsGetName(weaponindex, weaponname, sizeof(weaponname));
@@ -992,7 +992,7 @@ stock bool ZMarketEquip(int client, const char[] weapon, bool rebuy = false)
 
     // if zombie hasn't spawned yet we're always rebuying:
     bool zmarketfreespawn = GetConVarBool(g_hCvarsList.CVAR_WEAPONS_ZMARKET_FREESPAWN);
-    if(zmarketfreespawn && !InfectHasZombieSpawned())
+    if (zmarketfreespawn && !InfectHasZombieSpawned())
         rebuy = true;
 
     // Get weapon index.
@@ -1092,7 +1092,7 @@ stock bool ZMarketEquip(int client, const char[] weapon, bool rebuy = false)
         }
     }
 
-    if(!rebuy)
+    if (!rebuy)
     {
         // Get client's current money.
         int cash = AccountGetClientCash(client);
@@ -1123,7 +1123,7 @@ stock bool ZMarketEquip(int client, const char[] weapon, bool rebuy = false)
             if (weapons[slot] > -1)
             {
                 oldclip = GetEntProp(weapons[slot], Prop_Send, "m_iClip1");
-                if(rebuy)
+                if (rebuy)
                 {
                     // Kill weapon right away to decrease amount of entities on roundstart.
                     RemoveEdict(weapons[slot]);
@@ -1167,7 +1167,7 @@ stock bool ZMarketEquip(int client, const char[] weapon, bool rebuy = false)
                 if (oldclip != -1)
                 {
                     newclip = GetEntProp(entity, Prop_Send, "m_iClip1");
-                    if(newclip > oldclip)
+                    if (newclip > oldclip)
                         newclip = oldclip;
                 }
 
@@ -1402,7 +1402,7 @@ void ZMarketRebuy(int client, bool autorebuy = false)
             ZMarketEquip(client, rebuyweapons[x], autorebuy);
     }
 
-    if(autorebuy)
+    if (autorebuy)
     {
         // Always equip kevlar and hegrenade
         if (!RestrictIsWeaponRestricted(WeaponsNameToIndex("Kevlar Vest")))

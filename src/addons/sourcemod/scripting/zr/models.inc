@@ -270,7 +270,7 @@ void ModelsPrecache()
         ModelsGetFullPath(model, file, sizeof(file));
 #if defined _HitboxChanger_Included
         int modelIndex = PrecacheModel(file);
-        if(hitboxchangerLoaded && (modelIndex != 0) && (ModelData[model][Model_Team] == ModelTeam_Humans))
+        if (hitboxchangerLoaded && (modelIndex != 0) && (ModelData[model][Model_Team] == ModelTeam_Humans))
             SetNumHitboxes(modelIndex, -1);
 #else
         PrecacheModel(file);

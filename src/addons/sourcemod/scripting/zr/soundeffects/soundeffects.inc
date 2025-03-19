@@ -184,7 +184,7 @@ void SEffectsEmitAmbientSound(const char[] sound, int client = -1)
 
     if (ZRIsClientValid(client))
     {
-		if(zfAmbientVolume[client] > 0)
+		if (zfAmbientVolume[client] > 0)
 		{
 			// Emit ambient sound.
 			EmitSoundToClient(client, sound, SOUND_FROM_PLAYER, SOUND_AMBIENT_CHANNEL, _, _, zfAmbientVolume[client]);
@@ -209,7 +209,7 @@ void SEffectsEmitAmbientSound(const char[] sound, int client = -1)
             }
 
             // Emit ambient sound.
-            if(zfAmbientVolume[x] > 0)
+            if (zfAmbientVolume[x] > 0)
                 EmitSoundToClient(x, sound, SOUND_FROM_PLAYER, SNDCHAN_AUTO, _, _, zfAmbientVolume[x]);
         }
     }
@@ -235,7 +235,7 @@ void SEffectsStopAmbientSound(const char[] sound)
         }
 
         // Stop ambient sound.
-        if(zfAmbientVolume[x] > 0)
+        if (zfAmbientVolume[x] > 0)
             StopSound(x, SOUND_AMBIENT_CHANNEL, sound);
     }
 }
@@ -261,12 +261,12 @@ void SEffectsEmitSoundFromClient(int client, const char[] sound, int level = SND
     // Precache sound before playing.
     PrecacheSound(sound);
 
-    for(int i = 1; i <= MaxClients; i++)
+    for (int i = 1; i <= MaxClients; i++)
     {
-        if(IsClientInGame(i))
+        if (IsClientInGame(i))
         {
             // Emit sound from client.
-            if(zfZSoundVolume[i] > 0)
+            if (zfZSoundVolume[i] > 0)
                 EmitSoundToClient(i, sound, client, _, level, _, zfZSoundVolume[i]);
         }
     }

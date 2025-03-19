@@ -581,7 +581,7 @@ void ImmunityAbortHandler(int client, bool resetLastUse = true)
  */
 void ImmunityAbortAll(bool resetLastUse = true)
 {
-    for (int client = 0; client < MAXPLAYERS + 1; client++)
+    for (int client = 0; client < MaxClients + 1; client++)
     {
         ImmunityAbortHandler(resetLastUse);
     }

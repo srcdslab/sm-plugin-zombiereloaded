@@ -412,7 +412,7 @@ public int WeaponsMenuZMarketHandle(Handle menu_weapons_market, MenuAction actio
                 // Toggle cvar.
                 bool zmarketbuyzone = GetConVarBool(g_hCvarsList.CVAR_WEAPONS_ZMARKET_BUYZONE);
                 SetConVarBool(g_hCvarsList.CVAR_WEAPONS_ZMARKET_BUYZONE, !zmarketbuyzone);
-                if(zmarketbuyzone == false)
+                if (zmarketbuyzone == false)
                 {
                     LogAction(client, -1, "[ZR] \"%L\" Requires player to be inside a buyzone to use ZMarket.", client);
                 }

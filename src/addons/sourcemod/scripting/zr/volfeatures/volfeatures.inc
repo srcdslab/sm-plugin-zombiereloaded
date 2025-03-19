@@ -383,7 +383,7 @@ void VolResetCountDown(int client = -1)
     else
     {
         // Reset all volume counters.
-        for (int clientIndex = 0; clientIndex < MAXPLAYERS + 1; clientIndex++)
+        for (int clientIndex = 0; clientIndex < MaxClients + 1; clientIndex++)
         {
             for (int volumeIndex = 0; volumeIndex < ZR_VOLUMES_MAX; volumeIndex++)
             {
