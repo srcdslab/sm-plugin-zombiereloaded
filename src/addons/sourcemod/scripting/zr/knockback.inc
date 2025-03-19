@@ -300,7 +300,7 @@ void KnockbackApplyVector(int client, float vector[3], bool limitvel)
 public bool KnockbackTRFilter(int entity, int contentsMask)
 {
     // If entity is a player, continue tracing.
-    if (entity > 0 && entity < MAXPLAYERS)
+    if (entity > 0 && entity < MaxClients)
     {
         return false;
     }

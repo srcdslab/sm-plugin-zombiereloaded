@@ -976,7 +976,7 @@ void ClassResetNextIndexes(int client = -1)
     }
     else
     {
-        for (client = 1; client <= MAXPLAYERS; client++)
+        for (client = 1; client <= MaxClients; client++)
         {
             for (teamid = 0; teamid < ZR_CLASS_TEAMCOUNT; teamid++)
             {
