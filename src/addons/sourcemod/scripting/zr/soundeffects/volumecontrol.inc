@@ -92,7 +92,7 @@ void VolumeOnCookiesCached(int client)
 
 public Action Command_ZVolume(int client, int args)
 {
-	if(IsClientInGame(client))
+	if (IsClientInGame(client))
 	{
 		VolumeControlMenu(client);
 		return Plugin_Handled;
@@ -128,18 +128,18 @@ public int VolumeControlMenuHandler(Menu menu, MenuAction action, int param1, in
 		{
 			char info[32];
 			menu.GetItem(param2, info, sizeof(info));
-			if(strcmp(info, "1", false) == 0)
+			if (strcmp(info, "1", false) == 0)
 			{
 				ZombieVoiceVolumeMenu(param1);
 			}
-			else if(strcmp(info, "2") == 0)
+			else if (strcmp(info, "2") == 0)
 			{
 				AmbientVolumeMenu(param1);
 			}
 		}
 		case MenuAction_Cancel:
 		{
-			if(param2 == MenuCancel_ExitBack)
+			if (param2 == MenuCancel_ExitBack)
 				ZMenuMain(param1);
 		}
 		case MenuAction_End:
@@ -153,7 +153,7 @@ public int VolumeControlMenuHandler(Menu menu, MenuAction action, int param1, in
 // Zombie Voice Section
 public Action Command_ZSound(int client, int args)
 {
-	if(args == 0)
+	if (args == 0)
 	{
 		ZombieVoiceVolumeMenu(client);
 		return Plugin_Handled;
@@ -163,7 +163,7 @@ public Action Command_ZSound(int client, int args)
 	GetCmdArg(1, sArg, sizeof(sArg));
 	int iVolume = StringToInt(sArg);
 
-	if(iVolume < 0 || iVolume > 100)
+	if (iVolume < 0 || iVolume > 100)
 	{
 		TranslationReplyToCommand(client, "ZombieVoice_Usage");
 		return Plugin_Handled;
@@ -202,27 +202,27 @@ public int ZombieVoiceVolumeMenuHandler(Menu menu, MenuAction action, int param1
 		{
 			char info[32];
 			menu.GetItem(param2, info, sizeof(info));
-			if(strcmp(info, "1", false) == 0)
+			if (strcmp(info, "1", false) == 0)
 			{
 				SetZombieVoiceVolume(param1, 100);
 				ZombieVoiceVolumeMenu(param1);
 			}
-			else if(strcmp(info, "2") == 0)
+			else if (strcmp(info, "2") == 0)
 			{
 				SetZombieVoiceVolume(param1, 80);
 				ZombieVoiceVolumeMenu(param1);
 			}
-			else if(strcmp(info, "3") == 0)
+			else if (strcmp(info, "3") == 0)
 			{
 				SetZombieVoiceVolume(param1, 60);
 				ZombieVoiceVolumeMenu(param1);
 			}
-			else if(strcmp(info, "4") == 0)
+			else if (strcmp(info, "4") == 0)
 			{
 				SetZombieVoiceVolume(param1, 40);
 				ZombieVoiceVolumeMenu(param1);
 			}
-			else if(strcmp(info, "5") == 0)
+			else if (strcmp(info, "5") == 0)
 			{
 				SetZombieVoiceVolume(param1, 20);
 				ZombieVoiceVolumeMenu(param1);
@@ -230,7 +230,7 @@ public int ZombieVoiceVolumeMenuHandler(Menu menu, MenuAction action, int param1
 		}
 		case MenuAction_Cancel:
 		{
-			if(param2 == MenuCancel_ExitBack)
+			if (param2 == MenuCancel_ExitBack)
 				VolumeControlMenu(param1);
 		}
 		case MenuAction_End:
@@ -249,14 +249,14 @@ public void SetZombieVoiceVolume(int client, int volume)
 	IntToString(volume, sValue, sizeof(sValue));
 	SetClientCookie(client, zhZSoundVolume, sValue);
 
-	if(IsClientInGame(client))
+	if (IsClientInGame(client))
 		TranslationPrintToChat(client, "Set_ZombieVoice_Volume", volume);
 }
 
 // Ambient Section
 public Action Command_ZAmbient(int client, int args)
 {
-	if(args == 0)
+	if (args == 0)
 	{
 		AmbientVolumeMenu(client);
 		return Plugin_Handled;
@@ -266,7 +266,7 @@ public Action Command_ZAmbient(int client, int args)
 	GetCmdArg(1, sArg, sizeof(sArg));
 	int iVolume = StringToInt(sArg);
 
-	if(iVolume < 0 || iVolume > 100)
+	if (iVolume < 0 || iVolume > 100)
 	{
 		TranslationReplyToCommand(client, "Ambient_Usage");
 		return Plugin_Handled;
@@ -305,27 +305,27 @@ public int AmbientVolumeMenuHandler(Menu menu, MenuAction action, int param1, in
 		{
 			char info[32];
 			menu.GetItem(param2, info, sizeof(info));
-			if(strcmp(info, "1", false) == 0)
+			if (strcmp(info, "1", false) == 0)
 			{
 				SetAmbientVolume(param1, 100);
 				AmbientVolumeMenu(param1);
 			}
-			else if(strcmp(info, "2") == 0)
+			else if (strcmp(info, "2") == 0)
 			{
 				SetAmbientVolume(param1, 80);
 				AmbientVolumeMenu(param1);
 			}
-			else if(strcmp(info, "3") == 0)
+			else if (strcmp(info, "3") == 0)
 			{
 				SetAmbientVolume(param1, 60);
 				AmbientVolumeMenu(param1);
 			}
-			else if(strcmp(info, "4") == 0)
+			else if (strcmp(info, "4") == 0)
 			{
 				SetAmbientVolume(param1, 40);
 				AmbientVolumeMenu(param1);
 			}
-			else if(strcmp(info, "5") == 0)
+			else if (strcmp(info, "5") == 0)
 			{
 				SetAmbientVolume(param1, 20);
 				AmbientVolumeMenu(param1);
@@ -333,7 +333,7 @@ public int AmbientVolumeMenuHandler(Menu menu, MenuAction action, int param1, in
 		}
 		case MenuAction_Cancel:
 		{
-			if(param2 == MenuCancel_ExitBack)
+			if (param2 == MenuCancel_ExitBack)
 				VolumeControlMenu(param1);
 		}
 		case MenuAction_End:
@@ -352,6 +352,6 @@ public void SetAmbientVolume(int client, int volume)
 	IntToString(volume, sValue, sizeof(sValue));
 	SetClientCookie(client, zhZAmbientVolume, sValue);
 
-	if(IsClientInGame(client))
+	if (IsClientInGame(client))
 		TranslationPrintToChat(client, "Set_Ambient_Volume", volume);
 }

@@ -82,7 +82,7 @@ void ZSpawnOnMapStart()
     SteamidCacheReset(g_hZSpawnSteamIDCache);
     SteamidCacheReset(g_hZspawnInfectedSteamIDCache);
 
-    for(int client = 1; client <= MaxClients; client++)
+    for (int client = 1; client <= MaxClients; client++)
         g_bZSpawnClientInfected[client] = false;
 }
 
@@ -119,7 +119,7 @@ void ZSpawnOnClientDisconnect(int client)
     SteamidCacheAddClient(g_hZSpawnSteamIDCache, client);
 
     // If this client was infected, remember until the next round or until they rejoin.
-    if(g_bZSpawnClientInfected[client])
+    if (g_bZSpawnClientInfected[client])
         SteamidCacheAddClient(g_hZspawnInfectedSteamIDCache, client);
 
     g_bZSpawnClientInfected[client] = false;
@@ -232,7 +232,7 @@ void ZSpawnOnRoundStart()
     SteamidCacheReset(g_hZSpawnSteamIDCache);
     SteamidCacheReset(g_hZspawnInfectedSteamIDCache);
 
-    for(int client = 1; client <= MaxClients; client++)
+    for (int client = 1; client <= MaxClients; client++)
         g_bZSpawnClientInfected[client] = false;
 
     // If zspawn timer is running, then kill it.
@@ -428,7 +428,7 @@ public int ZSpawnForceHandle(Handle menu_zspawn_force, MenuAction action, int cl
         GetClientName(target, targetname, sizeof(targetname));
 
         // Get admin's name for future use.
-        if(client > 0)
+        if (client > 0)
             GetClientName(client, adminname, sizeof(adminname));
         else
             strcopy(adminname, sizeof(adminname), "Console");
@@ -526,7 +526,7 @@ public Action ZSpawnForceCommand(int client, int argc)
     GetCmdArg(1, target, sizeof(target));
 
     // Get admin's name for later use.
-    if(client > 0)
+    if (client > 0)
         GetClientName(client, adminname, sizeof(adminname));
     else
         strcopy(adminname, sizeof(adminname), "Console");
@@ -639,7 +639,7 @@ ZSpawnCondition GetZSpawnCondition(int client)
                 {
                     condition = ZSpawn_Human;
                     // Client has been infected this round, respawning as a zombie.
-                    if(g_bZSpawnClientInfected[client])
+                    if (g_bZSpawnClientInfected[client])
                         condition = ZSpawn_Zombie;
                 }
                 case ZSpawn_Zombie:
@@ -651,7 +651,7 @@ ZSpawnCondition GetZSpawnCondition(int client)
         else
         {
             // Client has been infected this round, respawning as a zombie.
-            if(condition == ZSpawn_Human && g_bZSpawnClientInfected[client])
+            if (condition == ZSpawn_Human && g_bZSpawnClientInfected[client])
                 condition = ZSpawn_Zombie;
         }
     }

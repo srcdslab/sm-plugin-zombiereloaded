@@ -135,7 +135,7 @@ public Action DamageTraceAttack(int client, int &attacker, int &inflictor, float
     }
 
     // If client is attacking himself, then stop.
-    if(attacker == client)
+    if (attacker == client)
     {
         return Plugin_Continue;
     }

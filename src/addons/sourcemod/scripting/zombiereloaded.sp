@@ -208,7 +208,7 @@ public void OnLibraryRemoved(const char[] name)
  */
 public void OnMapStart()
 {
-    if(!g_bServerStarted)
+    if (!g_bServerStarted)
     {
         ToolsInit();
         g_bServerStarted = true;
@@ -272,27 +272,27 @@ public void OnConfigsExecuted()
     // Fake roundstart
     EventRoundStart(INVALID_HANDLE, "", false);
 
-    if(g_bLate)
+    if (g_bLate)
     {
         bool bZombieSpawned = false;
-        for(int client = 1; client <= MaxClients; client++)
+        for (int client = 1; client <= MaxClients; client++)
         {
-            if(!IsClientConnected(client))
+            if (!IsClientConnected(client))
                 continue;
 
             OnClientConnected(client);
 
-            if(IsClientInGame(client))
+            if (IsClientInGame(client))
             {
                 OnClientPutInServer(client);
 
-                if(AreClientCookiesCached(client))
+                if (AreClientCookiesCached(client))
                     OnClientCookiesCached(client);
 
-                if(IsClientAuthorized(client))
+                if (IsClientAuthorized(client))
                     OnClientPostAdminCheck(client);
 
-                if(IsPlayerAlive(client) && GetClientTeam(client) == CS_TEAM_T)
+                if (IsPlayerAlive(client) && GetClientTeam(client) == CS_TEAM_T)
                 {
                     InfectHumanToZombie(client);
                     bZombieSpawned = true;
@@ -300,7 +300,7 @@ public void OnConfigsExecuted()
             }
         }
 
-        if(bZombieSpawned)
+        if (bZombieSpawned)
         {
             // Zombies have been infected.
             g_bZombieSpawned = true;

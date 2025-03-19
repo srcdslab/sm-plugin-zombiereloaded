@@ -940,15 +940,15 @@ stock bool ClassFilterMatch(int index, ClassFilter filter, int cachetype = ZR_CL
             int flags = ReadFlagString(sm_flags);
 
             // No valid flag, blocked for everyone.
-            if(!flags)
+            if (!flags)
                 return false;
 
             // Check if user is root then ignore.
-            if(GetUserFlagBits(client) & ADMFLAG_ROOT)
+            if (GetUserFlagBits(client) & ADMFLAG_ROOT)
                 return true;
 
             // Check if user doesn't have the required flags.
-            if(GetUserFlagBits(client) & flags != flags)
+            if (GetUserFlagBits(client) & flags != flags)
                 return false;
         }
     }

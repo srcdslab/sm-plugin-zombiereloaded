@@ -276,15 +276,15 @@ void KnockbackSetVelocity(int client, const float startpoint[3], const float end
 
     // Changes by zephyrus:
     //int flags = GetEntityFlags(client);
-    //if(flags & FL_ONGROUND)
+    //if (flags & FL_ONGROUND)
     //    vector[2]=0.5;
 
     // Apply the magnitude by scaling the vector (multiplying each of its components).
     ScaleVector(vector, magnitude);
 
     // Changes by zephyrus:
-    //if(flags & FL_ONGROUND)
-    //    if(vector[2]>350.0)
+    //if (flags & FL_ONGROUND)
+    //    if (vector[2]>350.0)
     //        vector[2]=350.0;
 
     int flags = GetEntityFlags(client);

@@ -76,7 +76,7 @@ void KnockbackSetClientScale(int client, float fScale)
 
 void KnockbackSetClientMaxForce(int client, float fForce)
 {
-    if(g_fKnockbackForceLimit[client] >= 0.0)
+    if (g_fKnockbackForceLimit[client] >= 0.0)
         g_fKnockbackForceLimit[client] = fForce;
 }
 
@@ -91,7 +91,7 @@ void KnockbackSetClientMaxVelocity(int client, float fVelocity)
  */
 void KnockbackOnGameFrame()
 {
-    for(int client = 1; client <= MaxClients; client++)
+    for (int client = 1; client <= MaxClients; client++)
     {
         if (g_bKnockbackFrame[client] && g_fKnockbackForceLimit[client] > 0.0)
         {
@@ -99,7 +99,7 @@ void KnockbackOnGameFrame()
             float magnitude = GetVectorLength(g_fKnockbackVectors[client]);
 
             // ... and limit it if it's too high.
-            if(magnitude > g_fKnockbackForceLimit[client])
+            if (magnitude > g_fKnockbackForceLimit[client])
             {
                 ScaleVector(g_fKnockbackVectors[client], g_fKnockbackForceLimit[client] / magnitude);
             }
@@ -268,7 +268,7 @@ void KnockbackApplyVector(int client, float vector[3], bool limitvel)
     float maxvel = GetConVarFloat(g_hCvarsList.CVAR_KNOCKBACK_MAXVEL);
     if (limitvel && g_fKnockbackVelLimit[client] >= 0.0 || maxvel > 0.0)
     {
-        if(g_fKnockbackVelLimit[client] >= 0.0 && g_fKnockbackVelLimit[client] < maxvel)
+        if (g_fKnockbackVelLimit[client] >= 0.0 && g_fKnockbackVelLimit[client] < maxvel)
             maxvel = g_fKnockbackVelLimit[client];
 
         // Calculate their new speed.
@@ -278,7 +278,7 @@ void KnockbackApplyVector(int client, float vector[3], bool limitvel)
         if (magnitude_post > magnitude_pre)
         {
             // Would their knockback velocity be higher than wanted?
-            if(magnitude_post > maxvel)
+            if (magnitude_post > maxvel)
             {
                 // ... then scale it down.
                 ScaleVector(velocity, maxvel / magnitude_post);
