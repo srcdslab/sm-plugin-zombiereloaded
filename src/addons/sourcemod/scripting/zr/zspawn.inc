@@ -82,7 +82,7 @@ void ZSpawnOnMapStart()
     SteamidCacheReset(g_hZSpawnSteamIDCache);
     SteamidCacheReset(g_hZspawnInfectedSteamIDCache);
 
-    for(int client = 1; client <= MAXPLAYERS; client++)
+    for(int client = 1; client <= MaxClients; client++)
         g_bZSpawnClientInfected[client] = false;
 }
 
@@ -232,7 +232,7 @@ void ZSpawnOnRoundStart()
     SteamidCacheReset(g_hZSpawnSteamIDCache);
     SteamidCacheReset(g_hZspawnInfectedSteamIDCache);
 
-    for(int client = 1; client <= MAXPLAYERS; client++)
+    for(int client = 1; client <= MaxClients; client++)
         g_bZSpawnClientInfected[client] = false;
 
     // If zspawn timer is running, then kill it.

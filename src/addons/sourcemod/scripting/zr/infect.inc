@@ -687,7 +687,7 @@ public Action InfectMotherZombie(Handle timer)
     }
 
     // Remove mother zombie last flag from all players.
-    for (int client = 0; client <= MAXPLAYERS; client++)
+    for (int client = 0; client <= MaxClients; client++)
     {
         g_bInfectMotherLast[client] = false;
     }
