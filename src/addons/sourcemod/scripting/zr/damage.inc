@@ -244,12 +244,6 @@ public Action DamageOnTakeDamage(int client, int &attacker, int &inflictor, floa
         return view_as<Action>(action);
     }
 
-    // If attacker is invalid, then stop.
-    if (attacker <= 0 || attacker > MaxClients || !IsClientInGame(attacker))
-    {
-        return Plugin_Continue;
-    }
-
     // Client was shot or knifed.
     if (damagetype & DMG_BULLET || damagetype & DMG_NEVERGIB)
     {
