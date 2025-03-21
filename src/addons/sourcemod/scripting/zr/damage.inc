@@ -229,11 +229,6 @@ public Action DamageOnTakeDamage(int client, int &attacker, int &inflictor, floa
     char classname[64];
     GetEdictClassname(inflictor, classname, sizeof(classname));
 
-    // Get the attacker weapon name.
-    char weaponname[64];
-    if (attacker > 0 && attacker <= MaxClients && IsClientInGame(attacker))
-        GetClientWeapon(attacker, weaponname, sizeof(weaponname));
-
     // If entity is a trigger, then allow damage. (Map is damaging client)
     if (StrContains(classname, "trigger") > -1)
     {
@@ -247,6 +242,12 @@ public Action DamageOnTakeDamage(int client, int &attacker, int &inflictor, floa
     if (action > -1)
     {
         return view_as<Action>(action);
+    }
+
+    // If attacker is invalid, then stop.
+    if (attacker <= 0 || attacker > MaxClients || !IsClientInGame(attacker))
+    {
+        return Plugin_Continue;
     }
 
     // Client was shot or knifed.
@@ -276,7 +277,11 @@ public Action DamageOnTakeDamage(int client, int &attacker, int &inflictor, floa
             return Plugin_Continue;
         }
 
-        if (!clientzombie && attackerzombie && !(strcmp(weaponname, "weapon_bayonet", false) == 0 || strncmp(weaponname, "weapon_knife", 12) == 0))
+        // Get the attacker weapon name.
+        char weaponname[64];
+        GetClientWeapon(attacker, weaponname, sizeof(weaponname));
+
+        if (!clientzombie && attackerzombie && !(strncmp(weaponname, "weapon_knife", 12) == 0))
         {
             damage = 1.0;
             return Plugin_Changed;
