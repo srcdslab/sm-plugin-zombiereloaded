@@ -114,6 +114,7 @@
 #include "zr/api/api"
 
 bool g_bLate = false;
+bool g_bFirstLoad = true;
 bool g_bServerStarted = false;
 
 /**
@@ -264,6 +265,19 @@ public void OnConfigsExecuted()
     ClassOnConfigsExecuted();
     ClassLoad();
     VolLoad();
+
+    // After all configurations have been loaded, reload critical configs on the first startup
+    // https://github.com/srcdslab/sm-plugin-zombiereloaded/issues/86
+    if (g_bFirstLoad && g_bServerStarted)
+    {
+        char configalias[CONFIG_MAX_LENGTH];
+        for (int x = 0; x < sizeof(g_ConfigData); x++)
+        {
+            ConfigReloadConfig(view_as<ConfigFile>(x));
+            ConfigGetConfigAlias(view_as<ConfigFile>(x), configalias, sizeof(configalias));
+        }
+        g_bFirstLoad = false;
+    }
 
     // Forward event to modules. (OnModulesLoaded)
     ConfigOnModulesLoaded();
