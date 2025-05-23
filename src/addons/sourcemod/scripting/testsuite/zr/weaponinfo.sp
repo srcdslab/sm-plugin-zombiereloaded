@@ -34,7 +34,7 @@ public Plugin myinfo =
     name = "Weapon information",
     author = "Greyscale | Richard Helgeby",
     description = "Dumps weapon information.",
-    version = "1.0.0",
+    version = "1.0.1",
     url = "http://code.google.com/p/zombiereloaded/"
 };
 
@@ -51,7 +51,7 @@ public void OnPluginStart()
         LogError("Can't find CBasePlayer::m_hActiveWeapon");
     }
 
-    m_hMyWeapons = FindSendPropOffs("CBasePlayer", "m_hMyWeapons");
+    m_hMyWeapons = FindSendPropInfo("CBasePlayer", "m_hMyWeapons");
     if (m_hMyWeapons == -1)
     {
         LogError("Can't find CBasePlayer::m_hMyWeapons");
