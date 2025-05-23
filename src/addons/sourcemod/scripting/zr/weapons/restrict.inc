@@ -544,9 +544,20 @@ stock void RestrictSetWeaponRestricted(int index, bool toggle, bool restrict = f
  */
 stock bool RestrictIsWeaponRestricted(int index)
 {
+    // Validate array and index
+    if (arrayWeapons == INVALID_HANDLE)
+        return false;
+        
+    if (index < 0 || index >= GetArraySize(arrayWeapons))
+        return false;
+    
     // Get array handle of weapon at given index.
     Handle arrayWeapon = GetArrayCell(arrayWeapons, index);
-
+    
+    // Validate the weapon handle
+    if (arrayWeapon == INVALID_HANDLE)
+        return false;
+    
     // Return restricted status.
     return view_as<bool>(GetArrayCell(arrayWeapon, view_as<int>(WEAPONS_DATA_RESTRICTED)));
 }
