@@ -27,14 +27,14 @@
 
 #pragma semicolon 1
 #include <sourcemod>
-#include <sdkhooks-2.2>
+#include <sdkhooks>
 
 public Plugin myinfo =
 {
     name = "Damage information",
     author = "Greyscale | Richard Helgeby",
     description = "Dumps damage information.",
-    version = "1.0.0",
+    version = "1.0.1",
     url = "http://code.google.com/p/zombiereloaded/"
 };
 
