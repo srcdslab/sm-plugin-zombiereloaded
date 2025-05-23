@@ -34,7 +34,7 @@ public Plugin myinfo =
     name = "Zombie:Reloaded Class API Test",
     author = "Greyscale | Richard Helgeby",
     description = "Tests the class API for ZR",
-    version = "1.0.0",
+    version = "1.0.1",
     url = "http://code.google.com/p/zombiereloaded/"
 };
 
@@ -111,10 +111,10 @@ public Action SelectClassCommand(int client, int argc)
         if (argc >= 4)
         {
             GetCmdArg(3, valueString, sizeof(valueString));
-            applyIfPossible = view_as<int>(StringToInt(valueString));
+            applyIfPossible = view_as<bool>(StringToInt(valueString));
 
             GetCmdArg(4, valueString, sizeof(valueString));
-            saveIfEnabled = view_as<int>(StringToInt(valueString));
+            saveIfEnabled = view_as<bool>(StringToInt(valueString));
         }
     }
     else
