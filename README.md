@@ -147,6 +147,8 @@ Find all cvars details on [online docs](https://srcdslab.github.io/sm-plugin-zom
 - zr_infect_shake_amp               - "15.0" -                              Amplitude of shaking effect. [Dependency: zr_infect_shake]
 - zr_infect_shake_frequency         - "1.0" -                               Frequency of shaking effect. [Dependency: zr_infect_shake]
 - zr_infect_shake_duration          - "5.0" -                               Duration of shaking effect. [Dependency: zr_infect_shake]
+- zr_infect_event_weapon            - "zombie_claws_of_death" -             Weapon icon used when the death event is sent for a player that gets infected.
+- zr_infect_skip_trigger_brush      - "0" -                                 Skip trigger_brush checks entirely when a player is infected.
 - zr_damage_hitgroups               - "1" -                                 Read hitgroup damage control from hitgroup config file, disabling this allows all zombie hitgroups to be shot.
 - zr_damage_block_ff                - "1" -                                 Block friendly fire.
 - zr_damage_block_blast             - "1" -                                 Block blast damage inflicted on self or teammates.

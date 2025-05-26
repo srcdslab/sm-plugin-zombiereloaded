@@ -214,7 +214,7 @@ void APIOnClientInfected(int client, int attacker, bool motherinfect, bool respa
     // Finish the call.
     Call_Finish();
 
-    // NOTE:Following code is legacy, map should rely on logic_eventlistener
+    // NOTE: Following code is legacy, map should rely on logic_eventlistener
     // See: https://github.com/srcdslab/sm-plugin-zombiereloaded/issues/89
     if (GetConVarBool(g_hCvarsList.CVAR_INFECT_SKIP_TRIGGER_BRUSH))
         return;

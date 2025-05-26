@@ -3111,6 +3111,28 @@ tune game balance.</p>
 			<p>Duration of shake, how long the shake lasts. Time is in seconds. [Dependency: zr_infect_shake]</p>
 		</td>
 	</tr>
+
+	<tr>
+		<td class="commandheader">zr_infect_event_weapon</td>
+		<td class="commandheader">zombie_claws_of_death</td>
+	</tr>
+	<tr>
+		<td class="indent" colspan="2">
+			<p>Weapon icon used when the death event is sent for a player that gets infected.</p>
+		</td>
+	</tr>
+
+	<tr>
+		<td class="commandheader">zr_infect_skip_trigger_brush</td>
+		<td class="commandheader">0</td>
+	</tr>
+	<tr>
+		<td class="indent" colspan="2">
+			<p>Skip trigger_brush checks entirely when a player is infected.</p>
+			<p>Legacy usage, some maps used trigger_brush to fire game events.<br>
+			Maps should now rely on logic_eventlistener
+		</td>
+	</tr>
 </table></blockquote>
 
 <blockquote><table>
