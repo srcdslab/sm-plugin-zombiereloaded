@@ -28,14 +28,14 @@
 #pragma semicolon 1
 #include <sourcemod>
 #include <sdktools>
-#include <sdkhooks-2.2>
+#include <sdkhooks>
 
 public Plugin myinfo =
 {
     name = "Knock back",
     author = "Greyscale | Richard Helgeby",
     description = "Tests basic knock back.",
-    version = "1.0.0",
+    version = "1.0.1",
     url = "http://code.google.com/p/zombiereloaded/"
 };
 
@@ -353,7 +353,7 @@ stock void ToolsClientVelocity(int client, float vecVelocity[3], bool apply = tr
 public bool KnockbackTRFilter(int entity, int contentsMask)
 {
     // If entity is a player, continue tracing.
-    if (entity > 0 && entity < MAXPLAYERS)
+    if (entity > 0 && entity < MaxClients)
     {
         return false;
     }
