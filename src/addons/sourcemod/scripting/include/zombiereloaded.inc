@@ -37,6 +37,7 @@
 #include <zr/napalm.zr>
 #include <zr/knockback.zr>
 #include <zr/ztele.zr>
+#include <zr/weapons.zr>
 
 public SharedPlugin __pl_zombiereloaded =
 {
@@ -76,5 +77,19 @@ public void __pl_zombiereloaded_SetNTVOptional()
     MarkNativeAsOptional("ZR_SetClientKnockbackMaxVelocity");
 
     MarkNativeAsOptional("ZR_ZteleClient");
+
+    MarkNativeAsOptional("ZR_GetWeaponEntity");
+    MarkNativeAsOptional("ZR_GetWeaponType");
+    MarkNativeAsOptional("ZR_GetWeaponSlot");
+    MarkNativeAsOptional("ZR_GetWeaponRestrictDefault");
+    MarkNativeAsOptional("ZR_GetWeaponToggleable");
+    MarkNativeAsOptional("ZR_GetWeaponAmmoType");
+    MarkNativeAsOptional("ZR_GetWeaponAmmoPrice");
+    MarkNativeAsOptional("ZR_GetWeaponKnockback");
+    MarkNativeAsOptional("ZR_GetWeaponZMarketName");
+    MarkNativeAsOptional("ZR_GetWeaponZMarketPrice");
+    MarkNativeAsOptional("ZR_GetWeaponZMarketPurchaseMax");
+    MarkNativeAsOptional("ZR_GetWeaponZMarketCommand");
+    MarkNativeAsOptional("ZR_SetWeaponKnockback");
 }
 #endif
