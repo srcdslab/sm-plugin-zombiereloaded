@@ -119,6 +119,9 @@ enum struct CvarsList
     Handle CVAR_INFECT_MZOMBIE_MAX;
     Handle CVAR_INFECT_MZOMBIE_COUNTDOWN;
     Handle CVAR_INFECT_MZOMBIE_RESPAWN;
+    Handle CVAR_INFECT_MZOMBIE_WEIGHT_NEW;
+    Handle CVAR_INFECT_MZOMBIE_WEIGHT_RTD;
+    Handle CVAR_INFECT_MZOMBIE_WEIGHT_BOTH;
     Handle CVAR_INFECT_EXPLOSION;
     Handle CVAR_INFECT_FIREBALL;
     Handle CVAR_INFECT_SMOKE;
@@ -326,6 +329,9 @@ void CvarsCreate()
     g_hCvarsList.CVAR_INFECT_MZOMBIE_MAX                =    CreateConVar("zr_infect_mzombie_max",                 "3",                        "Maximum number of mother zombies. Range mode only, cannot be zero.");
     g_hCvarsList.CVAR_INFECT_MZOMBIE_COUNTDOWN          =    CreateConVar("zr_infect_mzombie_countdown",           "1",                        "Counts down to the first infection of the round.  Countdown is printed in the middle of the client's screen.");
     g_hCvarsList.CVAR_INFECT_MZOMBIE_RESPAWN            =    CreateConVar("zr_infect_mzombie_respawn",             "0",                        "Teleport mother zombies back to spawn on infect.");
+    g_hCvarsList.CVAR_INFECT_MZOMBIE_WEIGHT_NEW         =    CreateConVar("zr_infect_mzombie_weight_new",          "0.0",                      "Weight for players who never were mother zombie (0.0-1.0)");
+    g_hCvarsList.CVAR_INFECT_MZOMBIE_WEIGHT_RTD         =    CreateConVar("zr_infect_mzombie_weight_rtd",          "0.25",                     "Weight for players in RTD cycle only (0.0-1.0)");
+    g_hCvarsList.CVAR_INFECT_MZOMBIE_WEIGHT_BOTH        =    CreateConVar("zr_infect_mzombie_weight_both",         "0.75",                     "Weight for players in both cycles (0.0-1.0)");
     g_hCvarsList.CVAR_INFECT_SPAWNTIME_MIN              =    CreateConVar("zr_infect_spawntime_min",               "30.0",                     "Minimum time from the start of the round until picking the mother zombie(s).");
     g_hCvarsList.CVAR_INFECT_SPAWNTIME_MAX              =    CreateConVar("zr_infect_spawntime_max",               "50.0",                     "Maximum time from the start of the round until picking the mother zombie(s).");
     g_hCvarsList.CVAR_INFECT_CONSECUTIVE_BLOCK          =    CreateConVar("zr_infect_consecutive_block",           "1",                        "Prevent a player from being chosen as mother zombie two rounds in a row.");
