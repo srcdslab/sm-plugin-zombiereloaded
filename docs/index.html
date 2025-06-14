@@ -2899,7 +2899,43 @@ tune game balance.</p>
 			0 or 1</p>
 		</td>
 	</tr>
-	
+
+	<tr>
+		<td class="commandheader">zr_infect_mzombie_weight_new</td>
+		<td class="commandheader">0.0</td>
+	</tr>
+	<tr>
+		<td class="indent" colspan="2">
+			<p>Weight for players who never were mother zombie (0.0-1.0) [Dependency: zr_infect_round_robin_rtd]</p>
+			<p>Options:<br />
+			0.0 - 1.0</p>
+		</td>
+	</tr>
+
+	<tr>
+		<td class="commandheader">zr_infect_mzombie_weight_rtd</td>
+		<td class="commandheader">0.25</td>
+	</tr>
+	<tr>
+		<td class="indent" colspan="2">
+			<p>Weight for players in RTD cycle only (0.0-1.0) [Dependency: zr_infect_round_robin_rtd]</p>
+			<p>Options:<br />
+			0.0 - 1.0</p>
+		</td>
+	</tr>
+
+	<tr>
+		<td class="commandheader">zr_infect_mzombie_weight_both</td>
+		<td class="commandheader">0.75</td>
+	</tr>
+	<tr>
+		<td class="indent" colspan="2">
+			<p>Weight for players in both cycles (0.0-1.0) [Dependency: zr_infect_round_robin_rtd]</p>
+			<p>Options:<br />
+				0.0 - 1.0</p>
+		</td>
+	</tr>
+
 	<tr>
 		<td class="commandheader">zr_infect_spawntime_min</td>
 		<td class="commandheader">30.0</td>
@@ -2951,6 +2987,14 @@ tune game balance.</p>
 	<tr>
 		<td class="indent" colspan="2">
 			<p>Roll the dice for players new to the random round-robin SteamID cache to make it fair for late joiners.</p>
+			<p>Base chance is calculated from the ratio of players in the cycle to total players</p>
+			<p>Player weights are applied based on their history:
+				<ul>
+					<li>New players: Highest chance of selection [Dependency: zr_infect_mzombie_weight_new]</li>
+					<li>RTD cycle only: Medium chance of selection [Dependency: zr_infect_mzombie_weight_rtd]</li>
+					<li>Both cycles: Lowest chance of selection [Dependency: zr_infect_mzombie_weight_both]</li>
+				</ul>
+			</p>
 			<p>Options:<br />
 				0 or 1</p>
 		</td>
