@@ -2988,13 +2988,12 @@ tune game balance.</p>
 		<td class="indent" colspan="2">
 			<p>Roll the dice for players new to the random round-robin SteamID cache to make it fair for late joiners.</p>
 			<p>Base chance is calculated from the ratio of players in the cycle to total players</p>
-			<p>Player weights are applied based on their history:
+			<p>Player weights are applied based on their history: (Higher weight means higher chance of being selected.)</p>
 				<ul>
 					<li>New players: Highest chance of selection [Dependency: zr_infect_mzombie_weight_new]</li>
 					<li>RTD cycle only: Medium chance of selection [Dependency: zr_infect_mzombie_weight_rtd]</li>
 					<li>Both cycles: Lowest chance of selection [Dependency: zr_infect_mzombie_weight_both]</li>
 				</ul>
-			</p>
 			<p>Options:<br />
 				0 or 1</p>
 		</td>
