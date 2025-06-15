@@ -202,6 +202,37 @@ void InfectOnCommandsCreate()
 }
 
 /**
+ * Calculates the weight of a player for mother zombie selection.
+ * Higher weight means higher chance of being selected.
+ *
+ * @param client    The client index.
+ * @return          The weight value (0.0-1.0).
+ */
+float CalculatePlayerWeight(int client)
+{
+    float weight;
+
+    // If player is not in RTD cycle, they never were mother zombie
+    if (!SteamidCacheClientExists(g_hInfectMotherCycleRTD, client))
+    {
+        weight = 1.0 - GetConVarFloat(g_hCvarsList.CVAR_INFECT_MZOMBIE_WEIGHT_NEW);
+    }
+    // If player is in RTD cycle but not in main cycle
+    else if (!SteamidCacheClientExists(g_hInfectMotherCycle, client))
+    {
+        weight = 1.0 - GetConVarFloat(g_hCvarsList.CVAR_INFECT_MZOMBIE_WEIGHT_RTD);
+    }
+    // Player is in both cycles
+    else
+    {
+        weight = 1.0 - GetConVarFloat(g_hCvarsList.CVAR_INFECT_MZOMBIE_WEIGHT_BOTH);
+    }
+
+    // Ensure weight is not negative
+    return (weight < 0.0) ? 0.0 : weight;
+}
+
+/**
  * Client is joining the server.
  *
  * @param client    The client index.
@@ -242,7 +273,12 @@ void InfectClientInit(int client)
 
         if (players && playersInList)
         {
-            float mzombiechance = float(playersInList) / float(players);
+            // Calculate player's weight
+            float playerWeight = CalculatePlayerWeight(client);
+            
+            // Adjust probability based on weight
+            // Higher weight means lower chance of being added
+            float mzombiechance = (float(playersInList) / float(players)) * (1.0 - playerWeight);
             float dice = GetRandomFloat();
 
             if (dice < mzombiechance)
