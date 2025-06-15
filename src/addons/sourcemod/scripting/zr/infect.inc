@@ -203,27 +203,33 @@ void InfectOnCommandsCreate()
 
 /**
  * Calculates the weight of a player for mother zombie selection.
- * Higher weight means lower chance of being selected.
+ * Higher weight means higher chance of being selected.
  *
  * @param client    The client index.
  * @return          The weight value (0.0-1.0).
  */
 float CalculatePlayerWeight(int client)
 {
+    float weight;
+
     // If player is not in RTD cycle, they never were mother zombie
     if (!SteamidCacheClientExists(g_hInfectMotherCycleRTD, client))
     {
-        return GetConVarFloat(g_hCvarsList.CVAR_INFECT_MZOMBIE_WEIGHT_NEW);
+        weight = 1.0 - GetConVarFloat(g_hCvarsList.CVAR_INFECT_MZOMBIE_WEIGHT_NEW);
     }
-    
     // If player is in RTD cycle but not in main cycle
-    if (!SteamidCacheClientExists(g_hInfectMotherCycle, client))
+    else if (!SteamidCacheClientExists(g_hInfectMotherCycle, client))
     {
-        return GetConVarFloat(g_hCvarsList.CVAR_INFECT_MZOMBIE_WEIGHT_RTD);
+        weight = 1.0 - GetConVarFloat(g_hCvarsList.CVAR_INFECT_MZOMBIE_WEIGHT_RTD);
     }
-    
     // Player is in both cycles
-    return GetConVarFloat(g_hCvarsList.CVAR_INFECT_MZOMBIE_WEIGHT_BOTH);
+    else
+    {
+        weight = 1.0 - GetConVarFloat(g_hCvarsList.CVAR_INFECT_MZOMBIE_WEIGHT_BOTH);
+    }
+
+    // Ensure weight is not negative
+    return (weight < 0.0) ? 0.0 : weight;
 }
 
 /**
