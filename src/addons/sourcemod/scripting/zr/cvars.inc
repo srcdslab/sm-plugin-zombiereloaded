@@ -119,6 +119,7 @@ enum struct CvarsList
     Handle CVAR_INFECT_MZOMBIE_MAX;
     Handle CVAR_INFECT_MZOMBIE_COUNTDOWN;
     Handle CVAR_INFECT_MZOMBIE_RESPAWN;
+    Handle CVAR_INFECT_MZOMBIE_RESPAWN_WARNING;
     Handle CVAR_INFECT_MZOMBIE_WEIGHT_NEW;
     Handle CVAR_INFECT_MZOMBIE_WEIGHT_RTD;
     Handle CVAR_INFECT_MZOMBIE_WEIGHT_BOTH;
@@ -329,6 +330,7 @@ void CvarsCreate()
     g_hCvarsList.CVAR_INFECT_MZOMBIE_MAX                =    CreateConVar("zr_infect_mzombie_max",                 "3",                        "Maximum number of mother zombies. Range mode only, cannot be zero.");
     g_hCvarsList.CVAR_INFECT_MZOMBIE_COUNTDOWN          =    CreateConVar("zr_infect_mzombie_countdown",           "1",                        "Counts down to the first infection of the round.  Countdown is printed in the middle of the client's screen.");
     g_hCvarsList.CVAR_INFECT_MZOMBIE_RESPAWN            =    CreateConVar("zr_infect_mzombie_respawn",             "0",                        "Teleport mother zombies back to spawn on infect.");
+    g_hCvarsList.CVAR_INFECT_MZOMBIE_RESPAWN_WARNING    =    CreateConVar("zr_infect_mzombie_respawn_warning",     "1",                        "Whether to warn players of zombies spawning between humans.");
     g_hCvarsList.CVAR_INFECT_MZOMBIE_WEIGHT_NEW         =    CreateConVar("zr_infect_mzombie_weight_new",          "0.0",                      "Weight for players who never were mother zombie (0.0-1.0)");
     g_hCvarsList.CVAR_INFECT_MZOMBIE_WEIGHT_RTD         =    CreateConVar("zr_infect_mzombie_weight_rtd",          "0.25",                     "Weight for players in RTD cycle only (0.0-1.0)");
     g_hCvarsList.CVAR_INFECT_MZOMBIE_WEIGHT_BOTH        =    CreateConVar("zr_infect_mzombie_weight_both",         "0.75",                     "Weight for players in both cycles (0.0-1.0)");

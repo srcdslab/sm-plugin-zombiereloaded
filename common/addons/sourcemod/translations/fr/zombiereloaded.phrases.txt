@@ -366,6 +366,11 @@
 
 	// General
 
+	"Infect spawning warning"
+	{
+		"fr"		"Les zombies apparaîtront entre les humains !"
+	}
+
 	"Infect infected"
 	{
 		"fr"		"Vous avez été infecté ! Infectez autant d'humains que possible."

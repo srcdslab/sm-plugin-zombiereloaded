@@ -856,6 +856,11 @@ public Action InfectCountdown(Handle timer)
         // Print the countdown text to the clients.
         TranslationPrintCenterTextAll(false, "Infect countdown", RoundToNearest(length - counter));
 
+        if (GetConVarBool(g_hCvarsList.CVAR_INFECT_MZOMBIE_RESPAWN_WARNING) && !GetConVarBool(g_hCvarsList.CVAR_INFECT_MZOMBIE_RESPAWN))
+        {
+            PrintHintTextToAll("%t", "Infect spawning warning");
+        }
+
         float countdownvolume = SEffects_GetVolume();
         int countdown = RoundToNearest(length - counter);
         int iInfectCountdownSounds = SEffects_GetMax(Countdown);
