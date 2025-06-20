@@ -46,6 +46,7 @@
 #include "class.api"
 #include "napalm.api"
 #include "knockback.api"
+#include "weapons.api"
 #include "ztele.api"
 
 /**
@@ -59,6 +60,7 @@ void APIInit()
     APIClassInit();
     APINapalmInit();
     APIKnockbackInit();
+    APIWeaponsInit();
     APIZteleInit();
 }
 
