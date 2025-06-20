@@ -635,6 +635,21 @@
 		"es"		"Autoriza un arma o un tipo de arma. Uso: zr_unrestrict <arma|tipo de arma> [arma2|tipodearma2] ..."
 	}
 
+	"Weapons command setknockback syntax"
+	{
+		"es"		"Establece el retroceso de un arma. Uso: zr_setknockback <arma> <retroceso>"
+	}
+
+	"Weapons command setknockback success"
+	{
+		"es"		"Retroceso establecido para {green}\"{1}\"{default} a {green}{2}{default}."
+	}
+
+	"Weapons command setknockback failed"
+	{
+		"es"		"No se pudo establecer el retroceso para {green}\"{1}\"{default} a {green}{2}{default}."
+	}
+
 	// Menu (Restrict)
 
 	"Weapons menu restrict main title"

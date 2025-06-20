@@ -634,6 +634,21 @@
 		"chi"		"移除武器或武器类型的限制。用法：zr_unrestrict <武器|武器类型> [武器2|武器类型2] ..."
 	}
 
+	"Weapons command setknockback syntax"
+	{
+		"chi"		"设置武器的击退值。用法：zr_setknockback <武器> <击退值>"
+	}
+
+	"Weapons command setknockback success"
+	{
+		"chi"		"已将 {green}\"{1}\"{default} 的击退值设置为 {green}{2}{default}。"
+	}
+
+	"Weapons command setknockback failed"
+	{
+		"chi"		"无法将 {green}\"{1}\"{default} 的击退值设置为 {green}{2}{default}。"
+	}
+
 	// Menu (Restrict)
 
 	"Weapons menu restrict main title"

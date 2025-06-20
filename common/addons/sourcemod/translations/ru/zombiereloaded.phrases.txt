@@ -635,6 +635,21 @@
 		"ru"		"Разрешение оружия или типа оружия. Использование: zr_unrestrict <оружие|тип оружия> [оружие2|тип оружия2] ..."
 	}
 
+	"Weapons command setknockback syntax"
+	{
+		"ru"		"Устанавливает отбрасывание оружия. Использование: zr_setknockback <оружие> <отбрасывание>"
+	}
+
+	"Weapons command setknockback success"
+	{
+		"ru"		"Отбрасывание установлено для {green}\"{1}\"{default} на {green}{2}{default}."
+	}
+
+	"Weapons command setknockback failed"
+	{
+		"ru"		"Не удалось установить отбрасывание для {green}\"{1}\"{default} на {green}{2}{default}."
+	}
+
 	// Menu (Restrict)
 
 	"Weapons menu restrict main title"
