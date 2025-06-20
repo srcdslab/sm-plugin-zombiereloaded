@@ -383,6 +383,11 @@
 
 	// General
 
+	"Infect spawning warning"
+	{
+		"en"		"Zombies will be spawning between humans!"
+	}
+
 	"Infect infected"
 	{
 		"en"		"You have been infected!  Go pass it on to as many other players as you can."

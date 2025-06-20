@@ -129,6 +129,7 @@ Find all cvars details on [online docs](https://srcdslab.github.io/sm-plugin-zom
 - zr_infect_mzombie_max             - "3" -                                 Maximum number of mother zombies. Range mode only, cannot be zero.
 - zr_infect_mzombie_countdown       - "0" -                                 Counts down to the first infection of the round.  Countdown is printed in the middle of the client's screen.
 - zr_infect_mzombie_respawn         - "0" -                                 Teleport mother zombies back to spawn on infect.
+- zr_infect_mzombie_respawn_warning - "1" -                                 Whether to warn players of zombies spawning between humans. [Dependency: zr_infect_mzombie_respawn]
 - zr_infect_spawntime_min           - "30.0" -                              Minimum time from the start of the round until picking the mother zombie(s).
 - zr_infect_spawntime_max           - "50.0" -                              Maximum time from the start of the round until picking the mother zombie(s).
 - zr_infect_consecutive_block       - "1" -                                 Prevent a player from being chosen as mother zombie two rounds in a row.

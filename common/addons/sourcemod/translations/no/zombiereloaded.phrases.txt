@@ -366,6 +366,11 @@
 
 	// General
 
+	"Infect spawning warning"
+	{
+		"no"		"Zombier vil spawne mellom mennesker!"
+	}
+
 	"Infect infected"
 	{
 		"no"		"Du er blitt infisert! Smitt så mange mennesker du klarer ved å bruke kniven."

@@ -366,6 +366,11 @@
 
 	// General
 
+	"Infect spawning warning"
+	{
+		"zho"		"殭屍將在人類之間重生！"
+	}
+
 	"Infect infected"
 	{
 		"zho"		"您已被感染！現在去感染其他玩家吧。"

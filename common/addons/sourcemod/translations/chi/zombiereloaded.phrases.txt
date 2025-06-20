@@ -366,6 +366,11 @@
 
 	// General
 
+	"Infect spawning warning"
+	{
+		"chi"		"僵尸将在人类之间重生！"
+	}
+
 	"Infect infected"
 	{
 		"chi"		"您已被感染！现在去感染其他玩家吧。"
