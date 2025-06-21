@@ -634,6 +634,21 @@
 		"no"		"Fjerner sperre av et våpen eller en våpentype. Syntaks: zr_unrestrict <våpen|våpentype> [våpen|våpentype] ..."
 	}
 
+	"Weapons command setknockback syntax"
+	{
+		"no"		"Setter tilbakeslaget til et våpen. Bruk: zr_setknockback <våpen> <tilbakeslag>"
+	}
+
+	"Weapons command setknockback success"
+	{
+		"no"		"Tilbakeslag satt for {green}\"{1}\"{default} til {green}{2}{default}."
+	}
+
+	"Weapons command setknockback failed"
+	{
+		"no"		"Kunne ikke sette tilbakeslag for {green}\"{1}\"{default} til {green}{2}{default}."
+	}
+
 	// Menu (Restrict)
 
 	"Weapons menu restrict main title"

@@ -103,6 +103,7 @@ Handle arrayWeapons = INVALID_HANDLE;
 #include "weaponammo"
 #include "zmarket"
 #include "menu_weapons"
+#include "knockback_weapons"
 
 /**
  * Weapons module init function.
@@ -153,6 +154,7 @@ void WeaponsOnCommandsCreate()
     // Forward event to sub-modules.
     RestrictOnCommandsCreate();
     ZMarketOnCommandsCreate();
+    KnockbackWeaponsOnCommandsCreate();
 }
 
 /**
