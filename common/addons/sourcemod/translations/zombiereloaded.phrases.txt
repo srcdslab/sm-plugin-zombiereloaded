@@ -680,6 +680,23 @@
 		"en"		"Unrestricts a weapon or a weapon type. Usage: zr_unrestrict <weapon|weapon type> [weapon2|weapontype2] ..."
 	}
 
+	"Weapons command setknockback syntax"
+	{
+		"en"		"Sets the knockback of a weapon. Usage: zr_setknockback <weapon> <knockback>"
+	}
+
+	"Weapons command setknockback success"
+	{
+		"#format"	"{1:s},{2:03f}"
+		"en"		"Set knockback for {green}\"{1}\"{default} to {green}{2}{default}."
+	}
+
+	"Weapons command setknockback failed"
+	{
+		"#format"	"{1:s},{2:03f}"
+		"en"		"Failed to set knockback for {green}\"{1}\"{default} to {green}{2}{default}."
+	}
+
 	// Menu (Restrict)
 
 	"Weapons menu restrict main title"

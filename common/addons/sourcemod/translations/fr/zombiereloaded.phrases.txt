@@ -525,7 +525,7 @@
 
 	"Zombie cant use weapon"
 	{
-		"fr"		"Les zombies ne peuvent pas utiliser d'armes."
+		"fr"		"Les zombies ne peuvent pas utiliser d'armes !"
 	}
 
 	// Restrict
@@ -632,6 +632,21 @@
 	"Weapons command unrestrict syntax"
 	{
 		"fr"		"Supprimer la restriction d'une arme ou d'un type d'arme. Syntaxe : zr_unrestrict <arme|type d'arme> [arme|type d'arme] ..."
+	}
+
+	"Weapons command setknockback syntax"
+	{
+		"fr"		"Définit le recul d'une arme. Usage : zr_setknockback <arme> <recul>"
+	}
+
+	"Weapons command setknockback success"
+	{
+		"fr"		"Recul défini pour {green}\"{1}\"{default} à {green}{2}{default}."
+	}
+
+	"Weapons command setknockback failed"
+	{
+		"fr"		"Impossible de définir le recul pour {green}\"{1}\"{default} à {green}{2}{default}."
 	}
 
 	// Menu (Restrict)
