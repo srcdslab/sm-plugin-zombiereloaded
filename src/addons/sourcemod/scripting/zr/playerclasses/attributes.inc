@@ -871,7 +871,7 @@ stock bool ClassGetNoFallDamage(int index, int cachetype = ZR_CLASS_CACHE_PLAYER
         {
             // Check for mother zombie override
             if (InfectIsClientMotherInfected(index) && g_MotherZombieOverrideTypes[MZOVR_NO_FALL_DAMAGE] == MZ_OVERRIDE_INT)
-                return g_MotherZombieOverrideIntValues[MZOVR_NO_FALL_DAMAGE];
+                return g_MotherZombieOverrideIntValues[MZOVR_NO_FALL_DAMAGE] != 0;
             else
                 return ClassPlayerCache[index].Class_NoFallDamage;
         }

@@ -1782,7 +1782,7 @@ InfectMode InfectGetModeOrFail()
  */
 void ResetMotherZombieOverrides()
 {
-    for (int i = 0; i < view_as<int>(MZOVR_COUNT); i++)
+    for (MotherZombieOverrideAttr i = MZOVR_HEALTH; i < MZOVR_COUNT; i++)
     {
         g_MotherZombieOverrideTypes[i] = MZ_OVERRIDE_NONE;
         g_MotherZombieOverrideIntValues[i] = 0;

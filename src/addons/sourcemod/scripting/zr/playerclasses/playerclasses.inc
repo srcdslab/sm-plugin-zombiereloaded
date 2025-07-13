@@ -524,10 +524,10 @@ enum MotherZombieOverrideAttr
     MZOVR_COUNT
 };
 
-int    g_MotherZombieOverrideTypes[MZOVR_COUNT];
-int    g_MotherZombieOverrideIntValues[MZOVR_COUNT];
-float  g_MotherZombieOverrideFloatValues[MZOVR_COUNT];
-char   g_MotherZombieOverrideStringValues[MZOVR_COUNT][128];
+int    g_MotherZombieOverrideTypes[view_as<int>(MZOVR_COUNT)];
+int    g_MotherZombieOverrideIntValues[view_as<int>(MZOVR_COUNT)];
+float  g_MotherZombieOverrideFloatValues[view_as<int>(MZOVR_COUNT)];
+char   g_MotherZombieOverrideStringValues[view_as<int>(MZOVR_COUNT)][128];
 
 /**
  * Resets mother zombie attributes for a specific client by forcing a class reload.
