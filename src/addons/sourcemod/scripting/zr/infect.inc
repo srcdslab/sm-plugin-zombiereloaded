@@ -39,9 +39,6 @@
  #undef TEMP_REQUIRE_PLUGIN
 #endif
 
-// Include playerclasses for speed method enum
-#include "playerclasses/playerclasses"
-
 bool g_AFKManagerLoaded = false;
 bool g_TeamManagerLoaded = false;
 
