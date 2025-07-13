@@ -1449,7 +1449,7 @@ stock ClassDataTypes ClassGetAttributeType(int attributeflag)
               ZR_CLASS_NVGS,
               ZR_CLASS_HAS_NAPALM,
               ZR_CLASS_NO_FALL_DAMAGE,
-              MZOVR_NO_FALL_DAMAGE:
+              view_as<int>(MZOVR_NO_FALL_DAMAGE):
         {
             return ClassDataType_Boolean;
         }
@@ -1467,10 +1467,10 @@ stock ClassDataTypes ClassGetAttributeType(int attributeflag)
               ZR_CLASS_HEALTH_REGEN_AMOUNT,
               ZR_CLASS_HEALTH_INFECT_GAIN,
               ZR_CLASS_KILL_BONUS,
-              MZOVR_HEALTH,
-              MZOVR_HEALTH_REGEN_AMOUNT,
-              MZOVR_HEALTH_INFECT_GAIN,
-              MZOVR_KILL_BONUS:
+              view_as<int>(MZOVR_HEALTH),
+              view_as<int>(MZOVR_HEALTH_REGEN_AMOUNT),
+              view_as<int>(MZOVR_HEALTH_INFECT_GAIN),
+              view_as<int>(MZOVR_KILL_BONUS):
         {
             return ClassDataType_Integer;
         }
@@ -1481,12 +1481,12 @@ stock ClassDataTypes ClassGetAttributeType(int attributeflag)
               ZR_CLASS_SPEED,
               ZR_CLASS_KNOCKBACK,
               ZR_CLASS_JUMP_HEIGHT,
-              MZOVR_SPEED,
-              MZOVR_KNOCKBACK,
-              MZOVR_JUMP_HEIGHT,
-              MZOVR_JUMP_DISTANCE,
-              MZOVR_HEALTH_REGEN_INTERVAL,
-              MZOVR_NAPALM_TIME:
+              view_as<int>(MZOVR_SPEED),
+              view_as<int>(MZOVR_KNOCKBACK),
+              view_as<int>(MZOVR_JUMP_HEIGHT),
+              view_as<int>(MZOVR_JUMP_DISTANCE),
+              view_as<int>(MZOVR_HEALTH_REGEN_INTERVAL),
+              view_as<int>(MZOVR_NAPALM_TIME):
         {
             return ClassDataType_Float;
         }
