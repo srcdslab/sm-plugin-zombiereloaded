@@ -368,27 +368,27 @@ public Action ClassModifyCommand(int client, int argc)
         // Handle motherzombies override: store the override in the global array
         int overrideIndex = -1;
         if (strcmp(attributename, "health", false) == 0)
-            overrideIndex = MZOVR_HEALTH;
+            overrideIndex = view_as<int>(MZOVR_HEALTH);
         else if (strcmp(attributename, "speed", false) == 0)
-            overrideIndex = MZOVR_SPEED;
+            overrideIndex = view_as<int>(MZOVR_SPEED);
         else if (strcmp(attributename, "knockback", false) == 0)
-            overrideIndex = MZOVR_KNOCKBACK;
+            overrideIndex = view_as<int>(MZOVR_KNOCKBACK);
         else if (strcmp(attributename, "jump_height", false) == 0)
-            overrideIndex = MZOVR_JUMP_HEIGHT;
+            overrideIndex = view_as<int>(MZOVR_JUMP_HEIGHT);
         else if (strcmp(attributename, "jump_distance", false) == 0)
-            overrideIndex = MZOVR_JUMP_DISTANCE;
+            overrideIndex = view_as<int>(MZOVR_JUMP_DISTANCE);
         else if (strcmp(attributename, "no_fall_damage", false) == 0)
-            overrideIndex = MZOVR_NO_FALL_DAMAGE;
+            overrideIndex = view_as<int>(MZOVR_NO_FALL_DAMAGE);
         else if (strcmp(attributename, "health_regen_interval", false) == 0)
-            overrideIndex = MZOVR_HEALTH_REGEN_INTERVAL;
+            overrideIndex = view_as<int>(MZOVR_HEALTH_REGEN_INTERVAL);
         else if (strcmp(attributename, "health_regen_amount", false) == 0)
-            overrideIndex = MZOVR_HEALTH_REGEN_AMOUNT;
+            overrideIndex = view_as<int>(MZOVR_HEALTH_REGEN_AMOUNT);
         else if (strcmp(attributename, "health_infect_gain", false) == 0)
-            overrideIndex = MZOVR_HEALTH_INFECT_GAIN;
+            overrideIndex = view_as<int>(MZOVR_HEALTH_INFECT_GAIN);
         else if (strcmp(attributename, "kill_bonus", false) == 0)
-            overrideIndex = MZOVR_KILL_BONUS;
+            overrideIndex = view_as<int>(MZOVR_KILL_BONUS);
         else if (strcmp(attributename, "napalm_time", false) == 0)
-            overrideIndex = MZOVR_NAPALM_TIME;
+            overrideIndex = view_as<int>(MZOVR_NAPALM_TIME);
 
         if (overrideIndex == -1)
         {
