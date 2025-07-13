@@ -39,6 +39,9 @@
  #undef TEMP_REQUIRE_PLUGIN
 #endif
 
+// Include playerclasses for speed method enum
+#include "playerclasses/playerclasses"
+
 bool g_AFKManagerLoaded = false;
 bool g_TeamManagerLoaded = false;
 
@@ -190,6 +193,9 @@ void InfectLoad()
     // Create mother zombie round-robin cycle storage.
     g_hInfectMotherCycle = SteamidCacheCreate();
     g_hInfectMotherCycleRTD = SteamidCacheCreate();
+    
+    // Initialize mother zombie overrides
+    ResetMotherZombieOverrides();
 }
 
 /**
@@ -294,6 +300,9 @@ void InfectClientInit(int client)
  */
 void InfectOnClientDisconnect(int client)
 {
+    // Reset mother zombie attributes when client disconnects
+    ClassResetMotherZombieAttributes(client);
+    
     // If client is still connecting, then stop.
     if (!IsClientInGame(client))
     {
@@ -414,6 +423,9 @@ void InfectOnClientTeam(int client, int team)
  */
 void InfectOnClientSpawn(int client)
 {
+    // Reset mother zombie attributes when client spawns
+    ClassResetMotherZombieAttributes(client);
+
     // Disable zombie flag on client.
     g_bZombie[client] = false;
 
@@ -932,6 +944,9 @@ bool InfectHumanToZombie(int client, int attacker = -1, bool motherinfect = fals
         return false;
     }
 
+    // Reset mother zombie attributes when client becomes zombie
+    ClassResetMotherZombieAttributes(client);
+
     // Mark player as zombie.
     g_bZombie[client] = true;
 
@@ -1056,6 +1071,9 @@ bool InfectZombieToHuman(int client, bool respawn = false, bool protect = false)
     {
         return false;
     }
+
+    // Reset mother zombie attributes when client becomes human
+    ClassResetMotherZombieAttributes(client);
 
     // Mark player as human.
     g_bZombie[client] = false;
@@ -1759,4 +1777,19 @@ InfectMode InfectGetModeOrFail()
     }
 
     return mode;
+}
+
+/**
+ * Resets all mother zombie overrides to their default state.
+ * Call this function to clear all stored overrides.
+ */
+void ResetMotherZombieOverrides()
+{
+    for (int i = 0; i < view_as<int>(MZOVR_COUNT); i++)
+    {
+        g_MotherZombieOverrideTypes[i] = MZ_OVERRIDE_NONE;
+        g_MotherZombieOverrideIntValues[i] = 0;
+        g_MotherZombieOverrideFloatValues[i] = 0.0;
+        g_MotherZombieOverrideStringValues[i][0] = '\0';
+    }
 }

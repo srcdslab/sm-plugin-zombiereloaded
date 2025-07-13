@@ -498,6 +498,60 @@ bool ClassPlayerSpawned[MAXPLAYERS + 1];
  */
 ClassSpeedMethods ClassSpeedMethod = ClassSpeed_Prop;
 
+/**
+ * Mother zombie override system definitions.
+ * These are shared between infect.inc and classcommands.inc
+ */
+#define MZ_OVERRIDE_NONE   0
+#define MZ_OVERRIDE_INT    1
+#define MZ_OVERRIDE_FLOAT  2
+#define MZ_OVERRIDE_STRING 3
+
+// List of supported attributes for override
+enum MotherZombieOverrideAttr
+{
+    MZOVR_HEALTH = 100,
+    MZOVR_SPEED,
+    MZOVR_KNOCKBACK,
+    MZOVR_JUMP_HEIGHT,
+    MZOVR_JUMP_DISTANCE,
+    MZOVR_NO_FALL_DAMAGE,
+    MZOVR_HEALTH_REGEN_INTERVAL,
+    MZOVR_HEALTH_REGEN_AMOUNT,
+    MZOVR_HEALTH_INFECT_GAIN,
+    MZOVR_KILL_BONUS,
+    MZOVR_NAPALM_TIME,
+    MZOVR_COUNT
+};
+
+int    g_MotherZombieOverrideTypes[MZOVR_COUNT];
+int    g_MotherZombieOverrideIntValues[MZOVR_COUNT];
+float  g_MotherZombieOverrideFloatValues[MZOVR_COUNT];
+char   g_MotherZombieOverrideStringValues[MZOVR_COUNT][128];
+
+/**
+ * Resets mother zombie attributes for a specific client by forcing a class reload.
+ * This ensures that when a player is no longer a mother zombie, their attributes
+ * are recalculated without mother zombie overrides.
+ *
+ * @param client    The client index.
+ */
+stock void ClassResetMotherZombieAttributes(int client)
+{
+    // If client is invalid, then stop.
+    if (!ZRIsClientValid(client))
+        return;
+
+    // Get active class index
+    int activeclass = ClassGetActiveIndex(client);
+    // If no active class, then stop
+    if (activeclass < 0)
+        return;
+
+    // Force reload of player's class attributes
+    ClassReloadPlayerCache(client, activeclass);
+}
+
 #include "filtertools"
 #include "attributes"
 #include "apply"
