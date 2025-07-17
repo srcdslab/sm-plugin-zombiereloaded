@@ -305,6 +305,11 @@ stock bool ZRIsClientOnTeam(int client, int team = -1)
         return false;
     }
 
+    if (!IsClientInGame(client))
+    {
+        return false;
+    }
+
     // Get client team.
     int clientteam = GetClientTeam(client);
 
@@ -507,7 +512,7 @@ stock bool Entity_HasChildren(int entity)
     int maxEntities = GetMaxEntities();
 
     // Loop through all entity indexes, after players.
-    for (int loopEntity = MAXPLAYERS + 1; loopEntity < maxEntities; loopEntity++)
+    for (int loopEntity = MaxClients + 1; loopEntity < maxEntities; loopEntity++)
     {
         if (!IsValidEntity(loopEntity))
         {
