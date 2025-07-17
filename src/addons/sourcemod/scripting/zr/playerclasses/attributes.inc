@@ -725,7 +725,11 @@ stock float ClassGetNapalmTime(int index, int cachetype = ZR_CLASS_CACHE_PLAYER)
         }
         case ZR_CLASS_CACHE_PLAYER:
         {
-            return ClassPlayerCache[index].Class_NapalmTime * ClassGetAttributeMultiplier(index, ClassM_NapalmTime);
+            // Check for mother zombie override
+            if (InfectIsClientMotherInfected(index) && g_MotherZombieOverrideTypes[MZOVR_NAPALM_TIME] == MZ_OVERRIDE_FLOAT)
+                return g_MotherZombieOverrideFloatValues[MZOVR_NAPALM_TIME];
+            else
+                return ClassPlayerCache[index].Class_NapalmTime * ClassGetAttributeMultiplier(index, ClassM_NapalmTime);
         }
     }
     return -1.0;
@@ -865,7 +869,11 @@ stock bool ClassGetNoFallDamage(int index, int cachetype = ZR_CLASS_CACHE_PLAYER
         }
         case ZR_CLASS_CACHE_PLAYER:
         {
-            return ClassPlayerCache[index].Class_NoFallDamage;
+            // Check for mother zombie override
+            if (InfectIsClientMotherInfected(index) && g_MotherZombieOverrideTypes[MZOVR_NO_FALL_DAMAGE] == MZ_OVERRIDE_INT)
+                return g_MotherZombieOverrideIntValues[MZOVR_NO_FALL_DAMAGE] != 0;
+            else
+                return ClassPlayerCache[index].Class_NoFallDamage;
         }
     }
     return false;
@@ -899,7 +907,11 @@ stock int ClassGetHealth(int index, int cachetype = ZR_CLASS_CACHE_PLAYER)
         }
         case ZR_CLASS_CACHE_PLAYER:
         {
-            return RoundToCeil(ClassPlayerCache[index].Class_Health * ClassGetAttributeMultiplier(index, ClassM_Health));
+            // Check for mother zombie override
+            if (InfectIsClientMotherInfected(index) && g_MotherZombieOverrideTypes[MZOVR_HEALTH] == MZ_OVERRIDE_INT)
+                return g_MotherZombieOverrideIntValues[MZOVR_HEALTH];
+            else
+                return RoundToCeil(ClassPlayerCache[index].Class_Health * ClassGetAttributeMultiplier(index, ClassM_Health));
         }
     }
     return -1;
@@ -934,7 +946,11 @@ stock float ClassGetHealthRegenInterval(int index, int cachetype = ZR_CLASS_CACH
         }
         case ZR_CLASS_CACHE_PLAYER:
         {
-            return ClassPlayerCache[index].Class_HealthRegenInterval * ClassGetAttributeMultiplier(index, ClassM_HealthRegenInterval);
+            // Check for mother zombie override
+            if (InfectIsClientMotherInfected(index) && g_MotherZombieOverrideTypes[MZOVR_HEALTH_REGEN_INTERVAL] == MZ_OVERRIDE_FLOAT)
+                return g_MotherZombieOverrideFloatValues[MZOVR_HEALTH_REGEN_INTERVAL];
+            else
+                return ClassPlayerCache[index].Class_HealthRegenInterval * ClassGetAttributeMultiplier(index, ClassM_HealthRegenInterval);
         }
     }
     return -1.0;
@@ -969,7 +985,11 @@ stock int ClassGetHealthRegenAmount(int index, int cachetype = ZR_CLASS_CACHE_PL
         }
         case ZR_CLASS_CACHE_PLAYER:
         {
-            return RoundToCeil(ClassPlayerCache[index].Class_HealthRegenAmount * ClassGetAttributeMultiplier(index, ClassM_HealthRegenAmount));
+            // Check for mother zombie override
+            if (InfectIsClientMotherInfected(index) && g_MotherZombieOverrideTypes[MZOVR_HEALTH_REGEN_AMOUNT] == MZ_OVERRIDE_INT)
+                return g_MotherZombieOverrideIntValues[MZOVR_HEALTH_REGEN_AMOUNT];
+            else
+                return RoundToCeil(ClassPlayerCache[index].Class_HealthRegenAmount * ClassGetAttributeMultiplier(index, ClassM_HealthRegenAmount));
         }
     }
     return -1;
@@ -1004,7 +1024,11 @@ stock int ClassGetHealthInfectGain(int index, int cachetype = ZR_CLASS_CACHE_PLA
         }
         case ZR_CLASS_CACHE_PLAYER:
         {
-            return RoundToCeil(ClassPlayerCache[index].Class_HealthInfectGain * ClassGetAttributeMultiplier(index, ClassM_HealthInfectGain));
+            // Check for mother zombie override
+            if (InfectIsClientMotherInfected(index) && g_MotherZombieOverrideTypes[MZOVR_HEALTH_INFECT_GAIN] == MZ_OVERRIDE_INT)
+                return g_MotherZombieOverrideIntValues[MZOVR_HEALTH_INFECT_GAIN];
+            else
+                return RoundToCeil(ClassPlayerCache[index].Class_HealthInfectGain * ClassGetAttributeMultiplier(index, ClassM_HealthInfectGain));
         }
     }
     return -1;
@@ -1036,7 +1060,11 @@ stock int ClassGetKillBonus(int index, int cachetype = ZR_CLASS_CACHE_PLAYER)
         }
         case ZR_CLASS_CACHE_PLAYER:
         {
-            return ClassPlayerCache[index].Class_KillBonus;
+            // Check for mother zombie override
+            if (InfectIsClientMotherInfected(index) && g_MotherZombieOverrideTypes[MZOVR_KILL_BONUS] == MZ_OVERRIDE_INT)
+                return g_MotherZombieOverrideIntValues[MZOVR_KILL_BONUS];
+            else
+                return ClassPlayerCache[index].Class_KillBonus;
         }
     }
     return -1;
@@ -1070,26 +1098,32 @@ stock float ClassGetSpeed(int index, int cachetype = ZR_CLASS_CACHE_PLAYER)
         }
         case ZR_CLASS_CACHE_PLAYER:
         {
-            float speed = ClassPlayerCache[index].Class_Speed;
-            float multiplier = ClassGetAttributeMultiplier(index, ClassM_Speed);
-
-            // Apply multiplier.
-            if (ClassSpeedMethod == ClassSpeed_Prop)
-            {
-                // Prop speed is an offset. Convert to absolute value.
-                speed += 250;
-
-                // Apply multiplier.
-                speed *= multiplier;
-
-                // Convert back to speed offset.
-                speed -= 250;
-            }
+            // Check for mother zombie override
+            if (InfectIsClientMotherInfected(index) && g_MotherZombieOverrideTypes[MZOVR_SPEED] == MZ_OVERRIDE_FLOAT)
+                return g_MotherZombieOverrideFloatValues[MZOVR_SPEED];
             else
             {
-                speed *= multiplier;
+                float speed = ClassPlayerCache[index].Class_Speed;
+                float multiplier = ClassGetAttributeMultiplier(index, ClassM_Speed);
+
+                // Apply multiplier.
+                if (ClassSpeedMethod == ClassSpeed_Prop)
+                {
+                    // Prop speed is an offset. Convert to absolute value.
+                    speed += 250;
+
+                    // Apply multiplier.
+                    speed *= multiplier;
+
+                    // Convert back to speed offset.
+                    speed -= 250;
+                }
+                else
+                {
+                    speed *= multiplier;
+                }
+                return speed;
             }
-            return speed;
         }
     }
     return -1.0;
@@ -1123,7 +1157,11 @@ stock float ClassGetKnockback(int index, int cachetype = ZR_CLASS_CACHE_PLAYER)
         }
         case ZR_CLASS_CACHE_PLAYER:
         {
-            return ClassPlayerCache[index].Class_KnockBack * ClassGetAttributeMultiplier(index, ClassM_Knockback);
+            // Check for mother zombie override
+            if (InfectIsClientMotherInfected(index) && g_MotherZombieOverrideTypes[MZOVR_KNOCKBACK] == MZ_OVERRIDE_FLOAT)
+                return g_MotherZombieOverrideFloatValues[MZOVR_KNOCKBACK];
+            else
+                return ClassPlayerCache[index].Class_KnockBack * ClassGetAttributeMultiplier(index, ClassM_Knockback);
         }
     }
     return 0.0;
@@ -1157,7 +1195,11 @@ stock float ClassGetJumpHeight(int index, int cachetype = ZR_CLASS_CACHE_PLAYER)
         }
         case ZR_CLASS_CACHE_PLAYER:
         {
-            return ClassPlayerCache[index].Class_JumpHeight * ClassGetAttributeMultiplier(index, ClassM_JumpHeight);
+            // Check for mother zombie override
+            if (InfectIsClientMotherInfected(index) && g_MotherZombieOverrideTypes[MZOVR_JUMP_HEIGHT] == MZ_OVERRIDE_FLOAT)
+                return g_MotherZombieOverrideFloatValues[MZOVR_JUMP_HEIGHT];
+            else
+                return ClassPlayerCache[index].Class_JumpHeight * ClassGetAttributeMultiplier(index, ClassM_JumpHeight);
         }
     }
     return -1.0;
@@ -1191,7 +1233,11 @@ stock float ClassGetJumpDistance(int index, int cachetype = ZR_CLASS_CACHE_PLAYE
         }
         case ZR_CLASS_CACHE_PLAYER:
         {
-            return ClassPlayerCache[index].Class_JumpDistance * ClassGetAttributeMultiplier(index, ClassM_JumpDistance);
+            // Check for mother zombie override
+            if (InfectIsClientMotherInfected(index) && g_MotherZombieOverrideTypes[MZOVR_JUMP_DISTANCE] == MZ_OVERRIDE_FLOAT)
+                return g_MotherZombieOverrideFloatValues[MZOVR_JUMP_DISTANCE];
+            else
+                return ClassPlayerCache[index].Class_JumpDistance * ClassGetAttributeMultiplier(index, ClassM_JumpDistance);
         }
     }
     return -1.0;
@@ -1402,7 +1448,8 @@ stock ClassDataTypes ClassGetAttributeType(int attributeflag)
         case ZR_CLASS_ENABLED,
               ZR_CLASS_NVGS,
               ZR_CLASS_HAS_NAPALM,
-              ZR_CLASS_NO_FALL_DAMAGE:
+              ZR_CLASS_NO_FALL_DAMAGE,
+              view_as<int>(MZOVR_NO_FALL_DAMAGE):
         {
             return ClassDataType_Boolean;
         }
@@ -1419,7 +1466,11 @@ stock ClassDataTypes ClassGetAttributeType(int attributeflag)
               ZR_CLASS_HEALTH,
               ZR_CLASS_HEALTH_REGEN_AMOUNT,
               ZR_CLASS_HEALTH_INFECT_GAIN,
-              ZR_CLASS_KILL_BONUS:
+              ZR_CLASS_KILL_BONUS,
+              view_as<int>(MZOVR_HEALTH),
+              view_as<int>(MZOVR_HEALTH_REGEN_AMOUNT),
+              view_as<int>(MZOVR_HEALTH_INFECT_GAIN),
+              view_as<int>(MZOVR_KILL_BONUS):
         {
             return ClassDataType_Integer;
         }
@@ -1429,7 +1480,13 @@ stock ClassDataTypes ClassGetAttributeType(int attributeflag)
               ZR_CLASS_HEALTH_REGEN_INTERVAL,
               ZR_CLASS_SPEED,
               ZR_CLASS_KNOCKBACK,
-              ZR_CLASS_JUMP_HEIGHT:
+              ZR_CLASS_JUMP_HEIGHT,
+              view_as<int>(MZOVR_SPEED),
+              view_as<int>(MZOVR_KNOCKBACK),
+              view_as<int>(MZOVR_JUMP_HEIGHT),
+              view_as<int>(MZOVR_JUMP_DISTANCE),
+              view_as<int>(MZOVR_HEALTH_REGEN_INTERVAL),
+              view_as<int>(MZOVR_NAPALM_TIME):
         {
             return ClassDataType_Float;
         }

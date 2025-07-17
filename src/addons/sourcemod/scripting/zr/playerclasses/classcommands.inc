@@ -33,7 +33,7 @@ void ClassOnCommandsCreate()
     // Create base class commands.
     RegConsoleCmd("zr_class_dump", ClassDumpCommand, "Dumps class data at a specified index in the specified cache. Usage: zr_class_dump <cachetype> <index|targetname>");
     RegConsoleCmd("zr_class_dump_multipliers", ClassDumpMultipliersCommand, "Dumps class attribute multipliers for the specified team. Usage: zr_class_dump_multipliers <\"zombies\"|\"humans\">");
-    RegConsoleCmd("zr_class_modify", ClassModifyCommand, "Modify class data on one or more classes. Usage: zr_class_modify <identifier|\"zombies\"|\"humans\"|\"admins\"> <attribute> <value> [is_multiplier]");
+    RegConsoleCmd("zr_class_modify", ClassModifyCommand, "Modify class data on one or more classes. Usage: zr_class_modify <identifier|\"zombies\"|\"humans\"|\"admins\"|\"motherzombies\"> <attribute> <value> [is_multiplier]");
     RegConsoleCmd("zr_class_set_multiplier", ClassSetMultiplierCommand, "Sets the multiplier on a class attribute. Usage: zr_class_set_multiplier <\"zombies\"|\"humans\"> <attribute> <value>");
     RegConsoleCmd("zr_class_reload", ClassReloadCommand, "Refreshes the player cache and reloads class attributes on one or more players. Usage: zr_class_reload <target>");
 }
@@ -261,8 +261,7 @@ public Action ClassDumpMultipliersCommand(int client, int argc)
  * Syntax: zr_class_modify <class> <attribute> <value> [is_multiplier]
  *
  * class:           The class to modify. Can be any class name, or one of the
- *                  following team names; "all", "humans", "zombies" or
- *                  "admins".
+ *                  following team names; "all", "humans", "zombies", "admins" or "motherzombies".
  * attribute:       The name of the class attribute.
  * value:           Value to set. Use quotes if value is a string.
  * is_multiplier:   Optional. specifies wether the original value should be
@@ -363,6 +362,71 @@ public Action ClassModifyCommand(int client, int argc)
     {
         listresult = ClassAddToArray(classlist, ZR_CLASS_TEAM_ADMINS);
         isgroup = true;
+    }
+    else if (strcmp(identifier, "motherzombies", false) == 0)
+    {
+        // Handle motherzombies override: store the override in the global array
+        MotherZombieOverrideAttr overrideIndex = MZOVR_COUNT;
+        if (strcmp(attributename, "health", false) == 0)
+            overrideIndex = MZOVR_HEALTH;
+        else if (strcmp(attributename, "speed", false) == 0)
+            overrideIndex = MZOVR_SPEED;
+        else if (strcmp(attributename, "knockback", false) == 0)
+            overrideIndex = MZOVR_KNOCKBACK;
+        else if (strcmp(attributename, "jump_height", false) == 0)
+            overrideIndex = MZOVR_JUMP_HEIGHT;
+        else if (strcmp(attributename, "jump_distance", false) == 0)
+            overrideIndex = MZOVR_JUMP_DISTANCE;
+        else if (strcmp(attributename, "no_fall_damage", false) == 0)
+            overrideIndex = MZOVR_NO_FALL_DAMAGE;
+        else if (strcmp(attributename, "health_regen_interval", false) == 0)
+            overrideIndex = MZOVR_HEALTH_REGEN_INTERVAL;
+        else if (strcmp(attributename, "health_regen_amount", false) == 0)
+            overrideIndex = MZOVR_HEALTH_REGEN_AMOUNT;
+        else if (strcmp(attributename, "health_infect_gain", false) == 0)
+            overrideIndex = MZOVR_HEALTH_INFECT_GAIN;
+        else if (strcmp(attributename, "kill_bonus", false) == 0)
+            overrideIndex = MZOVR_KILL_BONUS;
+        else if (strcmp(attributename, "napalm_time", false) == 0)
+            overrideIndex = MZOVR_NAPALM_TIME;
+
+        if (overrideIndex == MZOVR_COUNT)
+        {
+            ReplyToCommand(client, "Unsupported attribute for motherzombies override: %s", attributename);
+            CloseHandle(classlist);
+            return Plugin_Handled;
+        }
+
+        // Use ClassGetAttributeType to determine the correct data type
+        switch (attributetype)
+        {
+            case ClassDataType_Boolean:
+            {
+                g_MotherZombieOverrideTypes[overrideIndex] = MZ_OVERRIDE_INT;
+                g_MotherZombieOverrideIntValues[overrideIndex] = ConfigSettingToBool(value) ? 1 : 0;
+            }
+            case ClassDataType_Integer:
+            {
+                g_MotherZombieOverrideTypes[overrideIndex] = MZ_OVERRIDE_INT;
+                g_MotherZombieOverrideIntValues[overrideIndex] = StringToInt(value);
+            }
+            case ClassDataType_Float:
+            {
+                g_MotherZombieOverrideTypes[overrideIndex] = MZ_OVERRIDE_FLOAT;
+                g_MotherZombieOverrideFloatValues[overrideIndex] = StringToFloat(value);
+            }
+            case ClassDataType_String:
+            {
+                g_MotherZombieOverrideTypes[overrideIndex] = MZ_OVERRIDE_STRING;
+                strcopy(g_MotherZombieOverrideStringValues[overrideIndex], sizeof(g_MotherZombieOverrideStringValues[]), value);
+            }
+            default:
+            {
+                g_MotherZombieOverrideTypes[overrideIndex] = MZ_OVERRIDE_NONE;
+            }
+        }
+        CloseHandle(classlist);
+        return Plugin_Handled;
     }
 
     // Check if identifier is a group.
@@ -469,7 +533,7 @@ public Action ClassModifyCommand(int client, int argc)
             }
             case ClassDataType_Float:
             {
-                if (!ClassModifyFloat(classindex, attributeflag, StringToFloat(value)), hasmultiplier)
+                if (!ClassModifyFloat(classindex, attributeflag, StringToFloat(value), hasmultiplier))
                 {
                     ReplyToCommand(client, "Failed to set \"%s\" to \"%s\" in class \"%d\".", attributename, value, classindex);
                 }
