@@ -31,6 +31,11 @@
 #define WEAPONS_MAX_LENGTH 32
 
 /**
+ * Maximum number of weapons available from config (For CS:S)
+ */
+#define WEAPONS_MAX_NUM 64
+
+/**
  * Number of REAL weapon slots (For CS:S)
  */
 #define WEAPONS_SLOTS_MAX 5
