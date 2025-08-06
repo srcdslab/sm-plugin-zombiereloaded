@@ -167,7 +167,7 @@ forward void ZR_OnClassAttributesApplied(int &client, int &skinIndex);
  * @param skinIndex         The skin index.
  * @return result           Return the result of the Call.
  */
-forward Action ZR_OnClassApplyModel(int &client, char[] modelPath, int skinIndex);
+forward Action ZR_OnClassApplyModel(int &client, char[] modelPath, int &skinIndex);
  
 
 /**
