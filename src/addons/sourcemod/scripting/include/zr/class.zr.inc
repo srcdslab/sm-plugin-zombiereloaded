@@ -149,3 +149,33 @@ native int ZR_GetClassDisplayName(int index, char[] buffer, int maxlen, int cach
  * @return              Send Menu Class. If Invalid teamid provided, send class main menu.
  */
 native int ZR_MenuClass(int client, int teamid = -1);
+
+/**
+ * Called after ZR has applied all classes attributes.
+ *
+ * @param client            The client index.
+ * @param skinIndex         The Skin index.
+ * @noreturn
+ */
+forward void ZR_OnClassAttributesApplied(int &client, int &skinIndex);
+
+/**
+ * Called right before ZR is about to apply the model to a player.
+ *
+ * @param client            The client index.
+ * @param modelpath         Buffer to store the modelpath in.
+ * @param skinIndex         The skin index.
+ * @return result           Return the result of the Call.
+ */
+forward Action ZR_OnClassApplyModel(int &client, char[] modelPath, int &skinIndex);
+ 
+
+/**
+ * Called right after ZR has applied the model to a player.
+ *
+ * @param client            The client index.
+ * @param modelpath         Buffer to store the modelpath in.
+ * @param skinIndex         The skin index.
+ * @noreturn
+ */
+forward void ZR_OnClassModelApplied(int &client, char[] modelPath, int &skinIndex);
