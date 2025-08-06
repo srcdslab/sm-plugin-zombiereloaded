@@ -52,7 +52,7 @@ void KnockbackClientInit(int client)
     g_fKnockbackVelLimit[client] = -1.0;
     
     for (int i = 0; i < WEAPONS_MAX_NUM; i++)
-    	g_fKnockbackWeapon[client][i] = 0.0;
+        g_fKnockbackWeapon[client][i] = 0.0;
 }
 
 /**
@@ -91,17 +91,15 @@ void KnockbackSetClientMaxVelocity(int client, float fVelocity)
 
 void KnockbackSetClientPercentagePerWeapon(int client, const char[] weaponname, float fPercentage)
 {
-	int weaponindex = WeaponsNameToIndex(weaponname);
-	if(weaponindex == -1)
-		return;
-		
-	g_fKnockbackWeapon[client][weaponindex] = fPercentage;
+    int weaponindex = WeaponsNameToIndex(weaponname);
+    if (weaponindex != -1)
+        g_fKnockbackWeapon[client][weaponindex] = fPercentage;
 }
 
 void KnockbackResetClientPercenagePerWeapon(int client)
 {
-	for (int i = 0; i < WEAPONS_MAX_NUM; i++)
-    	g_fKnockbackWeapon[client][i] = 0.0;
+    for (int i = 0; i < WEAPONS_MAX_NUM; i++)
+        g_fKnockbackWeapon[client][i] = 0.0;
 }
 
 /**
@@ -235,14 +233,14 @@ public void KnockbackOnClientHurt(int victim, int attacker, int inflictor, const
     // Custom knockback scale.
     if (scale)
         knockback *= g_fKnockbackScale[victim];
-	
-	if(weaponindex != -1 && g_fKnockbackWeapon[attacker][weaponindex] > 0.0)
-	{
-		knockback -= (knockback * g_fKnockbackWeapon[attacker][weaponindex]);
-        if(knockback < 0.0)
+
+    if (weaponindex != -1 && g_fKnockbackWeapon[attacker][weaponindex] > 0.0)
+    {
+        knockback -= (knockback * g_fKnockbackWeapon[attacker][weaponindex]);
+        if (knockback < 0.0)
             knockback = 0.0;
-	}
-	
+    }
+
     // Apply knockback.
     if (knockback)
         KnockbackSetVelocity(victim, attackerloc, clientloc, knockback, limitforce, limitvel);

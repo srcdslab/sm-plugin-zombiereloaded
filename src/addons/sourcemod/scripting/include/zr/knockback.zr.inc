@@ -59,7 +59,7 @@ native void ZR_SetClientKnockbackMaxVelocity(int client, float fVelocity);
  *
  * @param client            The client.
  * @param weaponname        Weapon Name (not the class name (without weapon_)).
- * @param fPercentage		Percentage Value
+ * @param fPercentage       Percentage Value
  */
 native void ZR_SetClientKnockbackPercentagePerWeapon(int client, const char[] weaponname, float fPercentage);
 
