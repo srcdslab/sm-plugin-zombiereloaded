@@ -53,3 +53,19 @@ native void ZR_SetClientKnockbackMaxForce(int client, float fForce);
  * @param fVelocity         Maximum knockback velocity.
  */
 native void ZR_SetClientKnockbackMaxVelocity(int client, float fVelocity);
+
+/**
+ * Set a percentage value for knockback per weapon (required for KnockbackRestrict plugin)
+ *
+ * @param client            The client.
+ * @param weaponname        Weapon Name (not the class name (without weapon_)).
+ * @param fPercentage       Percentage Value
+ */
+native void ZR_SetClientKnockbackPercentagePerWeapon(int client, const char[] weaponname, float fPercentage);
+
+/**
+ * Reset Percentage knockback for all weapons (required for KnockbackRestrict plugin)
+ *
+ * @param client            The client.
+ */
+native void ZR_ResetClientKnockbackPercenagePerWeapon(int client);

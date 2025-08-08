@@ -31,6 +31,7 @@ bool g_bKnockbackFrame[MAXPLAYERS + 1];
 bool g_bKnockbackFrameLimitVel[MAXPLAYERS + 1];
 float g_fKnockbackVectors[MAXPLAYERS + 1][3];
 float g_fKnockbackVelLimit[MAXPLAYERS + 1] = {-1.0, ...};
+float g_fKnockbackWeapon[MAXPLAYERS + 1][WEAPONS_MAX_NUM]; // percentage of weapon knockback per client
 
 /**
  * Client is joining the server.
@@ -49,6 +50,9 @@ void KnockbackClientInit(int client)
     g_fKnockbackVectors[client][2] = 0.0;
 
     g_fKnockbackVelLimit[client] = -1.0;
+    
+    for (int i = 0; i < WEAPONS_MAX_NUM; i++)
+        g_fKnockbackWeapon[client][i] = 0.0;
 }
 
 /**
@@ -83,6 +87,19 @@ void KnockbackSetClientMaxForce(int client, float fForce)
 void KnockbackSetClientMaxVelocity(int client, float fVelocity)
 {
     g_fKnockbackForceLimit[client] = fVelocity;
+}
+
+void KnockbackSetClientPercentagePerWeapon(int client, const char[] weaponname, float fPercentage)
+{
+    int weaponindex = WeaponsNameToIndex(weaponname);
+    if (weaponindex != -1)
+        g_fKnockbackWeapon[client][weaponindex] = fPercentage;
+}
+
+void KnockbackResetClientPercenagePerWeapon(int client)
+{
+    for (int i = 0; i < WEAPONS_MAX_NUM; i++)
+        g_fKnockbackWeapon[client][i] = 0.0;
 }
 
 /**
@@ -180,9 +197,10 @@ public void KnockbackOnClientHurt(int victim, int attacker, int inflictor, const
     }
 
     bool weapons = GetConVarBool(g_hCvarsList.CVAR_WEAPONS);
+    int weaponindex = 1;
     if (weapons)
     {
-        int weaponindex = WeaponsNameToIndex(weaponname);
+        weaponindex = WeaponsNameToIndex(weaponname);
         if (weaponindex != -1)
         {
             // Apply weapon knockback multiplier.
@@ -215,6 +233,13 @@ public void KnockbackOnClientHurt(int victim, int attacker, int inflictor, const
     // Custom knockback scale.
     if (scale)
         knockback *= g_fKnockbackScale[victim];
+
+    if (weaponindex != -1 && g_fKnockbackWeapon[attacker][weaponindex] > 0.0)
+    {
+        knockback -= (knockback * g_fKnockbackWeapon[attacker][weaponindex]);
+        if (knockback < 0.0)
+            knockback = 0.0;
+    }
 
     // Apply knockback.
     if (knockback)

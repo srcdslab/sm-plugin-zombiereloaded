@@ -36,6 +36,8 @@ APIKnockbackInit()
     CreateNative("ZR_SetClientKnockbackScale", APISetClientKnockbackScale);
     CreateNative("ZR_SetClientKnockbackMaxForce", APISetClientKnockbackMaxForce);
     CreateNative("ZR_SetClientKnockbackMaxVelocity", APISetClientKnockbackMaxVelocity);
+    CreateNative("ZR_SetClientKnockbackPercentagePerWeapon", APISetClientKnockbackPercentagePerWeapon);
+    CreateNative("ZR_ResetClientKnockbackPercenagePerWeapon", APIResetClientKnockbackPercenagePerWeapon);
 }
 
 /**
@@ -84,4 +86,39 @@ public int APISetClientKnockbackMaxVelocity(Handle plugin, int numParams)
 
     KnockbackSetClientMaxVelocity(client, fVelocity);
     return -1;
+}
+
+/**
+ * Native call function (ZR_SetClientKnockbackPercentagePerWeapon)
+ *
+ * int ZR_SetClientKnockbackPercentagePerWeapon(int client, const char[] weaponname, float fPercentage);
+ */
+public int APISetClientKnockbackPercentagePerWeapon(Handle plugin, int numParams)
+{
+	int client = GetNativeCell(1);
+
+	char weapon[64];
+	GetNativeString(2, weapon, sizeof(weapon));
+
+	float fPercentage = view_as<float>(GetNativeCell(3));
+
+	APIValidateClientIndex(client);
+
+	KnockbackSetClientPercentagePerWeapon(client, weapon, fPercentage);
+	return -1;
+}
+
+/**
+ * Native call function (ZR_ResetClientKnockbackPercenagePerWeapon)
+ *
+ * int ZR_ResetClientKnockbackPercenagePerWeapon(int client, const char[] weaponname, float fPercentage);
+ */
+public int APIResetClientKnockbackPercenagePerWeapon(Handle plugin, int numParams)
+{
+	int client = GetNativeCell(1);
+
+	APIValidateClientIndex(client);
+
+	KnockbackResetClientPercenagePerWeapon(client);
+	return -1;
 }

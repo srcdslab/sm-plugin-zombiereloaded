@@ -75,6 +75,8 @@ public void __pl_zombiereloaded_SetNTVOptional()
     MarkNativeAsOptional("ZR_SetClientKnockbackScale");
     MarkNativeAsOptional("ZR_SetClientKnockbackMaxForce");
     MarkNativeAsOptional("ZR_SetClientKnockbackMaxVelocity");
+    MarkNativeAsOptional("ZR_SetClientKnockbackPercentagePerWeapon");
+    MarkNativeAsOptional("ZR_ResetClientKnockbackPercenagePerWeapon");
 
     MarkNativeAsOptional("ZR_ZteleClient");
 
