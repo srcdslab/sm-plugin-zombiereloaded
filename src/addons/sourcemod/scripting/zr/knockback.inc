@@ -50,9 +50,6 @@ void KnockbackClientInit(int client)
     g_fKnockbackVectors[client][2] = 0.0;
 
     g_fKnockbackVelLimit[client] = -1.0;
-    
-    for (int i = 0; i < WEAPONS_MAX_NUM; i++)
-        g_fKnockbackWeapon[client][i] = 0.0;
 }
 
 /**
@@ -63,6 +60,8 @@ void KnockbackClientInit(int client)
 void KnockbackOnClientDisconnect(int client)
 {
     KnockbackClientInit(client);
+    for (int i = 0; i < WEAPONS_MAX_NUM; i++)
+        g_fKnockbackWeapon[client][i] = 0.0;
 }
 
 /**
@@ -197,7 +196,7 @@ public void KnockbackOnClientHurt(int victim, int attacker, int inflictor, const
     }
 
     bool weapons = GetConVarBool(g_hCvarsList.CVAR_WEAPONS);
-    int weaponindex = 1;
+    int weaponindex = -1;
     if (weapons)
     {
         weaponindex = WeaponsNameToIndex(weaponname);
