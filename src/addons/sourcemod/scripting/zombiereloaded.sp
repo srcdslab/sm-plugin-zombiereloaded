@@ -165,7 +165,6 @@ public void OnPluginStart()
     TranslationInit();
     CvarsInit();
     CookiesInit();
-    CommandsInit();
     WeaponsInit();
     EventInit();
     VolumeInit();
@@ -249,6 +248,12 @@ public void OnMapEnd()
  */
 public void OnAutoConfigsBuffered()
 {
+    // Load weapons early so map configs can use them
+    WeaponsLoad();
+
+    // Initialize commands since they are based cvars
+    CommandsInit();
+
     // Load map configurations.
     ConfigLoad();
 }
@@ -259,7 +264,6 @@ public void OnAutoConfigsBuffered()
 public void OnConfigsExecuted()
 {
     // Forward event to modules. (OnConfigsExecuted)
-    WeaponsLoad();
     HitgroupsLoad();
     DamageLoad();
     ClassOnConfigsExecuted();
