@@ -29,6 +29,183 @@
  * @section Weapon natives.
  */
 
+#define KBQ_MAX_RETRIES 5
+
+StringMap g_KBJobs;
+
+enum struct KnockbackJob
+{
+    char weapon[WEAPONS_MAX_LENGTH];
+    float value;
+    int attempts;
+    Handle hTimer;
+}
+
+public void WeaponsOnMapEnd()
+{
+    KB_QueueClearAll();
+}
+
+static void KBQ_SaveJob(const char[] key, const KnockbackJob job)
+{
+    if (g_KBJobs == null)
+    {
+        g_KBJobs = new StringMap();
+    }
+    g_KBJobs.SetArray(key, job, sizeof(job));
+}
+
+static bool KBQ_GetJob(const char[] key, KnockbackJob job)
+{
+    if (g_KBJobs == null)
+    {
+        return false;
+    }
+    return g_KBJobs.GetArray(key, job, sizeof(job));
+}
+
+static void KBQ_RemoveJob(const char[] key)
+{
+    if (g_KBJobs == null)
+    {
+        return;
+    }
+    g_KBJobs.Remove(key);
+}
+
+static void KBQ_CleanupJob(KnockbackJob job, Handle currentTimer = null, bool fromCallback = false)
+{
+    if (job.hTimer != null)
+    {
+        if (fromCallback && currentTimer != null && job.hTimer == currentTimer)
+        {
+            // Timer just fired; SourceMod will auto-close it after callback.
+            job.hTimer = null;
+        }
+        else
+        {
+            // Cancel a pending timer safely.
+            KillTimer(job.hTimer);
+            job.hTimer = null;
+        }
+    }
+}
+
+static Handle KBQ_CreateRetryTimer(const KnockbackJob job)
+{
+    // Backoff: 0.5s, 1s, 2s, 4s, 8s
+    float delay = 0.5 * float(1 << job.attempts);
+    DataPack pack = new DataPack();
+    pack.WriteString(job.weapon);
+    return CreateTimer(delay, KBQ_TimerRetrySetKB, pack, TIMER_FLAG_NO_MAPCHANGE);
+}
+
+static void KBQ_EnqueueOrUpdate(const char[] weapon, float value)
+{
+    KnockbackJob job;
+    if (KBQ_GetJob(weapon, job))
+    {
+        // Deduplicate by weapon; keep the latest value
+        job.value = value;
+        if (job.hTimer == null)
+        {
+            job.hTimer = KBQ_CreateRetryTimer(job);
+        }
+        KBQ_SaveJob(weapon, job);
+        return;
+    }
+
+    strcopy(job.weapon, sizeof(job.weapon), weapon);
+    job.value = value;
+    job.attempts = 0;
+    job.hTimer = KBQ_CreateRetryTimer(job);
+    KBQ_SaveJob(weapon, job);
+}
+
+// Attempts to set knockback immediately; returns true on success, false if backend isn't ready
+static bool InternalTrySetWeaponKB(const char[] weapon, float value)
+{
+    // Backend guard: avoid touching weapon tables if not initialized yet
+    if (arrayWeapons == INVALID_HANDLE)
+    {
+        return false;
+    }
+    int index = WeaponsNameToIndex(weapon);
+    if (index == -1)
+    {
+        // Invalid weapon; treat as hard failure (no retries by caller)
+        return false;
+    }
+
+    Handle arrayWeapon = GetArrayCell(arrayWeapons, index);
+    if (arrayWeapon == INVALID_HANDLE)
+    {
+        return false;
+    }
+
+    SetArrayCell(arrayWeapon, view_as<int>(WEAPONS_DATA_KNOCKBACK), value);
+    return true;
+}
+
+public Action KBQ_TimerRetrySetKB(Handle timer, any data)
+{
+    DataPack pack = view_as<DataPack>(data);
+    pack.Reset();
+    char weapon[WEAPONS_MAX_LENGTH];
+    pack.ReadString(weapon, sizeof(weapon));
+    delete pack;
+
+    KnockbackJob job;
+    if (!KBQ_GetJob(weapon, job))
+    {
+        return Plugin_Stop;
+    }
+
+    if (InternalTrySetWeaponKB(job.weapon, job.value))
+    {
+        KBQ_CleanupJob(job, timer, true);
+        KBQ_RemoveJob(job.weapon);
+        return Plugin_Stop;
+    }
+
+    job.attempts++;
+    if (job.attempts > KBQ_MAX_RETRIES)
+    {
+        LogError("[ZR-KB] Failed to apply knockback for '%s' after %d attempts", job.weapon, KBQ_MAX_RETRIES);
+        KBQ_CleanupJob(job, timer, true);
+        KBQ_RemoveJob(job.weapon);
+        return Plugin_Stop;
+    }
+
+    job.hTimer = KBQ_CreateRetryTimer(job);
+    KBQ_SaveJob(job.weapon, job);
+    return Plugin_Stop;
+}
+
+public void KB_QueueClearAll()
+{
+    if (g_KBJobs == null)
+    {
+        return;
+    }
+
+    StringMapSnapshot snap = g_KBJobs.Snapshot();
+    int count = snap.Length;
+    char key[WEAPONS_MAX_LENGTH];
+    for (int i = 0; i < count; i++)
+    {
+        snap.GetKey(i, key, sizeof(key));
+        KnockbackJob job;
+        if (g_KBJobs.GetArray(key, job, sizeof(job)))
+        {
+            KBQ_CleanupJob(job);
+        }
+    }
+    delete snap;
+    delete g_KBJobs;
+    g_KBJobs = new StringMap();
+}
+
 /**
  * Gets a weapon's entity name.
  */
@@ -246,7 +423,19 @@ public int Native_SetWeaponKnockback(Handle plugin, int numParams)
 {
     char weapon[WEAPONS_MAX_LENGTH];
     GetNativeString(1, weapon, sizeof(weapon));
-    
+
+    // If backend not ready, enqueue without resolving index to avoid invalid handle errors
+    if (arrayWeapons == INVALID_HANDLE)
+    {
+        float pendingValue = GetNativeCell(2);
+        if (pendingValue <= 0.0)
+        {
+            return false;
+        }
+        KBQ_EnqueueOrUpdate(weapon, pendingValue);
+        return true;
+    }
+
     int index = WeaponsNameToIndex(weapon);
     if (index == -1)
     {
@@ -258,11 +447,15 @@ public int Native_SetWeaponKnockback(Handle plugin, int numParams)
     {
         return false;
     }
-    
-    Handle arrayWeapon = GetArrayCell(arrayWeapons, index);
-    SetArrayCell(arrayWeapon, view_as<int>(WEAPONS_DATA_KNOCKBACK), value);
-    
-    return true;
+
+    // Immediate attempt; if backend not ready (e.g., invalid arrays), enqueue bounded retries
+    if (InternalTrySetWeaponKB(weapon, value))
+    {
+        return true;
+    }
+
+    KBQ_EnqueueOrUpdate(weapon, value);
+    return true; // request accepted; application will occur asynchronously
 }
 
 /**

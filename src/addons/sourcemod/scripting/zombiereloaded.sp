@@ -242,6 +242,7 @@ public void OnMapEnd()
     ImmunityOnMapEnd();
     OverlaysOnMapEnd();
     SEffectsOnMapEnd();
+    WeaponsOnMapEnd();
 }
 
 /**
