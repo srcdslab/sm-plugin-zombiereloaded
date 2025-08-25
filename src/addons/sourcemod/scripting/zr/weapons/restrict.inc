@@ -437,6 +437,11 @@ void RestrictPrintQueryResponse(int client, RestrictQuery query, bool single, bo
 
 stock int RestrictTypeToIndex(const char[] type)
 {
+    if (arrayWeaponTypes == INVALID_HANDLE)
+    {
+        return -1;
+    }
+
     char typename[WEAPONS_MAX_LENGTH];
 
     // x = Array index.
