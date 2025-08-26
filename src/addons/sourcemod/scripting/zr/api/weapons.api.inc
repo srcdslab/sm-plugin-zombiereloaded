@@ -94,7 +94,7 @@ static void KBQ_CleanupJob(KnockbackJob job, Handle currentTimer = null, bool fr
 static Handle KBQ_CreateRetryTimer(const KnockbackJob job)
 {
     // Backoff: 0.5s, 1s, 2s, 4s, 8s
-    float delay = 0.5 * float(1 << job.attempts);
+    float delay = 0.5 * Pow(2.0, float(job.attempts));
     DataPack pack = new DataPack();
     pack.WriteString(job.weapon);
     return CreateTimer(delay, KBQ_TimerRetrySetKB, pack, TIMER_FLAG_NO_MAPCHANGE);
