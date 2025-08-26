@@ -133,7 +133,6 @@ static bool InternalTrySetWeaponKB(const char[] weapon, float value)
     int index = WeaponsNameToIndex(weapon);
     if (index == -1)
     {
-        // Invalid weapon; treat as hard failure (no retries by caller)
         return false;
     }
 
