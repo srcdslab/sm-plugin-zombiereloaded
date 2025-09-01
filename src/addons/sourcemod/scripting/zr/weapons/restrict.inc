@@ -593,6 +593,8 @@ stock bool RestrictIsTypeUniform(bool restricted, int index)
         // If weapon is toggleable and it's not uniform with the given status, then return false.
         if (WeaponsGetToggleable(weaponindex) && RestrictIsWeaponRestricted(weaponindex) != restricted)
         {
+            // Close handle
+            CloseHandle(arrayTypeWeapons);
             return false;
         }
     }
