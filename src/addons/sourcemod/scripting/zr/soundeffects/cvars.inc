@@ -127,7 +127,7 @@ void SEffects_GetPath(char[] sound, ZombieSounds soundtype)
         case Scream:
             SEffectsCvar_PathScream.GetString(sound, SOUND_MAX_PATH);
         case Countdown:
-            SEffectsCvar_PathCountdown.GetString(sound, SOUND_MAX_PATH)
+            SEffectsCvar_PathCountdown.GetString(sound, SOUND_MAX_PATH);
     }
 }
 
@@ -144,7 +144,7 @@ int SEffects_GetMax(ZombieSounds soundtype)
         case Scream:
             return SEffectsCvar_ScreamMax.IntValue;
         case Countdown:
-            return SEffectsCvar_CountdownMax.IntValue
+            return SEffectsCvar_CountdownMax.IntValue;
     }
 
     return 1;
