@@ -56,7 +56,7 @@ enum ZombieSounds
 /**
  * Array for storing zombie moaning timer handles per client.
  */
-Handle tSEffectsMoan[MAXPLAYERS + 1] = { INVALID_HANDLE, ... };
+Handle tSEffectsMoan[MAXPLAYERS + 1] = { null, ... };
 
 /**
  * Number of sound commands executed by the player.
@@ -66,7 +66,7 @@ int g_SEffectsCommandCount[MAXPLAYERS + 1] = { 0, ... };
 /**
  * Timers for resetting sound command counters.
  */
-Handle g_hSEffectsCommandTimer[MAXPLAYERS + 1] = { INVALID_HANDLE, ... };
+Handle g_hSEffectsCommandTimer[MAXPLAYERS + 1] = { null, ... };
 
 /**
  * Client is joining the server.
@@ -76,7 +76,7 @@ Handle g_hSEffectsCommandTimer[MAXPLAYERS + 1] = { INVALID_HANDLE, ... };
 void ZombieSoundsClientInit(int client)
 {
     // Reset timer handle.
-    tSEffectsMoan[client] = INVALID_HANDLE;
+    tSEffectsMoan[client] = null;
 
     // Reset command counter and make sure there's no timer running.
     g_SEffectsCommandCount[client] = 0;
@@ -91,13 +91,13 @@ void ZombieSoundsClientInit(int client)
 void ZombieSoundsOnClientSpawn(int client)
 {
     // If timer is running, kill it.
-    if (tSEffectsMoan[client] != INVALID_HANDLE)
+    if (tSEffectsMoan[client] != null)
     {
         KillTimer(tSEffectsMoan[client]);
     }
 
     // Reset timer handle.
-    tSEffectsMoan[client] = INVALID_HANDLE;
+    tSEffectsMoan[client] = null;
 
     // Reset command counter and kill timer.
     g_SEffectsCommandCount[client] = 0;
@@ -112,13 +112,13 @@ void ZombieSoundsOnClientSpawn(int client)
 void ZombieSoundsOnClientDeath(int client)
 {
     // If timer is running, kill it.
-    if (tSEffectsMoan[client] != INVALID_HANDLE)
+    if (tSEffectsMoan[client] != null)
     {
         KillTimer(tSEffectsMoan[client]);
     }
 
     // Reset timer handle.
-    tSEffectsMoan[client] = INVALID_HANDLE;
+    tSEffectsMoan[client] = null;
 
     // Reset command counter and kill timer.
     g_SEffectsCommandCount[client] = 0;
@@ -190,7 +190,7 @@ void ZombieSoundsOnClientInfected(int client)
     }
 
     // If timer is currently running, kill it.
-    if (tSEffectsMoan[client] != INVALID_HANDLE)
+    if (tSEffectsMoan[client] != null)
     {
         KillTimer(tSEffectsMoan[client]);
     }
@@ -304,7 +304,7 @@ public Action ZombieSoundsMoanTimer(Handle timer, any client)
     if (!IsClientInGame(client) || !InfectIsClientInfected(client))
     {
         // Reset timer handle.
-        tSEffectsMoan[client] = INVALID_HANDLE;
+        tSEffectsMoan[client] = null;
 
         // Stop timer.
         return Plugin_Stop;
@@ -354,7 +354,7 @@ void ZombieSoundsScream(int client)
 void ZombieSoundsCmdTimerCheck(int client)
 {
     // Only create timer if it doesn't exist.
-    if (g_hSEffectsCommandTimer[client] == INVALID_HANDLE)
+    if (g_hSEffectsCommandTimer[client] == null)
     {
         float timespan = SEffects_GetCommandTimespan();
 

@@ -60,7 +60,7 @@ enum HitgroupsData
 /**
  * Array handle to store hitgroups data.
  */
-Handle arrayHitgroups = INVALID_HANDLE;
+ArrayList arrayHitgroups = null;
 
 /**
  * Create commands related to config here.
@@ -82,7 +82,7 @@ void HitgroupsLoad()
     ConfigRegisterConfig(File_Hitgroups, Structure_Keyvalue, CONFIG_FILE_ALIAS_HITGROUPS);
 
     // If module is disabled, then stop.
-    bool hitgroups = GetConVarBool(g_hCvarsList.CVAR_HITGROUPS);
+    bool hitgroups = g_hCvarsList.CVAR_HITGROUPS.BoolValue;
     if (!hitgroups)
     {
         return;
@@ -116,7 +116,7 @@ void HitgroupsLoad()
     }
 
     // Validate hitgroups config.
-    int size = GetArraySize(arrayHitgroups);
+    int size = arrayHitgroups.Length;
     if (!size)
     {
         LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Hitgroups, "Config Validation", "No usable data found in hitgroups config file: %s", pathhitgroups);
@@ -141,7 +141,7 @@ void HitgroupsCacheData()
     char pathhitgroups[PLATFORM_MAX_PATH];
     ConfigGetConfigPath(File_Hitgroups, pathhitgroups, sizeof(pathhitgroups));
 
-    Handle kvHitgroups;
+    KeyValues kvHitgroups;
     bool success = ConfigOpenConfigFile(File_Hitgroups, kvHitgroups);
 
     if (!success)
@@ -152,20 +152,20 @@ void HitgroupsCacheData()
     char hitgroupname[HITGROUPS_MAX_LENGTH];
 
     // x = array index
-    int size = GetArraySize(arrayHitgroups);
+    int size = arrayHitgroups.Length;
     for (int x = 0; x < size; x++)
     {
         HitgroupsGetName(x, hitgroupname, sizeof(hitgroupname));
 
-        KvRewind(kvHitgroups);
-        if (!KvJumpToKey(kvHitgroups, hitgroupname))
+       	kvHitgroups.Rewind();
+        if (!kvHitgroups.JumpToKey(hitgroupname))
         {
             LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Hitgroups, "Config Validation", "Couldn't cache hitgroup data for: %s (check hitgroup config)", hitgroupname);
             continue;
         }
 
         // General
-        int index = KvGetNum(kvHitgroups, "index", -1);
+        int index = kvHitgroups.GetNum("index", -1);
 
         // Damage
         bool damage = ConfigKvGetStringBool(kvHitgroups, "damage", "yes");
@@ -173,16 +173,16 @@ void HitgroupsCacheData()
         // Knockback (module)
         float knockback = KvGetFloat(kvHitgroups, "knockback", 1.0);
 
-        Handle arrayHitgroup = GetArrayCell(arrayHitgroups, x);
+        ArrayList arrayHitgroup = arrayHitgroups.Get(x);
 
         // Push data into array.
-        PushArrayCell(arrayHitgroup, index);        // Index: 1
-        PushArrayCell(arrayHitgroup, damage);       // Index: 2
-        PushArrayCell(arrayHitgroup, knockback);    // Index: 3
+       	arrayHitgroup.Push(index);        // Index: 1
+        arrayHitgroup.Push(damage);       // Index: 2
+        arrayHitgroup.Push(knockback);    // Index: 3
     }
 
     // We're done with this file now, so we can close it.
-    CloseHandle(kvHitgroups);
+    delete kvHitgroups;
 }
 
 /**
@@ -209,7 +209,7 @@ stock int HitgroupsNameToIndex(char[] hitgroup, int maxlen = 0, bool overwritena
     char hitgroupname[HITGROUPS_MAX_LENGTH];
 
     // x = Array index.
-    int size = GetArraySize(arrayHitgroups);
+    int size = arrayHitgroups.Length;
     for (int x = 0; x < size; x++)
     {
         HitgroupsGetName(x, hitgroupname, sizeof(hitgroupname));
@@ -242,7 +242,7 @@ stock int HitgroupsNameToIndex(char[] hitgroup, int maxlen = 0, bool overwritena
 stock int HitgroupToIndex(int hitgroup)
 {
     // x = Array index.
-    int size = GetArraySize(arrayHitgroups);
+    int size = arrayHitgroups.Length;
     for (int x = 0; x < size; x++)
     {
         // Get hitgroup index at this array index.
@@ -268,10 +268,10 @@ stock int HitgroupToIndex(int hitgroup)
 stock void HitgroupsGetName(int index, char[] hitgroup, int maxlen)
 {
 	// Get array handle of hitgroup at given index.
-	Handle arrayHitgroup = GetArrayCell(arrayHitgroups, index);
+	ArrayList arrayHitgroup = arrayHitgroups.Get(index);
 	
 	// Get hitgroup name.
-	GetArrayString(arrayHitgroup, view_as<int>(HITGROUPS_DATA_NAME), hitgroup, maxlen);
+	arrayHitgroup.GetString(view_as<int>(HITGROUPS_DATA_NAME), hitgroup, maxlen);
 }
 
 /**
@@ -283,10 +283,10 @@ stock void HitgroupsGetName(int index, char[] hitgroup, int maxlen)
 stock int HitgroupsGetIndex(int index)
 {
 	// Get array handle of hitgroup at given index.
-	Handle arrayHitgroup = GetArrayCell(arrayHitgroups, index);
+	ArrayList arrayHitgroup = arrayHitgroups.Get(index);
 	
 	// Return hitgroup index of the hitgroup.
-	return GetArrayCell(arrayHitgroup, view_as<int>(HITGROUPS_DATA_INDEX));
+	return arrayHitgroup.Get(view_as<int>(HITGROUPS_DATA_INDEX));
 }
 
 /**
@@ -298,10 +298,10 @@ stock int HitgroupsGetIndex(int index)
 stock void HitgroupsSetDamage(int index, bool candamage)
 {
 	// Get array handle of hitgroup at given index.
-	Handle arrayHitgroup = GetArrayCell(arrayHitgroups, index);
+	ArrayList arrayHitgroup = arrayHitgroups.Get(index);
 	
 	// Return true if hitgroup can be damaged, false if not.
-	SetArrayCell(arrayHitgroup, view_as<int>(HITGROUPS_DATA_DAMAGE), candamage);
+	arrayHitgroup.Set(view_as<int>(HITGROUPS_DATA_DAMAGE), candamage);
 }
 
 /**
@@ -313,10 +313,10 @@ stock void HitgroupsSetDamage(int index, bool candamage)
 stock bool HitgroupsCanDamage(int index)
 {
 	// Get array handle of hitgroup at given index.
-	Handle arrayHitgroup = GetArrayCell(arrayHitgroups, index);
+	ArrayList arrayHitgroup = arrayHitgroups.Get(index);
 	
 	// Return true if hitgroup can be damaged, false if not.
-	return view_as<bool>(GetArrayCell(arrayHitgroup, view_as<int>(HITGROUPS_DATA_DAMAGE)));
+	return view_as<bool>(arrayHitgroup.Get(view_as<int>(HITGROUPS_DATA_DAMAGE)));
 }
 
 /**
@@ -328,10 +328,10 @@ stock bool HitgroupsCanDamage(int index)
 stock void HitgroupsSetKnockback(int index, float knockback)
 {
 	// Get array handle of hitgroup at given index.
-	Handle arrayHitgroup = GetArrayCell(arrayHitgroups, index);
+	ArrayList arrayHitgroup = arrayHitgroups.Get(index);
 	
 	// Return the knockback multiplier for the hitgroup.
-	SetArrayCell(arrayHitgroup, view_as<int>(HITGROUPS_DATA_KNOCKBACK), knockback);
+	arrayHitgroup.Set(view_as<int>(HITGROUPS_DATA_KNOCKBACK), knockback);
 }
 
 /**
@@ -343,10 +343,10 @@ stock void HitgroupsSetKnockback(int index, float knockback)
 stock float HitgroupsGetKnockback(int index)
 {
 	// Get array handle of hitgroup at given index.
-	Handle arrayHitgroup = GetArrayCell(arrayHitgroups, index);
+	ArrayList arrayHitgroup = arrayHitgroups.Get(index);
 	
 	// Return the knockback multiplier for the hitgroup.
-	return view_as<float>(GetArrayCell(arrayHitgroup, view_as<int>(HITGROUPS_DATA_KNOCKBACK)));
+	return view_as<float>(arrayHitgroup.Get(view_as<int>(HITGROUPS_DATA_KNOCKBACK)));
 }
 
 /**
@@ -358,14 +358,14 @@ stock float HitgroupsGetKnockback(int index)
 bool HitgroupsMenuHitgroups(int client)
 {
     // If hitgroups is disabled, then stop.
-    bool hitgroups = GetConVarBool(g_hCvarsList.CVAR_HITGROUPS);
+    bool hitgroups = g_hCvarsList.CVAR_HITGROUPS.BoolValue;
     if (!hitgroups)
     {
         return false;
     }
 
     // Create menu handle.
-    Handle menu_hitgroups = CreateMenu(HitgroupsMenuHitgroupsHandle);
+    Menu menu_hitgroups = new Menu(HitgroupsMenuHitgroupsHandle);
 
     // Set client as translation target.
     SetGlobalTransTarget(client);
@@ -380,16 +380,16 @@ bool HitgroupsMenuHitgroups(int client)
     Format(headshotsonly, sizeof(headshotsonly), "%t\n ", "Hitgroups menu hitgroups headshots only");
 
     // Add options to menu.
-    SetMenuTitle(menu_hitgroups, title);
-    AddMenuItem(menu_hitgroups, "Enable All", enableall);
-    AddMenuItem(menu_hitgroups, "Headshots Only", headshotsonly);
+    menu_hitgroups.SetTitle(title);
+    menu_hitgroups.AddItem("Enable All", enableall);
+   	menu_hitgroups.AddItem("Headshots Only", headshotsonly);
 
     char hitgroupoption[MENU_LINE_REG_LENGTH];
     char hitgroupcandamage[MENU_LINE_SMALL_LENGTH];
     char hitgroupid[4];
 
     // x = Hitgroup index.
-    int size = GetArraySize(arrayHitgroups);
+    int size = arrayHitgroups.Length;
     for (int x = 0; x < size; x++)
     {
         // Get hitgroup name.
@@ -403,14 +403,14 @@ bool HitgroupsMenuHitgroups(int client)
         Format(hitgroupoption, sizeof(hitgroupoption), "%s: %s", hitgroupoption, hitgroupcandamage);
 
         // Add option to menu.
-        AddMenuItem(menu_hitgroups, hitgroupid, hitgroupoption);
+        menu_hitgroups.AddItem(hitgroupid, hitgroupoption);
     }
 
     // Create a "Back" button to the main admin menu.
-    SetMenuExitBackButton(menu_hitgroups, true);
+    menu_hitgroups.ExitBackButton = true;
 
     // Send menu.
-    DisplayMenu(menu_hitgroups, client, MENU_TIME_FOREVER);
+    menu_hitgroups.Display(client, MENU_TIME_FOREVER);
 
     return true;
 }
@@ -422,7 +422,7 @@ bool HitgroupsMenuHitgroups(int client)
  * @param client                The client index.
  * @param slot                  The slot index selected (starting from 0).
  */
-public int HitgroupsMenuHitgroupsHandle(Handle menu_hitgroups, MenuAction action, int client, int slot)
+public int HitgroupsMenuHitgroupsHandle(Menu menu_hitgroups, MenuAction action, int client, int slot)
 {
     // Client selected an option.
     if (action == MenuAction_Select)
@@ -433,7 +433,7 @@ public int HitgroupsMenuHitgroupsHandle(Handle menu_hitgroups, MenuAction action
             case 0:
             {
                 // x = Hitgroup index.
-                int size = GetArraySize(arrayHitgroups);
+                int size = arrayHitgroups.Length;
                 for (int x = 0; x < size; x++)
                 {
                     // Enable hitgroup.
@@ -447,7 +447,7 @@ public int HitgroupsMenuHitgroupsHandle(Handle menu_hitgroups, MenuAction action
             case 1:
             {
                 // x = Hitgroup index.
-                int size = GetArraySize(arrayHitgroups);
+                int size = arrayHitgroups.Length;
                 for (int x = 0; x < size; x++)
                 {
                     if (HitgroupsGetIndex(x) == HITGROUP_HEAD)
@@ -469,7 +469,7 @@ public int HitgroupsMenuHitgroupsHandle(Handle menu_hitgroups, MenuAction action
             {
                 // Get selected hitgroup index.
                 char hitgroupid[4];
-                GetMenuItem(menu_hitgroups, slot, hitgroupid, sizeof(hitgroupid));
+                menu_hitgroups.GetItem(slot, hitgroupid, sizeof(hitgroupid));
                 int hitgroup = StringToInt(hitgroupid);
 
                 // Toggle value.
@@ -494,7 +494,7 @@ public int HitgroupsMenuHitgroupsHandle(Handle menu_hitgroups, MenuAction action
     // Client hit "Exit" button.
     else if (action == MenuAction_End)
     {
-        CloseHandle(menu_hitgroups);
+        delete menu_hitgroups;
     }
     return -1;
 }
@@ -516,7 +516,7 @@ public Action HitgroupsCommand(int client, int argc)
     }
 
     // If module is disabled, then stop.
-    bool hitgroups = GetConVarBool(g_hCvarsList.CVAR_HITGROUPS);
+    bool hitgroups = g_hCvarsList.CVAR_HITGROUPS.BoolValue;
     if (!hitgroups)
     {
         TranslationReplyToCommand(client, "Feature is disabled");
@@ -534,7 +534,7 @@ public Action HitgroupsCommand(int client, int argc)
         char hitgroupname[HITGROUPS_MAX_LENGTH];
 
         // x = Hitgroup index.
-        int size = GetArraySize(arrayHitgroups);
+        int size = arrayHitgroups.Length;
         for (int x = 0; x < size; x++)
         {
             // Get the hitgroups name and print in console.
@@ -609,7 +609,7 @@ public Action HitgroupsEnableAllCommand(int client, int argc)
     }
 
     // If module is disabled, then stop.
-    bool hitgroups = GetConVarBool(g_hCvarsList.CVAR_HITGROUPS);
+    bool hitgroups = g_hCvarsList.CVAR_HITGROUPS.BoolValue;
     if (!hitgroups)
     {
         TranslationReplyToCommand(client, "Feature is disabled");
@@ -617,7 +617,7 @@ public Action HitgroupsEnableAllCommand(int client, int argc)
     }
 
     // x = Hitgroup index.
-    int size = GetArraySize(arrayHitgroups);
+    int size = arrayHitgroups.Length;
     for (int x = 0; x < size; x++)
     {
         // Set that hitgroup index to true for damage.
@@ -650,7 +650,7 @@ public Action HitgroupsHeadshotsOnlyCommand(int client, int argc)
     }
 
     // If module is disabled, then stop.
-    bool hitgroups = GetConVarBool(g_hCvarsList.CVAR_HITGROUPS);
+    bool hitgroups = g_hCvarsList.CVAR_HITGROUPS.BoolValue;
     if (!hitgroups)
     {
         TranslationReplyToCommand(client, "Feature is disabled");
@@ -658,7 +658,7 @@ public Action HitgroupsHeadshotsOnlyCommand(int client, int argc)
     }
 
     // x = Hitgroup index.
-    int size = GetArraySize(arrayHitgroups);
+    int size = arrayHitgroups.Length;
     for (int x = 0; x < size; x++)
     {
         // If this hitgroup is the head, then enable it and stop.

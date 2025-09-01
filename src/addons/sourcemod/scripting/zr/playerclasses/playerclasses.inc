@@ -461,7 +461,7 @@ int ClassAdminTeamSelected[MAXPLAYERS + 1];
 /**
  * Cookies for storing class indexes.
  */
-Handle g_hClassCookieClassSelected[ZR_CLASS_TEAMCOUNT];
+Cookie g_hClassCookieClassSelected[ZR_CLASS_TEAMCOUNT];
 
 /**
  * Cache for the currently selected attribute multiplier (admin menus).
@@ -574,10 +574,10 @@ void ClassLoad()
     // Register config file.
     ConfigRegisterConfig(File_Classes, Structure_Keyvalue, CONFIG_FILE_ALIAS_CLASSES);
 
-    Handle kvClassData;
+    KeyValues kvClassData;
 
     // Make sure kvClassData is ready to use.
-    kvClassData = CreateKeyValues(CONFIG_FILE_ALIAS_CLASSES);
+    kvClassData = new KeyValues(CONFIG_FILE_ALIAS_CLASSES);
 
     // Get weapons config path.
     char pathclasses[PLATFORM_MAX_PATH];
@@ -589,8 +589,7 @@ void ClassLoad()
         LogEvent(false, LogType_Fatal, LOG_CORE_EVENTS, LogModule_Playerclasses, "Config Validation", "Missing playerclasses config file \"%s\"", pathclasses);
 
         // Remove key/value cache.
-        CloseHandle(kvClassData);
-        kvClassData = INVALID_HANDLE;
+        delete kvClassData;
 
         return;
     }
@@ -602,8 +601,8 @@ void ClassLoad()
     FileToKeyValues(kvClassData, pathclasses);
 
     // Try to find the first class.
-    KvRewind(kvClassData);
-    if (!KvGotoFirstSubKey(kvClassData))
+    kvClassData.Rewind();
+    if (!kvClassData.GotoFirstSubKey())
     {
         LogEvent(false, LogType_Fatal, LOG_CORE_EVENTS, LogModule_Playerclasses, "Config Validation", "Can't find any classes in \"%s\"", pathclasses);
     }
@@ -633,68 +632,68 @@ void ClassLoad()
         }
 
         /* Class identifier = section name */
-        KvGetSectionName(kvClassData, section_name, sizeof(section_name));
+        kvClassData.GetSectionName(section_name, sizeof(section_name));
         strcopy(ClassData[ClassCount].Class_Identifier, 64, section_name);
 
         /* General */
         ClassData[ClassCount].Class_Enabled = ConfigKvGetStringBool(kvClassData, "enabled", ZR_CLASS_DEFAULT_ENABLED);
-        ClassData[ClassCount].Class_Team = KvGetNum(kvClassData, "team", ZR_CLASS_DEFAULT_TEAM);
+        ClassData[ClassCount].Class_Team = kvClassData.GetNum("team", ZR_CLASS_DEFAULT_TEAM);
         ClassData[ClassCount].Class_TeamDefault = ConfigKvGetStringBool(kvClassData, "team_default", ZR_CLASS_DEFAULT_TEAM_DEFAULT);
-        ClassData[ClassCount].Class_Flags = KvGetNum(kvClassData, "flags", ZR_CLASS_DEFAULT_FLAGS);
+        ClassData[ClassCount].Class_Flags = kvClassData.GetNum("flags", ZR_CLASS_DEFAULT_FLAGS);
 
-        KvGetString(kvClassData, "group", group, sizeof(group), ZR_CLASS_DEFAULT_GROUP);
+        kvClassData.GetString("group", group, sizeof(group), ZR_CLASS_DEFAULT_GROUP);
         strcopy(ClassData[ClassCount].Class_Group, 64, group);
 
-        KvGetString(kvClassData, "sm_flags", sm_flags, sizeof(sm_flags), ZR_CLASS_DEFAULT_SM_FLAGS);
+        kvClassData.GetString("sm_flags", sm_flags, sizeof(sm_flags), ZR_CLASS_DEFAULT_SM_FLAGS);
         strcopy(ClassData[ClassCount].Class_SM_Flags, 64, sm_flags);
 
-        KvGetString(kvClassData, "name", name, sizeof(name), ZR_CLASS_DEFAULT_NAME);
+        kvClassData.GetString("name", name, sizeof(name), ZR_CLASS_DEFAULT_NAME);
         strcopy(ClassData[ClassCount].Class_Name, 64, name);
 
-        KvGetString(kvClassData, "description", description, sizeof(description), ZR_CLASS_DEFAULT_DESCRIPTION);
+        kvClassData.GetString("description", description, sizeof(description), ZR_CLASS_DEFAULT_DESCRIPTION);
         strcopy(ClassData[ClassCount].Class_Description, 256, description);
 
 
         /* Model */
-        KvGetString(kvClassData, "model_path", model_path, sizeof(model_path), ZR_CLASS_DEFAULT_MODEL_PATH);
+        kvClassData.GetString("model_path", model_path, sizeof(model_path), ZR_CLASS_DEFAULT_MODEL_PATH);
         strcopy(ClassData[ClassCount].Class_ModelPath, PLATFORM_MAX_PATH, model_path);
 
-        ClassData[ClassCount].Class_ModelSkinIndex = KvGetNum(kvClassData, "model_skin_index", ZR_CLASS_DEFAULT_MODEL_SKIN_INDEX);
-        ClassData[ClassCount].Class_AlphaInitial = KvGetNum(kvClassData, "alpha_initial", ZR_CLASS_DEFAULT_ALPHA_INITIAL);
-        ClassData[ClassCount].Class_AlphaDamaged = KvGetNum(kvClassData, "alpha_damaged", ZR_CLASS_DEFAULT_ALPHA_DAMAGED);
-        ClassData[ClassCount].Class_AlphaDamage = KvGetNum(kvClassData, "alpha_damage", ZR_CLASS_DEFAULT_ALPHA_DAMAGE);
+        ClassData[ClassCount].Class_ModelSkinIndex = kvClassData.GetNum("model_skin_index", ZR_CLASS_DEFAULT_MODEL_SKIN_INDEX);
+        ClassData[ClassCount].Class_AlphaInitial = kvClassData.GetNum("alpha_initial", ZR_CLASS_DEFAULT_ALPHA_INITIAL);
+        ClassData[ClassCount].Class_AlphaDamaged = kvClassData.GetNum("alpha_damaged", ZR_CLASS_DEFAULT_ALPHA_DAMAGED);
+        ClassData[ClassCount].Class_AlphaDamage = kvClassData.GetNum("alpha_damage", ZR_CLASS_DEFAULT_ALPHA_DAMAGE);
 
 
         /* Hud */
-        KvGetString(kvClassData, "overlay_path", overlay_path, sizeof(overlay_path), ZR_CLASS_DEFAULT_OVERLAY_PATH);
+        kvClassData.GetString("overlay_path", overlay_path, sizeof(overlay_path), ZR_CLASS_DEFAULT_OVERLAY_PATH);
         strcopy(ClassData[ClassCount].Class_OverlayPath, PLATFORM_MAX_PATH, overlay_path);
 
         ClassData[ClassCount].Class_Nvgs = ConfigKvGetStringBool(kvClassData, "nvgs", ZR_CLASS_DEFAULT_NVGS);
-        ClassData[ClassCount].Class_Fov = KvGetNum(kvClassData, "fov", ZR_CLASS_DEFAULT_FOV);
+        ClassData[ClassCount].Class_Fov = kvClassData.GetNum("fov", ZR_CLASS_DEFAULT_FOV);
 
 
         /* Effects */
         ClassData[ClassCount].Class_HasNapalm = ConfigKvGetStringBool(kvClassData, "has_napalm", ZR_CLASS_DEFAULT_HAS_NAPALM);
-        ClassData[ClassCount].Class_NapalmTime = KvGetFloat(kvClassData, "napalm_time", ZR_CLASS_DEFAULT_NAPALM_TIME);
+        ClassData[ClassCount].Class_NapalmTime = kvClassData.GetFloat("napalm_time", ZR_CLASS_DEFAULT_NAPALM_TIME);
 
 
         /* Player behaviour */
-        KvGetString(kvClassData, "immunity_mode", immunity_mode, sizeof(immunity_mode), ZR_CLASS_DEFAULT_IMMUNITY_MODE);
+        kvClassData.GetString("immunity_mode", immunity_mode, sizeof(immunity_mode), ZR_CLASS_DEFAULT_IMMUNITY_MODE);
         ClassData[ClassCount].Class_ImmunityMode = ImmunityStringToMode(immunity_mode);
-        ClassData[ClassCount].Class_ImmunityAmount = KvGetNum(kvClassData, "immunity_amount", ZR_CLASS_DEFAULT_IMMUNITY_AMOUNT);
-        ClassData[ClassCount].Class_ImmunityCooldown = KvGetNum(kvClassData, "immunity_cooldown", ZR_CLASS_DEFAULT_IMMUNITY_COOLDOWN);
+        ClassData[ClassCount].Class_ImmunityAmount = kvClassData.GetNum("immunity_amount", ZR_CLASS_DEFAULT_IMMUNITY_AMOUNT);
+        ClassData[ClassCount].Class_ImmunityCooldown = kvClassData.GetNum("immunity_cooldown", ZR_CLASS_DEFAULT_IMMUNITY_COOLDOWN);
         ClassData[ClassCount].Class_NoFallDamage = ConfigKvGetStringBool(kvClassData, "no_fall_damage", ZR_CLASS_DEFAULT_NO_FALL_DAMAGE);
 
-        ClassData[ClassCount].Class_Health = KvGetNum(kvClassData, "health", ZR_CLASS_DEFAULT_HEALTH);
-        ClassData[ClassCount].Class_HealthRegenInterval = KvGetFloat(kvClassData, "health_regen_interval", ZR_CLASS_DEFAULT_HEALTH_REGEN_INTERVAL);
-        ClassData[ClassCount].Class_HealthRegenAmount = KvGetNum(kvClassData, "health_regen_amount", ZR_CLASS_DEFAULT_HEALTH_REGEN_AMOUNT);
-        ClassData[ClassCount].Class_HealthInfectGain = KvGetNum(kvClassData, "health_infect_gain", ZR_CLASS_DEFAULT_HEALTH_INFECT_GAIN);
-        ClassData[ClassCount].Class_KillBonus = KvGetNum(kvClassData, "kill_bonus", ZR_CLASS_DEFAULT_KILL_BONUS);
+        ClassData[ClassCount].Class_Health = kvClassData.GetNum("health", ZR_CLASS_DEFAULT_HEALTH);
+        ClassData[ClassCount].Class_HealthRegenInterval = kvClassData.GetFloat("health_regen_interval", ZR_CLASS_DEFAULT_HEALTH_REGEN_INTERVAL);
+        ClassData[ClassCount].Class_HealthRegenAmount = kvClassData.GetNum("health_regen_amount", ZR_CLASS_DEFAULT_HEALTH_REGEN_AMOUNT);
+        ClassData[ClassCount].Class_HealthInfectGain = kvClassData.GetNum("health_infect_gain", ZR_CLASS_DEFAULT_HEALTH_INFECT_GAIN);
+        ClassData[ClassCount].Class_KillBonus = kvClassData.GetNum("kill_bonus", ZR_CLASS_DEFAULT_KILL_BONUS);
 
-        ClassData[ClassCount].Class_Speed = KvGetFloat(kvClassData, "speed", ZR_CLASS_DEFAULT_SPEED);
-        ClassData[ClassCount].Class_KnockBack = KvGetFloat(kvClassData, "knockback", ZR_CLASS_DEFAULT_KNOCKBACK);
-        ClassData[ClassCount].Class_JumpHeight = KvGetFloat(kvClassData, "jump_height", ZR_CLASS_DEFAULT_JUMP_HEIGHT);
-        ClassData[ClassCount].Class_JumpDistance = KvGetFloat(kvClassData, "jump_distance", ZR_CLASS_DEFAULT_JUMP_DISTANCE);
+        ClassData[ClassCount].Class_Speed = kvClassData.GetFloat("speed", ZR_CLASS_DEFAULT_SPEED);
+        ClassData[ClassCount].Class_KnockBack = kvClassData.GetFloat("knockback", ZR_CLASS_DEFAULT_KNOCKBACK);
+        ClassData[ClassCount].Class_JumpHeight = kvClassData.GetFloat("jump_height", ZR_CLASS_DEFAULT_JUMP_HEIGHT);
+        ClassData[ClassCount].Class_JumpDistance = kvClassData.GetFloat("jump_distance", ZR_CLASS_DEFAULT_JUMP_DISTANCE);
 
         // Validate class attributes if class is enabled.
         if (ClassData[ClassCount].Class_Enabled)
@@ -713,7 +712,7 @@ void ClassLoad()
 
         // Update the counter.
         ClassCount++;
-    } while (KvGotoNextKey(kvClassData));
+    } while (kvClassData.GotoNextKey());
 
     // Validate team requirements.
     if (!ClassValidateTeamRequirements())
@@ -745,8 +744,7 @@ void ClassLoad()
     ConfigSetConfigPath(File_Classes, pathclasses);
 
     // Remove key/value cache.
-    CloseHandle(kvClassData);
-    kvClassData = INVALID_HANDLE;
+    delete kvClassData;
 }
 
 /**
@@ -770,7 +768,7 @@ ClassSpeedMethods ClassGetSpeedMethod()
     char speedMethod[16];
     speedMethod[0] = 0;
 
-    GetConVarString(g_hCvarsList.CVAR_CLASSES_SPEED_METHOD, speedMethod, sizeof(speedMethod));
+    g_hCvarsList.CVAR_CLASSES_SPEED_METHOD.GetString(speedMethod, sizeof(speedMethod));
 
     if (strcmp(speedMethod, "lmv", false) == 0)
     {
@@ -1108,7 +1106,7 @@ void ClassClientSetDefaultIdentifiers(int client = -1)
     bool clientvalid = ZRIsClientValid(client);
     ClassFilter filter;
     ClassFilter filter_valid;
-    bool saveclasses = GetConVarBool(g_hCvarsList.CVAR_CLASSES_SAVE);
+    bool saveclasses = g_hCvarsList.CVAR_CLASSES_SAVE.BoolValue;
 
     char zombie_ident[64];
     char human_ident[64];
@@ -1159,9 +1157,9 @@ void ClassClientSetDefaultIdentifiers(int client = -1)
         // Get cookie indexes if enabled.
         if (saveclasses)
         {
-            GetClientCookie(client, g_hClassCookieClassSelected[ZR_CLASS_TEAM_ZOMBIES], zombie_ident, sizeof(zombie_ident));
-            GetClientCookie(client, g_hClassCookieClassSelected[ZR_CLASS_TEAM_HUMANS], human_ident, sizeof(human_ident));
-            GetClientCookie(client, g_hClassCookieClassSelected[ZR_CLASS_TEAM_ADMINS], admin_ident, sizeof(admin_ident));
+            g_hClassCookieClassSelected[ZR_CLASS_TEAM_ZOMBIES].Get(client, zombie_ident, sizeof(zombie_ident));
+            g_hClassCookieClassSelected[ZR_CLASS_TEAM_HUMANS].Get(client, human_ident, sizeof(human_ident));
+            g_hClassCookieClassSelected[ZR_CLASS_TEAM_ADMINS].Get(client, admin_ident, sizeof(admin_ident));
 
             zombieindex = ClassGetIndexByIdentifier(zombie_ident);
             humanindex = ClassGetIndexByIdentifier(human_ident);
@@ -1284,17 +1282,17 @@ void ClassClientSetDefaultIdentifiers(int client = -1)
             if (!haszombie && zombieindex != -1)
             {
                 ClassGetIdentifier(zombieindex, zombie_ident, sizeof(zombie_ident), ZR_CLASS_CACHE_MODIFIED);
-                SetClientCookie(client, g_hClassCookieClassSelected[ZR_CLASS_TEAM_ZOMBIES], zombie_ident);
+                g_hClassCookieClassSelected[ZR_CLASS_TEAM_ZOMBIES].Set(client, zombie_ident);
             }
             if (!hashuman && humanindex != -1)
             {
                 ClassGetIdentifier(humanindex, human_ident, sizeof(human_ident), ZR_CLASS_CACHE_MODIFIED);
-                SetClientCookie(client, g_hClassCookieClassSelected[ZR_CLASS_TEAM_HUMANS], human_ident);
+                g_hClassCookieClassSelected[ZR_CLASS_TEAM_HUMANS].Set(client, human_ident);
             }
             if (!hasadmin && adminindex != -1)
             {
                 ClassGetIdentifier(adminindex, admin_ident, sizeof(admin_ident), ZR_CLASS_CACHE_MODIFIED);
-                SetClientCookie(client, g_hClassCookieClassSelected[ZR_CLASS_TEAM_ADMINS], admin_ident);
+                g_hClassCookieClassSelected[ZR_CLASS_TEAM_ADMINS].Set(client, admin_ident);
             }
         }
     }
@@ -1386,11 +1384,11 @@ ClassSelectResult ClassSelectClientClass(int client, int classIndex, bool applyI
 
     // Save selected class index in cookie if enabled.
     // Note: Saved indexes are increased by one.
-    if (saveIfEnabled && GetConVarBool(g_hCvarsList.CVAR_CLASSES_SAVE))
+    if (saveIfEnabled && g_hCvarsList.CVAR_CLASSES_SAVE.BoolValue)
     {
         char classIdent[64];
         ClassGetIdentifier(classIndex, classIdent, sizeof(classIdent), ZR_CLASS_CACHE_MODIFIED);
-        SetClientCookie(client, g_hClassCookieClassSelected[teamid], classIdent);
+        g_hClassCookieClassSelected[teamid].Set(client, classIdent);
     }
 
     return selectResult;

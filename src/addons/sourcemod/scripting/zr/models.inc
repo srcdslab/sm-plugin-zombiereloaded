@@ -45,7 +45,7 @@ int ModelCount;
  */
 void ModelsLoad()
 {
-    Handle kvModels = INVALID_HANDLE;
+    KeyValues kvModels = null;
 
     // Register config file.
     ConfigRegisterConfig(File_Models, Structure_List, CONFIG_FILE_ALIAS_MODELS);
@@ -65,7 +65,7 @@ void ModelsLoad()
     ConfigSetConfigPath(File_Models, modelPath);
 
     // Prepare key/value structure.
-    kvModels = CreateKeyValues(CONFIG_FILE_ALIAS_MODELS);
+    kvModels = new KeyValues(CONFIG_FILE_ALIAS_MODELS);
 
     // Log what models file that is loaded.
     LogEvent(false, LogType_Normal, LOG_CORE_EVENTS, LogModule_Models, "Config Validation", "Loading models from file \"%s\".", modelPath);
@@ -74,8 +74,8 @@ void ModelsLoad()
     FileToKeyValues(kvModels, modelPath);
 
     // Try to find the first model.
-    KvRewind(kvModels);
-    if (!KvGotoFirstSubKey(kvModels))
+    kvModels.Rewind();
+    if (!kvModels.GotoFirstSubKey())
     {
         LogEvent(false, LogType_Fatal, LOG_CORE_EVENTS, LogModule_Models, "Config Validation", "Can't find any models in \"%s\"", modelPath);
     }
@@ -103,19 +103,19 @@ void ModelsLoad()
             break;
         }
 
-        KvGetString(kvModels, "name", name, sizeof(name));
+        kvModels.GetString("name", name, sizeof(name));
         strcopy(ModelData[ModelCount].Model_Name, 64, name);
 
-        KvGetString(kvModels, "path", path, sizeof(path));
+        kvModels.GetString("path", path, sizeof(path));
         strcopy(ModelData[ModelCount].Model_Path, 64, path);
 
-        KvGetString(kvModels, "team", team, sizeof(team));
+        kvModels.GetString("team", team, sizeof(team));
         ModelData[ModelCount].Model_Team = ModelsStringToTeam(team);
 
-        KvGetString(kvModels, "access", access, sizeof(access));
+        kvModels.GetString("access", access, sizeof(access));
         ModelData[ModelCount].Model_Access = ModelsStringToAccess(access);
 
-        KvGetString(kvModels, "group", group, sizeof(group));
+        kvModels.GetString("group", group, sizeof(group));
         strcopy(ModelData[ModelCount].Model_Group, 64, group);
 
 
@@ -166,10 +166,10 @@ void ModelsLoad()
         }
 
         // Open directory with model files.
-        Handle dir = OpenDirectory(path);
+        DirectoryListing dir = OpenDirectory(path);
 
         // Check if failed.
-        if (dir == INVALID_HANDLE)
+        if (dir == null)
         {
             LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Models, "Config Validation", "Error opening directory: %s", dir);
             continue;
@@ -211,7 +211,7 @@ void ModelsLoad()
             downloadCount++;
         }
 
-        CloseHandle(dir);
+        delete dir;
 
         // Check if no model files were found.
         if (!downloadCount)
@@ -222,9 +222,9 @@ void ModelsLoad()
         {
             ModelCount++;
         }
-    } while (KvGotoNextKey(kvModels));
+    } while (kvModels.GotoNextKey());
 
-    CloseHandle(kvModels);
+    delete kvModels;
 
     // Check if there are no public models.
     if (!publicCount)

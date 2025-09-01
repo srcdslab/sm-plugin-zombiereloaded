@@ -76,7 +76,7 @@ int NapalmOnTakeDamage(int client, int damagetype)
     if (damagetype & DMG_BURN || damagetype & DMG_DIRECT)
     {
         // Only take action if it isn't disabled, or the option is valid.
-        int douse = GetConVarInt(g_hCvarsList.CVAR_NAPALM_DOUSE);
+        int douse = g_hCvarsList.CVAR_NAPALM_DOUSE.IntValue;
 
         if (douse > NAPALM_WLEVEL_DRY && douse <= NAPALM_WLEVEL_FULL)
         {
@@ -132,12 +132,12 @@ void NapalmOnClientHurt(int client, int attacker, const char[] weapon, int dmg_h
     // If weapon is a grenade, then ignite player.
     if (strcmp(weapon, "hegrenade", false) == 0 || strcmp(weapon, "inferno", false) == 0)
     {
-        bool reset = GetConVarBool(g_hCvarsList.CVAR_NAPALM_TIME_RESET);
+        bool reset = g_hCvarsList.CVAR_NAPALM_TIME_RESET.BoolValue;
         int flags = GetEntityFlags(client);
 
         if (reset || !(flags & FL_ONFIRE))
         {
-            float timescale = GetConVarFloat(g_hCvarsList.CVAR_NAPALM_TIME_SCALE);
+            float timescale = g_hCvarsList.CVAR_NAPALM_TIME_SCALE.FloatValue;
             if (timescale > 0.0)
             {
                 // Figure out our scale value.
@@ -187,7 +187,7 @@ void NapalmOnEntitySpawned(int entity, const char[] classname)
     }
 
     // If grenade fire is disabled, then stop.
-    bool napalmignite = GetConVarBool(g_hCvarsList.CVAR_NAPALM_IGNITE);
+    bool napalmignite = g_hCvarsList.CVAR_NAPALM_IGNITE.BoolValue;
     if (!napalmignite)
     {
         return;

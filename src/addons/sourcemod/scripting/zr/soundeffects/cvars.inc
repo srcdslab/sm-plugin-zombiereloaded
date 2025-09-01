@@ -25,28 +25,28 @@
  * ============================================================================
  */
 
-Handle SEffectsCvar_Voice;
-//Handle SEffectsCvar_VoiceZombiesMute;
-Handle SEffectsCvar_Moan;
-Handle SEffectsCvar_Groan;
-Handle SEffectsCvar_Death;
-Handle SEffectsCvar_CommandLimit;
-Handle SEffectsCvar_CommandTimespan;
-Handle SEffectsCvar_PathMoan;
-Handle SEffectsCvar_PathPain;
-Handle SEffectsCvar_PathDie;
-Handle SEffectsCvar_PathScream;
-Handle SEffectsCvar_PathCountdown;
-Handle SEffectsCvar_MoanMax;
-Handle SEffectsCvar_PainMax;
-Handle SEffectsCvar_DieMax;
-Handle SEffectsCvar_ScreamMax;
-Handle SEffectsCvar_CountdownMax;
-Handle SEffectsCvar_Volume;
-Handle SEffectsCvar_AmbientSounds;
-Handle SEffectsCvar_AmbientSoundsFile;
-Handle SEffectsCvar_AmbientSoundsLength;
-Handle SEffectsCvar_AmbientSoundsVolume;
+ConVar SEffectsCvar_Voice;
+//ConVar SEffectsCvar_VoiceZombiesMute;
+ConVar SEffectsCvar_Moan;
+ConVar SEffectsCvar_Groan;
+ConVar SEffectsCvar_Death;
+ConVar SEffectsCvar_CommandLimit;
+ConVar SEffectsCvar_CommandTimespan;
+ConVar SEffectsCvar_PathMoan;
+ConVar SEffectsCvar_PathPain;
+ConVar SEffectsCvar_PathDie;
+ConVar SEffectsCvar_PathScream;
+ConVar SEffectsCvar_PathCountdown;
+ConVar SEffectsCvar_MoanMax;
+ConVar SEffectsCvar_PainMax;
+ConVar SEffectsCvar_DieMax;
+ConVar SEffectsCvar_ScreamMax;
+ConVar SEffectsCvar_CountdownMax;
+ConVar SEffectsCvar_Volume;
+ConVar SEffectsCvar_AmbientSounds;
+ConVar SEffectsCvar_AmbientSoundsFile;
+ConVar SEffectsCvar_AmbientSoundsLength;
+ConVar SEffectsCvar_AmbientSoundsVolume;
 
 void SEffects_OnCvarsCreate()
 {
@@ -79,39 +79,39 @@ void SEffects_OnCvarsCreate()
 
 bool SEffects_GetVoice()
 {
-    return GetConVarBool(SEffectsCvar_Voice);
+    return SEffectsCvar_Voice.BoolValue;
 }
 
 /* INCOMPLETE
 bool SEffects_GetVoiceZombiesMute()
 {
-    return GetConVarBool(SEffectsCvar_VoiceZombiesMute);
+    return SEffectsCvar_VoiceZombiesMute.BoolValue;
 }
 */
 
 float SEffects_GetMoanTime()
 {
-    return GetConVarFloat(SEffectsCvar_Moan);
+    return SEffectsCvar_Moan.FloatValue;
 }
 
 int SEffects_GetGroanProbability()
 {
-    return GetConVarInt(SEffectsCvar_Groan);
+    return SEffectsCvar_Groan.IntValue;
 }
 
 bool SEffects_GetDeathEmission()
 {
-    return GetConVarBool(SEffectsCvar_Death);
+    return SEffectsCvar_Death.BoolValue;
 }
 
 int SEffects_GetCommandLimit()
 {
-    return GetConVarInt(SEffectsCvar_CommandLimit);
+    return SEffectsCvar_CommandLimit.IntValue;
 }
 
 float SEffects_GetCommandTimespan()
 {
-    return GetConVarFloat(SEffectsCvar_CommandTimespan);
+    return SEffectsCvar_CommandTimespan.FloatValue;
 }
 
 void SEffects_GetPath(char[] sound, ZombieSounds soundtype)
@@ -119,15 +119,15 @@ void SEffects_GetPath(char[] sound, ZombieSounds soundtype)
     switch(soundtype)
     {
         case Moan:
-            GetConVarString(SEffectsCvar_PathMoan, sound, SOUND_MAX_PATH);
+            SEffectsCvar_PathMoan.GetString(sound, SOUND_MAX_PATH);
         case Groan:
-            GetConVarString(SEffectsCvar_PathPain, sound, SOUND_MAX_PATH);
+            SEffectsCvar_PathPain.GetString(sound, SOUND_MAX_PATH);
         case Death:
-            GetConVarString(SEffectsCvar_PathDie, sound, SOUND_MAX_PATH);
+            SEffectsCvar_PathDie.GetString(sound, SOUND_MAX_PATH);
         case Scream:
-            GetConVarString(SEffectsCvar_PathScream, sound, SOUND_MAX_PATH);
+            SEffectsCvar_PathScream.GetString(sound, SOUND_MAX_PATH);
         case Countdown:
-            GetConVarString(SEffectsCvar_PathCountdown, sound, SOUND_MAX_PATH)
+            SEffectsCvar_PathCountdown.GetString(sound, SOUND_MAX_PATH)
     }
 }
 
@@ -136,15 +136,15 @@ int SEffects_GetMax(ZombieSounds soundtype)
     switch(soundtype)
     {
         case Moan:
-            return GetConVarInt(SEffectsCvar_MoanMax);
+            return SEffectsCvar_MoanMax.IntValue;
         case Groan:
-            return GetConVarInt(SEffectsCvar_PainMax);
+            return SEffectsCvar_PainMax.IntValue;
         case Death:
-            return GetConVarInt(SEffectsCvar_DieMax);
+            return SEffectsCvar_DieMax.IntValue;
         case Scream:
-            return GetConVarInt(SEffectsCvar_ScreamMax);
+            return SEffectsCvar_ScreamMax.IntValue;
         case Countdown:
-            return GetConVarInt(SEffectsCvar_CountdownMax)
+            return SEffectsCvar_CountdownMax.IntValue
     }
 
     return 1;
@@ -152,26 +152,26 @@ int SEffects_GetMax(ZombieSounds soundtype)
 
 float SEffects_GetVolume()
 {
-    return GetConVarFloat(SEffectsCvar_Volume);
+    return SEffectsCvar_Volume.FloatValue;
 }
 
 bool SEffects_GetAmbientSounds()
 {
-    return GetConVarBool(SEffectsCvar_AmbientSounds);
+    return SEffectsCvar_AmbientSounds.BoolValue;
 }
 
 void SEffects_GetAmbientSoundsFile(char[] sound)
 {
-    GetConVarString(SEffectsCvar_AmbientSoundsFile, sound, SOUND_MAX_PATH);
+    SEffectsCvar_AmbientSoundsFile.GetString(sound, SOUND_MAX_PATH);
 }
 
 float SEffects_GetAmbientSoundsLength()
 {
-    return GetConVarFloat(SEffectsCvar_AmbientSoundsLength);
+    return SEffectsCvar_AmbientSoundsLength.FloatValue;
 }
 
 float SEffects_GetAmbientSoundsVolume()
 {
-    return GetConVarFloat(SEffectsCvar_AmbientSoundsVolume);
+    return SEffectsCvar_AmbientSoundsVolume.FloatValue;
 }
 

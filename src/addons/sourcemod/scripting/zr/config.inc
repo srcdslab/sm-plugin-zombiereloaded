@@ -209,7 +209,7 @@ void ConfigLoad()
 	// Get map name and format into config path.
 	GetCurrentMap(mapname, sizeof(mapname));
 
-	bool bSMPath = GetConVarBool(g_hCvarsList.CVAR_CONFIG_SM_PATH);
+	bool bSMPath = g_hCvarsList.CVAR_CONFIG_SM_PATH.BoolValue;
 
 	if (bSMPath)
 	{
@@ -275,7 +275,7 @@ bool LoadConfigAndExec(char[] filepath, bool bSMPath = false)
 		return false;
 
 	// Read each line and execute it
-	while (ReadFileLine(hFile, line, sizeof(line)))
+	while (hFile.ReadLine(line, sizeof(line)))
 	{
 		// Remove any newline or whitespace characters
 		TrimString(line);
@@ -302,7 +302,7 @@ bool LoadConfigAndExec(char[] filepath, bool bSMPath = false)
 		ServerCommand("%s", line);
 	}
 
-	CloseHandle(hFile);
+	delete hFile;
 	return true;
 }
 
@@ -320,7 +320,7 @@ void ConfigOnModulesLoaded()
 	
 	// Get map name and format into config path.
 	GetCurrentMap(mapname, sizeof(mapname));
-	bool bSMPath = GetConVarBool(g_hCvarsList.CVAR_CONFIG_SM_PATH);
+	bool bSMPath = g_hCvarsList.CVAR_CONFIG_SM_PATH.BoolValue;
 
 	// Prepend cfg to path.
 	if (bSMPath)
@@ -423,7 +423,7 @@ stock void ConfigRegisterConfig(ConfigFile file, ConfigStructure structure, cons
     // Copy file info to data container.
     g_ConfigData[file].Data_Loaded = false;
     g_ConfigData[file].Data_Structure = structure;
-    g_ConfigData[file].Data_Handle = INVALID_HANDLE;
+    g_ConfigData[file].Data_Handle = null;
     g_ConfigData[file].Data_ReloadFunc = INVALID_FUNCTION;
     strcopy(g_ConfigData[file].Data_Path, PLATFORM_MAX_PATH, "");
     strcopy(g_ConfigData[file].Data_Alias, CONFIG_MAX_LENGTH, alias);
@@ -579,7 +579,7 @@ stock void ConfigGetConfigAlias(ConfigFile config, char[] alias, int maxlen)
  * @param blocksize     The max length of the contained strings.
  * @return              True if file was loaded successfuly, false otherwise.
  */
-stock bool ConfigLoadConfig(ConfigFile config, Handle &arrayConfig, int blocksize = CONFIG_MAX_LENGTH)
+stock bool ConfigLoadConfig(ConfigFile config, ArrayList &arrayConfig, int blocksize = CONFIG_MAX_LENGTH)
 {
 	// Get config's structure.
 	ConfigStructure structure = ConfigGetConfigStructure(config);
@@ -593,10 +593,10 @@ stock bool ConfigLoadConfig(ConfigFile config, Handle &arrayConfig, int blocksiz
 	ConfigGetConfigPath(config, configpath, sizeof(configpath));
 	
 	// If array hasn't been created, then create.
-	if (arrayConfig == INVALID_HANDLE)
+	if (arrayConfig == null)
 	{
 		// Create array in handle.
-		arrayConfig = CreateArray(blocksize);
+		arrayConfig = new ArrayList(blocksize);
 	}
 	
 	switch(structure)
@@ -604,7 +604,7 @@ stock bool ConfigLoadConfig(ConfigFile config, Handle &arrayConfig, int blocksiz
 		case Structure_List:
 		{
 			// Open file.
-			Handle hFile;
+			File hFile;
 			int success = ConfigOpenConfigFile(config, hFile);
 			
 			// If config file failed to open, then stop.
@@ -614,11 +614,11 @@ stock bool ConfigLoadConfig(ConfigFile config, Handle &arrayConfig, int blocksiz
 			}
 			
 			// Clear out array.
-			ClearArray(arrayConfig);
+			arrayConfig.Clear();
 			
 			char line[PLATFORM_MAX_PATH];
 			
-			while(ReadFileLine(hFile, line, sizeof(line)))
+			while(hFile.ReadLine(line, sizeof(line)))
 			{
 				// Cut out comments at the end of a line.
 				if (StrContains(line, "//") > -1)
@@ -636,18 +636,18 @@ stock bool ConfigLoadConfig(ConfigFile config, Handle &arrayConfig, int blocksiz
 				}
 				
 				// Push line into array.
-				PushArrayString(arrayConfig, line);
+				arrayConfig.PushString(line);
 			}
 			
 			// We're done this file, so now we can destory it from memory. 
-			CloseHandle(hFile);
+			delete hFile;
 			
 			return true;
 		}
 		case Structure_Keyvalue:
 		{
 			// Open file.
-			Handle hKeyvalue;
+			KeyValues hKeyvalue;
 			int success = ConfigOpenConfigFile(config, hKeyvalue);
 			
 			// If config file failed to open, then stop.
@@ -659,26 +659,26 @@ stock bool ConfigLoadConfig(ConfigFile config, Handle &arrayConfig, int blocksiz
 			// Destroy all old data.
 			ConfigClearKvArray(arrayConfig);
 			
-			if (KvGotoFirstSubKey(hKeyvalue))
+			if (hKeyvalue.GotoFirstSubKey())
 			{
 				do
 				{
 					// Create new array to store information for config entry.
-					Handle arrayConfigEntry = CreateArray(blocksize);
+					ArrayList arrayConfigEntry = new ArrayList(blocksize);
 					
 					// Push the key name into the config entry's array.
 					char keyname[CONFIG_MAX_LENGTH];
-					KvGetSectionName(hKeyvalue, keyname, sizeof(keyname));
+					hKeyvalue.GetSectionName(keyname, sizeof(keyname));
 					
-					PushArrayString(arrayConfigEntry, keyname); // Index: 0
+					arrayConfigEntry.PushString(keyname); // Index: 0
 					
 					// Store this handle in the main array.
-					PushArrayCell(arrayConfig, arrayConfigEntry);
-				} while(KvGotoNextKey(hKeyvalue));
+					arrayConfig.Push(arrayConfigEntry);
+				} while(hKeyvalue.GotoNextKey());
 			}
 			
 			// We're done this file for now, so now we can destory it from memory. 
-			CloseHandle(hKeyvalue);
+			delete hKeyvalue;
 			
 			return true;
 		}
@@ -753,7 +753,7 @@ stock bool ConfigOpenConfigFile(ConfigFile config, Handle &hConfig)
 			hConfig = OpenFile(configpath, "r");
 			
 			// If file couldn't be opened, then stop.
-			if (hConfig == INVALID_HANDLE)
+			if (hConfig == null)
 			{
 				return false;
 			}
@@ -796,7 +796,7 @@ stock bool ConfigKeyvalueTreeSetting(ConfigFile config, ConfigKvAction action = 
 	}
 	
 	// Retrieve handle of the keyvalue tree.
-	Handle hConfig;
+	KeyValues hConfig;
 	bool success = ConfigOpenConfigFile(config, hConfig);
 	
 	// If the file couldn't be opened, then stop.
@@ -806,7 +806,7 @@ stock bool ConfigKeyvalueTreeSetting(ConfigFile config, ConfigKvAction action = 
 	}
 	
 	// Rewind keyvalue tree.
-	KvRewind(hConfig);
+	hConfig.Rewind();
 	
 	// x = keys index.
 	// Traverse into the keygroup, stop if it fails.
@@ -819,7 +819,7 @@ stock bool ConfigKeyvalueTreeSetting(ConfigFile config, ConfigKvAction action = 
 		}
 		
 		// Try to jump to next level in the transversal stack, create key if specified.
-		bool exists = KvJumpToKey(hConfig, keys[x], (action == KvAction_Create));
+		bool exists = hConfig.JumpToKey(keys[x], (action == KvAction_Create));
 		
 		// If exists is false, then stop.
 		if (!exists)
@@ -840,22 +840,22 @@ stock bool ConfigKeyvalueTreeSetting(ConfigFile config, ConfigKvAction action = 
 			}
 			
 			// Set new value.
-			KvSetString(hConfig, setting, value);
+			hConfig.SetString(setting, value);
 		}
 		case KvAction_KVDelete:
 		{
 			// Return deletion result.
-			return KvDeleteKey(hConfig, setting);
+			return hConfig.DeleteKey(setting);
 		}
 		case KvAction_KVSet:
 		{
 			// Set new value.
-			KvSetString(hConfig, setting, value);
+			hConfig.SetString(setting, value);
 		}
 		case KvAction_KVGet:
 		{
 			// Get current value.
-			KvGetString(hConfig, setting, value, maxlen);
+			hConfig.GetString(setting, value, maxlen);
 		}
 	}
 	
@@ -868,19 +868,19 @@ stock bool ConfigKeyvalueTreeSetting(ConfigFile config, ConfigKvAction action = 
  *
  * @param arrayKv   The array converted from a keyvalue structure.
  */
-void ConfigClearKvArray(Handle arrayKv)
+void ConfigClearKvArray(ArrayList arrayKv)
 {
 	//  x = array index
-	int size = GetArraySize(arrayKv);
+	int size = arrayKv.Length;
 	for (int x = 0; x < size; x++)
 	{
 		// Destroy nested arrays.
-		Handle arrayKvKey = GetArrayCell(arrayKv, x);
-		CloseHandle(arrayKvKey);
+		ArrayList arrayKvKey = arrayKv.Get(x);
+		delete arrayKvKey;
 	}
 	
 	// Now that all data within has been destroyed, we can clear the main array.
-	ClearArray(arrayKv);
+	arrayKv.Clear();
 }
 
 /**
@@ -889,11 +889,11 @@ void ConfigClearKvArray(Handle arrayKv)
  * @param file  The cvar define of the path to the file.
  * @return      True if the file exists, false if not.
  */
-stock bool ConfigGetCvarFilePath(Handle cvar, char[] path)
+stock bool ConfigGetCvarFilePath(ConVar cvar, char[] path)
 {
     // Get cvar's path.
     char filepath[PLATFORM_MAX_PATH];
-    GetConVarString(cvar, filepath, sizeof(filepath));
+    cvar.GetString(filepath, sizeof(filepath));
 
     // Build full path in return string.
     BuildPath(Path_SM, path, PLATFORM_MAX_PATH, filepath);
@@ -1102,10 +1102,10 @@ stock void ConfigBoolToSetting(bool bOption, char[] option, int maxlen, bool yes
  * @param key           The keyname the value is under.
  * @param defaultvalue  (Optional) Value to return if setting is missing.
  */
-stock bool ConfigKvGetStringBool(Handle kv, const char[] key, const char[] defaultvalue = "yes")
+stock bool ConfigKvGetStringBool(KeyValues kv, const char[] key, const char[] defaultvalue = "yes")
 {
 	char value[CONFIG_MAX_LENGTH];
-	KvGetString(kv, key, value, sizeof(value), defaultvalue);
+	kv.GetString(key, value, sizeof(value), defaultvalue);
 	
 	return ConfigSettingToBool(value);
 }

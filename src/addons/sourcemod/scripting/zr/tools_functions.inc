@@ -194,9 +194,9 @@ stock int ToolsGetEntityAlpha(int entity)
 
     if (!gotconfig)
     {
-        Handle gc = LoadGameConfigFile("core.games");
-        bool exists = GameConfGetKeyValue(gc, "m_clrRender", prop, sizeof(prop));
-        CloseHandle(gc);
+        GameData gc = new GameData("core.games");
+        bool exists = gc.GetKeyValue("m_clrRender", prop, sizeof(prop));
+        delete gc;
 
         if (!exists)
         {
@@ -244,9 +244,9 @@ stock void ToolsGetEntityColor(int entity, int color[4])
 
     if (!gotconfig)
     {
-        Handle gc = LoadGameConfigFile("core.games");
-        bool exists = GameConfGetKeyValue(gc, "m_clrRender", prop, sizeof(prop));
-        CloseHandle(gc);
+        GameData gc = new GameData("core.games");
+        bool exists = gc.GetKeyValue("m_clrRender", prop, sizeof(prop));
+        delete gc;
 
         if (!exists)
         {

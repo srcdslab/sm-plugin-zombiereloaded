@@ -93,7 +93,7 @@ enum LogModules
 /**
  * Handle for dynamic string array for module filtering.
  */
-Handle hLogModuleFilter;
+ArrayList hLogModuleFilter;
 
 /**
  * Cache of current module filter settings. For fast and easy access.

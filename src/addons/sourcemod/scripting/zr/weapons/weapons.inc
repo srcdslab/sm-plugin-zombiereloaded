@@ -102,7 +102,7 @@ enum WeaponsSlot
 /**
  * Array handle to store weapon config data.
  */
-Handle arrayWeapons = INVALID_HANDLE;
+ArrayList arrayWeapons = null;
 
 #include "restrict"
 #include "weaponammo"
@@ -180,7 +180,7 @@ void WeaponsLoad()
     ConfigRegisterConfig(File_Weapons, Structure_Keyvalue, CONFIG_FILE_ALIAS_WEAPONS);
 
     // If module is disabled, then stop.
-    bool weapons = GetConVarBool(g_hCvarsList.CVAR_WEAPONS);
+    bool weapons = g_hCvarsList.CVAR_WEAPONS.BoolValue;
     if (!weapons)
     {
         return;
@@ -212,7 +212,7 @@ void WeaponsLoad()
     }
 
     // Validate weapons config.
-    int size = GetArraySize(arrayWeapons);
+    int size = arrayWeapons.Length;
     if (!size)
     {
         LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Weapons, "Config Validation", "No usable data found in weapons config file: %s", pathweapons);
@@ -241,7 +241,7 @@ void WeaponsCacheData()
     char pathweapons[PLATFORM_MAX_PATH];
     ConfigGetConfigPath(File_Weapons, pathweapons, sizeof(pathweapons));
 
-    Handle kvWeapons;
+    KeyValues kvWeapons;
     bool success = ConfigOpenConfigFile(File_Weapons, kvWeapons);
 
     if (!success)
@@ -252,12 +252,12 @@ void WeaponsCacheData()
     char weaponname[WEAPONS_MAX_LENGTH];
 
     // x = array index
-    int size = GetArraySize(arrayWeapons);
+    int size = arrayWeapons.Length;
     for (int x = 0; x < size; x++)
     {
         WeaponsGetName(x, weaponname, sizeof(weaponname));
-        KvRewind(kvWeapons);
-        if (!KvJumpToKey(kvWeapons, weaponname))
+        kvWeapons.Rewind();
+        if (!kvWeapons.JumpToKey(weaponname))
         {
             LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Weapons, "Config Validation", "Couldn't cache weapon data for: %s (check weapons config)", weaponname);
             continue;
@@ -272,49 +272,49 @@ void WeaponsCacheData()
         char zmarketcommand[CONFIG_MAX_LENGTH];
 
         // General
-        KvGetString(kvWeapons, "weaponentity", weaponentity, sizeof(weaponentity));
-        KvGetString(kvWeapons, "weapontype", weapontype, sizeof(weapontype));
-        WeaponsSlot weaponslot = view_as<WeaponsSlot>(KvGetNum(kvWeapons, "weaponslot", -1));
+        kvWeapons.GetString("weaponentity", weaponentity, sizeof(weaponentity));
+        kvWeapons.GetString("weapontype", weapontype, sizeof(weapontype));
+        WeaponsSlot weaponslot = view_as<WeaponsSlot>(kvWeapons.GetNum("weaponslot", -1));
 
         // Restrict (core)
         bool restrictdefault = ConfigKvGetStringBool(kvWeapons, "restrictdefault", "no");
         bool toggleable = ConfigKvGetStringBool(kvWeapons, "toggleable", "yes");
 
         // Weapon Ammo (core)
-        KvGetString(kvWeapons, "ammotype", ammotype, sizeof(ammotype));
-        int ammoprice = KvGetNum(kvWeapons, "ammoprice", -1);
+        kvWeapons.GetString("ammotype", ammotype, sizeof(ammotype));
+        int ammoprice = kvWeapons.GetNum("ammoprice", -1);
 
         // Knockback (module)
-        float knockback = KvGetFloat(kvWeapons, "knockback", 1.0);
+        float knockback = kvWeapons.GetFloat("knockback", 1.0);
 
         // ZMarket (module)
-        KvGetString(kvWeapons, "zmarketname", zmarketname, sizeof(zmarketname), "");
-        int zmarketprice = KvGetNum(kvWeapons, "zmarketprice", -1);
-        int zmarketpurchasemax = KvGetNum(kvWeapons, "zmarketpurchasemax", -1);
-        KvGetString(kvWeapons, "zmarketcommand", zmarketcommand, sizeof(zmarketcommand), "");
+        kvWeapons.GetString("zmarketname", zmarketname, sizeof(zmarketname), "");
+        int zmarketprice = kvWeapons.GetNum("zmarketprice", -1);
+        int zmarketpurchasemax = kvWeapons.GetNum("zmarketpurchasemax", -1);
+        kvWeapons.GetString("zmarketcommand", zmarketcommand, sizeof(zmarketcommand), "");
 
-        Handle arrayWeapon = GetArrayCell(arrayWeapons, x);
+        ArrayList arrayWeapon = arrayWeapons.Get(x);
 
         // Push data into array.
-        PushArrayString(arrayWeapon, weaponentity);         // Index: 1
-        PushArrayString(arrayWeapon, weapontype);           // Index: 2
-        PushArrayCell(arrayWeapon, weaponslot);             // Index: 3
-        PushArrayCell(arrayWeapon, restrictdefault);        // Index: 4
-        PushArrayCell(arrayWeapon, toggleable);             // Index: 5
-        PushArrayString(arrayWeapon, ammotype);             // Index: 6
-        PushArrayCell(arrayWeapon, ammoprice);              // Index: 7
-        PushArrayCell(arrayWeapon, knockback);              // Index: 8
-        PushArrayString(arrayWeapon, zmarketname);          // Index: 9
-        PushArrayCell(arrayWeapon, zmarketprice);           // Index: 10
-        PushArrayCell(arrayWeapon, zmarketpurchasemax);     // Index: 11
-        PushArrayString(arrayWeapon, zmarketcommand);       // Index: 12
+        arrayWeapon.PushString(weaponentity);         // Index: 1
+        arrayWeapon.PushString(weapontype);           // Index: 2
+        arrayWeapon.Push(weaponslot);             // Index: 3
+        arrayWeapon.Push(restrictdefault);        // Index: 4
+        arrayWeapon.Push(toggleable);             // Index: 5
+        arrayWeapon.PushString(ammotype);             // Index: 6
+        arrayWeapon.Push(ammoprice);              // Index: 7
+        arrayWeapon.Push(knockback);              // Index: 8
+        arrayWeapon.PushString(zmarketname);          // Index: 9
+        arrayWeapon.Push(zmarketprice);           // Index: 10
+        arrayWeapon.Push(zmarketpurchasemax);     // Index: 11
+        arrayWeapon.PushString(zmarketcommand);       // Index: 12
 
         // Initialize other stored weapon info here.
-        PushArrayCell(arrayWeapon, restrictdefault);        // Index: 13
+        arrayWeapon.Push(restrictdefault);        // Index: 13
     }
 
     // We're done with this file now, so we can close it.
-    CloseHandle(kvWeapons);
+    delete kvWeapons;
 }
 
 /**
@@ -407,10 +407,10 @@ void WeaponsOnRoundEnd()
 stock void WeaponsClearCache(int index)
 {
     // Get array handle of weapon at given index.
-    Handle hWeapon = GetArrayCell(arrayWeapons, index);
+    ArrayList hWeapon = arrayWeapons.Get(index);
 
     // Clear array.
-    ClearArray(hWeapon);
+    hWeapon.Clear();
 }
 
 /**
@@ -421,15 +421,15 @@ stock void WeaponsClearCache(int index)
  */
 stock int WeaponsNameToIndex(const char[] weapon)
 {
-    if (arrayWeapons == INVALID_HANDLE)
-    {
-        return -1;
-    }
-
+	if (arrayWeapons == null)
+	{
+		return -1;
+	}
+	
     char weaponname[WEAPONS_MAX_LENGTH];
 
     // x = Array index.
-    int size = GetArraySize(arrayWeapons);
+    int size = arrayWeapons.Length;
     for (int x = 0; x < size; x++)
     {
         WeaponsGetName(x, weaponname, sizeof(weaponname));
@@ -457,7 +457,7 @@ stock int WeaponsNameToIndex(const char[] weapon)
 stock int WeaponsEntityToDisplay(const char[] entityname, char[] display, int displaymaxlen, int noprefix = false)
 {
     // Check if weapon data is loaded.
-    if (arrayWeapons == INVALID_HANDLE)
+    if (arrayWeapons == null)
     {
         return -1;
     }
@@ -468,7 +468,7 @@ stock int WeaponsEntityToDisplay(const char[] entityname, char[] display, int di
     strcopy(display, displaymaxlen, "");
 
     // x = Array index.
-    int size = GetArraySize(arrayWeapons);
+    int size = arrayWeapons.Length;
     for (int x = 0; x < size; x++)
     {
         // If entity names don't match, then stop.
@@ -516,12 +516,12 @@ stock bool WeaponsIsWeaponValid(const char[] weapon)
 stock void WeaponsGetName(int index, char[] weapon, int maxlen)
 {
     // Get array handle of weapon at given index.
-    Handle arrayWeapon = GetArrayCell(arrayWeapons, index);
+    ArrayList arrayWeapon = arrayWeapons.Get(index);
 
     char weaponName[WEAPONS_MAX_LENGTH];
 
     // Get weapon name.
-    GetArrayString(arrayWeapon, view_as<int>(WEAPONS_DATA_NAME), weaponName, maxlen);
+    arrayWeapon.GetString(view_as<int>(WEAPONS_DATA_NAME), weaponName, maxlen);
 
     strcopy(weapon, maxlen, weaponName);
 }
@@ -535,10 +535,10 @@ stock void WeaponsGetName(int index, char[] weapon, int maxlen)
 stock void WeaponsGetEntity(int index, char[] type, int maxlen)
 {
     // Get array handle of weapon at given index.
-    Handle arrayWeapon = GetArrayCell(arrayWeapons, index);
+    ArrayList arrayWeapon = arrayWeapons.Get(index);
 
     // Get weapon type.
-    GetArrayString(arrayWeapon, view_as<int>(WEAPONS_DATA_ENTITY), type, maxlen);
+    arrayWeapon.GetString(view_as<int>(WEAPONS_DATA_ENTITY), type, maxlen);
 }
 
 /**
@@ -550,10 +550,10 @@ stock void WeaponsGetEntity(int index, char[] type, int maxlen)
 stock void WeaponsGetType(int index, char[] type, int maxlen)
 {
     // Get array handle of weapon at given index.
-    Handle arrayWeapon = GetArrayCell(arrayWeapons, index);
+    ArrayList arrayWeapon = arrayWeapons.Get(index);
 
     // Get weapon type.
-    GetArrayString(arrayWeapon, view_as<int>(WEAPONS_DATA_TYPE), type, maxlen);
+    arrayWeapon.GetString(view_as<int>(WEAPONS_DATA_TYPE), type, maxlen);
 }
 
 /**
@@ -564,10 +564,10 @@ stock void WeaponsGetType(int index, char[] type, int maxlen)
 stock WeaponsSlot WeaponsGetSlot(int index)
 {
     // Get array handle of weapon at given index.
-    Handle arrayWeapon = GetArrayCell(arrayWeapons, index);
+    ArrayList arrayWeapon = arrayWeapons.Get(index);
 
     // Return default restriction status.
-    return view_as<WeaponsSlot>(GetArrayCell(arrayWeapon, view_as<int>(WEAPONS_DATA_SLOT)));
+    return view_as<WeaponsSlot>(arrayWeapon.Get(view_as<int>(WEAPONS_DATA_SLOT)));
 }
 
 /**
@@ -578,10 +578,10 @@ stock WeaponsSlot WeaponsGetSlot(int index)
 stock bool WeaponsGetRestrictDefault(int index)
 {
     // Get array handle of weapon at given index.
-    Handle arrayWeapon = GetArrayCell(arrayWeapons, index);
+    ArrayList arrayWeapon = arrayWeapons.Get(index);
 
     // Return default restriction status.
-    return view_as<bool>(GetArrayCell(arrayWeapon, view_as<int>(WEAPONS_DATA_RESTRICTDEFAULT)));
+    return view_as<bool>(arrayWeapon.Get(view_as<int>(WEAPONS_DATA_RESTRICTDEFAULT)));
 }
 
 /**
@@ -592,10 +592,10 @@ stock bool WeaponsGetRestrictDefault(int index)
 stock bool WeaponsGetToggleable(int index)
 {
     // Get array handle of weapon at given index.
-    Handle arrayWeapon = GetArrayCell(arrayWeapons, index);
+    ArrayList arrayWeapon = arrayWeapons.Get(index);
 
     // Return if weapon is toggleable.
-    return view_as<bool>(GetArrayCell(arrayWeapon, view_as<int>(WEAPONS_DATA_TOGGLEABLE)));
+    return view_as<bool>(arrayWeapon.Get(view_as<int>(WEAPONS_DATA_TOGGLEABLE)));
 }
 
 /**
@@ -607,10 +607,10 @@ stock bool WeaponsGetToggleable(int index)
 stock void WeaponsGetAmmoType(int index, char[] ammotype, int maxlen)
 {
     // Get array handle of weapon at given index.
-    Handle arrayWeapon = GetArrayCell(arrayWeapons, index);
+    ArrayList arrayWeapon = arrayWeapons.Get(index);
 
     // Get ammo type of the weapon.
-    GetArrayString(arrayWeapon, view_as<int>(WEAPONS_DATA_AMMOTYPE), ammotype, maxlen);
+    arrayWeapon.GetString(view_as<int>(WEAPONS_DATA_AMMOTYPE), ammotype, maxlen);
 }
 
 /**
@@ -621,10 +621,10 @@ stock void WeaponsGetAmmoType(int index, char[] ammotype, int maxlen)
 stock int WeaponsGetAmmoPrice(int index)
 {
     // Get array handle of weapon at given index.
-    Handle arrayWeapon = GetArrayCell(arrayWeapons, index);
+    ArrayList arrayWeapon = arrayWeapons.Get(index);
 
     // Return ammo price of the weapon.
-    return GetArrayCell(arrayWeapon, view_as<int>(WEAPONS_DATA_AMMOPRICE));
+    return arrayWeapon.Get(view_as<int>(WEAPONS_DATA_AMMOPRICE));
 }
 
 /**
@@ -635,10 +635,10 @@ stock int WeaponsGetAmmoPrice(int index)
 stock float WeaponsGetKnockback(int index)
 {
     // Get array handle of weapon at given index.
-    Handle arrayWeapon = GetArrayCell(arrayWeapons, index);
+    ArrayList arrayWeapon = arrayWeapons.Get(index);
 
     // Return knockback multiplier of the weapon.
-    return view_as<float>(GetArrayCell(arrayWeapon, view_as<int>(WEAPONS_DATA_KNOCKBACK)));
+    return view_as<float>(arrayWeapon.Get(view_as<int>(WEAPONS_DATA_KNOCKBACK)));
 }
 
 /**
@@ -650,10 +650,10 @@ stock float WeaponsGetKnockback(int index)
 stock void WeaponsGetZMarketName(int index, char[] weapon, int maxlen)
 {
     // Get array handle of weapon at given index.
-    Handle arrayWeapon = GetArrayCell(arrayWeapons, index);
+    ArrayList arrayWeapon = arrayWeapons.Get(index);
 
     // Get the ZMarket name of the weapon.
-    GetArrayString(arrayWeapon, view_as<int>(WEAPONS_DATA_ZMARKETNAME), weapon, maxlen);
+    arrayWeapon.GetString(view_as<int>(WEAPONS_DATA_ZMARKETNAME), weapon, maxlen);
 }
 
 /**
@@ -664,10 +664,10 @@ stock void WeaponsGetZMarketName(int index, char[] weapon, int maxlen)
 stock int WeaponsGetZMarketPrice(int index)
 {
     // Get array handle of weapon at given index.
-    Handle arrayWeapon = GetArrayCell(arrayWeapons, index);
+    ArrayList arrayWeapon = arrayWeapons.Get(index);
 
     // Return the ZMarket price of the weapon.
-    return GetArrayCell(arrayWeapon, view_as<int>(WEAPONS_DATA_ZMARKETPRICE));
+    return arrayWeapon.Get(view_as<int>(WEAPONS_DATA_ZMARKETPRICE));
 }
 
 /**
@@ -678,10 +678,10 @@ stock int WeaponsGetZMarketPrice(int index)
 stock int WeaponsGetZMarketPurchaseMax(int index)
 {
     // Get array handle of weapon at given index.
-    Handle arrayWeapon = GetArrayCell(arrayWeapons, index);
+    ArrayList arrayWeapon = arrayWeapons.Get(index);
 
     // Return the ZMarket price of the weapon.
-    return GetArrayCell(arrayWeapon, view_as<int>(WEAPONS_DATA_ZMARKETPURCHASEMAX));
+    return arrayWeapon.Get(view_as<int>(WEAPONS_DATA_ZMARKETPURCHASEMAX));
 }
 
 /**
@@ -694,10 +694,10 @@ stock int WeaponsGetZMarketPurchaseMax(int index)
 stock void WeaponsGetZMarketCommand(int index, char[] command, int maxlen)
 {
     // Get array handle of weapon at given index.
-    Handle arrayWeapon = GetArrayCell(arrayWeapons, index);
+    ArrayList arrayWeapon = arrayWeapons.Get(index);
 
     // Return the ZMarket price of the weapon.
-    GetArrayString(arrayWeapon, view_as<int>(WEAPONS_DATA_ZMARKETCOMMAND), command, maxlen);
+    arrayWeapon.GetString(view_as<int>(WEAPONS_DATA_ZMARKETCOMMAND), command, maxlen);
 }
 
 /**
@@ -884,7 +884,7 @@ stock void WeaponsRefreshClientWeapon(int client, WeaponsSlot slot)
 stock void WeaponsRemoveAllClientWeapons(int client, bool weaponsdrop)
 {
     // Give a new knife to player when he get infected
-    bool removeknife = GetConVarBool(g_hCvarsList.CVAR_WEAPONS_INFECT_REMOVE_KNIFE);
+    bool removeknife = g_hCvarsList.CVAR_WEAPONS_INFECT_REMOVE_KNIFE.BoolValue;
 
     // Get a list of all client's weapon indexes.
     int weapons[Slot_MAXSIZE];

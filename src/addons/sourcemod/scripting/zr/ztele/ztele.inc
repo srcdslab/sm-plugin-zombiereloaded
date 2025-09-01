@@ -277,7 +277,7 @@ void ZTele_TeleportClient(int client)
  * @param slot      The menu slot selected. (starting from 0)
  */
 // TODO: This function is called externally, move to interface.
-public int ZTele_ForceHandle(Handle menu_ztele_force, MenuAction action, int client, int slot)
+public int ZTele_ForceHandle(Menu menu_ztele_force, MenuAction action, int client, int slot)
 {
     // Client selected an option.
     if (action == MenuAction_Select)
@@ -328,7 +328,7 @@ public int ZTele_ForceHandle(Handle menu_ztele_force, MenuAction action, int cli
     // Client exited menu.
     if (action == MenuAction_End)
     {
-        CloseHandle(menu_ztele_force);
+        delete menu_ztele_force;
     }
     return -1;
 }

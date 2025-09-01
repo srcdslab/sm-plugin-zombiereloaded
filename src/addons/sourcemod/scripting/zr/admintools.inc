@@ -69,7 +69,7 @@ stock bool ZRIsClientPrivileged(int client, OperationTypes operationType = Opera
     }
 
     // Check if group authentication is used.
-    bool groupauth = GetConVarBool(g_hCvarsList.CVAR_PERMISSIONS_USE_GROUPS);
+    bool groupauth = g_hCvarsList.CVAR_PERMISSIONS_USE_GROUPS.BoolValue;
     if (groupauth)
     {
         /**********************************

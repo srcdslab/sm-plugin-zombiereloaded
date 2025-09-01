@@ -195,7 +195,7 @@ public void KnockbackOnClientHurt(int victim, int attacker, int inflictor, const
         TR_GetEndPosition(clientloc);
     }
 
-    bool weapons = GetConVarBool(g_hCvarsList.CVAR_WEAPONS);
+    bool weapons = g_hCvarsList.CVAR_WEAPONS.BoolValue;
     int weaponindex = -1;
     if (weapons)
     {
@@ -215,7 +215,7 @@ public void KnockbackOnClientHurt(int victim, int attacker, int inflictor, const
     if (custom)
         ToolsSetClientLastHitGroup(victim, HITGROUP_GENERIC);
 
-    bool hitgroups = GetConVarBool(g_hCvarsList.CVAR_HITGROUPS);
+    bool hitgroups = g_hCvarsList.CVAR_HITGROUPS.BoolValue;
     if (hitgroups)
     {
         int hitgroupindex = HitgroupToIndex(hitgroup);

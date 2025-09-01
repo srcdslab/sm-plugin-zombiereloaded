@@ -79,7 +79,7 @@ stock void ShoppingListConstruct(const char[] list, char[] shoppinglist, int sli
     ExplodeString(list, in_token, items, SHOPPINGLIST_MAXITEMS, SHOPPINGLIST_MAXLEN);
 
     // Put each item in a trie where we count each item.
-    Handle trieItems = CreateTrie();
+    StringMap trieItems = CreateTrie();
     int item_count;
     int validstrings;
 
@@ -95,8 +95,8 @@ stock void ShoppingListConstruct(const char[] list, char[] shoppinglist, int sli
 
         // Reset item_count to 0, retrieve value, if it already exists, and set value + 1.
         item_count = 0;
-        GetTrieValue(trieItems, items[x], item_count);
-        SetTrieValue(trieItems, items[x], ++item_count);
+        trieItems.GetValue(items[x], item_count);
+        trieItems.SetValue(items[x], ++item_count);
 
         validstrings++;
     }
@@ -111,7 +111,7 @@ stock void ShoppingListConstruct(const char[] list, char[] shoppinglist, int sli
     for (int x = 0; x < validstrings; x++)
     {
         // Get quantity count, in string and int.
-        GetTrieValue(trieItems, items[x], item_count);
+        trieItems.GetValue(items[x], item_count);
 
         // If the item_count is 0, this item is already in the shopping list.
         if (item_count == 0)
@@ -138,11 +138,11 @@ stock void ShoppingListConstruct(const char[] list, char[] shoppinglist, int sli
             Format(shoppinglist, slist_maxlen, "%s%s%s", shoppinglist, out_token, item_formatted);
         }
 
-        SetTrieValue(trieItems, items[x], 0);
+        trieItems.SetValue(items[x], 0);
     }
 
     // Destroy the trie handle.
-    CloseHandle(trieItems);
+    delete trieItems;
 }
 
 /**

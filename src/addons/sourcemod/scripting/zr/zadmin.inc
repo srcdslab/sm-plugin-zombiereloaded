@@ -75,7 +75,7 @@ bool ZAdminMenu(int client)
     bool configallowed = ZRIsClientPrivileged(client, OperationType_Configuration);
 
     // Create menu handle.
-    Handle menu_zadmin = CreateMenu(ZAdminMenuHandle);
+    Menu menu_zadmin = new Menu(ZAdminMenuHandle);
 
     // Set translation target as the client.
     SetGlobalTransTarget(client);
@@ -99,22 +99,22 @@ bool ZAdminMenu(int client)
     // Get conditions for options.
     int configdraw = MenuGetItemDraw(configallowed);
     int moderatordraw = MenuGetItemDraw(ZRIsClientPrivileged(client, OperationType_Generic));
-    int hitgroupdraw = MenuGetItemDraw(GetConVarBool(g_hCvarsList.CVAR_HITGROUPS) && configallowed);
+    int hitgroupdraw = MenuGetItemDraw(g_hCvarsList.CVAR_HITGROUPS.BoolValue && configallowed);
 
     // Add items to menu.
-    SetMenuTitle(menu_zadmin, title);
-    AddMenuItem(menu_zadmin, "classmultipliers", classmultipliers, configdraw);
-    AddMenuItem(menu_zadmin, "weapons", weapons, moderatordraw);
-    AddMenuItem(menu_zadmin, "hitgroups", hitgroups, hitgroupdraw);
-    AddMenuItem(menu_zadmin, "infect", infect, moderatordraw);
-    AddMenuItem(menu_zadmin, "zspawn", zspawn, moderatordraw);
-    AddMenuItem(menu_zadmin, "ztele", ztele, moderatordraw);
+    menu_zadmin.SetTitle(title);
+    menu_zadmin.AddItem("classmultipliers", classmultipliers, configdraw);
+    menu_zadmin.AddItem("weapons", weapons, moderatordraw);
+    menu_zadmin.AddItem("hitgroups", hitgroups, hitgroupdraw);
+    menu_zadmin.AddItem("infect", infect, moderatordraw);
+    menu_zadmin.AddItem("zspawn", zspawn, moderatordraw);
+    menu_zadmin.AddItem("ztele", ztele, moderatordraw);
 
     // Set "Back" button.
-    SetMenuExitBackButton(menu_zadmin, true);
+    menu_zadmin.ExitBackButton = true;
 
     // Send menu to client.
-    DisplayMenu(menu_zadmin, client, MENU_TIME_FOREVER);
+    menu_zadmin.Display(client, MENU_TIME_FOREVER);
 
     return true;
 }
@@ -128,7 +128,7 @@ bool ZAdminMenu(int client)
  * @param client    The client index.
  * @param slot      The menu slot selected. (starting from 0)
  */
-public int ZAdminMenuHandle(Handle menu_zadmin, MenuAction action, int client, int slot)
+public int ZAdminMenuHandle(Menu menu_zadmin, MenuAction action, int client, int slot)
 {
     if (action == MenuAction_Select)
     {
@@ -198,7 +198,7 @@ public int ZAdminMenuHandle(Handle menu_zadmin, MenuAction action, int client, i
     }
     else if (action == MenuAction_End)
     {
-        CloseHandle(menu_zadmin);
+        delete menu_zadmin;
     }
     return -1;
 }

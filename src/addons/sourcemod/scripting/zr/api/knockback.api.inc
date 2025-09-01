@@ -96,14 +96,14 @@ public int APISetClientKnockbackMaxVelocity(Handle plugin, int numParams)
 public int APISetClientKnockbackPercentagePerWeapon(Handle plugin, int numParams)
 {
 	int client = GetNativeCell(1);
-
+	
 	char weapon[64];
 	GetNativeString(2, weapon, sizeof(weapon));
-
+	
 	float fPercentage = view_as<float>(GetNativeCell(3));
-
+	
 	APIValidateClientIndex(client);
-
+	
 	KnockbackSetClientPercentagePerWeapon(client, weapon, fPercentage);
 	return -1;
 }
@@ -116,9 +116,9 @@ public int APISetClientKnockbackPercentagePerWeapon(Handle plugin, int numParams
 public int APIResetClientKnockbackPercenagePerWeapon(Handle plugin, int numParams)
 {
 	int client = GetNativeCell(1);
-
+	
 	APIValidateClientIndex(client);
-
+	
 	KnockbackResetClientPercenagePerWeapon(client);
 	return -1;
 }

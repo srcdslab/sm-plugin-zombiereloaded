@@ -28,8 +28,8 @@
 /**
  * @section Global forward handles.
  */
-Handle g_hAPIFwdOnClientZtele = INVALID_HANDLE;
-Handle g_hAPIFwdOnClientZteled = INVALID_HANDLE;
+GlobalForward g_hAPIFwdOnClientZtele = null;
+GlobalForward g_hAPIFwdOnClientZteled = null;
 /**
  * @endsection
  */
@@ -45,8 +45,8 @@ void APIZteleInit()
     CreateNative("ZR_ZteleClient", APIOnClientZtele);
 
     // Forwards
-    g_hAPIFwdOnClientZtele = CreateGlobalForward("ZR_OnClientZtele", ET_Hook, Param_Cell);
-    g_hAPIFwdOnClientZteled = CreateGlobalForward("ZR_OnClientZteled", ET_Ignore, Param_Cell);
+    g_hAPIFwdOnClientZtele = new GlobalForward("ZR_OnClientZtele", ET_Hook, Param_Cell);
+    g_hAPIFwdOnClientZteled = new GlobalForward("ZR_OnClientZteled", ET_Ignore, Param_Cell);
 }
 
 /**

@@ -140,12 +140,12 @@ float VolPlayerCountDown[MAXPLAYERS + 1][ZR_VOLUMES_MAX];
  *
  * Note: Some features may have its own timer for actions on players.
  */
-Handle hVolUpdateTimer = INVALID_HANDLE;
+Handle hVolUpdateTimer = null;
 
 /**
  * The handle for a timer that do count down on trigger delays.
  */
-Handle hVolTriggerTimer = INVALID_HANDLE;
+Handle hVolTriggerTimer = null;
 
 /**
  * Cached interval value for trigger timer.
@@ -181,7 +181,7 @@ void VolInit()
 void VolLoad()
 {
     // Cache CVAR value.
-    VolEnabled = GetConVarBool(g_hCvarsList.CVAR_VOL);
+    VolEnabled = g_hCvarsList.CVAR_VOL.BoolValue;
 }
 
 /**
@@ -279,7 +279,7 @@ bool VolStartUpdateTimer()
     VolStopUpdateTimer();
 
     // Get update interval.
-    float interval = GetConVarFloat(g_hCvarsList.CVAR_VOL_UPDATE_INTERVAL);
+    float interval = g_hCvarsList.CVAR_VOL_UPDATE_INTERVAL.FloatValue;
 
     // Validate interval.
     if (interval > 0.0)
@@ -307,10 +307,10 @@ bool VolStartUpdateTimer()
 void VolStopUpdateTimer()
 {
     // Kill the timer if it's running.
-    if (hVolUpdateTimer != INVALID_HANDLE)
+    if (hVolUpdateTimer != null)
     {
         KillTimer(hVolUpdateTimer);
-        hVolUpdateTimer = INVALID_HANDLE;
+        hVolUpdateTimer = null;
     }
 
     // Also stop trigger delay timer.
@@ -331,7 +331,7 @@ bool VolStartTriggerTimer()
     VolStopTriggerTimer();
 
     // Get trigger interval and cache it.
-    VolTriggerInterval = GetConVarFloat(g_hCvarsList.CVAR_VOL_TRIGGER_INTERVAL);
+    VolTriggerInterval = g_hCvarsList.CVAR_VOL_TRIGGER_INTERVAL.FloatValue;
 
     // Validate interval.
     if (VolTriggerInterval > 0.0)
@@ -356,10 +356,10 @@ bool VolStartTriggerTimer()
 void VolStopTriggerTimer()
 {
     // Kill the timer if it's running.
-    if (hVolTriggerTimer != INVALID_HANDLE)
+    if (hVolTriggerTimer != null)
     {
         KillTimer(hVolTriggerTimer);
-        hVolTriggerTimer = INVALID_HANDLE;
+        hVolTriggerTimer = null;
     }
 }
 
@@ -591,7 +591,7 @@ public Action Event_VolTriggerTimer(Handle timer)
 /**
  * Called when zr_vol CVAR is changed.
  */
-public void VolEnabledChanged(Handle cvar, const char[] oldvalue, const char[] newvalue)
+public void VolEnabledChanged(ConVar cvar, const char[] oldvalue, const char[] newvalue)
 {
     bool isEnabled = view_as<bool>(StringToInt(newvalue));
 

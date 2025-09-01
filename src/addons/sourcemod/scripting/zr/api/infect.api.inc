@@ -28,12 +28,12 @@
 /**
  * @section Global forward handles.
  */
-Handle g_hAPIFwdOnInfectCountdown = INVALID_HANDLE;
-Handle g_hAPIFwdOnClientInfect = INVALID_HANDLE;
-Handle g_hAPIFwdOnClientInfected = INVALID_HANDLE;
-Handle g_hAPIFwdOnClientHuman = INVALID_HANDLE;
-Handle g_hAPIFwdOnClientHumanPost = INVALID_HANDLE;
-Handle g_hAPIFwdOnClientMotherZombieEligible = INVALID_HANDLE;
+GlobalForward g_hAPIFwdOnInfectCountdown = null;
+GlobalForward g_hAPIFwdOnClientInfect = null;
+GlobalForward g_hAPIFwdOnClientInfected = null;
+GlobalForward g_hAPIFwdOnClientHuman = null;
+GlobalForward g_hAPIFwdOnClientHumanPost = null;
+GlobalForward g_hAPIFwdOnClientMotherZombieEligible = null;
 /**
  * @endsection
  */
@@ -53,21 +53,21 @@ void APIInfectInit()
     CreateNative("ZR_HumanClient", APIHumanClient);
 
     // Forwards
-    g_hAPIFwdOnInfectCountdown = CreateGlobalForward("ZR_OnInfectCountdown", ET_Hook);
-    g_hAPIFwdOnClientInfect = CreateGlobalForward("ZR_OnClientInfect", ET_Hook, Param_CellByRef, Param_CellByRef, Param_CellByRef, Param_CellByRef, Param_CellByRef);
-    g_hAPIFwdOnClientInfected = CreateGlobalForward("ZR_OnClientInfected", ET_Ignore, Param_Cell, Param_Cell, Param_Cell, Param_Cell, Param_Cell);
-    g_hAPIFwdOnClientHuman = CreateGlobalForward("ZR_OnClientHuman", ET_Hook, Param_CellByRef, Param_CellByRef, Param_CellByRef);
-    g_hAPIFwdOnClientHumanPost = CreateGlobalForward("ZR_OnClientHumanPost", ET_Ignore, Param_Cell, Param_Cell, Param_Cell);
-    g_hAPIFwdOnClientMotherZombieEligible = CreateGlobalForward("ZR_OnClientMotherZombieEligible", ET_Hook, Param_Cell);
+    g_hAPIFwdOnInfectCountdown = new GlobalForward("ZR_OnInfectCountdown", ET_Hook);
+    g_hAPIFwdOnClientInfect = new GlobalForward("ZR_OnClientInfect", ET_Hook, Param_CellByRef, Param_CellByRef, Param_CellByRef, Param_CellByRef, Param_CellByRef);
+    g_hAPIFwdOnClientInfected = new GlobalForward("ZR_OnClientInfected", ET_Ignore, Param_Cell, Param_Cell, Param_Cell, Param_Cell, Param_Cell);
+    g_hAPIFwdOnClientHuman = new GlobalForward("ZR_OnClientHuman", ET_Hook, Param_CellByRef, Param_CellByRef, Param_CellByRef);
+    g_hAPIFwdOnClientHumanPost = new GlobalForward("ZR_OnClientHumanPost", ET_Ignore, Param_Cell, Param_Cell, Param_Cell);
+    g_hAPIFwdOnClientMotherZombieEligible = new GlobalForward("ZR_OnClientMotherZombieEligible", ET_Hook, Param_Cell);
 }
 
 /**
  * Native call function (ZR_IsClientMotherZombie)
  * Returns true if the client is a mother zombie, false if not.
  */
-public APIIsClientMotherZombie(Handle:plugin, numParams)
+public int APIIsClientMotherZombie(Handle plugin, int numParams)
 {
-    new client = GetNativeCell(1);
+    int client = GetNativeCell(1);
 
     // Validate the client index.
     APIValidateClientIndex(client, Condition_True);
@@ -216,7 +216,7 @@ void APIOnClientInfected(int client, int attacker, bool motherinfect, bool respa
 
     // NOTE: Following code is legacy, map should rely on logic_eventlistener
     // See: https://github.com/srcdslab/sm-plugin-zombiereloaded/issues/89
-    if (GetConVarBool(g_hCvarsList.CVAR_INFECT_SKIP_TRIGGER_BRUSH))
+    if (g_hCvarsList.CVAR_INFECT_SKIP_TRIGGER_BRUSH.BoolValue)
         return;
 
     // Forward event to map.
@@ -289,7 +289,7 @@ void APIOnClientHumanPost(int client, bool respawn, bool protect)
  *
  * @param client            The client to check.
  */
-Action:APIOnClientMotherZombieEligible(client)
+Action APIOnClientMotherZombieEligible(int client)
 {
     // Start forward call.
     Call_StartForward(g_hAPIFwdOnClientMotherZombieEligible);
@@ -298,7 +298,7 @@ Action:APIOnClientMotherZombieEligible(client)
     Call_PushCell(client);
 
     // Get what they returned.
-    new Action:result;
+    Action result;
     Call_Finish(result);
     return result;
 }

@@ -52,7 +52,7 @@ bool bKilledByWorld[MAXPLAYERS + 1];
 void RespawnClientInit(int client)
 {
     // Reset timer handle.
-    tRespawn[client] = INVALID_HANDLE;
+    tRespawn[client] = null;
 
     // Init bKilledByWorld for client.
     bKilledByWorld[client] = false;
@@ -66,13 +66,13 @@ void RespawnClientInit(int client)
 void RespawnOnClientSpawn(int client)
 {
     // If timer is running, kill it.
-    if (tRespawn[client] != INVALID_HANDLE)
+    if (tRespawn[client] != null)
     {
         KillTimer(tRespawn[client]);
     }
 
     // Reset timer handle.
-    tRespawn[client] = INVALID_HANDLE;
+    tRespawn[client] = null;
 
     // Reset player velocity
     float fResetVelocity[3] = {0.0, 0.0, 0.0};
@@ -94,10 +94,10 @@ void RespawnOnClientDeath(int client, int attacker, const char[] weapon)
     }
 
     // If timer is running, kill it.
-    if (tRespawn[client] != INVALID_HANDLE)
+    if (tRespawn[client] != null)
     {
         KillTimer(tRespawn[client]);
-        tRespawn[client] = INVALID_HANDLE;
+        tRespawn[client] = null;
     }
 
     // If player was infected, then stop.
@@ -107,14 +107,14 @@ void RespawnOnClientDeath(int client, int attacker, const char[] weapon)
     }
 
     // If respawn is disabled, stop here.
-    bool respawn = GetConVarBool(g_hCvarsList.CVAR_RESPAWN);
+    bool respawn = g_hCvarsList.CVAR_RESPAWN.BoolValue;
     if (!respawn)
     {
         return;
     }
 
     // Start respawn timer.
-    float delay = GetConVarFloat(g_hCvarsList.CVAR_RESPAWN_DELAY);
+    float delay = g_hCvarsList.CVAR_RESPAWN_DELAY.FloatValue;
     tRespawn[client] = CreateTimer(delay, RespawnTimer, client, TIMER_FLAG_NO_MAPCHANGE);
 }
 
@@ -133,7 +133,7 @@ void RespawnOnRoundEnd()
         }
 
         // If timer isn't currently running, then stop.
-        if (tRespawn[x] == INVALID_HANDLE)
+        if (tRespawn[x] == null)
         {
             continue;
         }
@@ -142,7 +142,7 @@ void RespawnOnRoundEnd()
         KillTimer(tRespawn[x]);
 
         // Reset timer handle.
-        tRespawn[x] = INVALID_HANDLE;
+        tRespawn[x] = null;
     }
 }
 
@@ -178,7 +178,7 @@ bool RespawnSpawnClient(int client, bool zombie = false, bool zombieIfSuicide = 
     // Restore respawn condition.
     RespawnRestoreCondition(condition, zombie, zombieIfSuicide);
 
-    bool ragdollremove = GetConVarBool(g_hCvarsList.CVAR_VEFFECTS_RAGDOLL_REMOVE);
+    bool ragdollremove = g_hCvarsList.CVAR_VEFFECTS_RAGDOLL_REMOVE.BoolValue;
     if (!ragdollremove)
     {
         // Detatch ragdoll so it's not removed on respawn.
@@ -219,7 +219,7 @@ bool RespawnSpawnClient(int client, bool zombie = false, bool zombieIfSuicide = 
 public Action RespawnTimer(Handle timer, any client)
 {
     // Reset timer handle.
-    tRespawn[client] = INVALID_HANDLE;
+    tRespawn[client] = null;
 
     // If client isn't in-game, then stop.
     if (!IsClientInGame(client))
@@ -243,10 +243,10 @@ public Action RespawnTimer(Handle timer, any client)
     }
 
     // Get whether player should respawn as zombie.
-    bool zombie = GetConVarBool(g_hCvarsList.CVAR_RESPAWN_TEAM_ZOMBIE);
+    bool zombie = g_hCvarsList.CVAR_RESPAWN_TEAM_ZOMBIE.BoolValue;
 
     // Get whether zombies died by suicide should respawn as zombies.
-    bool zombieIfSuicide = GetConVarBool(g_hCvarsList.CVAR_RESPAWN_TEAM_ZOMBIE_WORLD);
+    bool zombieIfSuicide = g_hCvarsList.CVAR_RESPAWN_TEAM_ZOMBIE_WORLD.BoolValue;
 
     // Spawn player.
     RespawnSpawnClient(client, zombie, zombieIfSuicide);

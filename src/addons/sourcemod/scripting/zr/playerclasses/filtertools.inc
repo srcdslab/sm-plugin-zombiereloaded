@@ -1039,9 +1039,9 @@ stock bool ClassFlagFilterMatch(int index, int require, int deny, int cachetype)
 bool ClassAllowSelection(int client, int team = -1, ClassFilter filter = ClassNoFilter)
 {
     // Get selection settings.
-    bool zombie = GetConVarBool(g_hCvarsList.CVAR_CLASSES_ZOMBIE_SELECT);
-    bool human = GetConVarBool(g_hCvarsList.CVAR_CLASSES_HUMAN_SELECT);
-    bool admin = GetConVarBool(g_hCvarsList.CVAR_CLASSES_ADMIN_SELECT);
+    bool zombie = g_hCvarsList.CVAR_CLASSES_ZOMBIE_SELECT.BoolValue;
+    bool human = g_hCvarsList.CVAR_CLASSES_HUMAN_SELECT.BoolValue;
+    bool admin = g_hCvarsList.CVAR_CLASSES_ADMIN_SELECT.BoolValue;
 
     // Since admin mode classes are optional they must be counted to verify
     // that they exist.
@@ -1103,10 +1103,10 @@ bool ClassAllowSelection(int client, int team = -1, ClassFilter filter = ClassNo
  * @return  True on success. False on error or if no classes were added or
  *          found.
  */
-stock bool ClassAddToArray(Handle array, int teamfilter = -1, ClassFilter filter = ClassNoFilter, int cachetype = ZR_CLASS_CACHE_MODIFIED)
+stock bool ClassAddToArray(ArrayList array, int teamfilter = -1, ClassFilter filter = ClassNoFilter, int cachetype = ZR_CLASS_CACHE_MODIFIED)
 {
     // Validate the array.
-    if (array == INVALID_HANDLE)
+    if (array == null)
     {
         return false;
     }
@@ -1138,14 +1138,14 @@ stock bool ClassAddToArray(Handle array, int teamfilter = -1, ClassFilter filter
             if (ClassGetTeamID(classindex, cachetype) == teamfilter)
             {
                 // Team ID match. Add class index to array.
-                PushArrayCell(array, classindex);
+                array.Push(classindex);
                 classesadded++;
             }
         }
         else
         {
             // No filter. Add any class to the array.
-            PushArrayCell(array, classindex);
+            array.Push(classindex);
             classesadded++;
         }
     }
@@ -1232,29 +1232,29 @@ stock int ClassCountTeam(int teamfilter = -1, ClassFilter filter = ClassNoFilter
  */
 stock int ClassGetRandomClass(int teamfilter = -1, ClassFilter filter = ClassNoSpecialClasses, int cachetype = ZR_CLASS_CACHE_MODIFIED)
 {
-    Handle classarray;
+    ArrayList classarray;
     int arraycount;
     int randnum;
     int buffer;
 
-    classarray = CreateArray();
+    classarray = new ArrayList();
 
     // Try to get a class list.
     if (ClassAddToArray(classarray, teamfilter, filter, cachetype))
     {
         // Get a random index from the new class array.
-        arraycount = GetArraySize(classarray);
+        arraycount = classarray.Length;
         randnum = GetRandomInt(0, arraycount - 1);
 
         // Return the value at the random index.
-        buffer = GetArrayCell(classarray, randnum);
-        CloseHandle(classarray);
+        buffer = classarray.Get(randnum);
+        delete classarray;
         return buffer;
     }
     else
     {
         // Failed to get a random class.
-        CloseHandle(classarray);
+        delete classarray;
         return -1;
     }
 }
@@ -1328,37 +1328,37 @@ stock int ClassGetFirstClass(int teamfilter = -1, ClassFilter filter = ClassNoSp
  */
 stock int ClassGetDefaultClass(int teamid, ClassFilter filter = ClassNoSpecialClasses, int cachetype = ZR_CLASS_CACHE_MODIFIED)
 {
-    Handle classarray;
+    ArrayList classarray;
     int arraycount;
     int classindex;
 
-    classarray = CreateArray();
+    classarray = new ArrayList();
 
     // Get all classes from the specified team.
     if (!ClassAddToArray(classarray, teamid, filter, cachetype))
     {
         // Failed to get classes.
-        CloseHandle(classarray);
+        delete classarray;
         return -1;
     }
 
     // Loop through all classes and return the first class marked as team default.
-    arraycount = GetArraySize(classarray);
+    arraycount = classarray.Length;
     for (int i = 0; i < arraycount; i++)
     {
         // Get class index from the array.
-        classindex = GetArrayCell(classarray, i);
+        classindex = classarray.Get(i);
 
         // Check if the current class is marked as team default.
         if (ClassGetTeamDefault(classindex, cachetype))
         {
             // Default class found.
-            CloseHandle(classarray);
+            delete classarray;
             return classindex;
         }
     }
 
-    CloseHandle(classarray);
+    delete classarray;
     return -1;
 }
 
@@ -1387,15 +1387,15 @@ stock int ClassGetDefaultSpawnClass(int teamid, ClassFilter filter = ClassNoSpec
     {
         case ZR_CLASS_TEAM_ZOMBIES:
         {
-            GetConVarString(g_hCvarsList.CVAR_CLASSES_DEFAULT_ZOMBIE, classident, sizeof(classident));
+            g_hCvarsList.CVAR_CLASSES_DEFAULT_ZOMBIE.GetString(classident, sizeof(classident));
         }
         case ZR_CLASS_TEAM_HUMANS:
         {
-            GetConVarString(g_hCvarsList.CVAR_CLASSES_DEFAULT_HUMAN, classident, sizeof(classident));
+            g_hCvarsList.CVAR_CLASSES_DEFAULT_HUMAN.GetString(classident, sizeof(classident));
         }
         case ZR_CLASS_TEAM_ADMINS:
         {
-            GetConVarString(g_hCvarsList.CVAR_CLASSES_DEFAULT_ADMIN_MODE, classident, sizeof(classident));
+            g_hCvarsList.CVAR_CLASSES_DEFAULT_ADMIN_MODE.GetString(classident, sizeof(classident));
         }
         default:
         {

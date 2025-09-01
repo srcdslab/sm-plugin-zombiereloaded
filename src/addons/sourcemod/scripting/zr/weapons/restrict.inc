@@ -46,7 +46,7 @@ bool g_bRestrictBlockWeapon[MAXPLAYERS + 1];
 /**
  * Array to store a list of different weapon groups
  */
-Handle arrayWeaponTypes = INVALID_HANDLE;
+ArrayList arrayWeaponTypes = null;
 
 /**
  * Query results returned when (un)restricting a weapon.
@@ -76,19 +76,16 @@ void RestrictInit()
 void RestrictLoad()
 {
     // If array exists, then destroy it.
-    if (arrayWeaponTypes != INVALID_HANDLE)
-    {
-        CloseHandle(arrayWeaponTypes);
-    }
-
+    delete arrayWeaponTypes;
+    
     // Initialize array.
-    arrayWeaponTypes = CreateArray(WEAPONS_MAX_LENGTH);
+    arrayWeaponTypes = new ArrayList(WEAPONS_MAX_LENGTH);
 
     char weapontype[WEAPONS_MAX_LENGTH];
     char weapontypes[WEAPONS_RESTRICT_MAX_TYPES][WEAPONS_MAX_LENGTH];
 
     // x = Array index.
-    int size = GetArraySize(arrayWeapons);
+    int size = arrayWeapons.Length;
     for (int x = 0; x < size; x++)
     {
         WeaponsGetType(x, weapontype, sizeof(weapontype));
@@ -106,10 +103,10 @@ void RestrictLoad()
             }
 
             // If the weapon type isn't in the main array, then push it in.
-            if (FindStringInArray(arrayWeaponTypes, weapontypes[y]) == -1)
+            if (arrayWeaponTypes.FindString(weapontypes[y]) == -1)
             {
                 // Push weapon type name into weapon type array.
-                PushArrayString(arrayWeaponTypes, weapontypes[y]);
+                arrayWeaponTypes.PushString(weapontypes[y]);
             }
         }
     }
@@ -181,7 +178,7 @@ void RestrictOnClientSpawn(int client)
  */
 void RestrictOnRoundEnd()
 {
-    bool restrictzombieequip = GetConVarBool(g_hCvarsList.CVAR_WEAPONS_RESTRICT_ENDEQUIP);
+    bool restrictzombieequip = g_hCvarsList.CVAR_WEAPONS_RESTRICT_ENDEQUIP.BoolValue;
     if (!restrictzombieequip)
     {
         return;
@@ -322,7 +319,7 @@ RestrictQuery RestrictWeapon(bool restrict, const char[] target, bool &single = 
         single = false;
 
         // Get all weapons in the given type.
-        Handle arrayTypeWeapons;
+        ArrayList arrayTypeWeapons;
         int count = RestrictGetTypeWeapons(typeindex, arrayTypeWeapons);
 
         // Return proper weapon name.
@@ -331,13 +328,15 @@ RestrictQuery RestrictWeapon(bool restrict, const char[] target, bool &single = 
         // If weapon restriction is redundant then return stopped.
         if (RestrictIsTypeUniform(restrict, typeindex))
         {
+        	// Close handle
+        	delete arrayTypeWeapons;
             return Query_Stopped;
         }
 
         for (int x = 0; x < count; x++)
         {
             // Get weapon index.
-            int weaponindex = GetArrayCell(arrayTypeWeapons, x);
+            int weaponindex = arrayTypeWeapons.Get(x);
 
             // If weapon is untoggleable, then stop.
             if (!WeaponsGetToggleable(weaponindex))
@@ -348,7 +347,10 @@ RestrictQuery RestrictWeapon(bool restrict, const char[] target, bool &single = 
             // Set weapon's restricted state.
             RestrictSetWeaponRestricted(weaponindex, false, restrict);
         }
-
+		
+		// Close handle
+		delete arrayTypeWeapons;
+		
         // Successfully restricted weapon type.
         return Query_Successful;
     }
@@ -437,15 +439,15 @@ void RestrictPrintQueryResponse(int client, RestrictQuery query, bool single, bo
 
 stock int RestrictTypeToIndex(const char[] type)
 {
-    if (arrayWeaponTypes == INVALID_HANDLE)
-    {
-        return -1;
-    }
-
+	if (arrayWeaponTypes == null)
+	{
+		return -1;
+	}
+	
     char typename[WEAPONS_MAX_LENGTH];
 
     // x = Array index.
-    int size = GetArraySize(arrayWeaponTypes);
+    int size = arrayWeaponTypes.Length;
     for (int x = 0; x < size; x++)
     {
         RestrictWeaponTypeGetName(x, typename, sizeof(typename));
@@ -470,7 +472,7 @@ stock int RestrictTypeToIndex(const char[] type)
 stock void RestrictWeaponTypeGetName(int index, char[] weapontype, int maxlen)
 {
     // Get weapon type name at given index.
-    GetArrayString(arrayWeaponTypes, index, weapontype, maxlen);
+    arrayWeaponTypes.GetString(index, weapontype, maxlen);
 }
 
 /**
@@ -480,10 +482,10 @@ stock void RestrictWeaponTypeGetName(int index, char[] weapontype, int maxlen)
  * @param arrayTypeWeapons  A handle to store array containing matching weapons.
  *                          Don't forget to close this!
  */
-stock int RestrictGetTypeWeapons(int index, Handle &arrayTypeWeapons)
+stock int RestrictGetTypeWeapons(int index, ArrayList &arrayTypeWeapons)
 {
     // Create array to hold weapons of the given type.
-    arrayTypeWeapons = CreateArray();
+    arrayTypeWeapons = new ArrayList();
 
     // Get name of the weapon type at given index.
     char typename[WEAPONS_MAX_LENGTH];
@@ -494,7 +496,7 @@ stock int RestrictGetTypeWeapons(int index, Handle &arrayTypeWeapons)
     char weapontypes[WEAPONS_RESTRICT_MAX_TYPES][WEAPONS_MAX_LENGTH];
 
     // x = Array index.
-    int size = GetArraySize(arrayWeapons);
+    int size = arrayWeapons.Length;
     for (int x = 0; x < size; x++)
     {
         WeaponsGetType(x, weapontype, sizeof(weapontype));
@@ -514,7 +516,7 @@ stock int RestrictGetTypeWeapons(int index, Handle &arrayTypeWeapons)
             // If types match, then add weapon to array.
             if (StrEqual(typename, weapontypes[y], false))
             {
-                PushArrayCell(arrayTypeWeapons, x);
+                arrayTypeWeapons.Push(x);
                 count++;
             }
         }
@@ -534,11 +536,11 @@ stock int RestrictGetTypeWeapons(int index, Handle &arrayTypeWeapons)
 stock void RestrictSetWeaponRestricted(int index, bool toggle, bool restrict = false)
 {
     // Get array handle of weapon at given index.
-    Handle arrayWeapon = GetArrayCell(arrayWeapons, index);
+    ArrayList arrayWeapon = arrayWeapons.Get(index);
 
     // Set restricted status.
     bool value = toggle ? !RestrictIsWeaponRestricted(index) : restrict;
-    SetArrayCell(arrayWeapon, view_as<int>(WEAPONS_DATA_RESTRICTED), value);
+    arrayWeapon.Set(view_as<int>(WEAPONS_DATA_RESTRICTED), value);
 }
 
 /**
@@ -550,21 +552,21 @@ stock void RestrictSetWeaponRestricted(int index, bool toggle, bool restrict = f
 stock bool RestrictIsWeaponRestricted(int index)
 {
     // Validate array and index
-    if (arrayWeapons == INVALID_HANDLE)
+    if (arrayWeapons == null)
         return false;
         
-    if (index < 0 || index >= GetArraySize(arrayWeapons))
+    if (index < 0 || index >= arrayWeapons.Length)
         return false;
     
     // Get array handle of weapon at given index.
-    Handle arrayWeapon = GetArrayCell(arrayWeapons, index);
+    ArrayList arrayWeapon = arrayWeapons.Get(index);
     
     // Validate the weapon handle
-    if (arrayWeapon == INVALID_HANDLE)
+    if (arrayWeapon == null)
         return false;
     
     // Return restricted status.
-    return view_as<bool>(GetArrayCell(arrayWeapon, view_as<int>(WEAPONS_DATA_RESTRICTED)));
+    return view_as<bool>(arrayWeapon.Get(view_as<int>(WEAPONS_DATA_RESTRICTED)));
 }
 
 /**
@@ -576,22 +578,27 @@ stock bool RestrictIsWeaponRestricted(int index)
  */
 stock bool RestrictIsTypeUniform(bool restricted, int index)
 {
-    Handle arrayTypeWeapons;
+    ArrayList arrayTypeWeapons;
     int count = RestrictGetTypeWeapons(index, arrayTypeWeapons);
 
     // x = array index
     for (int x = 0; x < count; x++)
     {
         // Get weapon index to check restricted status of.
-        int weaponindex = GetArrayCell(arrayTypeWeapons, x);
+        int weaponindex = arrayTypeWeapons.Get(x);
 
         // If weapon is toggleable and it's not uniform with the given status, then return false.
         if (WeaponsGetToggleable(weaponindex) && RestrictIsWeaponRestricted(weaponindex) != restricted)
         {
+        	// Close handle
+        	delete arrayTypeWeapons;
             return false;
         }
     }
-
+	
+	// Close handle
+	delete arrayTypeWeapons;
+	
     // All weapons are restricted, so return true.
     return true;
 }
@@ -630,14 +637,14 @@ public Action RestrictCanUse(int client, int weapon)
     }
 
     // If weapons module is disabled, then stop.
-    bool weapons = GetConVarBool(g_hCvarsList.CVAR_WEAPONS);
+    bool weapons = g_hCvarsList.CVAR_WEAPONS.BoolValue;
     if (!weapons)
     {
         return Plugin_Continue;
     }
 
     // If restrict module is disabled, then stop.
-    bool restrict = GetConVarBool(g_hCvarsList.CVAR_WEAPONS_RESTRICT);
+    bool restrict = g_hCvarsList.CVAR_WEAPONS_RESTRICT.BoolValue;
     if (!restrict)
     {
         return Plugin_Continue;
@@ -688,7 +695,7 @@ public Action RestrictCommand(int client, int argc)
     }
 
     // If weapons module is disabled, then stop.
-    bool weapons = GetConVarBool(g_hCvarsList.CVAR_WEAPONS);
+    bool weapons = g_hCvarsList.CVAR_WEAPONS.BoolValue;
     if (!weapons)
     {
         // Tell client command is disabled.
@@ -697,7 +704,7 @@ public Action RestrictCommand(int client, int argc)
     }
 
     // If restrict module is disabled, then stop.
-    bool restrict = GetConVarBool(g_hCvarsList.CVAR_WEAPONS_RESTRICT);
+    bool restrict = g_hCvarsList.CVAR_WEAPONS_RESTRICT.BoolValue;
     if (!restrict)
     {
         // Tell client command is disabled.
@@ -749,7 +756,7 @@ public Action UnrestrictCommand(int client, int argc)
     }
 
     // If weapons module is disabled, then stop.
-    bool weapons = GetConVarBool(g_hCvarsList.CVAR_WEAPONS);
+    bool weapons = g_hCvarsList.CVAR_WEAPONS.BoolValue;
     if (!weapons)
     {
         // Tell client command is disabled.
@@ -758,7 +765,7 @@ public Action UnrestrictCommand(int client, int argc)
     }
 
     // If restrict module is disabled, then stop.
-    bool restrict = GetConVarBool(g_hCvarsList.CVAR_WEAPONS_RESTRICT);
+    bool restrict = g_hCvarsList.CVAR_WEAPONS_RESTRICT.BoolValue;
     if (!restrict)
     {
         // Tell client command is disabled.

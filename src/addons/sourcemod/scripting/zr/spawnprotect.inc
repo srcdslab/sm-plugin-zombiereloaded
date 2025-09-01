@@ -43,7 +43,7 @@ int pSpawnProtectTime[MAXPLAYERS + 1];
 void SpawnProtectClientInit(int client)
 {
     // Reset timer handle.
-    g_tSpawnProtect[client] = INVALID_HANDLE;
+    g_tSpawnProtect[client] = null;
 }
 
 /**
@@ -60,16 +60,16 @@ void SpawnProtectOnClientSpawnPost(int client)
     }
 
     // If timer is currently running, kill it.
-    if (g_tSpawnProtect[client] != INVALID_HANDLE)
+    if (g_tSpawnProtect[client] != null)
     {
         KillTimer(g_tSpawnProtect[client]);
     }
 
     // Reset timer handle.
-    g_tSpawnProtect[client] = INVALID_HANDLE;
+    g_tSpawnProtect[client] = null;
 
     // If protect cvar is disabled, then stop.
-    bool protect = GetConVarBool(g_hCvarsList.CVAR_SPAWNPROTECT);
+    bool protect = g_hCvarsList.CVAR_SPAWNPROTECT.BoolValue;
     if (!protect)
     {
         return;
@@ -90,13 +90,13 @@ void SpawnProtectOnClientSpawnPost(int client)
 void SpawnProtectOnClientDeath(int client)
 {
     // If timer is running, kill it.
-    if (g_tSpawnProtect[client] != INVALID_HANDLE)
+    if (g_tSpawnProtect[client] != null)
     {
         KillTimer(g_tSpawnProtect[client]);
     }
 
     // Reset timer handle.
-    g_tSpawnProtect[client] = INVALID_HANDLE;
+    g_tSpawnProtect[client] = null;
 }
 
 /**
@@ -125,8 +125,8 @@ void SpawnProtectStart(int client)
     }
 
     // Get spawn protect attribute cvars.
-    float speed = GetConVarFloat(g_hCvarsList.CVAR_SPAWNPROTECT_SPEED);
-    int alpha = GetConVarInt(g_hCvarsList.CVAR_SPAWNPROTECT_ALPHA);
+    float speed = g_hCvarsList.CVAR_SPAWNPROTECT_SPEED.FloatValue;
+    int alpha = g_hCvarsList.CVAR_SPAWNPROTECT_ALPHA.IntValue;
 
     // Validate attributes
     float min;
@@ -190,7 +190,7 @@ public Action SpawnProtectTimer(Handle timer, any client)
     if (!IsClientInGame(client))
     {
         // Reset timer handle.
-        g_tSpawnProtect[client] = INVALID_HANDLE;
+        g_tSpawnProtect[client] = null;
         return Plugin_Stop;
     }
 
@@ -198,7 +198,7 @@ public Action SpawnProtectTimer(Handle timer, any client)
     if (!InfectIsClientHuman(client))
     {
         // Reset timer handle.
-        g_tSpawnProtect[client] = INVALID_HANDLE;
+        g_tSpawnProtect[client] = null;
         return Plugin_Stop;
     }
 
@@ -222,7 +222,7 @@ public Action SpawnProtectTimer(Handle timer, any client)
         ClassApplySpeedEx(client, ClassGetSpeed(client));
 
         // Clear timer handle.
-        g_tSpawnProtect[client] = INVALID_HANDLE;
+        g_tSpawnProtect[client] = null;
 
         // Stop timer.
         return Plugin_Stop;

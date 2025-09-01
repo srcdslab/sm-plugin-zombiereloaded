@@ -32,13 +32,10 @@
 void LogInit()
 {
     // Destroy existing handle to prevent memory leak.
-    if (hLogModuleFilter != INVALID_HANDLE)
-    {
-        CloseHandle(hLogModuleFilter);
-    }
+    delete hLogModuleFilter;
 
     // Initialize module filter array.
-    hLogModuleFilter = CreateArray(32);
+    hLogModuleFilter = new ArrayList(32);
 }
 
 /**
@@ -236,7 +233,7 @@ LogModules LogGetModule(const char[] moduleName)
 bool LogCheckFlag(int eventType)
 {
     // Check if eventType is set.
-    if (GetConVarInt(g_hCvarsList.CVAR_LOG_FLAGS) & eventType)
+    if (g_hCvarsList.CVAR_LOG_FLAGS.IntValue & eventType)
     {
         return true;
     }
@@ -283,16 +280,16 @@ bool LogCheckModuleFilter(LogModules module)
 void LogEvent(bool isConsole = false, LogTypes logType = LogType_Normal, int eventType = LOG_CORE_EVENTS, LogModules module, const char[] description, const char[] text, any ...)
 {
     // Check filter overrides. Always log fatal errors, and check error override setting on error log types.
-    if ((logType != LogType_Fatal && logType != LogType_Error) || (logType == LogType_Error && !GetConVarBool(g_hCvarsList.CVAR_LOG_ERROR_OVERRIDE)))
+    if ((logType != LogType_Fatal && logType != LogType_Error) || (logType == LogType_Error && !g_hCvarsList.CVAR_LOG_ERROR_OVERRIDE.BoolValue))
     {
         // Check if logging is disabled.
-        if (!GetConVarBool(g_hCvarsList.CVAR_LOG))
+        if (!g_hCvarsList.CVAR_LOG.BoolValue)
         {
             return;
         }
 
         // Check if console is ignored.
-        if (isConsole && GetConVarBool(g_hCvarsList.CVAR_LOG_IGNORE_CONSOLE))
+        if (isConsole && g_hCvarsList.CVAR_LOG_IGNORE_CONSOLE.BoolValue)
         {
             return;
         }
@@ -304,7 +301,7 @@ void LogEvent(bool isConsole = false, LogTypes logType = LogType_Normal, int eve
         }
 
         // Check if module filtering is enabled.
-        if (GetConVarBool(g_hCvarsList.CVAR_LOG_MODULE_FILTER))
+        if (g_hCvarsList.CVAR_LOG_MODULE_FILTER.BoolValue)
         {
             // Check if the specified module is enabled.
             if (!LogCheckModuleFilter(module))
@@ -348,14 +345,14 @@ void LogEvent(bool isConsole = false, LogTypes logType = LogType_Normal, int eve
     // Note: The phrase "Literal text" is a blank phrase to pass any string we want into it.
 
     // Check if printing log events to admins is enabled.
-    if (GetConVarBool(g_hCvarsList.CVAR_LOG_PRINT_ADMINS))
+    if (g_hCvarsList.CVAR_LOG_PRINT_ADMINS.BoolValue)
     {
         // Print text to admins.
         TranslationPrintToChatAll(false, true, "Literal text", logbuffer);
     }
 
     // Check if printing log events to public chat is enabled.
-    if (GetConVarBool(g_hCvarsList.CVAR_LOG_PRINT_CHAT))
+    if (g_hCvarsList.CVAR_LOG_PRINT_CHAT.BoolValue)
     {
         // Print text to public chat.
         TranslationPrintToChatAll(false, false, "Literal text", logbuffer);
@@ -383,10 +380,10 @@ bool LogModuleFilterAdd(LogModules module)
     LogGetModuleNameString(modulename, sizeof(modulename), module, true);
 
     // Check if the module isn't already is listed.
-    if (FindStringInArray(hLogModuleFilter, modulename) < 0)
+    if (hLogModuleFilter.FindString(modulename) < 0)
     {
         // Add module to filter.
-        PushArrayString(hLogModuleFilter, modulename);
+        hLogModuleFilter.PushString(modulename);
         return true;
     }
 
@@ -415,13 +412,13 @@ bool LogModuleFilterRemove(LogModules module)
     LogGetModuleNameString(modulename, sizeof(modulename), module, true);
 
     // Get the module index.
-    moduleindex = FindStringInArray(hLogModuleFilter, modulename);
+    moduleindex = hLogModuleFilter.FindString(modulename);
 
     // Check if successful.
     if (moduleindex >= 0)
     {
         // Remove module from filter.
-        RemoveFromArray(hLogModuleFilter, moduleindex);
+        hLogModuleFilter.Erase(moduleindex);
         return true;
     }
 
@@ -446,11 +443,11 @@ void LogModuleFilterCacheUpdate()
     }
 
     // Loop through the module array.
-    filtersize = GetArraySize(hLogModuleFilter);
+    filtersize = hLogModuleFilter.Length;
     for (int index = 0; index < filtersize; index++)
     {
         // Get the module name.
-        GetArrayString(hLogModuleFilter, index, modulename, sizeof(modulename));
+        hLogModuleFilter.GetString(index, modulename, sizeof(modulename));
 
         // Convert to type.
         moduletype = LogGetModule(modulename);
@@ -532,7 +529,7 @@ public Action Command_LogList(int client, int argc)
     buffer[0] = 0;
 
     // Module filtering status:
-    Format(linebuffer, sizeof(linebuffer), "%t %t\n\n", "Log Module Filtering", GetConVarBool(g_hCvarsList.CVAR_LOG_MODULE_FILTER) ? "On" : "Off");
+    Format(linebuffer, sizeof(linebuffer), "%t %t\n\n", "Log Module Filtering", g_hCvarsList.CVAR_LOG_MODULE_FILTER.BoolValue ? "On" : "Off");
     StrCat(buffer, sizeof(buffer), linebuffer);
 
     Format(linebuffer, sizeof(linebuffer), "%-23s %-19s %t\n", phrasemodule, phraseshortname, "Log Status");

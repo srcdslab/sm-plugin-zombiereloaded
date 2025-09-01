@@ -73,8 +73,8 @@ bool g_TeamManagerLoaded = false;
 /**
  * @section Global variables to store infect timer handles.
  */
-Handle g_tInfect = INVALID_HANDLE;
-Handle g_tInfectCountdown = INVALID_HANDLE;
+Handle g_tInfect = null;
+Handle g_tInfectCountdown = null;
 /**
  * @endsection
  */
@@ -82,7 +82,7 @@ Handle g_tInfectCountdown = INVALID_HANDLE;
 /**
  * Infection countdown data pack.
  */
-Handle g_hInfectCountdownData = INVALID_HANDLE;
+DataPack g_hInfectCountdownData = null;
 
 /**
  * Array for flagging client as zombie.
@@ -102,8 +102,8 @@ bool g_bInfectMotherLast[MAXPLAYERS + 1];
 /**
  * SteamID cache for storing client mother zombie protection status.
  */
-Handle g_hInfectMotherCycle = INVALID_HANDLE;
-Handle g_hInfectMotherCycleRTD = INVALID_HANDLE;
+ArrayList g_hInfectMotherCycle = null;
+ArrayList g_hInfectMotherCycleRTD = null;
 
 /**
  * Available mother zombie infection modes.
@@ -189,6 +189,7 @@ void InfectLoad()
 {
     // Create mother zombie round-robin cycle storage.
     g_hInfectMotherCycle = SteamidCacheCreate();
+   	
     g_hInfectMotherCycleRTD = SteamidCacheCreate();
     
     // Initialize mother zombie overrides
@@ -218,17 +219,17 @@ float CalculatePlayerWeight(int client)
     // If player is not in RTD cycle, they never were mother zombie
     if (!SteamidCacheClientExists(g_hInfectMotherCycleRTD, client))
     {
-        weight = 1.0 - GetConVarFloat(g_hCvarsList.CVAR_INFECT_MZOMBIE_WEIGHT_NEW);
+        weight = 1.0 - g_hCvarsList.CVAR_INFECT_MZOMBIE_WEIGHT_NEW.FloatValue;
     }
     // If player is in RTD cycle but not in main cycle
     else if (!SteamidCacheClientExists(g_hInfectMotherCycle, client))
     {
-        weight = 1.0 - GetConVarFloat(g_hCvarsList.CVAR_INFECT_MZOMBIE_WEIGHT_RTD);
+        weight = 1.0 - g_hCvarsList.CVAR_INFECT_MZOMBIE_WEIGHT_RTD.FloatValue;
     }
     // Player is in both cycles
     else
     {
-        weight = 1.0 - GetConVarFloat(g_hCvarsList.CVAR_INFECT_MZOMBIE_WEIGHT_BOTH);
+        weight = 1.0 - g_hCvarsList.CVAR_INFECT_MZOMBIE_WEIGHT_BOTH.FloatValue;
     }
 
     // Ensure weight is not negative
@@ -248,7 +249,7 @@ void InfectClientInit(int client)
     // Reset mother zombie last flag.
     g_bInfectMotherLast[client] = false;
 
-    bool infectroundrobinrtd = GetConVarBool(g_hCvarsList.CVAR_INFECT_ROUND_ROBIN_RTD);
+    bool infectroundrobinrtd = g_hCvarsList.CVAR_INFECT_ROUND_ROBIN_RTD.BoolValue;
     if (infectroundrobinrtd && !SteamidCacheClientExists(g_hInfectMotherCycleRTD, client))
     {
         SteamidCacheAddClient(g_hInfectMotherCycleRTD, client);
@@ -361,7 +362,7 @@ void InfectOnClientDisconnect(int client)
     }
 
     // Create eligible player list.
-    Handle arrayEligibleClients = CreateArray();
+    ArrayList arrayEligibleClients = new ArrayList();
 
     // Create eligible client list, with no mother infect immunities
     int eligibleclients = ZRCreateEligibleClientList(arrayEligibleClients, true, true, true);
@@ -370,7 +371,7 @@ void InfectOnClientDisconnect(int client)
     if (!eligibleclients)
     {
         // Destroy handle.
-        CloseHandle(arrayEligibleClients);
+        delete arrayEligibleClients;
         return;
     }
 
@@ -378,7 +379,7 @@ void InfectOnClientDisconnect(int client)
     int randindex = Math_GetRandomInt(0, eligibleclients - 1);
 
     // Get the client stored in the random array index.
-    int randclient = GetArrayCell(arrayEligibleClients, randindex);
+    int randclient = arrayEligibleClients.Get(randindex);
 
     // Infect player.
     InfectHumanToZombie(randclient);
@@ -392,7 +393,7 @@ void InfectOnClientDisconnect(int client)
     TranslationPrintToChat(randclient, "Infect disconnect");
 
     // Destroy handle.
-    CloseHandle(arrayEligibleClients);
+    delete arrayEligibleClients;
 }
 
 /**
@@ -559,8 +560,8 @@ void InfectOnRoundFreezeEnd()
     #endif
 
     // Get min and max times.
-    float infectspawntimemin = GetConVarFloat(g_hCvarsList.CVAR_INFECT_SPAWNTIME_MIN);
-    float infectspawntimemax = GetConVarFloat(g_hCvarsList.CVAR_INFECT_SPAWNTIME_MAX);
+    float infectspawntimemin = g_hCvarsList.CVAR_INFECT_SPAWNTIME_MIN.FloatValue;
+    float infectspawntimemax = g_hCvarsList.CVAR_INFECT_SPAWNTIME_MAX.FloatValue;
 
     // Pick random time between min and max.
     float randomtime = GetRandomFloat(infectspawntimemin, infectspawntimemax);
@@ -568,16 +569,16 @@ void InfectOnRoundFreezeEnd()
     g_tInfect = CreateTimer(randomtime, InfectMotherZombie, _, TIMER_FLAG_NO_MAPCHANGE);
 
     // Check cvar and start a countdown timer if enabled.
-    bool countdown = GetConVarBool(g_hCvarsList.CVAR_INFECT_MZOMBIE_COUNTDOWN);
+    bool countdown = g_hCvarsList.CVAR_INFECT_MZOMBIE_COUNTDOWN.BoolValue;
     if (countdown && randomtime > 1.0)
     {
         // Stop old countdown timer, if it exists.
         InfectStopCountdown();
 
         // Store the time until infection, and initialize the counter.
-        g_hInfectCountdownData = CreateDataPack();
-        WritePackFloat(g_hInfectCountdownData, randomtime);
-        WritePackFloat(g_hInfectCountdownData, 0.0);
+        g_hInfectCountdownData = new DataPack();
+        g_hInfectCountdownData.WriteFloat(randomtime);
+        g_hInfectCountdownData.WriteFloat(0.0);
         g_tInfectCountdown = CreateTimer(1.0, InfectCountdown, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
 
         // Display initial tick.
@@ -611,7 +612,7 @@ public Action InfectOnRoundEnd(Handle Timer)
 public Action InfectMotherZombie(Handle timer)
 {
     // Reset timer handle.
-    g_tInfect = INVALID_HANDLE;
+    g_tInfect = null;
 
     // Warmup
     #if defined _TeamManager_include
@@ -622,14 +623,14 @@ public Action InfectMotherZombie(Handle timer)
     #endif
 
     // Create eligible player list.
-    Handle arrayEligibleClients = CreateArray();
+    ArrayList arrayEligibleClients = new ArrayList();
     int eligibleclients = ZRCreateEligibleClientList(arrayEligibleClients, true, true, true, true);
 
     // If there are no eligible client's then stop.
     if (!eligibleclients)
     {
         // Destroy handle.
-        CloseHandle(arrayEligibleClients);
+        delete arrayEligibleClients;
         return Plugin_Continue;
     }
 
@@ -637,9 +638,9 @@ public Action InfectMotherZombie(Handle timer)
     InfectMoveAllToCT();
 
     int mothercount;
-    int ratio = GetConVarInt(g_hCvarsList.CVAR_INFECT_MZOMBIE_RATIO);
-    int min = GetConVarInt(g_hCvarsList.CVAR_INFECT_MZOMBIE_MIN);
-    int max = GetConVarInt(g_hCvarsList.CVAR_INFECT_MZOMBIE_MAX);
+    int ratio = g_hCvarsList.CVAR_INFECT_MZOMBIE_RATIO.IntValue;
+    int min = g_hCvarsList.CVAR_INFECT_MZOMBIE_MIN.IntValue;
+    int max = g_hCvarsList.CVAR_INFECT_MZOMBIE_MAX.IntValue;
 
     // Count valid human clients.
     int humancount;
@@ -702,15 +703,15 @@ public Action InfectMotherZombie(Handle timer)
         }
     }
 
-    bool infectroundrobin = GetConVarBool(g_hCvarsList.CVAR_INFECT_ROUND_ROBIN);
+    bool infectroundrobin = g_hCvarsList.CVAR_INFECT_ROUND_ROBIN.BoolValue;
     int candidatesMain = 0;
     int candidatesAlt = 0;
-    Handle aCandidatesMain = CreateArray();
-    Handle aCandidatesAlt = CreateArray();
+    ArrayList aCandidatesMain = new ArrayList();
+    ArrayList aCandidatesAlt = new ArrayList();
     for (int n = 0; n < eligibleclients; n++)
     {
         // Get the client stored in the array index.
-        int client = GetArrayCell(arrayEligibleClients, n);
+        int client = arrayEligibleClients.Get(n);
 
         // If client hasn't been chosen last round.
         if (!g_bInfectMotherLast[client])
@@ -718,14 +719,14 @@ public Action InfectMotherZombie(Handle timer)
             // If client hasn't been chosen this cycle, put into aCandidatesMain array.
             if (!infectroundrobin || !SteamidCacheClientExists(g_hInfectMotherCycle, client))
             {
-                PushArrayCell(aCandidatesMain, client);
+                aCandidatesMain.Push(client);
                 candidatesMain++;
             }
 
             // Else put into aCandidatesAlt array.
             else
             {
-                PushArrayCell(aCandidatesAlt, client);
+                aCandidatesAlt.Push(client);
                 candidatesAlt++;
             }
         }
@@ -750,14 +751,14 @@ public Action InfectMotherZombie(Handle timer)
             int i = Math_GetRandomInt(0, candidatesMain - 1);
 
             // Get the client stored in the random array index.
-            int client = GetArrayCell(aCandidatesMain, i);
+            int client = aCandidatesMain.Get(i);
 
             // Infect player.
             if (InfectHumanToZombie(client, _, true))
                 infected++;
 
             // Remove player from eligible client list.
-            RemoveFromArray(aCandidatesMain, i);
+            aCandidatesMain.Erase(i);
             candidatesMain--;
         }
         else
@@ -781,14 +782,14 @@ public Action InfectMotherZombie(Handle timer)
                 int i = Math_GetRandomInt(0, candidatesAlt - 1);
 
                 // Get the client stored in the random array index.
-                int client = GetArrayCell(aCandidatesAlt, i);
+                int client = aCandidatesAlt.Get(i);
 
                 // Infect player.
                 if (InfectHumanToZombie(client, _, true))
                     infected++;
 
                 // Remove player from eligible client list.
-                RemoveFromArray(aCandidatesAlt, i);
+                aCandidatesAlt.Erase(i);
                 candidatesAlt--;
             }
             else // We have no candidates at all, abort!
@@ -802,9 +803,9 @@ public Action InfectMotherZombie(Handle timer)
     g_bZombieSpawned = true;
 
     // Destroy client list.
-    CloseHandle(arrayEligibleClients);
-    CloseHandle(aCandidatesMain);
-    CloseHandle(aCandidatesAlt);
+    delete arrayEligibleClients;
+    delete aCandidatesMain;
+    delete aCandidatesAlt;
 
     return Plugin_Continue;
 }
@@ -841,16 +842,16 @@ void InfectMoveAllToCT()
  */
 public Action InfectCountdown(Handle timer)
 {
-    if (!GetConVarBool(g_hCvarsList.CVAR_INFECT_MZOMBIE_COUNTDOWN))
+    if (!g_hCvarsList.CVAR_INFECT_MZOMBIE_COUNTDOWN.BoolValue)
     {
         InfectStopCountdown();
         return Plugin_Stop;
     }
 
     // Read the info from the datapack.
-    ResetPack(g_hInfectCountdownData);
-    float length = ReadPackFloat(g_hInfectCountdownData);
-    float counter = ReadPackFloat(g_hInfectCountdownData);
+    g_hInfectCountdownData.Reset();
+    float length = g_hInfectCountdownData.ReadFloat();
+    float counter = g_hInfectCountdownData.ReadFloat();
 
     // Check if the countdown has finished.
     if (counter >= length)
@@ -865,7 +866,7 @@ public Action InfectCountdown(Handle timer)
         // Print the countdown text to the clients.
         TranslationPrintCenterTextAll(false, "Infect countdown", RoundToNearest(length - counter));
 
-        if (GetConVarBool(g_hCvarsList.CVAR_INFECT_MZOMBIE_RESPAWN_WARNING) && !GetConVarBool(g_hCvarsList.CVAR_INFECT_MZOMBIE_RESPAWN))
+        if (g_hCvarsList.CVAR_INFECT_MZOMBIE_RESPAWN_WARNING.BoolValue && !g_hCvarsList.CVAR_INFECT_MZOMBIE_RESPAWN.BoolValue)
         {
             PrintHintTextToAll("%t", "Infect spawning warning");
         }
@@ -892,9 +893,9 @@ public Action InfectCountdown(Handle timer)
     counter++;
 
     // Write the new counter value to the datapack.
-    ResetPack(g_hInfectCountdownData);
-    WritePackFloat(g_hInfectCountdownData, length);
-    WritePackFloat(g_hInfectCountdownData, counter);
+    g_hInfectCountdownData.Reset();
+    g_hInfectCountdownData.WriteFloat(length);
+    g_hInfectCountdownData.WriteFloat(counter);
 
     return Plugin_Continue;
 }
@@ -908,11 +909,7 @@ void InfectStopCountdown()
     ZREndTimer(g_tInfectCountdown);
 
     // Destroy data pack.
-    if (g_hInfectCountdownData != INVALID_HANDLE)
-    {
-        CloseHandle(g_hInfectCountdownData);
-        g_hInfectCountdownData = INVALID_HANDLE;
-    }
+    delete g_hInfectCountdownData;
 }
 
 /**
@@ -948,8 +945,8 @@ bool InfectHumanToZombie(int client, int attacker = -1, bool motherinfect = fals
     g_bZombie[client] = true;
 
     // Check if consecutive infection protection is enabled.
-    bool infectconsecutiveblock = GetConVarBool(g_hCvarsList.CVAR_INFECT_CONSECUTIVE_BLOCK);
-    bool infectroundrobin = GetConVarBool(g_hCvarsList.CVAR_INFECT_ROUND_ROBIN);
+    bool infectconsecutiveblock = g_hCvarsList.CVAR_INFECT_CONSECUTIVE_BLOCK.BoolValue;
+    bool infectroundrobin = g_hCvarsList.CVAR_INFECT_ROUND_ROBIN.BoolValue;
 
     // If this is a mother infect, update the mother zombie protection status
     if (motherinfect)
@@ -971,15 +968,15 @@ bool InfectHumanToZombie(int client, int attacker = -1, bool motherinfect = fals
     if (ZRIsClientValid(attacker))
     {
         // Create and send custom player_death event.
-        Handle event = CreateEvent("player_death");
-        if (event != INVALID_HANDLE)
+        Event event = CreateEvent("player_death");
+        if (event != null)
         {
             char eventWeapon[MAX_EVENT_LENGTH];
-            GetConVarString(g_hCvarsList.CVAR_INFECT_EVENT_WEAPON, eventWeapon, MAX_EVENT_LENGTH);
-            SetEventInt(event, "userid", GetClientUserId(client));
-            SetEventInt(event, "attacker", GetClientUserId(attacker));
-            SetEventString(event, "weapon", eventWeapon);
-            FireEvent(event, false);
+            g_hCvarsList.CVAR_INFECT_EVENT_WEAPON.GetString(eventWeapon, MAX_EVENT_LENGTH);
+            event.SetInt("userid", GetClientUserId(client));
+            event.SetInt("attacker", GetClientUserId(attacker));
+            event.SetString("weapon", eventWeapon);
+            event.Fire(false);
         }
 
         // Apply score and health gain.
@@ -987,14 +984,14 @@ bool InfectHumanToZombie(int client, int attacker = -1, bool motherinfect = fals
     }
 
     // Check if weapons drop is enabled.
-    bool weaponsdrop = GetConVarBool(g_hCvarsList.CVAR_INFECT_WEAPONS_DROP);
+    bool weaponsdrop = g_hCvarsList.CVAR_INFECT_WEAPONS_DROP.BoolValue;
 
     // This must be after the event forwarding because it fixes a problem caused by changing models in ClassOnClientInfected.
     // Remove all weapons but knife.
     WeaponsRemoveAllClientWeapons(client, weaponsdrop);
 
     // Zombie won't be able to use their knife for this amount of time
-    float knifecooldown = GetConVarFloat(g_hCvarsList.CVAR_INFECT_KNIFE_COOLDOWN);
+    float knifecooldown = g_hCvarsList.CVAR_INFECT_KNIFE_COOLDOWN.FloatValue;
     SetEntPropFloat(client, Prop_Send, "m_flNextAttack", GetGameTime() + knifecooldown);
 
     // Switch the player to terrorists.
@@ -1004,7 +1001,7 @@ bool InfectHumanToZombie(int client, int attacker = -1, bool motherinfect = fals
     // If respawn is enabled, then teleport mother zombie back to spawnpoint.
     if (motherinfect)
     {
-        bool zombierespawn = GetConVarBool(g_hCvarsList.CVAR_INFECT_MZOMBIE_RESPAWN);
+        bool zombierespawn = g_hCvarsList.CVAR_INFECT_MZOMBIE_RESPAWN.BoolValue;
         if (zombierespawn)
         {
             ZTele_TeleportClient(client);
@@ -1013,7 +1010,7 @@ bool InfectHumanToZombie(int client, int attacker = -1, bool motherinfect = fals
     // Check override.
     else
     {
-        bool teleport = GetConVarBool(g_hCvarsList.CVAR_INFECT_TELEPORT);
+        bool teleport = g_hCvarsList.CVAR_INFECT_TELEPORT.BoolValue;
         if (respawnoverride && respawn)
         {
             ZTele_TeleportClient(client);
@@ -1158,28 +1155,28 @@ void InfectFireEffects(int client)
     GetClientAbsOrigin(client, clientloc);
     clientloc[2] += 30;
 
-    bool explosion = GetConVarBool(g_hCvarsList.CVAR_INFECT_EXPLOSION);
+    bool explosion = g_hCvarsList.CVAR_INFECT_EXPLOSION.BoolValue;
     if (explosion)
     {
         // Initialize explosion flags variable.
         int flags;
 
         // Set "nofireball" flag if fireball is disabled.
-        bool fireball = GetConVarBool(g_hCvarsList.CVAR_INFECT_FIREBALL);
+        bool fireball = g_hCvarsList.CVAR_INFECT_FIREBALL.BoolValue;
         if (!fireball)
         {
             flags = flags | EXP_NOFIREBALL;
         }
 
         // Set "nosmoke" flag if smoke is disabled.
-        bool smoke = GetConVarBool(g_hCvarsList.CVAR_INFECT_SMOKE);
+        bool smoke = g_hCvarsList.CVAR_INFECT_SMOKE.BoolValue;
         if (!smoke)
         {
             flags = flags | EXP_NOSMOKE;
         }
 
         // Set "nosparks" flag if sparks are disabled.
-        bool sparks = GetConVarBool(g_hCvarsList.CVAR_INFECT_SPARKS);
+        bool sparks = g_hCvarsList.CVAR_INFECT_SPARKS.BoolValue;
         if (!sparks)
         {
             flags = flags | EXP_NOSPARKS;
@@ -1193,7 +1190,7 @@ void InfectFireEffects(int client)
     ZombieSoundsScream(client);
 
     // If energy splash effect is enabled, then continue.
-    bool esplash = GetConVarBool(g_hCvarsList.CVAR_INFECT_ESPLASH);
+    bool esplash = g_hCvarsList.CVAR_INFECT_ESPLASH.BoolValue;
     if (esplash)
     {
         // Create energy splash effect.
@@ -1201,13 +1198,13 @@ void InfectFireEffects(int client)
     }
 
     // If shake effect is enabled, then continue.
-    bool shake = GetConVarBool(g_hCvarsList.CVAR_INFECT_SHAKE);
+    bool shake = g_hCvarsList.CVAR_INFECT_SHAKE.BoolValue;
     if (shake)
     {
         // Get shake info.
-        float shakeamp = GetConVarFloat(g_hCvarsList.CVAR_INFECT_SHAKE_AMP);
-        float shakefrequency = GetConVarFloat(g_hCvarsList.CVAR_INFECT_SHAKE_FREQUENCY);
-        float shakeduration = GetConVarFloat(g_hCvarsList.CVAR_INFECT_SHAKE_DURATION);
+        float shakeamp = g_hCvarsList.CVAR_INFECT_SHAKE_AMP.FloatValue;
+        float shakefrequency = g_hCvarsList.CVAR_INFECT_SHAKE_FREQUENCY.FloatValue;
+        float shakeduration = g_hCvarsList.CVAR_INFECT_SHAKE_DURATION.FloatValue;
 
         // Shake client's screen.
         VEffectsShakeClientScreen(client, shakeamp, shakefrequency, shakeduration);
@@ -1222,7 +1219,7 @@ void InfectFireEffects(int client)
 void InfectMenuClients(int client)
 {
     // Create menu handle.
-    Handle menu_infect_clients = CreateMenu(InfectMenuClientsHandle);
+    Menu menu_infect_clients = new Menu(InfectMenuClientsHandle);
 
     // Set client as translation target.
     SetGlobalTransTarget(client);
@@ -1261,17 +1258,17 @@ void InfectMenuClients(int client)
         }
 
         // Add option to menu.
-        AddMenuItem(menu_infect_clients, clientuserid, clientoption);
+        menu_infect_clients.AddItem(clientuserid, clientoption);
     }
 
     Format(title, sizeof(title), "%t\n ", "Infect menu clients title");
-    SetMenuTitle(menu_infect_clients, title);
+    menu_infect_clients.SetTitle(title);
 
     // Create a "Back" button to the main admin menu.
-    SetMenuExitBackButton(menu_infect_clients, true);
+    menu_infect_clients.ExitBackButton = true;
 
     // Send menu.
-    DisplayMenu(menu_infect_clients, client, MENU_TIME_FOREVER);
+    menu_infect_clients.Display(client, MENU_TIME_FOREVER);
 }
 
 /**
@@ -1281,7 +1278,7 @@ void InfectMenuClients(int client)
  * @param client                The client index.
  * @param slot                  The slot index selected (starting from 0).
  */
-public int InfectMenuClientsHandle(Handle menu_infect_clients, MenuAction action, int client, int slot)
+public int InfectMenuClientsHandle(Menu menu_infect_clients, MenuAction action, int client, int slot)
 {
     // Client selected an option.
     if (action == MenuAction_Select)
@@ -1327,7 +1324,7 @@ public int InfectMenuClientsHandle(Handle menu_infect_clients, MenuAction action
     // Client hit "Exit" button.
     else if (action == MenuAction_End)
     {
-        CloseHandle(menu_infect_clients);
+        delete menu_infect_clients;
     }
     return -1;
 }
@@ -1414,10 +1411,10 @@ stock void InfectManualInfect(int client, int[] targets, int count, bool respawn
     if (!zombiespawned)
     {
         // Stop mother infect timer.
-        if (g_tInfect != INVALID_HANDLE)
+        if (g_tInfect != null)
         {
             KillTimer(g_tInfect);
-            g_tInfect = INVALID_HANDLE;
+            g_tInfect = null;
         }
 
         // Move all clients to CT
@@ -1717,12 +1714,12 @@ InfectMode InfectStringToMode(const char[] mode)
 InfectMode InfectGetModeOrFail()
 {
     char modeName[16];
-    GetConVarString(g_hCvarsList.CVAR_INFECT_MZOMBIE_MODE, modeName, sizeof(modeName));
+    g_hCvarsList.CVAR_INFECT_MZOMBIE_MODE.GetString(modeName, sizeof(modeName));
 
     InfectMode mode = InfectStringToMode(modeName);
-    int ratio = GetConVarInt(g_hCvarsList.CVAR_INFECT_MZOMBIE_RATIO);
-    int min = GetConVarInt(g_hCvarsList.CVAR_INFECT_MZOMBIE_MIN);
-    int max = GetConVarInt(g_hCvarsList.CVAR_INFECT_MZOMBIE_MAX);
+    int ratio = g_hCvarsList.CVAR_INFECT_MZOMBIE_RATIO.IntValue;
+    int min = g_hCvarsList.CVAR_INFECT_MZOMBIE_MIN.IntValue;
+    int max = g_hCvarsList.CVAR_INFECT_MZOMBIE_MAX.IntValue;
 
     // Validate.
     switch (mode)

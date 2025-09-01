@@ -90,18 +90,18 @@ void ToolsFindOffsets()
     {
         LogEvent(false, LogType_Fatal, LOG_CORE_EVENTS, LogModule_Tools, "Offsets", "Offset \"CBasePlayer::m_iFOV\" was not found.");
     }
-
-    Handle hGameConf = LoadGameConfigFile("zombiereloaded");
-    if (hGameConf != INVALID_HANDLE)
+	
+    GameData hGameConf = new GameData("zombiereloaded");
+    if (hGameConf != null)
     {
         // If offset "m_LastHitGroup" can't be found, then stop the plugin.
-        g_iToolsLastHitGroup = GameConfGetOffset(hGameConf, "m_LastHitGroup");
+        g_iToolsLastHitGroup = hGameConf.GetOffset("m_LastHitGroup");
         if (g_iToolsLastHitGroup == -1)
         {
             LogEvent(false, LogType_Fatal, LOG_CORE_EVENTS, LogModule_Tools, "Offsets", "Gamedata Offset \"CCSPlayer::m_LastHitGroup\" was not found.");
         }
 
-        CloseHandle(hGameConf);
+        delete hGameConf;
     }
     else
         LogEvent(false, LogType_Fatal, LOG_CORE_EVENTS, LogModule_Tools, "Offsets", "Couldn't load zombiereloaded game config!");

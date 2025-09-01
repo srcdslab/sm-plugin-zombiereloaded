@@ -39,151 +39,151 @@
  */
 enum struct CvarsList
 {
-    Handle CVAR_ENABLE;
-    Handle CVAR_LOG;
-    Handle CVAR_LOG_FLAGS;
-    Handle CVAR_LOG_MODULE_FILTER;
-    Handle CVAR_LOG_IGNORE_CONSOLE;
-    Handle CVAR_LOG_ERROR_OVERRIDE;
-    Handle CVAR_LOG_PRINT_ADMINS;
-    Handle CVAR_LOG_PRINT_CHAT;
-    Handle CVAR_CONFIG_SM_PATH;
-    Handle CVAR_CONFIG_PATH_MODELS;
-    Handle CVAR_CONFIG_PATH_DOWNLOADS;
-    Handle CVAR_CONFIG_PATH_CLASSES;
-    Handle CVAR_CONFIG_PATH_WEAPONS;
-    Handle CVAR_CONFIG_PATH_HITGROUPS;
-    Handle CVAR_PERMISSIONS_USE_GROUPS;
-    Handle CVAR_CLASSES_MENU_SPAWN;
-    Handle CVAR_CLASSES_MENU_JOIN;
-    Handle CVAR_CLASSES_RANDOM;
-    Handle CVAR_CLASSES_CHANGE_TIMELIMIT;
-    Handle CVAR_CLASSES_SAVE;
-    Handle CVAR_CLASSES_DEFAULT_ZOMBIE;
-    Handle CVAR_CLASSES_DEFAULT_M_ZOMB;
-    Handle CVAR_CLASSES_DEFAULT_HUMAN;
-    Handle CVAR_CLASSES_DEFAULT_ADMIN;
-    Handle CVAR_CLASSES_DEFAULT_ADMIN_MODE;
-    Handle CVAR_CLASSES_MENU_AUTOCLOSE;
-    Handle CVAR_CLASSES_OVERLAY_TOGGLE;
-    Handle CVAR_CLASSES_OVERLAY_TOGGLECMDS;
-    Handle CVAR_CLASSES_OVERLAY_DEFAULT;
-    Handle CVAR_CLASSES_ZOMBIE_SELECT;
-    Handle CVAR_CLASSES_HUMAN_SELECT;
-    Handle CVAR_CLASSES_ADMIN_SELECT;
-    Handle CVAR_CLASSES_SPEED_METHOD;
-    Handle CVAR_WEAPONS;
-    Handle CVAR_WEAPONS_RESTRICT;
-    Handle CVAR_WEAPONS_RESTRICT_ENDEQUIP;
-    Handle CVAR_WEAPONS_ZMARKET;
-    Handle CVAR_WEAPONS_ZMARKET_BUYZONE;
-    Handle CVAR_WEAPONS_ZMARKET_NOREFILL;
-    Handle CVAR_WEAPONS_ZMARKET_FREESPAWN;
-    Handle CVAR_WEAPONS_ZMARKET_REBUY;
-    Handle CVAR_WEAPONS_ZMARKET_REBUY_AUTO;
-    Handle CVAR_WEAPONS_ZMARKET_REBUY_PRIMARY;
-    Handle CVAR_WEAPONS_ZMARKET_REBUY_SECONDARY;
-    Handle CVAR_WEAPONS_INFECT_REMOVE_KNIFE;
-    Handle CVAR_HITGROUPS;
-    Handle CVAR_DAMAGE_HITGROUPS;
-    Handle CVAR_DAMAGE_BLOCK_FF;
-    Handle CVAR_DAMAGE_BLOCK_BLAST;
-    Handle CVAR_DAMAGE_SUICIDE_ZOMBIE;
-    Handle CVAR_DAMAGE_SUICIDE_MZOMBIE;
-    Handle CVAR_DAMAGE_SUICIDE_HUMAN;
-    Handle CVAR_DAMAGE_SUICIDE_CMDS;
-    Handle CVAR_SUICIDE_AFTER_INFECT;
-    Handle CVAR_SAYHOOKS_QUIET;
-    Handle CVAR_SAYHOOKS_QUIET_FILTER;
-    Handle CVAR_SAYHOOKS_QUIET_FLAGS;
-    Handle CVAR_OVERLAYS_UPDATE_TIME;
-    Handle CVAR_OVERLAYS_MIN_DXLEVEL;
-    Handle CVAR_ROUNDEND_OVERLAY;
-    Handle CVAR_ROUNDEND_OVERLAY_ZOMBIE;
-    Handle CVAR_ROUNDEND_OVERLAY_HUMAN;
-    Handle CVAR_ROUNDEND_BALANCE_TEAMS;
-    Handle CVAR_ROUNDEND_ZOMBIES_WIN;
-    Handle CVAR_ROUNDEND_AUTHID_TYPE;
-    Handle CVAR_INFECT_SPAWNTIME_MIN;
-    Handle CVAR_INFECT_SPAWNTIME_MAX;
-    Handle CVAR_INFECT_CONSECUTIVE_BLOCK;
-    Handle CVAR_INFECT_ROUND_ROBIN;
-    Handle CVAR_INFECT_ROUND_ROBIN_RTD;
-    Handle CVAR_INFECT_WEAPONS_DROP;
-    Handle CVAR_INFECT_KNIFE_COOLDOWN;
-    Handle CVAR_INFECT_MAX_DISTANCE;
-    Handle CVAR_INFECT_TELEPORT;
-    Handle CVAR_INFECT_MZOMBIE_MODE;
-    Handle CVAR_INFECT_MZOMBIE_RATIO;
-    Handle CVAR_INFECT_MZOMBIE_MIN;
-    Handle CVAR_INFECT_MZOMBIE_MAX;
-    Handle CVAR_INFECT_MZOMBIE_COUNTDOWN;
-    Handle CVAR_INFECT_MZOMBIE_RESPAWN;
-    Handle CVAR_INFECT_MZOMBIE_RESPAWN_WARNING;
-    Handle CVAR_INFECT_MZOMBIE_WEIGHT_NEW;
-    Handle CVAR_INFECT_MZOMBIE_WEIGHT_RTD;
-    Handle CVAR_INFECT_MZOMBIE_WEIGHT_BOTH;
-    Handle CVAR_INFECT_EXPLOSION;
-    Handle CVAR_INFECT_FIREBALL;
-    Handle CVAR_INFECT_SMOKE;
-    Handle CVAR_INFECT_SPARKS;
-    Handle CVAR_INFECT_ESPLASH;
-    Handle CVAR_INFECT_SHAKE;
-    Handle CVAR_INFECT_SHAKE_AMP;
-    Handle CVAR_INFECT_SHAKE_FREQUENCY;
-    Handle CVAR_INFECT_SHAKE_DURATION;
-    Handle CVAR_INFECT_EVENT_WEAPON;
-    Handle CVAR_INFECT_SKIP_TRIGGER_BRUSH;
-    Handle CVAR_ACCOUNT_CASHFILL;
-    Handle CVAR_ACCOUNT_CASHFILL_VALUE;
-    Handle CVAR_ACCOUNT_CASHDMG;
-    Handle CVAR_VEFFECTS_LIGHTSTYLE;
-    Handle CVAR_VEFFECTS_LIGHTSTYLE_VALUE;
-    Handle CVAR_VEFFECTS_SKY;
-    Handle CVAR_VEFFECTS_SKY_PATH;
-    Handle CVAR_VEFFECTS_SUN_DISABLE;
-    Handle CVAR_VEFFECTS_FOG;
-    Handle CVAR_VEFFECTS_FOG_OVERRIDE;
-    Handle CVAR_VEFFECTS_FOG_PCOLOR;
-    Handle CVAR_VEFFECTS_FOG_SCOLOR;
-    Handle CVAR_VEFFECTS_FOG_DENSITY;
-    Handle CVAR_VEFFECTS_FOG_STARTDIST;
-    Handle CVAR_VEFFECTS_FOG_ENDDIST;
-    Handle CVAR_VEFFECTS_FOG_FARZ;
-    Handle CVAR_VEFFECTS_RAGDOLL_REMOVE;
-    Handle CVAR_VEFFECTS_RAGDOLL_DISSOLVE;
-    Handle CVAR_VEFFECTS_RAGDOLL_DELAY;
-    Handle CVAR_ANTISTICK;
-    Handle CVAR_ANTISTICK_DEFAULT_WIDTH;
-    Handle CVAR_ANTISTICK_FILE_PATH;
-    Handle CVAR_SPAWNPROTECT;
-    Handle CVAR_SPAWNPROTECT_TIME;
-    Handle CVAR_SPAWNPROTECT_SPEED;
-    Handle CVAR_SPAWNPROTECT_ALPHA;
-    Handle CVAR_RESPAWN;
-    Handle CVAR_RESPAWN_DELAY;
-    Handle CVAR_RESPAWN_TEAM_ZOMBIE;
-    Handle CVAR_RESPAWN_TEAM_ZOMBIE_WORLD;
-    Handle CVAR_NAPALM_IGNITE;
-    Handle CVAR_NAPALM_TIME_RESET;
-    Handle CVAR_NAPALM_TIME_SCALE;
-    Handle CVAR_NAPALM_DOUSE;
-    Handle CVAR_JUMPBOOST_BHOP_PROTECT;
-    Handle CVAR_JUMPBOOST_BHOP_MAX;
-    Handle CVAR_VOL;
-    Handle CVAR_VOL_UPDATE_INTERVAL;
-    Handle CVAR_VOL_TRIGGER_INTERVAL;
-    Handle CVAR_ZSPAWN;
-    Handle CVAR_ZSPAWN_AUTO;
-    Handle CVAR_ZSPAWN_TEAM_OVERRIDE;
-    Handle CVAR_ZSPAWN_TEAM_ZOMBIE;
-    Handle CVAR_ZSPAWN_BLOCK_REJOIN;
-    Handle CVAR_ZSPAWN_TIMELIMIT;
-    Handle CVAR_ZSPAWN_TIMELIMIT_TIME;
-    Handle CVAR_ZSPAWN_TIMELIMIT_ZOMBIE;
-    Handle CVAR_ZHP;
-    Handle CVAR_ZHP_DEFAULT;
-    Handle CVAR_KNOCKBACK_MAXVEL;
+    ConVar CVAR_ENABLE;
+    ConVar CVAR_LOG;
+    ConVar CVAR_LOG_FLAGS;
+    ConVar CVAR_LOG_MODULE_FILTER;
+    ConVar CVAR_LOG_IGNORE_CONSOLE;
+    ConVar CVAR_LOG_ERROR_OVERRIDE;
+    ConVar CVAR_LOG_PRINT_ADMINS;
+    ConVar CVAR_LOG_PRINT_CHAT;
+    ConVar CVAR_CONFIG_SM_PATH;
+    ConVar CVAR_CONFIG_PATH_MODELS;
+    ConVar CVAR_CONFIG_PATH_DOWNLOADS;
+    ConVar CVAR_CONFIG_PATH_CLASSES;
+    ConVar CVAR_CONFIG_PATH_WEAPONS;
+    ConVar CVAR_CONFIG_PATH_HITGROUPS;
+    ConVar CVAR_PERMISSIONS_USE_GROUPS;
+    ConVar CVAR_CLASSES_MENU_SPAWN;
+    ConVar CVAR_CLASSES_MENU_JOIN;
+    ConVar CVAR_CLASSES_RANDOM;
+    ConVar CVAR_CLASSES_CHANGE_TIMELIMIT;
+    ConVar CVAR_CLASSES_SAVE;
+    ConVar CVAR_CLASSES_DEFAULT_ZOMBIE;
+    ConVar CVAR_CLASSES_DEFAULT_M_ZOMB;
+    ConVar CVAR_CLASSES_DEFAULT_HUMAN;
+    ConVar CVAR_CLASSES_DEFAULT_ADMIN;
+    ConVar CVAR_CLASSES_DEFAULT_ADMIN_MODE;
+    ConVar CVAR_CLASSES_MENU_AUTOCLOSE;
+    ConVar CVAR_CLASSES_OVERLAY_TOGGLE;
+    ConVar CVAR_CLASSES_OVERLAY_TOGGLECMDS;
+    ConVar CVAR_CLASSES_OVERLAY_DEFAULT;
+    ConVar CVAR_CLASSES_ZOMBIE_SELECT;
+    ConVar CVAR_CLASSES_HUMAN_SELECT;
+    ConVar CVAR_CLASSES_ADMIN_SELECT;
+    ConVar CVAR_CLASSES_SPEED_METHOD;
+    ConVar CVAR_WEAPONS;
+    ConVar CVAR_WEAPONS_RESTRICT;
+    ConVar CVAR_WEAPONS_RESTRICT_ENDEQUIP;
+    ConVar CVAR_WEAPONS_ZMARKET;
+    ConVar CVAR_WEAPONS_ZMARKET_BUYZONE;
+    ConVar CVAR_WEAPONS_ZMARKET_NOREFILL;
+    ConVar CVAR_WEAPONS_ZMARKET_FREESPAWN;
+    ConVar CVAR_WEAPONS_ZMARKET_REBUY;
+    ConVar CVAR_WEAPONS_ZMARKET_REBUY_AUTO;
+    ConVar CVAR_WEAPONS_ZMARKET_REBUY_PRIMARY;
+    ConVar CVAR_WEAPONS_ZMARKET_REBUY_SECONDARY;
+    ConVar CVAR_WEAPONS_INFECT_REMOVE_KNIFE;
+    ConVar CVAR_HITGROUPS;
+    ConVar CVAR_DAMAGE_HITGROUPS;
+    ConVar CVAR_DAMAGE_BLOCK_FF;
+    ConVar CVAR_DAMAGE_BLOCK_BLAST;
+    ConVar CVAR_DAMAGE_SUICIDE_ZOMBIE;
+    ConVar CVAR_DAMAGE_SUICIDE_MZOMBIE;
+    ConVar CVAR_DAMAGE_SUICIDE_HUMAN;
+    ConVar CVAR_DAMAGE_SUICIDE_CMDS;
+    ConVar CVAR_SUICIDE_AFTER_INFECT;
+    ConVar CVAR_SAYHOOKS_QUIET;
+    ConVar CVAR_SAYHOOKS_QUIET_FILTER;
+    ConVar CVAR_SAYHOOKS_QUIET_FLAGS;
+    ConVar CVAR_OVERLAYS_UPDATE_TIME;
+    ConVar CVAR_OVERLAYS_MIN_DXLEVEL;
+    ConVar CVAR_ROUNDEND_OVERLAY;
+    ConVar CVAR_ROUNDEND_OVERLAY_ZOMBIE;
+    ConVar CVAR_ROUNDEND_OVERLAY_HUMAN;
+    ConVar CVAR_ROUNDEND_BALANCE_TEAMS;
+    ConVar CVAR_ROUNDEND_ZOMBIES_WIN;
+    ConVar CVAR_ROUNDEND_AUTHID_TYPE;
+    ConVar CVAR_INFECT_SPAWNTIME_MIN;
+    ConVar CVAR_INFECT_SPAWNTIME_MAX;
+    ConVar CVAR_INFECT_CONSECUTIVE_BLOCK;
+    ConVar CVAR_INFECT_ROUND_ROBIN;
+    ConVar CVAR_INFECT_ROUND_ROBIN_RTD;
+    ConVar CVAR_INFECT_WEAPONS_DROP;
+    ConVar CVAR_INFECT_KNIFE_COOLDOWN;
+    ConVar CVAR_INFECT_MAX_DISTANCE;
+    ConVar CVAR_INFECT_TELEPORT;
+    ConVar CVAR_INFECT_MZOMBIE_MODE;
+    ConVar CVAR_INFECT_MZOMBIE_RATIO;
+    ConVar CVAR_INFECT_MZOMBIE_MIN;
+    ConVar CVAR_INFECT_MZOMBIE_MAX;
+    ConVar CVAR_INFECT_MZOMBIE_COUNTDOWN;
+    ConVar CVAR_INFECT_MZOMBIE_RESPAWN;
+    ConVar CVAR_INFECT_MZOMBIE_RESPAWN_WARNING;
+    ConVar CVAR_INFECT_MZOMBIE_WEIGHT_NEW;
+    ConVar CVAR_INFECT_MZOMBIE_WEIGHT_RTD;
+    ConVar CVAR_INFECT_MZOMBIE_WEIGHT_BOTH;
+    ConVar CVAR_INFECT_EXPLOSION;
+    ConVar CVAR_INFECT_FIREBALL;
+    ConVar CVAR_INFECT_SMOKE;
+    ConVar CVAR_INFECT_SPARKS;
+    ConVar CVAR_INFECT_ESPLASH;
+    ConVar CVAR_INFECT_SHAKE;
+    ConVar CVAR_INFECT_SHAKE_AMP;
+    ConVar CVAR_INFECT_SHAKE_FREQUENCY;
+    ConVar CVAR_INFECT_SHAKE_DURATION;
+    ConVar CVAR_INFECT_EVENT_WEAPON;
+    ConVar CVAR_INFECT_SKIP_TRIGGER_BRUSH;
+    ConVar CVAR_ACCOUNT_CASHFILL;
+    ConVar CVAR_ACCOUNT_CASHFILL_VALUE;
+    ConVar CVAR_ACCOUNT_CASHDMG;
+    ConVar CVAR_VEFFECTS_LIGHTSTYLE;
+    ConVar CVAR_VEFFECTS_LIGHTSTYLE_VALUE;
+    ConVar CVAR_VEFFECTS_SKY;
+    ConVar CVAR_VEFFECTS_SKY_PATH;
+    ConVar CVAR_VEFFECTS_SUN_DISABLE;
+    ConVar CVAR_VEFFECTS_FOG;
+    ConVar CVAR_VEFFECTS_FOG_OVERRIDE;
+    ConVar CVAR_VEFFECTS_FOG_PCOLOR;
+    ConVar CVAR_VEFFECTS_FOG_SCOLOR;
+    ConVar CVAR_VEFFECTS_FOG_DENSITY;
+    ConVar CVAR_VEFFECTS_FOG_STARTDIST;
+    ConVar CVAR_VEFFECTS_FOG_ENDDIST;
+    ConVar CVAR_VEFFECTS_FOG_FARZ;
+    ConVar CVAR_VEFFECTS_RAGDOLL_REMOVE;
+    ConVar CVAR_VEFFECTS_RAGDOLL_DISSOLVE;
+    ConVar CVAR_VEFFECTS_RAGDOLL_DELAY;
+    ConVar CVAR_ANTISTICK;
+    ConVar CVAR_ANTISTICK_DEFAULT_WIDTH;
+    ConVar CVAR_ANTISTICK_FILE_PATH;
+    ConVar CVAR_SPAWNPROTECT;
+    ConVar CVAR_SPAWNPROTECT_TIME;
+    ConVar CVAR_SPAWNPROTECT_SPEED;
+    ConVar CVAR_SPAWNPROTECT_ALPHA;
+    ConVar CVAR_RESPAWN;
+    ConVar CVAR_RESPAWN_DELAY;
+    ConVar CVAR_RESPAWN_TEAM_ZOMBIE;
+    ConVar CVAR_RESPAWN_TEAM_ZOMBIE_WORLD;
+    ConVar CVAR_NAPALM_IGNITE;
+    ConVar CVAR_NAPALM_TIME_RESET;
+    ConVar CVAR_NAPALM_TIME_SCALE;
+    ConVar CVAR_NAPALM_DOUSE;
+    ConVar CVAR_JUMPBOOST_BHOP_PROTECT;
+    ConVar CVAR_JUMPBOOST_BHOP_MAX;
+    ConVar CVAR_VOL;
+    ConVar CVAR_VOL_UPDATE_INTERVAL;
+    ConVar CVAR_VOL_TRIGGER_INTERVAL;
+    ConVar CVAR_ZSPAWN;
+    ConVar CVAR_ZSPAWN_AUTO;
+    ConVar CVAR_ZSPAWN_TEAM_OVERRIDE;
+    ConVar CVAR_ZSPAWN_TEAM_ZOMBIE;
+    ConVar CVAR_ZSPAWN_BLOCK_REJOIN;
+    ConVar CVAR_ZSPAWN_TIMELIMIT;
+    ConVar CVAR_ZSPAWN_TIMELIMIT_TIME;
+    ConVar CVAR_ZSPAWN_TIMELIMIT_ZOMBIE;
+    ConVar CVAR_ZHP;
+    ConVar CVAR_ZHP_DEFAULT;
+    ConVar CVAR_KNOCKBACK_MAXVEL;
 }
 
 /**
@@ -194,9 +194,9 @@ CvarsList g_hCvarsList;
 /**
  * @section Global cvar handles.
  */
-Handle g_hAutoTeamBalance = INVALID_HANDLE;
-Handle g_hLimitTeams = INVALID_HANDLE;
-Handle g_hRestartGame = INVALID_HANDLE;
+ConVar g_hAutoTeamBalance;
+ConVar g_hLimitTeams;
+ConVar g_hRestartGame;
 /**
  * @endsection
  */
@@ -527,26 +527,26 @@ void CvarsHook(bool unhook = false)
     if (unhook)
     {
         // Unhook all cvars.
-        UnhookConVarChange(g_hAutoTeamBalance, CvarsHookLocked);
-        UnhookConVarChange(g_hLimitTeams, CvarsHookLocked);
-        UnhookConVarChange(g_hRestartGame, CvarsHookRestartGame);
+        g_hAutoTeamBalance.RemoveChangeHook(CvarsHookLocked);
+        g_hLimitTeams.RemoveChangeHook(CvarsHookLocked);
+        g_hRestartGame.RemoveChangeHook(CvarsHookRestartGame);
 
-        UnhookConVarChange(g_hCvarsList.CVAR_VOL, VolEnabledChanged);
+        g_hCvarsList.CVAR_VOL.RemoveChangeHook(VolEnabledChanged);
 
         // Stop after unhooking cvars.
         return;
     }
 
     // Set locked cvars to their locked value.
-    SetConVarInt(g_hAutoTeamBalance, CVARS_AUTOTEAMBALANCE_LOCKED);
-    SetConVarInt(g_hLimitTeams, CVARS_LIMITTEAMS_LOCKED);
+    g_hAutoTeamBalance.SetInt(CVARS_AUTOTEAMBALANCE_LOCKED);
+    g_hLimitTeams.SetInt(CVARS_LIMITTEAMS_LOCKED);
 
     // Hook cvar to prevent it from changing.
-    HookConVarChange(g_hAutoTeamBalance, CvarsHookLocked);
-    HookConVarChange(g_hLimitTeams, CvarsHookLocked);
-    HookConVarChange(g_hRestartGame, CvarsHookRestartGame);
+    g_hAutoTeamBalance.AddChangeHook(CvarsHookLocked);
+   	g_hLimitTeams.AddChangeHook(CvarsHookLocked);
+    g_hRestartGame.AddChangeHook(CvarsHookRestartGame);
 
-    HookConVarChange(g_hCvarsList.CVAR_VOL, VolEnabledChanged);
+    g_hCvarsList.CVAR_VOL.AddChangeHook(VolEnabledChanged);
 }
 
 /**
@@ -557,7 +557,7 @@ void CvarsHook(bool unhook = false)
  * @param oldvalue  The value before the attempted change.
  * @param newvalue  The new value.
  */
-public void CvarsHookLocked(Handle cvar, const char[] oldvalue, const char[] newvalue)
+public void CvarsHookLocked(ConVar cvar, const char[] oldvalue, const char[] newvalue)
 {
     // If cvar is mp_autoteambalance, then continue.
     if (cvar == g_hAutoTeamBalance)
@@ -569,7 +569,7 @@ public void CvarsHookLocked(Handle cvar, const char[] oldvalue, const char[] new
         }
 
         // Revert to locked value.
-        SetConVarInt(g_hAutoTeamBalance, CVARS_AUTOTEAMBALANCE_LOCKED);
+        g_hAutoTeamBalance.SetInt(CVARS_AUTOTEAMBALANCE_LOCKED);
 
         // If log flag check fails, then don't log.
         LogEvent(false, LogType_Normal, LOG_CORE_EVENTS, LogModule_Cvars, "Cvar Locked", "Cvar \"mp_autoteambalance\" was reverted back to %d.", CVARS_AUTOTEAMBALANCE_LOCKED);
@@ -584,7 +584,7 @@ public void CvarsHookLocked(Handle cvar, const char[] oldvalue, const char[] new
         }
 
         // Revert to locked value.
-        SetConVarInt(g_hLimitTeams, CVARS_LIMITTEAMS_LOCKED);
+        g_hLimitTeams.SetInt(CVARS_LIMITTEAMS_LOCKED);
 
         // If log flag check fails, then don't log.
         LogEvent(false, LogType_Normal, LOG_CORE_EVENTS, LogModule_Cvars, "Cvar Locked", "Cvar \"mp_limitteams\" was reverted back to %d.", CVARS_LIMITTEAMS_LOCKED);
@@ -599,10 +599,10 @@ public void CvarsHookLocked(Handle cvar, const char[] oldvalue, const char[] new
  * @param oldvalue  The value before the attempted change.
  * @param newvalue  The new value.
  */
-public void CvarsHookRestartGame(Handle cvar, const char[] oldvalue, const char[] newvalue)
+public void CvarsHookRestartGame(ConVar cvar, const char[] oldvalue, const char[] newvalue)
 {
     // Prevent round restart.
-    SetConVarInt(cvar, 0);
+    cvar.SetInt(0);
 
     // If value was invalid or 0, then stop.
     float delay = StringToFloat(newvalue);
