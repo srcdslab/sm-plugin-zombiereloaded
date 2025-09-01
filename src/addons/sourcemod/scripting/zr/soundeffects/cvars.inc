@@ -144,7 +144,7 @@ int SEffects_GetMax(ZombieSounds soundtype)
         case Scream:
             return SEffectsCvar_ScreamMax.IntValue;
         case Countdown:
-            return SEffectsCvar_CountdownMax.IntValue
+            return SEffectsCvar_CountdownMax.IntValue;
     }
 
     return 1;
