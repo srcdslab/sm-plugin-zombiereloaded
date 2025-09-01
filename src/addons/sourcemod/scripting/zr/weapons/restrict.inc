@@ -331,6 +331,8 @@ RestrictQuery RestrictWeapon(bool restrict, const char[] target, bool &single = 
         // If weapon restriction is redundant then return stopped.
         if (RestrictIsTypeUniform(restrict, typeindex))
         {
+            // Close handle
+            CloseHandle(arrayTypeWeapons);
             return Query_Stopped;
         }
 
@@ -348,6 +350,9 @@ RestrictQuery RestrictWeapon(bool restrict, const char[] target, bool &single = 
             // Set weapon's restricted state.
             RestrictSetWeaponRestricted(weaponindex, false, restrict);
         }
+
+        // Close handle
+        CloseHandle(arrayTypeWeapons);
 
         // Successfully restricted weapon type.
         return Query_Successful;
@@ -591,6 +596,9 @@ stock bool RestrictIsTypeUniform(bool restricted, int index)
             return false;
         }
     }
+
+    // Close handle
+    CloseHandle(arrayTypeWeapons);
 
     // All weapons are restricted, so return true.
     return true;
