@@ -268,6 +268,9 @@ void VAmbienceApplySky(bool disable = false)
 
     // Set new sky on all clients.
     hSkyname.SetString(skypath, true);
+
+    // Close handle
+    delete hSkyname;
 }
 
 void VAmbienceApplySunDisable(bool disable = false)
