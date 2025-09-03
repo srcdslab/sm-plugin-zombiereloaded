@@ -1496,5 +1496,5 @@ stock bool ClassIsPersonal(int index)
  */
 stock bool ClassIsClientAllowed(int client, int index)
 {
-	return ClassIsPersonal(index) && ClassPlayerClassPersonal[client][index];
+	return !ClassIsPersonal(index) || ClassPlayerClassPersonal[client][index];
 }

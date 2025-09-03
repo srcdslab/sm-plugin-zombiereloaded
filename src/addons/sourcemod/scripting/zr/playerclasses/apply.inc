@@ -200,15 +200,18 @@ bool ClassApplyModel(int client, int classindex, int cachetype = ZR_CLASS_CACHE_
         return false;
     }
 
-    // Check if the model is precached.
-    if (!IsModelPrecached(modelpath))
+    // Check if the model is precached, this should only apply to classes that are not personal.
+    if (!ClassIsPersonal(classindex))
     {
-        LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Playerclasses, "Config Validation", "Warning: Model not precached, not applying model. \"%s\"", modelpath);
-        return true;
-    }
+        if (!IsModelPrecached(modelpath))
+        {
+            LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Playerclasses, "Config Validation", "Warning: Model not precached, not applying model. \"%s\"", modelpath);
+            return true;
+        }
 
-    SetEntityModel(client, modelpath);
-    SetEntProp(client, Prop_Send, "m_nSkin", skinIndex);
+        SetEntityModel(client, modelpath);
+        SetEntProp(client, Prop_Send, "m_nSkin", skinIndex);
+    }
 
     // Trigger API forward.
     APIOnClassModelApplied(client, modelpath, skinIndex);

@@ -1100,15 +1100,13 @@ void ClassClientSetDefaultIdentifiers(int client = -1)
             humanindex = ClassGetIndexByIdentifier(human_ident);
             adminindex = ClassGetIndexByIdentifier(admin_ident);
             
-            // Check if class is personal and client is allowed to use it
-            if (zombieindex >= 0 && !ClassIsClientAllowed(client, zombieindex))
-            	zombieindex = -1;
+            // Fix: if class index was not found, then use default ones
+            // Check if class is personal and client is allowed to use it    	
+            if (zombieindex == -1 || (zombieindex >= 0 && !ClassIsClientAllowed(client, zombieindex)))
+            	zombieindex = ClassGetDefaultSpawnClass(ZR_CLASS_TEAM_ZOMBIES, filter)
             
-            if (humanindex >= 0 && !ClassIsClientAllowed(client, humanindex))
-            	humanindex = -1;
-            
-            if (adminindex >= 0 && !ClassIsClientAllowed(client, adminindex))
-            	adminindex = -1;
+            if (humanindex == -1 || (humanindex >= 0 && !ClassIsClientAllowed(client, humanindex)))
+            	humanindex = ClassGetDefaultSpawnClass(ZR_CLASS_TEAM_HUMANS, filter);
         }
 
         // Check if class identifiers are set and that the client pass the filter.
@@ -1666,7 +1664,8 @@ int ClassRegIndex(KeyValues kvClassData)
 	
 	if (!success)
 		return -1;
-		
+
+    ClassReloadDataCache();	
 	return ClassCount - 1;
 }
 
@@ -1677,16 +1676,17 @@ int ClassRegIndex(KeyValues kvClassData)
  * @param skinindex			The class index
  * @param personal			The boolean value to set the variable to
  *
- * @return                  Class Index, -1 on failure.
+ * @return                  True on success, false otherwise.
  */
-void ClassSetClientClassPersonal(int client, int skinindex, bool personal)
+bool ClassSetClientClassPersonal(int client, int skinindex, bool personal)
 {
 	if (!ClassValidateIndex(skinindex))
-		return;
+		return false;
 	
 	// If class doesn't have the personal attribute, then stop
-	if (!ClassData[skinindex].Class_IsPersonal)
-		return;
-		
+	if (!ClassIsPersonal(skinindex))
+		return false;
+
 	ClassPlayerClassPersonal[client][skinindex] = personal;
+	return true;
 }
