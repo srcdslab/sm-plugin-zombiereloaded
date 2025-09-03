@@ -120,7 +120,7 @@
 #define ZR_CLASS_DEFAULT_KNOCKBACK              2.0
 #define ZR_CLASS_DEFAULT_JUMP_HEIGHT            10.0
 #define ZR_CLASS_DEFAULT_JUMP_DISTANCE          0.2
-#define ZR_CLASS_DEFAULT_PERSONAL				"no"
+#define ZR_CLASS_DEFAULT_PERSONAL                "no"
 /**
  * @endsection
  */
