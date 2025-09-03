@@ -1488,7 +1488,7 @@ stock bool ClassIsPersonal(int index)
 }
 
 /**
- * Checks if a class has the personal attribute set to true
+ * Checks if a client is allowed to use a specific class (considering personal attribute restrictions)
  * @param client   The client index.
  * @param index    The class index.
  *
