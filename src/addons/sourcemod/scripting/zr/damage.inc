@@ -53,7 +53,7 @@ void DamageLoad()
 
     // Create command callbacks (intercepts) for listed suicide commands.
     char suicidecmds[DAMAGE_SUICIDE_MAX_CMDS * DAMAGE_SUICIDE_MAX_LENGTH];
-    GetConVarString(g_hCvarsList.CVAR_DAMAGE_SUICIDE_CMDS, suicidecmds, sizeof(suicidecmds));
+    g_hCvarsList.CVAR_DAMAGE_SUICIDE_CMDS.GetString(suicidecmds, sizeof(suicidecmds));
 
     // Create array to store cmds
     char arrayCmds[DAMAGE_SUICIDE_MAX_CMDS][DAMAGE_SUICIDE_MAX_LENGTH];
@@ -148,7 +148,7 @@ public Action DamageTraceAttack(int client, int &attacker, int &inflictor, float
     if (clientzombie == attackerzombie)
     {
         // If friendly fire is blocked, then allow damage.
-        bool damageblockff = GetConVarBool(g_hCvarsList.CVAR_DAMAGE_BLOCK_FF);
+        bool damageblockff = g_hCvarsList.CVAR_DAMAGE_BLOCK_FF.BoolValue;
         if (!damageblockff)
         {
             return Plugin_Continue;
@@ -177,7 +177,7 @@ public Action DamageTraceAttack(int client, int &attacker, int &inflictor, float
     // If damage hitgroups cvar is disabled, then allow damage.
     // TODO: There are two cvars: zr_hitgroups and zr_damage_hitgroups. Maybe
     //       just use zr_hitgroups?
-    bool damagehitgroups = GetConVarBool(g_hCvarsList.CVAR_DAMAGE_HITGROUPS);
+    bool damagehitgroups = g_hCvarsList.CVAR_DAMAGE_HITGROUPS.BoolValue;
     if (!damagehitgroups)
     {
         // Allow damage.
@@ -420,10 +420,10 @@ public Action DamageOnTakeDamage(int client, int &attacker, int &inflictor, floa
 public Action DamageSuicideIntercept(int client, const char[] command, int argc)
 {
     // Get suicide interception settings.
-    bool suicideAfterInfect = GetConVarBool(g_hCvarsList.CVAR_SUICIDE_AFTER_INFECT);
-    bool suicideZombie = GetConVarBool(g_hCvarsList.CVAR_DAMAGE_SUICIDE_ZOMBIE);
-    bool suicideZombieMother = GetConVarBool(g_hCvarsList.CVAR_DAMAGE_SUICIDE_MZOMBIE);
-    bool suicideHuman = GetConVarBool(g_hCvarsList.CVAR_DAMAGE_SUICIDE_HUMAN);
+    bool suicideAfterInfect = g_hCvarsList.CVAR_SUICIDE_AFTER_INFECT.BoolValue;
+    bool suicideZombie = g_hCvarsList.CVAR_DAMAGE_SUICIDE_ZOMBIE.BoolValue;
+    bool suicideZombieMother = g_hCvarsList.CVAR_DAMAGE_SUICIDE_MZOMBIE.BoolValue;
+    bool suicideHuman = g_hCvarsList.CVAR_DAMAGE_SUICIDE_HUMAN.BoolValue;
 
     // Check various criterias that will _allow_ the command. If no criterias
     // match, block it.

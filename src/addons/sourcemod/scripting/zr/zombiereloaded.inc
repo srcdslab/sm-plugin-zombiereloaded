@@ -108,14 +108,14 @@ float ZRConvertUnitsFloat(float number, float conversion)
 /**
  * Create an array populated with eligible clients to be zombie.
  *
- * @param arrayEligibleClients  The handle of the array, don't forget to call CloseHandle
+ * @param arrayEligibleClients  The handle of the array, don't forget to call delete
  *                              on it when finished!
  * @param team                  Client is only eligible if on a team.
  * @param alive                 Client is only eligible if alive.
  * @param human                 Client is only eligible if human.
  * @param plugin                True to ignore clients immune from mother infect, false to count them.
  */
-stock int ZRCreateEligibleClientList(Handle &arrayEligibleClients, bool team = false, bool alive = false, bool human = false, bool plugin = false)
+stock int ZRCreateEligibleClientList(ArrayList &arrayEligibleClients, bool team = false, bool alive = false, bool human = false, bool plugin = false)
 {
     int count = 0;
     // Populate list with eligible clients.
@@ -153,8 +153,8 @@ stock int ZRCreateEligibleClientList(Handle &arrayEligibleClients, bool team = f
         }
 
         // Add eligible client to array.
-        if (arrayEligibleClients != INVALID_HANDLE)
-            PushArrayCell(arrayEligibleClients, x);
+        if (arrayEligibleClients != null)
+            arrayEligibleClients.Push(x);
 
         count++;
     }
@@ -170,7 +170,7 @@ stock int ZRCreateEligibleClientList(Handle &arrayEligibleClients, bool team = f
 stock bool ZRIsTimerRunning(Handle timer)
 {
     // Return true if the handle isn't empty.
-    return (timer != INVALID_HANDLE);
+    return (timer != null);
 }
 
 /**
@@ -181,7 +181,7 @@ stock bool ZRIsTimerRunning(Handle timer)
  * @param kill      True to kill the timer and reset the variable, false to only reset the variable.
  *                  Using false is useful when calling from the timer callback, because the timer is already killed.
  *
- * @return          True if the handle wasn't INVALID_HANDLE, false if the handle wasn't valid.
+ * @return          True if the handle wasn't null, false if the handle wasn't valid.
  */
 stock bool ZREndTimer(Handle &timer, bool kill = true)
 {
@@ -195,13 +195,13 @@ stock bool ZREndTimer(Handle &timer, bool kill = true)
         }
 
         // Reset variable.
-        timer = INVALID_HANDLE;
+        timer = null;
 
         return true;
     }
 
     // Reset variable.
-    timer = INVALID_HANDLE;
+    timer = null;
 
     return false;
 }

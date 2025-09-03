@@ -38,7 +38,7 @@ Handle tZHP[MAXPLAYERS + 1];
 /**
  * Cookie handle for the toggle state of ZHP on a client.
  */
-Handle g_hZHPEnabledCookie = INVALID_HANDLE;
+Cookie g_hZHPEnabledCookie = null;
 
 /**
  * Create commands specific to ZHP.
@@ -55,9 +55,9 @@ void ZHPOnCommandsCreate()
 void ZHPOnCookiesCreate()
 {
     // Create cookie handle if it doesn't exist.
-    if (g_hZHPEnabledCookie == INVALID_HANDLE)
+    if (g_hZHPEnabledCookie == null)
     {
-        g_hZHPEnabledCookie = RegClientCookie(ZHP_COOKIE_ENABLED, "The toggle state of ZHP.", CookieAccess_Protected);
+        g_hZHPEnabledCookie = new Cookie(ZHP_COOKIE_ENABLED, "The toggle state of ZHP.", CookieAccess_Protected);
     }
 }
 
@@ -69,7 +69,7 @@ void ZHPOnCookiesCreate()
 void ZHPClientInit(int client)
 {
     // Reset timer handle.
-    tZHP[client] = INVALID_HANDLE;
+    tZHP[client] = null;
 }
 
 /**
@@ -80,11 +80,11 @@ void ZHPClientInit(int client)
 void ZHPOnCookiesCached(int client)
 {
     // Get default client setting from cvar.
-    bool zhp = GetConVarBool(g_hCvarsList.CVAR_ZHP_DEFAULT);
+    bool zhp = g_hCvarsList.CVAR_ZHP_DEFAULT.BoolValue;
 
     // Get ZHP enabled cookie value.
     char zhpenabled[8];
-    GetClientCookie(client, g_hZHPEnabledCookie, zhpenabled, sizeof(zhpenabled));
+    g_hZHPEnabledCookie.Get(client, zhpenabled, sizeof(zhpenabled));
 
     // If the cookie is empty, then set the default value.
     if (!zhpenabled[0])
@@ -102,13 +102,13 @@ void ZHPOnCookiesCached(int client)
 void ZHPOnClientSpawn(int client)
 {
     // If timer is running, kill it.
-    if (tZHP[client] != INVALID_HANDLE)
+    if (tZHP[client] != null)
     {
         KillTimer(tZHP[client]);
     }
 
     // Reset timer handle.
-    tZHP[client] = INVALID_HANDLE;
+    tZHP[client] = null;
 }
 
 /**
@@ -119,13 +119,13 @@ void ZHPOnClientSpawn(int client)
 void ZHPOnClientDeath(int client)
 {
     // If timer is running, kill it.
-    if (tZHP[client] != INVALID_HANDLE)
+    if (tZHP[client] != null)
     {
         KillTimer(tZHP[client]);
     }
 
     // Reset timer handle.
-    tZHP[client] = INVALID_HANDLE;
+    tZHP[client] = null;
 }
 
 /**
@@ -136,7 +136,7 @@ void ZHPOnClientDeath(int client)
 void ZHPOnClientInfected(int client)
 {
     // If ZHP is disabled, then stop.
-    bool zhp = GetConVarBool(g_hCvarsList.CVAR_ZHP);
+    bool zhp = g_hCvarsList.CVAR_ZHP.BoolValue;
     if (!zhp)
     {
         return;
@@ -146,7 +146,7 @@ void ZHPOnClientInfected(int client)
     ZHPUpdateHUD(client);
 
     // If timer is currently running, kill it.
-    if (tZHP[client] != INVALID_HANDLE)
+    if (tZHP[client] != null)
     {
         KillTimer(tZHP[client]);
     }
@@ -185,7 +185,7 @@ void ZHPOnHealthInfectGain(int client)
 bool ZHPToggle(int client)
 {
     // If ZHP is disabled, then stop.
-    bool zhp = GetConVarBool(g_hCvarsList.CVAR_ZHP);
+    bool zhp = g_hCvarsList.CVAR_ZHP.BoolValue;
     if (!zhp)
     {
         // Tell client feature is disabled.
@@ -226,7 +226,7 @@ bool ZHPToggle(int client)
 void ZHPUpdateHUD(int client)
 {
     // If ZHP is disabled, then stop.
-    bool zhp = GetConVarBool(g_hCvarsList.CVAR_ZHP);
+    bool zhp = g_hCvarsList.CVAR_ZHP.BoolValue;
     if (!zhp)
     {
         return;

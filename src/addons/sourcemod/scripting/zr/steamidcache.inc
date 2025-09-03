@@ -30,10 +30,10 @@
  *
  * @return  Handle to SteamID cache.
  */
-stock Handle SteamidCacheCreate()
+stock ArrayList SteamidCacheCreate()
 {
     // Return steamid cache handle.
-    return CreateArray(1);
+    return new ArrayList(1);
 }
 
 /**
@@ -43,7 +43,7 @@ stock Handle SteamidCacheCreate()
  * @param client        The client index.
  * @return              True if the client was added successfully, false if the client already exists.
  */
-stock bool SteamidCacheAddClient(Handle steamidcache, int client)
+stock bool SteamidCacheAddClient(ArrayList steamidcache, int client)
 {
     // Check if client is in the cache.
     if (SteamidCacheClientExists(steamidcache, client))
@@ -57,7 +57,7 @@ stock bool SteamidCacheAddClient(Handle steamidcache, int client)
         return false;
 
     // Push SteamID into the SteamID cache.
-    PushArrayCell(steamidcache, steamid);
+    steamidcache.Push(steamid);
 
     // Client added successfully.
     return true;
@@ -70,7 +70,7 @@ stock bool SteamidCacheAddClient(Handle steamidcache, int client)
  * @param client        The client index.
  * @return              True if the client was removed successfully, false if the client doesn't exist.
  */
-stock bool SteamidCacheRemoveClient(Handle steamidcache, int client)
+stock bool SteamidCacheRemoveClient(ArrayList steamidcache, int client)
 {
     // Get client's SteamID.
     int steamid = GetSteamAccountID(client);
@@ -78,12 +78,12 @@ stock bool SteamidCacheRemoveClient(Handle steamidcache, int client)
         return false;
 
     // Find the client in the cache.
-    int idx = FindValueInArray(steamidcache, steamid);
+    int idx = steamidcache.FindValue(steamid);
     if (idx == -1)
         return false;
 
     // Remove index from the SteamID cache.
-    RemoveFromArray(steamidcache, idx);
+    steamidcache.Erase(idx);
 
     // Client removed successfully.
     return true;
@@ -96,7 +96,7 @@ stock bool SteamidCacheRemoveClient(Handle steamidcache, int client)
  * @param client        The client index.
  * @return              True if the client exists, false otherwise.
  */
-stock bool SteamidCacheClientExists(Handle steamidcache, int client)
+stock bool SteamidCacheClientExists(ArrayList steamidcache, int client)
 {
     // Get client's SteamID.
     int steamid = GetSteamAccountID(client);
@@ -104,7 +104,7 @@ stock bool SteamidCacheClientExists(Handle steamidcache, int client)
         return false;
 
     // Return true if client was found, false otherwise.
-    return (FindValueInArray(steamidcache, steamid) != -1);
+    return (steamidcache.FindValue(steamid) != -1);
 }
 
 /**
@@ -112,11 +112,11 @@ stock bool SteamidCacheClientExists(Handle steamidcache, int client)
  *
  * @param steamidcache  The SteamID cache to reset.
  */
-stock void SteamidCacheReset(Handle steamidcache)
+stock void SteamidCacheReset(ArrayList steamidcache)
 {
-    if (steamidcache == INVALID_HANDLE)
+    if (steamidcache == null)
         return;
 
     // Clear array.
-    ClearArray(steamidcache);
+    steamidcache.Clear();
 }

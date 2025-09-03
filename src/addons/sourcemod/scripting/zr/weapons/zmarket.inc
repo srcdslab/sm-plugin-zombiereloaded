@@ -47,7 +47,7 @@ int g_iZMarketCurType[MAXPLAYERS + 1];
 /**
  * Array handle to store the amount of purchases left for a weapon.
  */
-Handle g_hZMarketPurchaseCount[MAXPLAYERS + 1];
+StringMap g_hZMarketPurchaseCount[MAXPLAYERS + 1];
 
 /**
  * Whether weapons has been bought automatically. Used to prevent double rebuy
@@ -58,7 +58,7 @@ bool g_bZMarketWeaponsBought[MAXPLAYERS + 1];
 /**
  * Cookie handle array for weapon loadouts.
  */
-Handle g_hZMarketLoadoutCookie[ZMARKET_REBUY_WEAPONS_SLOTS_MAX + 1];
+Cookie g_hZMarketLoadoutCookie[ZMARKET_REBUY_WEAPONS_SLOTS_MAX + 1];
 
 bool g_bZMarketCommandInitialized = false;
 
@@ -85,9 +85,9 @@ void ZMarketOnCookiesCreate()
         Format(rebuycookiedesc, sizeof(rebuycookiedesc), "Current loadout weapon for slot %d", x);
 
         // Create loadout cookie handle if it doesn't exist.
-        if (g_hZMarketLoadoutCookie[x] == INVALID_HANDLE)
+        if (g_hZMarketLoadoutCookie[x] == null)
         {
-            g_hZMarketLoadoutCookie[x] = RegClientCookie(rebuycookiename, rebuycookiedesc, CookieAccess_Protected);
+            g_hZMarketLoadoutCookie[x] = new Cookie(rebuycookiename, rebuycookiedesc, CookieAccess_Protected);
         }
     }
 }
@@ -192,13 +192,10 @@ public Action ZMarketBuyCommand(int client, int argc)
 void ZMarketClientInit(int client)
 {
     // If purchase count data exists, then destroy before creating again.
-    if (g_hZMarketPurchaseCount[client] != INVALID_HANDLE)
-    {
-        CloseHandle(g_hZMarketPurchaseCount[client]);
-    }
+    delete g_hZMarketPurchaseCount[client];
 
     // Create a new array handle to store purchase count data for client.
-    g_hZMarketPurchaseCount[client] = CreateTrie();
+    g_hZMarketPurchaseCount[client] = new StringMap();
 
     // No weapons bought automatically.
     g_bZMarketWeaponsBought[client] = false;
@@ -226,13 +223,7 @@ void ZMarketOnCookiesCached(int client)
 void ZMarketOnClientDisconnect(int client)
 {
     // Destroy ZMarket array data for client.
-    if (g_hZMarketPurchaseCount[client] != INVALID_HANDLE)
-    {
-        CloseHandle(g_hZMarketPurchaseCount[client]);
-    }
-
-    // Reset handle.
-    g_hZMarketPurchaseCount[client] = INVALID_HANDLE;
+    delete g_hZMarketPurchaseCount[client];
 }
 
 /**
@@ -246,7 +237,7 @@ void ZMarketOnClientSpawnPost(int client)
     ZMarketResetPurchaseCount(client);
 
     // Rebuy if auto-rebuy is enabled.
-    bool rebuy = GetConVarBool(g_hCvarsList.CVAR_WEAPONS_ZMARKET_REBUY);
+    bool rebuy = g_hCvarsList.CVAR_WEAPONS_ZMARKET_REBUY.BoolValue;
 
     if (rebuy)
         ZMarketCheckRebuy(client);
@@ -284,9 +275,9 @@ void ZMarketCheckRebuy(int client)
 void ZMarketResetPurchaseCount(int client)
 {
     // Clear out the trie of all data.
-    if (g_hZMarketPurchaseCount[client] != INVALID_HANDLE)
+    if (g_hZMarketPurchaseCount[client] != null)
     {
-        ClearTrie(g_hZMarketPurchaseCount[client]);
+        g_hZMarketPurchaseCount[client].Clear();
     }
 }
 
@@ -309,7 +300,7 @@ void ZMarketSetPurchaseCount(int client, const char[] weapon, int value, bool ad
     }
 
     // Set value in client's trie.
-    SetTrieValue(g_hZMarketPurchaseCount[client], weapon, purchasemax + value);
+    g_hZMarketPurchaseCount[client].SetValue(weapon, purchasemax + value);
 }
 
 /**
@@ -323,7 +314,7 @@ int ZMarketGetPurchaseCount(int client, const char[] weapon)
 {
     // Get value in client's trie.
     int value;
-    GetTrieValue(g_hZMarketPurchaseCount[client], weapon, value);
+    g_hZMarketPurchaseCount[client].GetValue(weapon, value);
     return value;
 }
 
@@ -354,14 +345,14 @@ bool ZMarketMenuMain(int client)
     }
 
     // Create menu handle.
-    Handle menu_zmarket_main = CreateMenu(ZMarketMenuMainHandle);
+    Menu menu_zmarket_main = new Menu(ZMarketMenuMainHandle);
 
     // Set translation target as client.
     SetGlobalTransTarget(client);
 
     // If rebuy is enabled, then add it to the menu.
-    bool zmarketrebuy = GetConVarBool(g_hCvarsList.CVAR_WEAPONS_ZMARKET_REBUY);
-    bool zmarketrebuyauto = GetConVarBool(g_hCvarsList.CVAR_WEAPONS_ZMARKET_REBUY_AUTO);
+    bool zmarketrebuy = g_hCvarsList.CVAR_WEAPONS_ZMARKET_REBUY.BoolValue;
+    bool zmarketrebuyauto = g_hCvarsList.CVAR_WEAPONS_ZMARKET_REBUY_AUTO.BoolValue;
 
     // Add "Get Current Loadout" option.
     char title[MENU_LINE_TITLE_LENGTH];
@@ -379,15 +370,15 @@ bool ZMarketMenuMain(int client)
 
     // Add formatted options to menu.
     SetMenuTitle(menu_zmarket_main, title);
-    AddMenuItem(menu_zmarket_main, "Get Loadout", getloadout, MenuGetItemDraw(zmarketrebuy || zmarketrebuyauto));
-    AddMenuItem(menu_zmarket_main, "Edit Loadout", editloadout, MenuGetItemDraw(zmarketrebuy || zmarketrebuyauto));
-    AddMenuItem(menu_zmarket_main, "Rebuy", rebuy, MenuGetItemDraw(zmarketrebuy || zmarketrebuyauto));
-    AddMenuItem(menu_zmarket_main, "Weapons List", weaponslist);
+    menu_zmarket_main.AddItem("Get Loadout", getloadout, MenuGetItemDraw(zmarketrebuy || zmarketrebuyauto));
+    menu_zmarket_main.AddItem("Edit Loadout", editloadout, MenuGetItemDraw(zmarketrebuy || zmarketrebuyauto));
+    menu_zmarket_main.AddItem("Rebuy", rebuy, MenuGetItemDraw(zmarketrebuy || zmarketrebuyauto));
+    menu_zmarket_main.AddItem("Weapons List", weaponslist);
 
     // Set exit back button.
-    SetMenuExitBackButton(menu_zmarket_main, true);
+    menu_zmarket_main.ExitBackButton = true;
 
-    DisplayMenu(menu_zmarket_main, client, MENU_TIME_FOREVER);
+    menu_zmarket_main.Display(client, MENU_TIME_FOREVER);
 
     // Menu sent successfully.
     return true;
@@ -401,7 +392,7 @@ bool ZMarketMenuMain(int client)
  * @param client                The client index.
  * @param slot                  The slot index selected (starting from 0).
  */
-public int ZMarketMenuMainHandle(Handle menu_zmarket_main, MenuAction action, int client, int slot)
+public int ZMarketMenuMainHandle(Menu menu_zmarket_main, MenuAction action, int client, int slot)
 {
     // Client selected an option.
     if (action == MenuAction_Select)
@@ -452,7 +443,7 @@ public int ZMarketMenuMainHandle(Handle menu_zmarket_main, MenuAction action, in
     // Client hit "Exit" button.
     else if (action == MenuAction_End)
     {
-        CloseHandle(menu_zmarket_main);
+        delete menu_zmarket_main;
     }
     return -1;
 }
@@ -465,7 +456,7 @@ public int ZMarketMenuMainHandle(Handle menu_zmarket_main, MenuAction action, in
 void ZMarketMenuLoadout(int client)
 {
     // Create menu handle.
-    Handle menu_zmarket_loadout = CreateMenu(ZMarketMenuLoadoutHandle);
+    Menu menu_zmarket_loadout = new Menu(ZMarketMenuLoadoutHandle);
 
     // Transfer cookie values into an array.
     char rebuyweapons[ZMARKET_REBUY_WEAPONS_SLOTS_MAX + 1][WEAPONS_MAX_LENGTH];
@@ -485,11 +476,11 @@ void ZMarketMenuLoadout(int client)
             {
                 case Slot_Primary:
                 {
-                    GetConVarString(g_hCvarsList.CVAR_WEAPONS_ZMARKET_REBUY_PRIMARY, weaponname, sizeof(weaponname));
+                    g_hCvarsList.CVAR_WEAPONS_ZMARKET_REBUY_PRIMARY.GetString(weaponname, sizeof(weaponname));
                 }
                 case Slot_Secondary:
                 {
-                    GetConVarString(g_hCvarsList.CVAR_WEAPONS_ZMARKET_REBUY_SECONDARY, weaponname, sizeof(weaponname));
+                    g_hCvarsList.CVAR_WEAPONS_ZMARKET_REBUY_SECONDARY.GetString(weaponname, sizeof(weaponname));
                 }
             }
 
@@ -507,15 +498,15 @@ void ZMarketMenuLoadout(int client)
     Format(secondary, sizeof(secondary), "%t", "Weapons menu zmarket loadout secondary", rebuyweapons[Slot_Secondary]);
 
     // Add formatted options to menu.
-    SetMenuTitle(menu_zmarket_loadout, title);
-    AddMenuItem(menu_zmarket_loadout, "0", primary);
-    AddMenuItem(menu_zmarket_loadout, "1", secondary);
+    menu_zmarket_loadout.SetTitle(title);
+    menu_zmarket_loadout.AddItem("0", primary);
+    menu_zmarket_loadout.AddItem("1", secondary);
 
     // Set exit back button.
-    SetMenuExitBackButton(menu_zmarket_loadout, true);
+    menu_zmarket_loadout.ExitBackButton = true;
 
     // Send menu to client.
-    DisplayMenu(menu_zmarket_loadout, client, MENU_TIME_FOREVER);
+    menu_zmarket_loadout.Display(client, MENU_TIME_FOREVER);
 }
 
 /**
@@ -558,7 +549,7 @@ public int ZMarketMenuLoadoutHandle(Handle menu_zmarket_loadout, MenuAction acti
     // Client hit "Exit" button.
     else if (action == MenuAction_End)
     {
-        CloseHandle(menu_zmarket_loadout);
+        delete menu_zmarket_loadout;
     }
     return -1;
 }
@@ -566,14 +557,14 @@ public int ZMarketMenuLoadoutHandle(Handle menu_zmarket_loadout, MenuAction acti
 void ZMarketMenuLoadoutWeapons(int client, WeaponsSlot slot)
 {
     // Create menu handle.
-    Handle menu_zmarket_loadout_weapons = CreateMenu(ZMarketMenuLoadoutWeaponsHandle);
+    Menu menu_zmarket_loadout_weapons = new Menu(ZMarketMenuLoadoutWeaponsHandle);
 
     // Set translation target as client.
     SetGlobalTransTarget(client);
 
     char title[MENU_LINE_TITLE_LENGTH];
     Format(title, sizeof(title), "%t\n ", "Weapons menu zmarket loadout weapons title");
-    SetMenuTitle(menu_zmarket_loadout_weapons, title);
+    menu_zmarket_loadout_weapons.SetTitle(title);
 
     char weaponname[WEAPONS_MAX_LENGTH];
     char weapondisplay[MENU_LINE_REG_LENGTH];
@@ -593,7 +584,7 @@ void ZMarketMenuLoadoutWeapons(int client, WeaponsSlot slot)
 
     // First item = Server default weapon
     Format(weapondisplay, sizeof(weapondisplay), "%t", "Weapons menu zmarket loadout default", weaponname);
-    AddMenuItem(menu_zmarket_loadout_weapons, "", weapondisplay);
+    menu_zmarket_loadout_weapons.AddItem("", weapondisplay);
 
     int size = GetArraySize(arrayWeapons);
     for (int weaponindex = 0; weaponindex < size; weaponindex++)
@@ -618,13 +609,13 @@ void ZMarketMenuLoadoutWeapons(int client, WeaponsSlot slot)
         }
 
         // Disable weapon if it's restricted.
-        AddMenuItem(menu_zmarket_loadout_weapons, weaponname, weapondisplay, MenuGetItemDraw(!restricted));
+        menu_zmarket_loadout_weapons.AddItem(weaponname, weapondisplay, MenuGetItemDraw(!restricted));
     }
 
     // Set exit back button.
-    SetMenuExitBackButton(menu_zmarket_loadout_weapons, true);
+    menu_zmarket_loadout_weapons.ExitBackButton = true;
 
-    DisplayMenu(menu_zmarket_loadout_weapons, client, MENU_TIME_FOREVER);
+    menu_zmarket_loadout_weapons.Display(client, MENU_TIME_FOREVER);
 }
 
 
@@ -636,14 +627,14 @@ void ZMarketMenuLoadoutWeapons(int client, WeaponsSlot slot)
  * @param client                        The client index.
  * @param slot                          The slot index selected (starting from 0).
  */
-public int ZMarketMenuLoadoutWeaponsHandle(Handle menu_zmarket_loadout_weapons, MenuAction action, int client, int slot)
+public int ZMarketMenuLoadoutWeaponsHandle(Menu menu_zmarket_loadout_weapons, MenuAction action, int client, int slot)
 {
     // Client selected an option.
     if (action == MenuAction_Select)
     {
         // Get name of selected weapon.
         char weapon[WEAPONS_MAX_LENGTH];
-        GetMenuItem(menu_zmarket_loadout_weapons, slot, weapon, sizeof(weapon));
+        menu_zmarket_loadout_weapons.GetItem(slot, weapon, sizeof(weapon));
 
         // Update cookie with new weapon.
         ZMarketSetRebuyCookie(client, view_as<WeaponsSlot>(g_iZMarketCurType[client]), weapon);
@@ -663,7 +654,7 @@ public int ZMarketMenuLoadoutWeaponsHandle(Handle menu_zmarket_loadout_weapons, 
     // Client hit "Exit" button.
     else if (action == MenuAction_End)
     {
-        CloseHandle(menu_zmarket_loadout_weapons);
+        delete menu_zmarket_loadout_weapons;
     }
     return -1;
 }
@@ -676,26 +667,26 @@ public int ZMarketMenuLoadoutWeaponsHandle(Handle menu_zmarket_loadout_weapons, 
 void ZMarketMenuTypes(int client)
 {
     // Create menu handle.
-    Handle menu_zmarket_types = CreateMenu(ZMarketMenuTypesHandle);
+    Menu menu_zmarket_types = new Menu(ZMarketMenuTypesHandle);
 
     // Set translation target as client.
     SetGlobalTransTarget(client);
 
     char title[MENU_LINE_TITLE_LENGTH];
     Format(title, sizeof(title), "%t\n ", "Weapons menu zmarket types title");
-    SetMenuTitle(menu_zmarket_types, title);
+    menu_zmarket_types.SetTitle(title);
 
     char typename[WEAPONS_MAX_LENGTH];
 
     // x = Array index.
-    int size = GetArraySize(arrayWeaponTypes);
+    int size = arrayWeaponTypes.Length;
     for (int x = 0; x < size; x++)
     {
         // Get name of type.
         RestrictWeaponTypeGetName(x, typename, sizeof(typename));
 
         // Add item to menu.
-        AddMenuItem(menu_zmarket_types, typename, typename);
+        menu_zmarket_types.AddItem(typename, typename);
     }
 
     // If there are no weapons, add an "(Empty)" line.
@@ -706,13 +697,13 @@ void ZMarketMenuTypes(int client)
         char empty[MENU_LINE_SMALL_LENGTH];
         Format(empty, sizeof(empty), "%t", "Menu empty");
 
-        AddMenuItem(menu_zmarket_types, "empty", empty, ITEMDRAW_DISABLED);
+        menu_zmarket_types.AddItem("empty", empty, ITEMDRAW_DISABLED);
     }
 
     // Set exit back button.
-    SetMenuExitBackButton(menu_zmarket_types, true);
+    menu_zmarket_types.ExitBackButton = true;
 
-    DisplayMenu(menu_zmarket_types, client, MENU_TIME_FOREVER);
+    menu_zmarket_types.Display(client, MENU_TIME_FOREVER);
 }
 
 /**
@@ -723,13 +714,13 @@ void ZMarketMenuTypes(int client)
  * @param client                The client index.
  * @param slot                  The slot index selected (starting from 0).
  */
-public int ZMarketMenuTypesHandle(Handle menu_zmarket_types, MenuAction action, int client, int slot)
+public int ZMarketMenuTypesHandle(Menu menu_zmarket_types, MenuAction action, int client, int slot)
 {
     // Client selected an option.
     if (action == MenuAction_Select)
     {
         char weapontype[WEAPONS_MAX_LENGTH];
-        GetMenuItem(menu_zmarket_types, slot, weapontype, sizeof(weapontype));
+        menu_zmarket_types.GetItem(slot, weapontype, sizeof(weapontype));
 
         // Get weapon index.
         int weapontypeindex = RestrictTypeToIndex(weapontype);
@@ -761,7 +752,7 @@ public int ZMarketMenuTypesHandle(Handle menu_zmarket_types, MenuAction action, 
     // Client hit "Exit" button.
     else if (action == MenuAction_End)
     {
-        CloseHandle(menu_zmarket_types);
+        delete menu_zmarket_types;
     }
     return -1;
 }
@@ -774,7 +765,7 @@ public int ZMarketMenuTypesHandle(Handle menu_zmarket_types, MenuAction action, 
 void ZMarketMenuTypeWeapons(int client)
 {
     // Create menu handle.
-    Handle menu_zmarket_typeweapons = CreateMenu(ZMarketMenuTypeWeaponsHandle);
+    Menu menu_zmarket_typeweapons = new Menu(ZMarketMenuTypeWeaponsHandle);
 
     // Get name of current weapon type.
     char typename[WEAPONS_MAX_LENGTH];
@@ -787,7 +778,7 @@ void ZMarketMenuTypeWeapons(int client)
     char display[MENU_LINE_BIG_LENGTH];
 
     // Get an array populated with all weapons of the given type.
-    Handle arrayTypeWeapons;
+    ArrayList arrayTypeWeapons;
     int count = RestrictGetTypeWeapons(g_iZMarketCurType[client], arrayTypeWeapons);
 
     SetGlobalTransTarget(client);
@@ -875,20 +866,20 @@ void ZMarketMenuTypeWeapons(int client)
 
         // Disable option if it isn't toggleable.
         bool itemdraw = ((itemprice > -1) && !restricted && (purchasemax <= 0 || purchasesleft > 0));
-        AddMenuItem(menu_zmarket_typeweapons, typeweapon, display, MenuGetItemDraw(itemdraw));
+        menu_zmarket_typeweapons.AddItem(typeweapon, display, MenuGetItemDraw(itemdraw));
     }
 
     Format(title, sizeof(title), "%t\n ", "Weapons menu zmarket types weapon type title", typename);
-    SetMenuTitle(menu_zmarket_typeweapons, title);
+    menu_zmarket_typeweapons.SetTitle(title);
 
     // Destroy the array handle.
-    CloseHandle(arrayTypeWeapons);
+    delete arrayTypeWeapons;
 
     // Set menu back button.
-    SetMenuExitBackButton(menu_zmarket_typeweapons, true);
+    menu_zmarket_typeweapons.ExitBackButton = true;
 
     // Display menu to client.
-    DisplayMenu(menu_zmarket_typeweapons, client, MENU_TIME_FOREVER);
+    menu_zmarket_typeweapons.Display(client, MENU_TIME_FOREVER);
 }
 
 /**
@@ -899,7 +890,7 @@ void ZMarketMenuTypeWeapons(int client)
  * @param client                    The client index.
  * @param slot                      The slot index selected (starting from 0).
  */
-public int ZMarketMenuTypeWeaponsHandle(Handle menu_zmarket_typeweapons, MenuAction action, int client, int slot)
+public int ZMarketMenuTypeWeaponsHandle(Menu menu_zmarket_typeweapons, MenuAction action, int client, int slot)
 {
     // Client selected an option.
     if (action == MenuAction_Select)
@@ -909,7 +900,7 @@ public int ZMarketMenuTypeWeaponsHandle(Handle menu_zmarket_typeweapons, MenuAct
         RestrictWeaponTypeGetName(g_iZMarketCurType[client], typename, sizeof(typename));
 
         char typeweapon[WEAPONS_MAX_LENGTH];
-        GetMenuItem(menu_zmarket_typeweapons, slot, typeweapon, sizeof(typeweapon));
+        menu_zmarket_typeweapons.GetItem(slot, typeweapon, sizeof(typeweapon));
 
         // Equip weapon on client.
         ZMarketEquip(client, typeweapon);
@@ -929,7 +920,7 @@ public int ZMarketMenuTypeWeaponsHandle(Handle menu_zmarket_typeweapons, MenuAct
     // Client hit "Exit" button.
     else if (action == MenuAction_End)
     {
-        CloseHandle(menu_zmarket_typeweapons);
+        delete menu_zmarket_typeweapons;
     }
     return -1;
 }
@@ -944,7 +935,7 @@ public int ZMarketMenuTypeWeaponsHandle(Handle menu_zmarket_typeweapons, MenuAct
  */
 public Action CommandPlayerBuy(int client, const char[] command, int argc)
 {
-    bool zmarketfreespawn = GetConVarBool(g_hCvarsList.CVAR_WEAPONS_ZMARKET_FREESPAWN);
+    bool zmarketfreespawn = g_hCvarsList.CVAR_WEAPONS_ZMARKET_FREESPAWN.BoolValue;
     if (!(zmarketfreespawn && !InfectHasZombieSpawned()))
         return Plugin_Continue;
 
@@ -991,7 +982,7 @@ stock bool ZMarketEquip(int client, const char[] weapon, bool rebuy = false)
     }
 
     // if zombie hasn't spawned yet we're always rebuying:
-    bool zmarketfreespawn = GetConVarBool(g_hCvarsList.CVAR_WEAPONS_ZMARKET_FREESPAWN);
+    bool zmarketfreespawn = g_hCvarsList.CVAR_WEAPONS_ZMARKET_FREESPAWN.BoolValue;
     if (zmarketfreespawn && !InfectHasZombieSpawned())
         rebuy = true;
 
@@ -1281,7 +1272,7 @@ bool ZMarketGetCurrentLoadout(int client)
 stock void ZMarketArrayToCookies(int client, char rebuyweapons[ZMARKET_REBUY_WEAPONS_SLOTS_MAX + 1][WEAPONS_MAX_LENGTH], int maxweapons)
 {
     char rebuycookiename[32];
-    Handle rebuycookie;
+    Cookie rebuycookie;
 
     // x = Weapon slot.
     for (int x = 0; x < maxweapons; x++)
@@ -1290,9 +1281,9 @@ stock void ZMarketArrayToCookies(int client, char rebuyweapons[ZMARKET_REBUY_WEA
         Format(rebuycookiename, sizeof(rebuycookiename), "%s_%d", ZMARKET_COOKIE_REBUY, x);
 
         // Find cookie handle, and retrieve its value.
-        rebuycookie = FindClientCookie(rebuycookiename);
-        SetClientCookie(client, rebuycookie, rebuyweapons[x]);
-        CloseHandle(rebuycookie);
+        rebuycookie = Cookie.Find(rebuycookiename);
+        rebuycookie.Set(client, rebuyweapons[x]);
+        delete rebuycookie;
     }
 }
 
@@ -1307,7 +1298,7 @@ stock void ZMarketArrayToCookies(int client, char rebuyweapons[ZMARKET_REBUY_WEA
 stock void ZMarketCookiesToArray(int client, char rebuyweapons[ZMARKET_REBUY_WEAPONS_SLOTS_MAX + 1][WEAPONS_MAX_LENGTH], int maxweapons, int maxlen)
 {
     char rebuycookiename[32];
-    Handle rebuycookie;
+    Cookie rebuycookie;
 
     // x = Weapon slot.
     for (int x = 0; x < maxweapons; x++)
@@ -1316,9 +1307,9 @@ stock void ZMarketCookiesToArray(int client, char rebuyweapons[ZMARKET_REBUY_WEA
         Format(rebuycookiename, sizeof(rebuycookiename), "%s_%d", ZMARKET_COOKIE_REBUY, x);
 
         // Find cookie handle, and retrieve its value.
-        rebuycookie = FindClientCookie(rebuycookiename);
-        GetClientCookie(client, rebuycookie, rebuyweapons[x], maxlen);
-        CloseHandle(rebuycookie);
+        rebuycookie = Cookie.Find(rebuycookiename);
+        rebuycookie.Get(client, rebuyweapons[x], maxlen);
+        delete rebuycookie;
     }
 }
 
@@ -1336,15 +1327,15 @@ stock void ZMarketSetRebuyCookie(int client, WeaponsSlot slot, const char[] valu
     Format(rebuycookiename, sizeof(rebuycookiename), "%s_%d", ZMARKET_COOKIE_REBUY, view_as<int>(slot));
 
     // Find cookie handle, and retrieve its value.
-    Handle rebuycookie = FindClientCookie(rebuycookiename);
-    if (rebuycookie == INVALID_HANDLE)
+    Cookie rebuycookie = Cookie.Find(rebuycookiename);
+    if (rebuycookie == null)
     {
         return;
     }
 
     // Set weapon to cookie.
-    SetClientCookie(client, rebuycookie, value);
-    CloseHandle(rebuycookie);
+    rebuycookie.Set(client, value);
+    delete rebuycookie;
 }
 
 /**
@@ -1368,7 +1359,7 @@ void ZMarketRebuy(int client, bool autorebuy = false)
         return;
     }
 
-    bool zmarketbuyzone = GetConVarBool(g_hCvarsList.CVAR_WEAPONS_ZMARKET_BUYZONE);
+    bool zmarketbuyzone = g_hCvarsList.CVAR_WEAPONS_ZMARKET_BUYZONE.BoolValue;
     if (!autorebuy && zmarketbuyzone && !WeaponsIsClientInBuyZone(client))
     {
         TranslationPrintToChat(client, "Weapons zmarket buyzone");
@@ -1389,11 +1380,11 @@ void ZMarketRebuy(int client, bool autorebuy = false)
             {
                 case Slot_Primary:
                 {
-                    GetConVarString(g_hCvarsList.CVAR_WEAPONS_ZMARKET_REBUY_PRIMARY, rebuyweapons[x], sizeof(rebuyweapons[]));
+                    g_hCvarsList.CVAR_WEAPONS_ZMARKET_REBUY_PRIMARY.GetString(rebuyweapons[x], sizeof(rebuyweapons[]));
                 }
                 case Slot_Secondary:
                 {
-                    GetConVarString(g_hCvarsList.CVAR_WEAPONS_ZMARKET_REBUY_SECONDARY, rebuyweapons[x], sizeof(rebuyweapons[]));
+                    g_hCvarsList.CVAR_WEAPONS_ZMARKET_REBUY_SECONDARY.GetString(rebuyweapons[x], sizeof(rebuyweapons[]));
                 }
             }
         }

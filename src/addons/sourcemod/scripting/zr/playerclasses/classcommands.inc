@@ -305,11 +305,11 @@ public Action ClassModifyCommand(int client, int argc)
     ClassDataTypes attributetype;
     bool isgroup;
     bool hasmultiplier;
-    Handle classlist;
+    ArrayList classlist;
 
     int classindex;
     bool listresult;
-    classlist = CreateArray();
+    classlist = new ArrayList();
 
     // Get command arguments.
     GetCmdArg(1, identifier, sizeof(identifier));
@@ -333,7 +333,7 @@ public Action ClassModifyCommand(int client, int argc)
     if (attributeflag < 0)
     {
         ReplyToCommand(client, "Invalid class attribute specified.");
-        CloseHandle(classlist);
+        delete classlist;
 
         return Plugin_Handled;
     }
@@ -393,7 +393,7 @@ public Action ClassModifyCommand(int client, int argc)
         if (overrideIndex == MZOVR_COUNT)
         {
             ReplyToCommand(client, "Unsupported attribute for motherzombies override: %s", attributename);
-            CloseHandle(classlist);
+            delete classlist;
             return Plugin_Handled;
         }
 
@@ -425,7 +425,7 @@ public Action ClassModifyCommand(int client, int argc)
                 g_MotherZombieOverrideTypes[overrideIndex] = MZ_OVERRIDE_NONE;
             }
         }
-        CloseHandle(classlist);
+        delete classlist;
         return Plugin_Handled;
     }
 
@@ -436,17 +436,17 @@ public Action ClassModifyCommand(int client, int argc)
         if (!listresult)
         {
             ReplyToCommand(client, "Failed to get classes in the specified team: \"%s\".", identifier);
-            CloseHandle(classlist);
+            delete classlist;
 
             return Plugin_Handled;
         }
 
         // Loop through all classes in the list.
-        int listsize = GetArraySize(classlist);
+        int listsize = classlist.Length;
 
         for (int i = 0; i < listsize; i++)
         {
-            classindex = GetArrayCell(classlist, i);
+            classindex = classlist.Get(i);
 
             switch (attributetype)
             {
@@ -500,7 +500,7 @@ public Action ClassModifyCommand(int client, int argc)
         if (!ClassValidateIndex(classindex))
         {
             ReplyToCommand(client, "Invalid class name specified.");
-            CloseHandle(classlist);
+            delete classlist;
 
             return Plugin_Handled;
         }
@@ -548,7 +548,7 @@ public Action ClassModifyCommand(int client, int argc)
         }
     }
 
-    CloseHandle(classlist);
+    delete classlist;
 
     return Plugin_Handled;
 }

@@ -78,7 +78,7 @@ public Action ZMenuCommand(int client, int argc)
 void ZMenuMain(int client)
 {
     // Create menu handle.
-    Handle menu_main = CreateMenu(ZMenuMainHandle);
+    Menu menu_main = new Menu(ZMenuMainHandle);
 
     SetGlobalTransTarget(client);
 
@@ -106,25 +106,25 @@ void ZMenuMain(int client)
 
     // Add items to menu.
 
-    SetMenuTitle(menu_main, title);
+    menu_main.SetTitle(title);
 
     // Disable option if client isn't an admin.
     bool admin = ZRIsClientAdmin(client);
-    AddMenuItem(menu_main, "zadmin", zadmin, MenuGetItemDraw(admin));
+    menu_main.AddItem("zadmin", zadmin, MenuGetItemDraw(admin));
 
     // Decide whether the client can use zclass.
     int zclassdraw = ClassAllowSelection(client) ? ITEMDRAW_DEFAULT : ITEMDRAW_DISABLED;
 
-    AddMenuItem(menu_main, "zclass", zclass, zclassdraw);
-    AddMenuItem(menu_main, "zcookies", zcookies);
-    AddMenuItem(menu_main, "zspawn", zspawn);
-    AddMenuItem(menu_main, "ztele", ztele);
-    AddMenuItem(menu_main, "zhp", zhp);
-    AddMenuItem(menu_main, "zmarket", zmarket);
-    AddMenuItem(menu_main, "zvolume", zvolume);
+    menu_main.AddItem("zclass", zclass, zclassdraw);
+    menu_main.AddItem("zcookies", zcookies);
+    menu_main.AddItem("zspawn", zspawn);
+    menu_main.AddItem("ztele", ztele);
+    menu_main.AddItem("zhp", zhp);
+    menu_main.AddItem("zmarket", zmarket);
+    menu_main.AddItem("zvolume", zvolume);
 
     // Display menu to client.
-    DisplayMenu(menu_main, client, MENU_TIME_FOREVER);
+    menu_main.Display(client, MENU_TIME_FOREVER);
 }
 
 /**
@@ -136,7 +136,7 @@ void ZMenuMain(int client)
  * @param client    The client index.
  * @param slot      The menu slot selected. (starting from 0)
  */
-public int ZMenuMainHandle(Handle menu, MenuAction action, int client, int slot)
+public int ZMenuMainHandle(Menu menu, MenuAction action, int client, int slot)
 {
     // Client selected an option.
     if (action == MenuAction_Select)
@@ -214,7 +214,7 @@ public int ZMenuMainHandle(Handle menu, MenuAction action, int client, int slot)
     // Client exited menu.
     if (action == MenuAction_End)
     {
-        CloseHandle(menu);
+        delete menu;
     }
     return -1;
 }
@@ -229,10 +229,10 @@ public int ZMenuMainHandle(Handle menu, MenuAction action, int client, int slot)
  * @param dead      If true, only clients that are dead will be displayed.
  * @param any       Title is a translations phrase.
  */
-stock void MenuClientList(int client,  MenuHandler handler, bool team = false, bool alive = false, bool dead = false, any ...)
+stock void MenuClientList(int client, MenuHandler handler, bool team = false, bool alive = false, bool dead = false, any ...)
 {
     // Create menu handle.
-    Handle menu_clients = CreateMenu(handler);
+    Menu menu_clients = new Menu(handler);
 
     // Set client as translation target.
     SetGlobalTransTarget(client);
@@ -242,7 +242,7 @@ stock void MenuClientList(int client,  MenuHandler handler, bool team = false, b
     VFormat(translation, sizeof(translation), "%t", 6);
 
     // Set menu title to the translated phrase.
-    SetMenuTitle(menu_clients, translation);
+    menu_clients.SetTitle(translation);
 
     char clientoption[MENU_LINE_REG_LENGTH];
     char clientuserid[8];
@@ -281,7 +281,7 @@ stock void MenuClientList(int client,  MenuHandler handler, bool team = false, b
         IntToString(GetClientUserId(x), clientuserid, sizeof(clientuserid));
 
         // Add option to menu.
-        AddMenuItem(menu_clients, clientuserid, clientoption);
+        menu_clients.AddItem(clientuserid, clientoption);
 
         // Increment count.
         count++;
@@ -297,14 +297,14 @@ stock void MenuClientList(int client,  MenuHandler handler, bool team = false, b
         char empty[64];
         Format(empty, sizeof(empty), "%t", "Menu empty");
 
-        AddMenuItem(menu_clients, "empty", empty, ITEMDRAW_DISABLED);
+        menu_clients.AddItem("empty", empty, ITEMDRAW_DISABLED);
     }
 
     // Create a "Back" button to the main admin menu.
-    SetMenuExitBackButton(menu_clients, true);
+    menu_clients.ExitBackButton = true;
 
     // Send menu.
-    DisplayMenu(menu_clients, client, MENU_TIME_FOREVER);
+    menu_clients.Display(client, MENU_TIME_FOREVER);
 }
 
 /**
@@ -314,11 +314,11 @@ stock void MenuClientList(int client,  MenuHandler handler, bool team = false, b
  * @param slot  The menu slot that was selected.
  * @return      The client index, 0 if the selected client is no longer in the server.
  */
-stock int MenuGetClientIndex(Handle menu, int slot)
+stock int MenuGetClientIndex(Menu menu, int slot)
 {
     // Get menu slot's information.
     char clientuserid[8];
-    GetMenuItem(menu, slot, clientuserid, sizeof(clientuserid));
+    menu.GetItem(slot, clientuserid, sizeof(clientuserid));
 
     // Return the targetted client through their userid which was set into the menu slot's info param.
     return GetClientOfUserId(StringToInt(clientuserid));

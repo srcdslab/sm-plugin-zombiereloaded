@@ -46,17 +46,17 @@ void ClassOnCookiesCreate()
     ClassOverlayOnCookiesCreate();
 
     // Create cookie handles only if they don't exist.
-    if (g_hClassCookieClassSelected[ZR_CLASS_TEAM_HUMANS] == INVALID_HANDLE)
+    if (g_hClassCookieClassSelected[ZR_CLASS_TEAM_HUMANS] == null)
     {
-        g_hClassCookieClassSelected[ZR_CLASS_TEAM_HUMANS] = RegClientCookie("zr_humanclass", "The last human class selected.", CookieAccess_Protected);
+        g_hClassCookieClassSelected[ZR_CLASS_TEAM_HUMANS] = new Cookie("zr_humanclass", "The last human class selected.", CookieAccess_Protected);
     }
-    if (g_hClassCookieClassSelected[ZR_CLASS_TEAM_ZOMBIES] == INVALID_HANDLE)
+    if (g_hClassCookieClassSelected[ZR_CLASS_TEAM_ZOMBIES] == null)
     {
-        g_hClassCookieClassSelected[ZR_CLASS_TEAM_ZOMBIES] = RegClientCookie("zr_zombieclass", "The last zombie class selected.", CookieAccess_Protected);
+        g_hClassCookieClassSelected[ZR_CLASS_TEAM_ZOMBIES] = new Cookie("zr_zombieclass", "The last zombie class selected.", CookieAccess_Protected);
     }
-    if (g_hClassCookieClassSelected[ZR_CLASS_TEAM_ADMINS] == INVALID_HANDLE)
+    if (g_hClassCookieClassSelected[ZR_CLASS_TEAM_ADMINS] == null)
     {
-        g_hClassCookieClassSelected[ZR_CLASS_TEAM_ADMINS] = RegClientCookie("zr_adminclass", "The last admin mode class selected.", CookieAccess_Protected);
+        g_hClassCookieClassSelected[ZR_CLASS_TEAM_ADMINS] = new Cookie("zr_adminclass", "The last admin mode class selected.", CookieAccess_Protected);
     }
 }
 
@@ -241,7 +241,7 @@ void ClassOnClientSpawn(int client)
         ClassPlayerInAdminMode[client] = false;
 
         // Get random class setting.
-        bool randomclass = GetConVarBool(g_hCvarsList.CVAR_CLASSES_RANDOM);
+        bool randomclass = g_hCvarsList.CVAR_CLASSES_RANDOM.BoolValue;
 
         // Assign random classes if enabled. Always do it for bots.
         if (randomclass || IsFakeClient(client))
@@ -277,8 +277,8 @@ void ClassOnClientSpawn(int client)
         }
 
         // Display class menu if either menu cvar is set.
-        bool menuspawn = GetConVarBool(g_hCvarsList.CVAR_CLASSES_MENU_SPAWN);
-        bool menujoin = GetConVarBool(g_hCvarsList.CVAR_CLASSES_MENU_JOIN);
+        bool menuspawn = g_hCvarsList.CVAR_CLASSES_MENU_SPAWN.BoolValue;
+        bool menujoin = g_hCvarsList.CVAR_CLASSES_MENU_JOIN.BoolValue;
         if (menuspawn || (menujoin && !ClassPlayerSpawned[client]))
         {
             ClassPlayerSpawned[client] = true;
@@ -292,7 +292,7 @@ void ClassOnClientSpawn(int client)
     // Note: Class attributes are applied in ClassOnClientSpawnPost.
 
     // Check if instant class change cvar is set.
-    float instantspawn = GetConVarFloat(g_hCvarsList.CVAR_CLASSES_CHANGE_TIMELIMIT);
+    float instantspawn = g_hCvarsList.CVAR_CLASSES_CHANGE_TIMELIMIT.FloatValue;
     if (instantspawn > 0)
     {
         // Allow instant class change.
@@ -371,7 +371,7 @@ void ClassOnClientInfected(int client, bool motherzombie = false) //responsavel 
         isadmin = ZRIsClientAdmin(client) ? ZR_CLASS_FLAG_ADMIN_ONLY : 0;
 
         // Get default mother zombie setting.
-        GetConVarString(g_hCvarsList.CVAR_CLASSES_DEFAULT_M_ZOMB, motherzombiesetting, sizeof(motherzombiesetting));
+        g_hCvarsList.CVAR_CLASSES_DEFAULT_M_ZOMB.GetString(motherzombiesetting, sizeof(motherzombiesetting));
 
         if (strcmp(motherzombiesetting, "disabled", false) == 0)
         {

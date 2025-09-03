@@ -25,17 +25,17 @@
  * ============================================================================
  */
 
-Handle ZTeleCvar_Zombie;
-Handle ZTeleCvar_HumanBefore;
-Handle ZTeleCvar_HumanAfter;
-Handle ZTeleCvar_DelayZombie;
-Handle ZTeleCvar_DelayHuman;
-Handle ZTeleCvar_MaxZombie;
-Handle ZTeleCvar_MaxHuman;
-Handle ZTeleCvar_AutoCancel;
-Handle ZTeleCvar_AutoCancelDistance;
-Handle ZTeleCvar_RandomSpawn;
-Handle ZTeleCvar_Disconnect;
+ConVar ZTeleCvar_Zombie;
+ConVar ZTeleCvar_HumanBefore;
+ConVar ZTeleCvar_HumanAfter;
+ConVar ZTeleCvar_DelayZombie;
+ConVar ZTeleCvar_DelayHuman;
+ConVar ZTeleCvar_MaxZombie;
+ConVar ZTeleCvar_MaxHuman;
+ConVar ZTeleCvar_AutoCancel;
+ConVar ZTeleCvar_AutoCancelDistance;
+ConVar ZTeleCvar_RandomSpawn;
+ConVar ZTeleCvar_Disconnect;
 
 void ZTele_OnCvarsCreate()
 {
@@ -54,55 +54,55 @@ void ZTele_OnCvarsCreate()
 
 bool ZTele_ZombieCanTeleport()
 {
-    return GetConVarBool(ZTeleCvar_Zombie);
+    return ZTeleCvar_Zombie.BoolValue;
 }
 
 bool ZTele_HumanCanTeleportBeforeInfection()
 {
-    return GetConVarBool(ZTeleCvar_HumanBefore);
+    return ZTeleCvar_HumanBefore.BoolValue;
 }
 
 bool ZTele_HumanCanTeleportAfterInfection()
 {
-    return GetConVarBool(ZTeleCvar_HumanAfter);
+    return ZTeleCvar_HumanAfter.BoolValue;
 }
 
 int ZTele_GetZombieDelay()
 {
-    return GetConVarInt(ZTeleCvar_DelayZombie);
+    return ZTeleCvar_DelayZombie.IntValue;
 }
 
 int ZTele_GetHumanDelay()
 {
-    return GetConVarInt(ZTeleCvar_DelayHuman);
+    return ZTeleCvar_DelayHuman.IntValue;
 }
 
 int ZTele_GetZombieLimit()
 {
-    return GetConVarInt(ZTeleCvar_MaxZombie);
+    return ZTeleCvar_MaxZombie.IntValue;
 }
 
 int ZTele_GetHumanLimit()
 {
-    return GetConVarInt(ZTeleCvar_MaxHuman);
+    return ZTeleCvar_MaxHuman.IntValue;
 }
 
 bool ZTele_IsAutoCancelEnabled()
 {
-    return GetConVarBool(ZTeleCvar_AutoCancel);
+    return ZTeleCvar_AutoCancel.BoolValue;
 }
 
 float ZTele_GetAutoCancelDistance()
 {
-    return GetConVarFloat(ZTeleCvar_AutoCancelDistance);
+    return ZTeleCvar_AutoCancelDistance.FloatValue;
 }
 
 bool ZTele_IsRandomSpawnEnabled()
 {
-    return GetConVarBool(ZTeleCvar_RandomSpawn);
+    return ZTeleCvar_RandomSpawn.BoolValue;
 }
 
 bool ZTele_ChosenClientReplaceDisconnected()
 {
-    return GetConVarBool(ZTeleCvar_Disconnect);
+    return ZTeleCvar_Disconnect.BoolValue;
 }

@@ -149,17 +149,19 @@ void VEffectsShakeClientScreen(int client, float amplitude, float frequency, flo
 
     if (GetUserMessageType() == UM_Protobuf)
     {
-        PbSetInt(hShake, "command", 0);
-        PbSetFloat(hShake, "local_amplitude", amplitude);
-        PbSetFloat(hShake, "frequency", frequency);
-        PbSetFloat(hShake, "duration", duration);
+    	Protobuf pb = UserMessageToProtobuf(hShake);
+        pb.SetInt("command", 0);
+        pb.SetFloat("local_amplitude", amplitude);
+        pb.SetFloat("frequency", frequency);
+        pb.SetFloat("duration", duration);
     }
     else
     {
-        BfWriteByte(hShake, 0);
-        BfWriteFloat(hShake, amplitude);
-        BfWriteFloat(hShake, frequency);
-        BfWriteFloat(hShake, duration);
+    	BfWrite bf = UserMessageToBfWrite(hShake);
+        bf.WriteByte(0);
+        bf.WriteFloat(amplitude);
+        bf.WriteFloat(frequency);
+        bf.WriteFloat(duration);
     }
 
     // End usermsg and send to client.

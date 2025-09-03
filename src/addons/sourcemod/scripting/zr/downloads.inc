@@ -28,7 +28,7 @@
 /**
  * Array that stores a list of downloadable files.
  */
-Handle arrayDownloads = INVALID_HANDLE;
+ArrayList arrayDownloads = null;
 
 /**
  * Prepare all model/download data.
@@ -66,19 +66,19 @@ void DownloadsLoad()
 
     char downloadpath[PLATFORM_MAX_PATH];
 
-    int downloads = downloadcount = GetArraySize(arrayDownloads);
+    int downloads = downloadcount = arrayDownloads.Length;
 
     // x = download array index.
     for (int x = 0; x < downloads; x++)
     {
         // Get download path
-        GetArrayString(arrayDownloads, x, downloadpath, sizeof(downloadpath));
+        arrayDownloads.GetString(x, downloadpath, sizeof(downloadpath));
 
         // If file doesn't exist, then remove, log, and stop.
         if (!FileExists(downloadpath, false))
         {
             // Remove client from array.
-            RemoveFromArray(arrayDownloads, x);
+           	arrayDownloads.Erase(x);
 
             // Subtract one from count.
             downloads--;

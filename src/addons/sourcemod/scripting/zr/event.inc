@@ -82,7 +82,7 @@ void EventsHook(bool unhook = false)
  * @param name      Name of the event.
  * @dontBroadcast   If true, event is broadcasted to all clients, false if not.
  */
-public Action EventRoundStart(Handle event, const char[] name, bool dontBroadcast)
+public Action EventRoundStart(Event event, const char[] name, bool dontBroadcast)
 {
     // Forward event to sub-modules.
     OverlaysOnRoundStart();
@@ -104,7 +104,7 @@ public Action EventRoundStart(Handle event, const char[] name, bool dontBroadcas
  * @param name      Name of the event.
  * @dontBroadcast   If true, event is broadcasted to all clients, false if not.
  */
-public Action EventRoundFreezeEnd(Handle event, const char[] name, bool dontBroadcast)
+public Action EventRoundFreezeEnd(Event event, const char[] name, bool dontBroadcast)
 {
     g_bRoundFullyStarted = true;
 
@@ -123,12 +123,12 @@ public Action EventRoundFreezeEnd(Handle event, const char[] name, bool dontBroa
  * @param name      Name of the event.
  * @dontBroadcast   If true, event is broadcasted to all clients, false if not.
  */
-public Action EventRoundEnd(Handle event, const char[] name, bool dontBroadcast)
+public Action EventRoundEnd(Event event, const char[] name, bool dontBroadcast)
 {
     g_bRoundFullyStarted = false;
 
     // Get all required event info.
-    int reason = GetEventInt(event, "reason");
+    int reason = event.GetInt("reason");
 
     // Forward event to modules.
     WeaponsOnRoundEnd();
@@ -150,11 +150,11 @@ public Action EventRoundEnd(Handle event, const char[] name, bool dontBroadcast)
  * @param name      Name of the event.
  * @dontBroadcast   If true, event is broadcasted to all clients, false if not.
  */
-public Action EventPlayerTeam(Handle event, const char[] name, bool dontBroadcast)
+public Action EventPlayerTeam(Event event, const char[] name, bool dontBroadcast)
 {
     // Get all required event info.
-    int index = GetClientOfUserId(GetEventInt(event, "userid"));
-    int team = GetEventInt(event, "team");
+    int index = GetClientOfUserId(event.GetInt("userid"));
+    int team = event.GetInt("team");
 
     // Forward event to modules.
     InfectOnClientTeam(index, team);
@@ -175,10 +175,10 @@ public Action EventPlayerTeam(Handle event, const char[] name, bool dontBroadcas
  * @param name      Name of the event.
  * @dontBroadcast   If true, event is broadcasted to all clients, false if not.
  */
-public Action EventPlayerSpawn(Handle event, const char[] name, bool dontBroadcast)
+public Action EventPlayerSpawn(Event event, const char[] name, bool dontBroadcast)
 {
     // Get all required event info.
-    int index = GetClientOfUserId(GetEventInt(event, "userid"));
+    int index = GetClientOfUserId(event.GetInt("userid"));
 
     // If client isn't in-game, then stop.
     if (index <= 0 || index > MaxClients || !IsClientConnected(index) || !IsClientInGame(index))
@@ -241,11 +241,11 @@ public Action EventPlayerSpawnPost(Handle timer, any client)
  * @param name      Name of the event.
  * @dontBroadcast   If true, event is broadcasted to all clients, false if not.
  */
-public Action EventPlayerDeath(Handle event, const char[] name, bool dontBroadcast)
+public Action EventPlayerDeath(Event event, const char[] name, bool dontBroadcast)
 {
     // Get the weapon name.
     char weapon[WEAPONS_MAX_LENGTH];
-    GetEventString(event, "weapon", weapon, sizeof(weapon));
+    event.GetString("weapon", weapon, sizeof(weapon));
 
     // If client is being infected, then stop.
     if (strcmp(weapon, "zombie_claws_of_death", false) == 0)
@@ -254,8 +254,8 @@ public Action EventPlayerDeath(Handle event, const char[] name, bool dontBroadca
     }
 
     // Get all required event info.
-    int index = GetClientOfUserId(GetEventInt(event, "userid"));
-    int attacker = GetClientOfUserId(GetEventInt(event, "attacker"));
+    int index = GetClientOfUserId(event.GetInt("userid"));
+    int attacker = GetClientOfUserId(event.GetInt("attacker"));
 
     // Validate client.
     if (!ZRIsClientValid(index))
@@ -291,10 +291,10 @@ public Action EventPlayerDeath(Handle event, const char[] name, bool dontBroadca
  * @param name      Name of the event.
  * @dontBroadcast   If true, event is broadcasted to all clients, false if not.
  */
-public Action EventPlayerJump(Handle event, const char[] name, bool dontBroadcast)
+public Action EventPlayerJump(Event event, const char[] name, bool dontBroadcast)
 {
     // Get all required event info.
-    int index = GetClientOfUserId(GetEventInt(event, "userid"));
+    int index = GetClientOfUserId(event.GetInt("userid"));
 
     // Fire post player_jump event.
     CreateTimer(0.0, EventPlayerJumpPost, index);

@@ -118,7 +118,7 @@ void AntiStickOnClientDisconnect(int client)
 public void AntiStickStartTouch(int client, int entity)
 {
     // If antistick is disabled, then stop.
-    bool antistick = GetConVarBool(g_hCvarsList.CVAR_ANTISTICK);
+    bool antistick = g_hCvarsList.CVAR_ANTISTICK.BoolValue;
     if (!antistick)
     {
         return;

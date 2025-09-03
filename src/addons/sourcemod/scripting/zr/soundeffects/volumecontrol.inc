@@ -37,8 +37,8 @@
 /**
  * Menu Cookies Handler.
  */
-Handle zhZSoundVolume = INVALID_HANDLE;
-Handle zhZAmbientVolume = INVALID_HANDLE;
+Cookie zhZSoundVolume = null;
+Cookie zhZAmbientVolume = null;
 
 
 /**
@@ -60,11 +60,11 @@ void VolumeInit()
 
 void VolumeOnCookiesCreate()
 {
-	if (zhZSoundVolume == INVALID_HANDLE) 
-		zhZSoundVolume = RegClientCookie(ZOMBIE_COOKIE_VOLUME, "Control Zombie Sound.", CookieAccess_Protected);
+	if (zhZSoundVolume == null) 
+		zhZSoundVolume = new Cookie(ZOMBIE_COOKIE_VOLUME, "Control Zombie Sound.", CookieAccess_Protected);
 
-	if (zhZAmbientVolume == INVALID_HANDLE) 
-		zhZAmbientVolume = RegClientCookie(AMBIENT_COOKIE_VOLUME, "Control Ambient Sound.", CookieAccess_Protected);
+	if (zhZAmbientVolume == null) 
+		zhZAmbientVolume = new Cookie(AMBIENT_COOKIE_VOLUME, "Control Ambient Sound.", CookieAccess_Protected);
 }
 
 void VolumeOnCookiesCached(int client)
@@ -72,7 +72,7 @@ void VolumeOnCookiesCached(int client)
 	char sValue[8];
 
 	sValue[0] = '\0';
-	GetClientCookie(client, zhZSoundVolume, sValue, sizeof(sValue));
+	zhZSoundVolume.Get(client, sValue, sizeof(sValue));
 	if (sValue[0] == '\0')
 	{
         int seffectsvolume = RoundToNearest(SEffects_GetVolume() * 100.0);
@@ -81,7 +81,7 @@ void VolumeOnCookiesCached(int client)
 	SetZombieVoiceVolume(client, StringToInt(sValue));
 
 	sValue[0] = '\0';
-	GetClientCookie(client, zhZAmbientVolume, sValue, sizeof(sValue));
+	zhZAmbientVolume.Get(client, sValue, sizeof(sValue));
 	if (sValue[0] == '\0') 
 	{
         int ambientvolume = RoundToNearest(SEffects_GetAmbientSoundsVolume() * 100.0);
@@ -102,7 +102,7 @@ public Action Command_ZVolume(int client, int args)
 
 public void VolumeControlMenu(int client)
 {
-	Menu menu = CreateMenu(VolumeControlMenuHandler, MENU_ACTIONS_DEFAULT);
+	Menu menu = new Menu(VolumeControlMenuHandler, MENU_ACTIONS_DEFAULT);
 
 	char sMenuTitle[128];
 	Format(sMenuTitle, sizeof(sMenuTitle), "%t", "Volume_Menu_Title");
@@ -178,7 +178,7 @@ public Action Command_ZSound(int client, int args)
 
 public void ZombieVoiceVolumeMenu(int client)
 {
-	Menu menu = CreateMenu(ZombieVoiceVolumeMenuHandler, MENU_ACTIONS_DEFAULT);
+	Menu menu = new Menu(ZombieVoiceVolumeMenuHandler, MENU_ACTIONS_DEFAULT);
 
 	char sMenuTitle[128];
 	Format(sMenuTitle, sizeof(sMenuTitle), "%t\n%t", "ZombieVoice_Title_Menu", RoundToNearest(zfZSoundVolume[client] * 100), "ZombieVoice_CommandUsage");
@@ -247,7 +247,7 @@ public void SetZombieVoiceVolume(int client, int volume)
 
 	char sValue[8];
 	IntToString(volume, sValue, sizeof(sValue));
-	SetClientCookie(client, zhZSoundVolume, sValue);
+	zhZSoundVolume.Set(client, sValue);
 
 	if (IsClientInGame(client))
 		TranslationPrintToChat(client, "Set_ZombieVoice_Volume", volume);
@@ -281,7 +281,7 @@ public Action Command_ZAmbient(int client, int args)
 
 public void AmbientVolumeMenu(int client)
 {
-	Menu menu = CreateMenu(AmbientVolumeMenuHandler, MENU_ACTIONS_DEFAULT);
+	Menu menu = new Menu(AmbientVolumeMenuHandler, MENU_ACTIONS_DEFAULT);
 
 	char sMenuTitle[128];
 	Format(sMenuTitle, sizeof(sMenuTitle), "%t\n%t", "Ambient_Title_Menu", RoundToNearest(zfAmbientVolume[client] * 100), "Ambient_CommandUsage");
@@ -350,7 +350,7 @@ public void SetAmbientVolume(int client, int volume)
 
 	char sValue[8];
 	IntToString(volume, sValue, sizeof(sValue));
-	SetClientCookie(client, zhZAmbientVolume, sValue);
+	zhZAmbientVolume.Set(client, sValue);
 
 	if (IsClientInGame(client))
 		TranslationPrintToChat(client, "Set_Ambient_Volume", volume);

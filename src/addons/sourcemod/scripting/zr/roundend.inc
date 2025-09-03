@@ -85,7 +85,7 @@ enum RoundEndOutcome
 /**
  * Global variable to store round win timer handle.
  */
-Handle g_tRoundEnd = INVALID_HANDLE;
+Handle g_tRoundEnd = null;
 
 bool g_SourceTVManagerLoaded = false;
 
@@ -130,7 +130,7 @@ void RoundEndOnLibraryRemoved(const char[] name)
 void RoundEndOnMapStart()
 {
     // Reset timer handle.
-    g_tRoundEnd = INVALID_HANDLE;
+    g_tRoundEnd = null;
 }
 
 /**
@@ -168,13 +168,13 @@ void RoundEndOnRoundStart()
     RoundEndOverlayStop();
 
     // If round end timer is running, then kill it.
-    if (g_tRoundEnd != INVALID_HANDLE)
+    if (g_tRoundEnd != null)
     {
         // Kill timer.
         KillTimer(g_tRoundEnd);
 
         // Reset timer handle.
-        g_tRoundEnd = INVALID_HANDLE;
+        g_tRoundEnd = null;
     }
 }
 
@@ -185,7 +185,7 @@ void RoundEndOnRoundFreezeEnd()
 {
     // Calculate round length, in seconds.
     // Get mp_roundtime. (in minutes)
-    float roundtime = GetConVarFloat(FindConVar("mp_roundtime"));
+    float roundtime = FindConVar("mp_roundtime").FloatValue;
 
     // Convert to seconds.
     roundtime *= 60.0;
@@ -202,13 +202,13 @@ void RoundEndOnRoundFreezeEnd()
 void RoundEndOnRoundEnd(int reason)
 {
     // If round end timer is running, then kill it.
-    if (g_tRoundEnd != INVALID_HANDLE)
+    if (g_tRoundEnd != null)
     {
         // Kill timer.
         KillTimer(g_tRoundEnd);
 
         // Reset timer handle.
-        g_tRoundEnd = INVALID_HANDLE;
+        g_tRoundEnd = null;
     }
 
     // Tell plugin no zombies have been spawned.
@@ -243,7 +243,7 @@ void RoundEndOnRoundEnd(int reason)
     RoundEndDisplayStats();
 
     // Balance teams if enabled.
-    if (GetConVarBool(g_hCvarsList.CVAR_ROUNDEND_BALANCE_TEAMS))
+    if (g_hCvarsList.CVAR_ROUNDEND_BALANCE_TEAMS.BoolValue)
     {
         RoundEndBalanceTeams();
     }
@@ -251,7 +251,7 @@ void RoundEndOnRoundEnd(int reason)
 
 void RoundEndDisplayStats()
 {
-    AuthIdType authType = view_as<AuthIdType>(GetConVarInt(g_hCvarsList.CVAR_ROUNDEND_AUTHID_TYPE));
+    AuthIdType authType = view_as<AuthIdType>(g_hCvarsList.CVAR_ROUNDEND_AUTHID_TYPE.IntValue);
 
     for (int player = 1; player <= MaxClients; player++)
     {
@@ -325,8 +325,8 @@ RoundEndOutcome RoundEndReasonToOutcome(int reason)
  */
 public Action RoundEndTimer(Handle timer)
 {
-    // Set the global timer handle variable to INVALID_HANDLE.
-    g_tRoundEnd = INVALID_HANDLE;
+    // Set the global timer handle variable to null.
+    g_tRoundEnd = null;
 
     // If there aren't clients on both teams, then stop.
     if (!ZRTeamHasClients())
@@ -334,7 +334,7 @@ public Action RoundEndTimer(Handle timer)
         return Plugin_Continue;
     }
 
-    bool zombies_win = GetConVarBool(g_hCvarsList.CVAR_ROUNDEND_ZOMBIES_WIN);
+    bool zombies_win = g_hCvarsList.CVAR_ROUNDEND_ZOMBIES_WIN.BoolValue;
     if (zombies_win)
         RoundEndTerminateRound(ROUNDEND_DELAY, ZombiesWin);
     else
@@ -434,14 +434,14 @@ void RoundEndTerminateRound(float delay, RoundEndOutcome outcome = Restart)
 void RoundEndBalanceTeams()
 {
     // Create eligible player list.
-    Handle arrayEligibleClients = CreateArray();
+    ArrayList arrayEligibleClients = new ArrayList();
     int eligibleclients = ZRCreateEligibleClientList(arrayEligibleClients, true);
 
     // If there are no eligible client's then stop.
     if (!eligibleclients)
     {
         // Destroy handle.
-        CloseHandle(arrayEligibleClients);
+        delete arrayEligibleClients;
 
         return;
     }
@@ -455,7 +455,7 @@ void RoundEndBalanceTeams()
     for (int x = 0; x < eligibleclients; x++)
     {
         // Get client stored in array index.
-        client = GetArrayCell(arrayEligibleClients, x);
+        client = arrayEligibleClients.Get(x);
 
         // Switch client to T
         CS_SwitchTeam(client, CS_TEAM_T);
@@ -468,14 +468,14 @@ void RoundEndBalanceTeams()
     for (int x = 0; x < eligibleclients; x += 2)
     {
         // Get client stored in array index.
-        client = GetArrayCell(arrayEligibleClients, x);
+        client = arrayEligibleClients.Get(x);
 
         // Switch client to CT
         CS_SwitchTeam(client, CS_TEAM_CT);
     }
 
     // Destroy handle.
-    CloseHandle(arrayEligibleClients);
+    delete arrayEligibleClients;
 }
 
 /**
@@ -487,7 +487,7 @@ void RoundEndBalanceTeams()
 void RoundEndOverlayStart(RoundEndOutcome outcome)
 {
     // If round end overlays are disabled, then stop.
-    bool overlay = GetConVarBool(g_hCvarsList.CVAR_ROUNDEND_OVERLAY);
+    bool overlay = g_hCvarsList.CVAR_ROUNDEND_OVERLAY.BoolValue;
     if (!overlay)
     {
         return;
@@ -500,12 +500,12 @@ void RoundEndOverlayStart(RoundEndOutcome outcome)
         // Show "zombies win" overlay.
         case ZombiesWin:
         {
-            GetConVarString(g_hCvarsList.CVAR_ROUNDEND_OVERLAY_ZOMBIE, overlaypath, sizeof(overlaypath));
+            g_hCvarsList.CVAR_ROUNDEND_OVERLAY_ZOMBIE.GetString(overlaypath, sizeof(overlaypath));
         }
         // Show "humans win" overlay.
         case HumansWin:
         {
-            GetConVarString(g_hCvarsList.CVAR_ROUNDEND_OVERLAY_HUMAN, overlaypath, sizeof(overlaypath));
+            g_hCvarsList.CVAR_ROUNDEND_OVERLAY_HUMAN.GetString(overlaypath, sizeof(overlaypath));
         }
         // Show no overlay.
         default:

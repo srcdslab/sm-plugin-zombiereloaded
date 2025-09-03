@@ -33,7 +33,7 @@ bool g_bAmbientSounds;
 /**
  * Global variable to store ambient sounds timer handle.
  */
-Handle tAmbientSounds = INVALID_HANDLE;
+Handle tAmbientSounds = null;
 
 /**
  * Array for flagging client to play sound.
@@ -119,7 +119,7 @@ bool AmbientSoundsValidateConfig()
 void AmbientSoundsOnMapStart()
 {
     // Reset timer handle.
-    tAmbientSounds = INVALID_HANDLE;
+    tAmbientSounds = null;
 }
 
 /**
@@ -179,10 +179,10 @@ void AmbientSoundsOnClientSpawnPost(int client)
 void AmbientSoundsRestart()
 {
     // If timer is running, kill it.
-    if (tAmbientSounds != INVALID_HANDLE)
+    if (tAmbientSounds != null)
     {
         KillTimer(tAmbientSounds);
-        tAmbientSounds = INVALID_HANDLE;
+        tAmbientSounds = null;
     }
 
     // If ambience is disabled, then stop.

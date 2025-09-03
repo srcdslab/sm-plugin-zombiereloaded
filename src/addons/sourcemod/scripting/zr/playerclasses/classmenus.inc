@@ -40,7 +40,7 @@
  */
 void ClassMenuMain(int client)
 {
-    Handle menu = CreateMenu(ClassMenuMainHandle);
+    Menu menu = new Menu(ClassMenuMainHandle);
 
     SetGlobalTransTarget(client);
 
@@ -100,7 +100,7 @@ void ClassMenuMain(int client)
     {
         // Notify the player.
         Format(inadminmnode, sizeof(inadminmnode), "%t\n", "Classes admin mode enabled");
-        AddMenuItem(menu, "", inadminmnode, ITEMDRAW_RAWLINE);
+        menu.AddItem("", inadminmnode, ITEMDRAW_RAWLINE);
     }
 
     // List zombie class options.
@@ -124,7 +124,7 @@ void ClassMenuMain(int client)
     }
 
     // Add item to list.
-    AddMenuItem(menu, "", zombieselect, zombie_itemdraw);
+    menu.AddItem("", zombieselect, zombie_itemdraw);
 
 
     // List human class options.
@@ -148,7 +148,7 @@ void ClassMenuMain(int client)
     }
 
     // Add item to list.
-    AddMenuItem(menu, "", humanselect, human_itemdraw);
+    menu.AddItem("", humanselect, human_itemdraw);
 
 
     // List admin class options, if they exist.
@@ -174,7 +174,7 @@ void ClassMenuMain(int client)
         }
 
         // Add item to list.
-        AddMenuItem(menu, "", adminselect, admin_itemdraw);
+        menu.AddItem("", adminselect, admin_itemdraw);
 
         // Set admin mode status string.
         if (ClassPlayerInAdminMode[client])
@@ -187,24 +187,24 @@ void ClassMenuMain(int client)
         }
 
         // Spacer. ITEMDRAW_SPACER not used because it use a slot.
-        AddMenuItem(menu, "", " ", ITEMDRAW_RAWLINE);
+        menu.AddItem("", " ", ITEMDRAW_RAWLINE);
 
         // Show admin mode toggle option.
         Format(toggleadminmode, sizeof(toggleadminmode), "%t\n    %s", "Classes menu admin mode toggle", adminmode);
-        AddMenuItem(menu, "", toggleadminmode, admin_itemdraw);
+        menu.AddItem("", toggleadminmode, admin_itemdraw);
     }
 
     Format(title, sizeof(title), "%t\n", "Classes menu title");
-    SetMenuTitle(menu, title);
+    menu.SetTitle(title);
 
-    SetMenuExitBackButton(menu, true);
-    DisplayMenu(menu, client, MENU_TIME_FOREVER);
+    menu.ExitBackButton = true;
+    menu.Display(client, MENU_TIME_FOREVER);
 }
 
 /**
  * Main class menu handler.
  */
-public int ClassMenuMainHandle(Handle menu, MenuAction action, int client, int slot)
+public int ClassMenuMainHandle(Menu menu, MenuAction action, int client, int slot)
 {
     switch (action)
     {
@@ -233,7 +233,7 @@ public int ClassMenuMainHandle(Handle menu, MenuAction action, int client, int s
         }
         case MenuAction_End:
         {
-            CloseHandle(menu);
+            delete menu;
         }
         case MenuAction_Cancel:
         {
@@ -261,7 +261,7 @@ public int ClassMenuMainHandle(Handle menu, MenuAction action, int client, int s
  */
 void ClassMenuSelect(int client, int teamid)
 {
-    Handle menu = CreateMenu(ClassMenuSelectHandle);
+    Menu menu = new Menu(ClassMenuSelectHandle);
     int arraycount;
     int classindex;
 
@@ -289,10 +289,10 @@ void ClassMenuSelect(int client, int teamid)
             Format(title, sizeof(title), "%t:\n", "Classes menu select admin");
         }
     }
-    SetMenuTitle(menu, title);
+    menu.SetTitle(title);
 
     // Create buffer array.
-    Handle classarray = CreateArray();
+    ArrayList classarray = new ArrayList();
 
     // Set up filtering
     // ----------------
@@ -314,45 +314,45 @@ void ClassMenuSelect(int client, int teamid)
     if (ClassAddToArray(classarray, teamid, filter))
     {
         // Get number of classes.
-        arraycount = GetArraySize(classarray);
+        arraycount = classarray.Length;
 
         // Loop through each class.
         for (int i = 0; i < arraycount; i++)
         {
             // Get index, name and description.
-            classindex = GetArrayCell(classarray, i);
+            classindex = classarray.Get(i);
             ClassGetIdentifier(classindex, classident, sizeof(classident), ZR_CLASS_CACHE_MODIFIED);
             ClassGetName(classindex, classname, sizeof(classname), ZR_CLASS_CACHE_MODIFIED);
             ClassGetDescription(classindex, description, sizeof(description), ZR_CLASS_CACHE_MODIFIED);
 
             // Add menu item. Using extra spaces for indention on the second line.
             Format(menuitem, sizeof(menuitem), "%s\n    %s", classname, description);
-            AddMenuItem(menu, classident, menuitem);
+            menu.AddItem(classident, menuitem);
         }
     }
 
     // Destroy array.
-    CloseHandle(classarray);
+    delete classarray;
 
-    SetMenuExitBackButton(menu, true);
-    DisplayMenu(menu, client, MENU_TIME_FOREVER);
+    menu.ExitBackButton = true;
+    menu.Display(client, MENU_TIME_FOREVER);
 }
 
 /**
  * Class selection menu handler.
  */
-public int ClassMenuSelectHandle(Handle menu, MenuAction action, int client, int slot)
+public int ClassMenuSelectHandle(Menu menu, MenuAction action, int client, int slot)
 {
     char classIdent[64];
     int classIndex;
-    bool autoclose = GetConVarBool(g_hCvarsList.CVAR_CLASSES_MENU_AUTOCLOSE);
+    bool autoclose = g_hCvarsList.CVAR_CLASSES_MENU_AUTOCLOSE.BoolValue;
 
     switch (action)
     {
         case MenuAction_Select:
         {
             // Get class name from the information string.
-            GetMenuItem(menu, slot, classIdent, sizeof(classIdent));
+            menu.GetItem(slot, classIdent, sizeof(classIdent));
 
             // Solve class index from the name.
             classIndex = ClassGetIndexByIdentifier(classIdent);
@@ -372,7 +372,7 @@ public int ClassMenuSelectHandle(Handle menu, MenuAction action, int client, int
         }
         case MenuAction_End:
         {
-            CloseHandle(menu);
+            delete menu;
 
             // Stop so menu doesn't reopen.
             return -1;
@@ -409,7 +409,7 @@ bool ClassTeamSelect(int client)
     }
 
     // Create menu.
-    Handle menu = CreateMenu(ClassTeamSelectHandle);
+    Menu menu = new Menu(ClassTeamSelectHandle);
 
     char title[MENU_LINE_TITLE_LENGTH];
     char zombies[MENU_LINE_SMALL_LENGTH];
@@ -423,13 +423,13 @@ bool ClassTeamSelect(int client)
     Format(zombies, sizeof(zombies), "%t", "Classes Menu Zombies");
     Format(humans, sizeof(humans), "%t", "Classes Menu Humans");
 
-    SetMenuTitle(menu, title);
+    menu.SetTitle(title);
 
-    AddMenuItem(menu, "zombies", zombies);
-    AddMenuItem(menu, "humans", humans);
+    menu.AddItem("zombies", zombies);
+    menu.AddItem("humans", humans);
 
-    SetMenuExitBackButton(menu, true);
-    DisplayMenu(menu, client, MENU_TIME_FOREVER);
+    menu.ExitBackButton = true;
+    menu.Display(client, MENU_TIME_FOREVER);
 
     return true;
 }
@@ -437,7 +437,7 @@ bool ClassTeamSelect(int client)
 /**
  * Team selection menu handler.
  */
-public int ClassTeamSelectHandle(Handle menu, MenuAction action, int client, int slot)
+public int ClassTeamSelectHandle(Menu menu, MenuAction action, int client, int slot)
 {
     switch (action)
     {
@@ -460,7 +460,7 @@ public int ClassTeamSelectHandle(Handle menu, MenuAction action, int client, int
         }
         case MenuAction_End:
         {
-            CloseHandle(menu);
+            delete menu;
         }
         case MenuAction_Cancel:
         {
@@ -488,7 +488,7 @@ public int ClassTeamSelectHandle(Handle menu, MenuAction action, int client, int
 void ClassMultiplierSelectMenu(int client)
 {
     // Create menu.
-    Handle menu = CreateMenu(ClassMultiplierSelectHandle);
+    Menu menu = new Menu(ClassMultiplierSelectHandle);
 
     int teamid = ClassAdminTeamSelected[client];
     bool zombiesselected = view_as<bool>((teamid == ZR_CLASS_TEAM_ZOMBIES));
@@ -544,27 +544,27 @@ void ClassMultiplierSelectMenu(int client)
         Format(knockback, sizeof(knockback), "%t\n    %.2f", "Classes Attrib Knockback", currentknockback);
     }
 
-    SetMenuTitle(menu, title);
+    menu.SetTitle(title);
 
     // Add items. Don't add zombie attributes if human team is selected.
-    if (zombiesselected) AddMenuItem(menu, "napalmtime", napalmtime);
-    AddMenuItem(menu, "health", health);
-    AddMenuItem(menu, "regeninterval", regeninterval);
-    AddMenuItem(menu, "regenamount", regenamount);
-    if (zombiesselected) AddMenuItem(menu, "infectgain", infectgain);
-    AddMenuItem(menu, "speed", speed);
-    if (zombiesselected) AddMenuItem(menu, "knockback", knockback);
-    AddMenuItem(menu, "jumpheight", jumpheight);
-    AddMenuItem(menu, "jumpdistance", jumpdistance);
+    if (zombiesselected) menu.AddItem("napalmtime", napalmtime);
+    menu.AddItem("health", health);
+    menu.AddItem("regeninterval", regeninterval);
+    menu.AddItem("regenamount", regenamount);
+    if (zombiesselected) menu.AddItem("infectgain", infectgain);
+    menu.AddItem("speed", speed);
+    if (zombiesselected) menu.AddItem("knockback", knockback);
+    menu.AddItem("jumpheight", jumpheight);
+    menu.AddItem("jumpdistance", jumpdistance);
 
-    SetMenuExitBackButton(menu, true);
-    DisplayMenu(menu, client, MENU_TIME_FOREVER);
+    menu.ExitBackButton = true;
+    menu.Display(client, MENU_TIME_FOREVER);
 }
 
 /**
  * Multiplier select menu handler.
  */
-public int ClassMultiplierSelectHandle(Handle menu, MenuAction action, int client, int slot)
+public int ClassMultiplierSelectHandle(Menu menu, MenuAction action, int client, int slot)
 {
     char attributename[48];
     ClassMultipliers attribute;
@@ -622,7 +622,7 @@ public int ClassMultiplierSelectHandle(Handle menu, MenuAction action, int clien
         }
         case MenuAction_End:
         {
-            CloseHandle(menu);
+            delete menu;
         }
         case MenuAction_Cancel:
         {
@@ -650,7 +650,7 @@ void ClassMultiplierMenu(int client, ClassMultipliers attribute)
     // Cache selected attribute.
     ClassAdminAttributeSelected[client] = attribute;
 
-    Handle menu = CreateMenu(ClassMultiplierHandle);
+    Menu menu = new Menu(ClassMultiplierHandle);
 
     char title[MENU_LINE_TITLE_LENGTH];
     char attributename[MENU_LINE_REG_LENGTH];
@@ -661,23 +661,23 @@ void ClassMultiplierMenu(int client, ClassMultipliers attribute)
 
     SetGlobalTransTarget(client);
     Format(title, sizeof(title), "%t %s\n%t %.2f\n", "Classes Menu Adjust Value", attributename, "Current Value", view_as<float>(ClassMultiplierCache[ClassAdminTeamSelected[client]][attribute]));
-    SetMenuTitle(menu, title);
+    menu.SetTitle(title);
 
     SetGlobalTransTarget(client);
     Format(linebuffer, sizeof(linebuffer), "%t", "Increase by", "0.5");
-    AddMenuItem(menu, "increasehalf", linebuffer);
+    menu.AddItem("increasehalf", linebuffer);
     Format(linebuffer, sizeof(linebuffer), "%t", "Increase by", "0.1");
-    AddMenuItem(menu, "increasedeci", linebuffer);
+    menu.AddItem("increasedeci", linebuffer);
     Format(linebuffer, sizeof(linebuffer), "%t", "Decrease by", "0.1");
-    AddMenuItem(menu, "decreasedeci", linebuffer);
+    menu.AddItem("decreasedeci", linebuffer);
     Format(linebuffer, sizeof(linebuffer), "%t", "Decrease by", "0.5");
-    AddMenuItem(menu, "decreasehalf", linebuffer);
+    menu.AddItem("decreasehalf", linebuffer);
 
-    SetMenuExitBackButton(menu, true);
-    DisplayMenu(menu, client, MENU_TIME_FOREVER);
+    menu.ExitBackButton = true;
+    menu.Display(client, MENU_TIME_FOREVER);
 }
 
-public int ClassMultiplierHandle(Handle menu, MenuAction action, int client, int slot)
+public int ClassMultiplierHandle(Menu menu, MenuAction action, int client, int slot)
 {
     float value;
 
@@ -713,7 +713,7 @@ public int ClassMultiplierHandle(Handle menu, MenuAction action, int client, int
         }
         case MenuAction_End:
         {
-            CloseHandle(menu);
+            delete menu;
         }
         case MenuAction_Cancel:
         {

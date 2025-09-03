@@ -36,7 +36,7 @@ void ClassHealthRegenInit()
 {
 	for (int client = 0; client < MaxClients + 1; client++)
 	{
-		tHealthRegen[client] = INVALID_HANDLE;
+		tHealthRegen[client] = null;
 	}
 }
 
@@ -79,10 +79,10 @@ void ClassHealthRegenStart(int client, float interval)
 void ClassHealthRegenStop(int client)
 {
     // Kill the timer if it exist.
-    if (tHealthRegen[client] != INVALID_HANDLE)
+    if (tHealthRegen[client] != null)
     {
         KillTimer(tHealthRegen[client]);
-        tHealthRegen[client] = INVALID_HANDLE;
+        tHealthRegen[client] = null;
     }
 }
 
@@ -94,7 +94,7 @@ public Action ClassHealthRegenTimer(Handle timer, any client)
     // Kill the timer if the player is dead or not in game.
     if (!IsClientConnected(client) || !IsClientInGame(client) || !IsPlayerAlive(client))
     {
-        tHealthRegen[client] = INVALID_HANDLE;
+        tHealthRegen[client] = null;
         return Plugin_Stop;
     }
 

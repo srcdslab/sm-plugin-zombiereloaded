@@ -28,9 +28,9 @@
 /**
  * @section Global forward handles.
  */
-Handle g_hAPIFwdOnClassAttributesApplied = INVALID_HANDLE;
-Handle g_hAPIFwdOnClassApplyModel = INVALID_HANDLE;
-Handle g_hAPIFwdOnClassModelApplied = INVALID_HANDLE;
+GlobalForward g_hAPIFwdOnClassAttributesApplied = null;
+GlobalForward g_hAPIFwdOnClassApplyModel = null;
+GlobalForward g_hAPIFwdOnClassModelApplied = null;
 /**
  * @endsection
  */
@@ -55,9 +55,9 @@ void APIClassInit()
     CreateNative("ZR_MenuClass", APIMenuClass);
 
     // Forwards
-    g_hAPIFwdOnClassAttributesApplied = CreateGlobalForward("ZR_OnClassAttributesApplied", ET_Ignore, Param_CellByRef, Param_CellByRef);
-    g_hAPIFwdOnClassApplyModel = CreateGlobalForward("ZR_OnClassApplyModel", ET_Hook, Param_CellByRef, Param_String, Param_CellByRef);
-    g_hAPIFwdOnClassModelApplied = CreateGlobalForward("ZR_OnClassModelApplied", ET_Ignore, Param_CellByRef, Param_String, Param_CellByRef);
+    g_hAPIFwdOnClassAttributesApplied = new GlobalForward("ZR_OnClassAttributesApplied", ET_Ignore, Param_CellByRef, Param_CellByRef);
+    g_hAPIFwdOnClassApplyModel = new GlobalForward("ZR_OnClassApplyModel", ET_Hook, Param_CellByRef, Param_String, Param_CellByRef);
+    g_hAPIFwdOnClassModelApplied = new GlobalForward("ZR_OnClassModelApplied", ET_Ignore, Param_CellByRef, Param_String, Param_CellByRef);
 }
 
 /**

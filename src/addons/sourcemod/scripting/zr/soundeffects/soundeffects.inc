@@ -59,10 +59,10 @@ void SEffectsOnMapStart()
 void SEffectsOnMapEnd()
 {
     // If timer is running, kill it.
-    if (tAmbientSounds != INVALID_HANDLE)
+    if (tAmbientSounds != null)
     {
         KillTimer(tAmbientSounds);
-        tAmbientSounds = INVALID_HANDLE;
+        tAmbientSounds = null;
     }
 }
 

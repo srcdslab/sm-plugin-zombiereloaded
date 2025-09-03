@@ -43,11 +43,11 @@ void CookiesInit()
  * @param client    The client index.
  * @param cookie    The handle to the cookie.
  */
-stock bool CookiesGetClientCookieBool(int client, Handle cookie)
+stock bool CookiesGetClientCookieBool(int client, Cookie cookie)
 {
     // Get cookie string.
     char cookievalue[8];
-    GetClientCookie(client, cookie, cookievalue, sizeof(cookievalue));
+    cookie.Get(client, cookievalue, sizeof(cookievalue));
 
     // Return string casted into an int, then to bool.
     return view_as<bool>(StringToInt(cookievalue));
@@ -60,14 +60,14 @@ stock bool CookiesGetClientCookieBool(int client, Handle cookie)
  * @param cookie        The handle to the cookie.
  * @param cookievalue   The bool value to set cookie as.
  */
-stock void CookiesSetClientCookieBool(int client, Handle cookie, bool cookievalue)
+stock void CookiesSetClientCookieBool(int client, Cookie cookie, bool cookievalue)
 {
     // Convert bool to string.
     char strCookievalue[8];
     ZRBoolToString(cookievalue, strCookievalue, sizeof(strCookievalue));
 
     // Set the converted string to the cookie.
-    SetClientCookie(client, cookie, strCookievalue);
+    cookie.Set(client, strCookievalue);
 }
 
 /**
@@ -76,11 +76,11 @@ stock void CookiesSetClientCookieBool(int client, Handle cookie, bool cookievalu
  * @param client    The client index.
  * @param cookie    The handle to the cookie.
  */
-stock int CookiesGetInt(int client, Handle cookie)
+stock int CookiesGetInt(int client, Cookie cookie)
 {
     char strValue[16];
     strValue[0] = 0;
-    GetClientCookie(client, cookie, strValue, sizeof(strValue));
+    cookie.Get(client, strValue, sizeof(strValue));
 
     return StringToInt(strValue);
 }
@@ -92,12 +92,12 @@ stock int CookiesGetInt(int client, Handle cookie)
  * @param cookie    The handle to the cookie.
  * @param value     The value to set.
  */
-stock void CookiesSetInt(int client, Handle cookie, int value)
+stock void CookiesSetInt(int client, Cookie cookie, int value)
 {
     // Convert value to string.
     char strValue[16];
     IntToString(value, strValue, sizeof(strValue));
 
     // Set string value.
-    SetClientCookie(client, cookie, strValue);
+    cookie.Set(client, strValue);
 }

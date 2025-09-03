@@ -28,8 +28,8 @@
 /**
  * @section Global forward handles.
  */
-Handle g_hAPIFwdOnClientIgnite = INVALID_HANDLE;
-Handle g_hAPIFwdOnClientIgnited = INVALID_HANDLE;
+GlobalForward g_hAPIFwdOnClientIgnite = null;
+GlobalForward g_hAPIFwdOnClientIgnited = null;
 /**
  * @endsection
  */
@@ -46,8 +46,8 @@ APINapalmInit()
     CreateNative("ZR_ClassGetNapalmTime", APIClassGetNapalmTime);
 
     // Forwards
-    g_hAPIFwdOnClientIgnite = CreateGlobalForward("ZR_OnClientIgnite", ET_Hook, Param_CellByRef, Param_FloatByRef);
-    g_hAPIFwdOnClientIgnited = CreateGlobalForward("ZR_OnClientIgnited", ET_Hook, Param_CellByRef, Param_FloatByRef);
+    g_hAPIFwdOnClientIgnite = new GlobalForward("ZR_OnClientIgnite", ET_Hook, Param_CellByRef, Param_FloatByRef);
+    g_hAPIFwdOnClientIgnited = new GlobalForward("ZR_OnClientIgnited", ET_Hook, Param_CellByRef, Param_FloatByRef);
 }
 
 /**

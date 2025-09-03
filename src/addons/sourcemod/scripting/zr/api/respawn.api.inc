@@ -28,8 +28,8 @@
 /**
  * @section Global forward handles.
  */
-Handle g_hAPIFwdOnClientRespawn = INVALID_HANDLE;
-Handle g_hAPIFwdOnClientRespawned = INVALID_HANDLE;
+GlobalForward g_hAPIFwdOnClientRespawn = null;
+GlobalForward g_hAPIFwdOnClientRespawned = null;
 /**
  * @endsection
  */
@@ -47,8 +47,8 @@ void APIRespawnInit()
     CreateNative("ZR_GetKilledByWorld", APIGetKilledByWorld);
 
     // Forwards
-    g_hAPIFwdOnClientRespawn = CreateGlobalForward("ZR_OnClientRespawn", ET_Hook, Param_CellByRef, Param_CellByRef);
-    g_hAPIFwdOnClientRespawned = CreateGlobalForward("ZR_OnClientRespawned", ET_Ignore, Param_Cell, Param_Cell);
+    g_hAPIFwdOnClientRespawn = new GlobalForward("ZR_OnClientRespawn", ET_Hook, Param_CellByRef, Param_CellByRef);
+    g_hAPIFwdOnClientRespawned = new GlobalForward("ZR_OnClientRespawned", ET_Ignore, Param_Cell, Param_Cell);
 }
 
 /**

@@ -38,14 +38,14 @@ int g_iWeaponsCurType[MAXPLAYERS + 1];
 bool WeaponsMenuMain(int client)
 {
     // If weapons module is disabled, then stop.
-    bool weapons = GetConVarBool(g_hCvarsList.CVAR_WEAPONS);
+    bool weapons = g_hCvarsList.CVAR_WEAPONS.BoolValue;
     if (!weapons)
     {
         return false;
     }
 
     // Create menu handle.
-    Handle menu_weapons_main = CreateMenu(WeaponsMenuMainHandle);
+    Menu menu_weapons_main = new Menu(WeaponsMenuMainHandle);
 
     SetGlobalTransTarget(client);
 
@@ -58,15 +58,15 @@ bool WeaponsMenuMain(int client)
     Format(zmarket, sizeof(zmarket), "%t", "Weapons menu restrict main market");
 
     // Draw items, make unselectable if module is disabled.
-    SetMenuTitle(menu_weapons_main, title);
-    AddMenuItem(menu_weapons_main, "restrict", restrict, MenuGetItemDraw(GetConVarBool(g_hCvarsList.CVAR_WEAPONS_RESTRICT)));
-    AddMenuItem(menu_weapons_main, "zmarket", zmarket, MenuGetItemDraw(GetConVarBool(g_hCvarsList.CVAR_WEAPONS_ZMARKET)));
+    menu_weapons_main.SetTitle(title);
+    menu_weapons_main.AddItem("restrict", restrict, MenuGetItemDraw(g_hCvarsList.CVAR_WEAPONS_RESTRICT.BoolValue));
+    menu_weapons_main.AddItem("zmarket", zmarket, MenuGetItemDraw(g_hCvarsList.CVAR_WEAPONS_ZMARKET.BoolValue));
 
     // Create a "Back" button to the weapons main menu.
-    SetMenuExitBackButton(menu_weapons_main, true);
+    menu_weapons_main.ExitBackButton = true;
 
     // Send menu.
-    DisplayMenu(menu_weapons_main, client, MENU_TIME_FOREVER);
+    menu_weapons_main.Display(client, MENU_TIME_FOREVER);
 
     return true;
 }
@@ -79,7 +79,7 @@ bool WeaponsMenuMain(int client)
  * @param client                The client index.
  * @param slot                  The slot index selected (starting from 0).
  */
-public int WeaponsMenuMainHandle(Handle menu_weapons_main, MenuAction action, int client, int slot)
+public int WeaponsMenuMainHandle(Menu menu_weapons_main, MenuAction action, int client, int slot)
 {
     // Client selected an option.
     if (action == MenuAction_Select)
@@ -111,7 +111,7 @@ public int WeaponsMenuMainHandle(Handle menu_weapons_main, MenuAction action, in
     // Client hit "Exit" button.
     else if (action == MenuAction_End)
     {
-        CloseHandle(menu_weapons_main);
+        delete menu_weapons_main;
     }
     return -1;
 }
@@ -124,25 +124,25 @@ public int WeaponsMenuMainHandle(Handle menu_weapons_main, MenuAction action, in
 void WeaponsMenuTypes(int client)
 {
     // Create menu handle.
-    Handle menu_weapons_types = CreateMenu(WeaponsMenuTypesHandle);
+    Menu menu_weapons_types = new Menu(WeaponsMenuTypesHandle);
 
     SetGlobalTransTarget(client);
 
     char title[MENU_LINE_TITLE_LENGTH];
     Format(title, sizeof(title), "%t\n ", "Weapons menu restrict types title");
-    SetMenuTitle(menu_weapons_types, title);
+    menu_weapons_types.SetTitle(title);
 
     char typename[WEAPONS_MAX_LENGTH];
 
     // x = Array index.
-    int size = GetArraySize(arrayWeaponTypes);
+    int size = arrayWeaponTypes.Length;
     for (int x = 0; x < size; x++)
     {
         // Get name of type.
         RestrictWeaponTypeGetName(x, typename, sizeof(typename));
 
         // Add item to menu.
-        AddMenuItem(menu_weapons_types, typename, typename);
+        menu_weapons_types.AddItem(typename, typename);
     }
 
     // If there are no weapons, add an "(Empty)" line.
@@ -153,13 +153,13 @@ void WeaponsMenuTypes(int client)
         char empty[MENU_LINE_SMALL_LENGTH];
         Format(empty, sizeof(empty), "%t", "Menu empty");
 
-        AddMenuItem(menu_weapons_types, "empty", empty, ITEMDRAW_DISABLED);
+        menu_weapons_types.AddItem("empty", empty, ITEMDRAW_DISABLED);
     }
 
     // Set exit back button.
-    SetMenuExitBackButton(menu_weapons_types, true);
+    menu_weapons_types.ExitBackButton = true;
 
-    DisplayMenu(menu_weapons_types, client, MENU_TIME_FOREVER);
+    menu_weapons_types.Display(client, MENU_TIME_FOREVER);
 }
 
 /**
@@ -170,7 +170,7 @@ void WeaponsMenuTypes(int client)
  * @param client                The client index.
  * @param slot                  The slot index selected (starting from 0).
  */
-public int WeaponsMenuTypesHandle(Handle menu_weapons_types, MenuAction action, int client, int slot)
+public int WeaponsMenuTypesHandle(Menu menu_weapons_types, MenuAction action, int client, int slot)
 {
     // Client selected an option.
     if (action == MenuAction_Select)
@@ -193,7 +193,7 @@ public int WeaponsMenuTypesHandle(Handle menu_weapons_types, MenuAction action, 
     // Client hit "Exit" button.
     else if (action == MenuAction_End)
     {
-        CloseHandle(menu_weapons_types);
+        delete menu_weapons_types;
     }
     return -1;
 }
@@ -206,7 +206,7 @@ public int WeaponsMenuTypesHandle(Handle menu_weapons_types, MenuAction action, 
 void WeaponsMenuTypeWeapons(int client)
 {
     // Create menu handle.
-    Handle menu_weapons_typeweapons = CreateMenu(WeaponsMenuTypeWeaponsHandle);
+    Menu menu_weapons_typeweapons = new Menu(WeaponsMenuTypeWeaponsHandle);
 
     char typename[WEAPONS_MAX_LENGTH];
     RestrictWeaponTypeGetName(g_iWeaponsCurType[client], typename, sizeof(typename));
@@ -223,22 +223,22 @@ void WeaponsMenuTypeWeapons(int client)
     Format(unrestrictall, sizeof(unrestrictall), "%t\n ", "Weapons menu restrict types unrestrict all", typename);
 
     // Draw items as selectable only if not all weapons within the type are restricted or unrestricted.
-    SetMenuTitle(menu_weapons_typeweapons, title);
-    AddMenuItem(menu_weapons_typeweapons, "restrictall", restrictall, MenuGetItemDraw(!RestrictIsTypeUniform(true, g_iWeaponsCurType[client])));
-    AddMenuItem(menu_weapons_typeweapons, "unrestrictall", unrestrictall, MenuGetItemDraw(!RestrictIsTypeUniform(false, g_iWeaponsCurType[client])));
+    menu_weapons_typeweapons.SetTitle(title);
+    menu_weapons_typeweapons.AddItem("restrictall", restrictall, MenuGetItemDraw(!RestrictIsTypeUniform(true, g_iWeaponsCurType[client])));
+    menu_weapons_typeweapons.AddItem("unrestrictall", unrestrictall, MenuGetItemDraw(!RestrictIsTypeUniform(false, g_iWeaponsCurType[client])));
 
     char typeweapon[MENU_LINE_SMALL_LENGTH];
     char display[MENU_LINE_SMALL_LENGTH + 2]; // +2 to allow room for the [ ] if its restricted.
 
     // Get an array populated with all weapons of the given type.
-    Handle arrayTypeWeapons;
+    ArrayList arrayTypeWeapons;
     int count = RestrictGetTypeWeapons(g_iWeaponsCurType[client], arrayTypeWeapons);
 
     // x = Array index.
     for (int x = 0; x < count; x++)
     {
         // Get weapon index to check restricted status of.
-        int weaponindex = GetArrayCell(arrayTypeWeapons, x);
+        int weaponindex = arrayTypeWeapons.Get(x);
 
         // Get name of weapon.
         WeaponsGetName(weaponindex, typeweapon, sizeof(typeweapon));
@@ -250,17 +250,17 @@ void WeaponsMenuTypeWeapons(int client)
         }
 
         // Disable option if it isn't toggleable.
-        AddMenuItem(menu_weapons_typeweapons, typeweapon, display, MenuGetItemDraw(WeaponsGetToggleable(weaponindex)));
+        menu_weapons_typeweapons.AddItem(typeweapon, display, MenuGetItemDraw(WeaponsGetToggleable(weaponindex)));
     }
 
     // Destroy the array handle.
-    CloseHandle(arrayTypeWeapons);
+    delete arrayTypeWeapons;
 
     // Set menu back button.
-    SetMenuExitBackButton(menu_weapons_typeweapons, true);
+    menu_weapons_typeweapons.ExitBackButton = true;
 
     // Display menu to client.
-    DisplayMenu(menu_weapons_typeweapons, client, MENU_TIME_FOREVER);
+    menu_weapons_typeweapons.Display(client, MENU_TIME_FOREVER);
 }
 
 /**
@@ -271,7 +271,7 @@ void WeaponsMenuTypeWeapons(int client)
  * @param client                    The client index.
  * @param slot                      The slot index selected (starting from 0).
  */
-public int WeaponsMenuTypeWeaponsHandle(Handle menu_weapons_typeweapons, MenuAction action, int client, int slot)
+public int WeaponsMenuTypeWeaponsHandle(Menu menu_weapons_typeweapons, MenuAction action, int client, int slot)
 {
     // Client selected an option.
     if (action == MenuAction_Select)
@@ -305,7 +305,7 @@ public int WeaponsMenuTypeWeaponsHandle(Handle menu_weapons_typeweapons, MenuAct
             {
                 // Get weappon name.
                 char typeweapon[MENU_LINE_REG_LENGTH];
-                GetMenuItem(menu_weapons_typeweapons, slot, typeweapon, sizeof(typeweapon));
+                menu_weapons_typeweapons.GetItem(slot, typeweapon, sizeof(typeweapon));
 
                 // Get weapon index.
                 int weaponindex = WeaponsNameToIndex(typeweapon);
@@ -313,7 +313,7 @@ public int WeaponsMenuTypeWeaponsHandle(Handle menu_weapons_typeweapons, MenuAct
                 // If weapon index is -1, then something went very wrong.
                 if (weaponindex == -1)
                 {
-                    CloseHandle(menu_weapons_typeweapons);
+                    delete menu_weapons_typeweapons;
                     return -1;
                 }
 
@@ -353,7 +353,7 @@ public int WeaponsMenuTypeWeaponsHandle(Handle menu_weapons_typeweapons, MenuAct
     // Client hit "Exit" button.
     else if (action == MenuAction_End)
     {
-        CloseHandle(menu_weapons_typeweapons);
+        delete menu_weapons_typeweapons;
     }
     return -1;
 }
@@ -366,11 +366,11 @@ public int WeaponsMenuTypeWeaponsHandle(Handle menu_weapons_typeweapons, MenuAct
 void WeaponsMenuZMarket(int client)
 {
     // Create menu handle.
-    Handle menu_weapons_market = CreateMenu(WeaponsMenuZMarketHandle);
+    Menu menu_weapons_market = new Menu(WeaponsMenuZMarketHandle);
 
     // Get "yes" or "no" settings from respective cvar.
     char buyzonesetting[MENU_LINE_SMALL_LENGTH];
-    ConfigBoolToSetting(GetConVarBool(g_hCvarsList.CVAR_WEAPONS_ZMARKET_BUYZONE), buyzonesetting, sizeof(buyzonesetting), true, client);
+    ConfigBoolToSetting(g_hCvarsList.CVAR_WEAPONS_ZMARKET_BUYZONE.BoolValue, buyzonesetting, sizeof(buyzonesetting), true, client);
 
     SetGlobalTransTarget(client);
 
@@ -381,14 +381,14 @@ void WeaponsMenuZMarket(int client)
     Format(title, sizeof(title), "%t\n ", "Weapons menu restrict zmarket title");
     Format(buyzone, sizeof(buyzone), "%t", "Weapons menu restrict zmarket buyzone", buyzonesetting);
 
-    SetMenuTitle(menu_weapons_market, title);
-    AddMenuItem(menu_weapons_market, "buyzone", buyzone);
+    menu_weapons_market.SetTitle(title);
+    menu_weapons_market.AddItem("buyzone", buyzone);
 
     // Create a "Back" button to the weapons main menu.
-    SetMenuExitBackButton(menu_weapons_market, true);
+    menu_weapons_market.ExitBackButton = true;
 
     // Send menu
-    DisplayMenu(menu_weapons_market, client, MENU_TIME_FOREVER);
+    menu_weapons_market.Display(client, MENU_TIME_FOREVER);
 }
 
 /**
@@ -399,7 +399,7 @@ void WeaponsMenuZMarket(int client)
  * @param client                The client index.
  * @param slot                  The slot index selected (starting from 0).
  */
-public int WeaponsMenuZMarketHandle(Handle menu_weapons_market, MenuAction action, int client, int slot)
+public int WeaponsMenuZMarketHandle(Menu menu_weapons_market, MenuAction action, int client, int slot)
 {
     // Client selected an option.
     if (action == MenuAction_Select)
@@ -410,8 +410,8 @@ public int WeaponsMenuZMarketHandle(Handle menu_weapons_market, MenuAction actio
             case 0:
             {
                 // Toggle cvar.
-                bool zmarketbuyzone = GetConVarBool(g_hCvarsList.CVAR_WEAPONS_ZMARKET_BUYZONE);
-                SetConVarBool(g_hCvarsList.CVAR_WEAPONS_ZMARKET_BUYZONE, !zmarketbuyzone);
+                bool zmarketbuyzone = g_hCvarsList.CVAR_WEAPONS_ZMARKET_BUYZONE.BoolValue;
+                g_hCvarsList.CVAR_WEAPONS_ZMARKET_BUYZONE.BoolValue = !zmarketbuyzone;
                 if (zmarketbuyzone == false)
                 {
                     LogAction(client, -1, "[ZR] \"%L\" Requires player to be inside a buyzone to use ZMarket.", client);
@@ -438,7 +438,7 @@ public int WeaponsMenuZMarketHandle(Handle menu_weapons_market, MenuAction actio
     // Client hit "Exit" button.
     else if (action == MenuAction_End)
     {
-        CloseHandle(menu_weapons_market);
+        delete menu_weapons_market;
     }
     return -1;
 }

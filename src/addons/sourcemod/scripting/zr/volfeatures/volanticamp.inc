@@ -99,10 +99,10 @@ void VolAnticampEnable(int volumeIndex)
     {
         // Kill timer if it exist.
         timer = AnticampData[dataindex].Anticamp_Timer;
-        if (timer != INVALID_HANDLE)
+        if (timer != null)
         {
             KillTimer(timer);
-            AnticampData[dataindex].Anticamp_Timer = INVALID_HANDLE;
+            AnticampData[dataindex].Anticamp_Timer = null;
         }
 
         // Get interval.
@@ -149,10 +149,10 @@ stock void VolAnticampEnableAll()
 
             // Kill timer if it exist.
             Handle timer = AnticampData[dataindex].Anticamp_Timer;
-            if (timer != INVALID_HANDLE)
+            if (timer != null)
             {
                 KillTimer(timer);
-                AnticampData[dataindex].Anticamp_Timer = INVALID_HANDLE;
+                AnticampData[dataindex].Anticamp_Timer = null;
             }
 
             // Get interval.
@@ -199,10 +199,10 @@ void VolAnticampDisable(int volumeIndex)
     {
         // Stop timer.
         timerbuffer = AnticampData[dataindex].Anticamp_Timer;
-        if (timerbuffer != INVALID_HANDLE)
+        if (timerbuffer != null)
         {
             KillTimer(timerbuffer);
-            AnticampData[dataindex].Anticamp_Timer = INVALID_HANDLE;
+            AnticampData[dataindex].Anticamp_Timer = null;
         }
 
         LogEvent(_, LogType_Normal, LOG_DEBUG, LogModule_Volfeatures, "Vol state", "Disabled anticamp volume %d.", volumeIndex);
@@ -225,10 +225,10 @@ stock void VolAnticampDisableAll()
         {
             // Stop timer.
             timerbuffer = AnticampData[dataindex].Anticamp_Timer;
-            if (timerbuffer != INVALID_HANDLE)
+            if (timerbuffer != null)
             {
                 KillTimer(timerbuffer);
-                AnticampData[dataindex].Anticamp_Timer = INVALID_HANDLE;
+                AnticampData[dataindex].Anticamp_Timer = null;
             }
         }
     }
@@ -244,10 +244,10 @@ void VolAnticampReset(int dataIndex)
     AnticampData[dataIndex].Anticamp_InUse = false;
 
     AnticampData[dataIndex].Anticamp_Interval = 1.0;
-    if (AnticampData[dataIndex].Anticamp_Timer != INVALID_HANDLE)
+    if (AnticampData[dataIndex].Anticamp_Timer != null)
     {
         KillTimer(AnticampData[dataIndex].Anticamp_Timer);
-        AnticampData[dataIndex].Anticamp_Timer = INVALID_HANDLE;
+        AnticampData[dataIndex].Anticamp_Timer = null;
     }
 
     AnticampData[dataIndex].Anticamp_Action = Anticamp_Damage;
@@ -454,20 +454,20 @@ void VolAnticampWarnPlayer(int client, int dataIndex)
         case Anticamp_Menu:
         {
             // Display the message in a menu panel.
-            Handle panel = CreatePanel();
+            Panel panel = new Panel();
 
-            SetPanelTitle(panel, "Zombie:Reloaded");
-            DrawPanelItem(panel, "", ITEMDRAW_SPACER);
-            DrawPanelItem(panel, buffer);
-            DrawPanelItem(panel, "", ITEMDRAW_SPACER);
+            panel.SetTitle("Zombie:Reloaded");
+            panel.DrawItem("", ITEMDRAW_SPACER);
+            panel.DrawItem(buffer);
+            panel.DrawItem("", ITEMDRAW_SPACER);
 
-            SetPanelCurrentKey(panel, 10);
+            panel.CurrentKey = 10;
 
             Format(buffer, sizeof(buffer), "%t", "Exit");
-            DrawPanelItem(panel, buffer, ITEMDRAW_CONTROL);
+            panel.DrawItem(buffer, ITEMDRAW_CONTROL);
 
-            SendPanelToClient(panel, client, Handler_AnitcampDummy, 10);
-            CloseHandle(panel);
+            panel.Send(client, Handler_AnitcampDummy, 10);
+            delete panel;
         }
     }
 }
@@ -475,7 +475,7 @@ void VolAnticampWarnPlayer(int client, int dataIndex)
 /**
  * Dummy handler for panel messages.
  */
-public int Handler_AnitcampDummy(Handle menu, MenuAction action, int param1, int param2)
+public int Handler_AnitcampDummy(Menu menu, MenuAction action, int param1, int param2)
 {
     // Do nothing.
     return -1;

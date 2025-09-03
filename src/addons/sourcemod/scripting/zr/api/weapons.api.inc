@@ -126,23 +126,24 @@ static void KBQ_EnqueueOrUpdate(const char[] weapon, float value)
 static bool InternalTrySetWeaponKB(const char[] weapon, float value)
 {
     // Backend guard: avoid touching weapon tables if not initialized yet
-    if (arrayWeapons == INVALID_HANDLE)
+    if (arrayWeapons == null)
     {
         return false;
     }
+
     int index = WeaponsNameToIndex(weapon);
     if (index == -1)
     {
         return false;
     }
 
-    Handle arrayWeapon = GetArrayCell(arrayWeapons, index);
-    if (arrayWeapon == INVALID_HANDLE)
+    ArrayList arrayWeapon = arrayWeapons.Get(index);
+    if (arrayWeapon == null)
     {
         return false;
     }
 
-    SetArrayCell(arrayWeapon, view_as<int>(WEAPONS_DATA_KNOCKBACK), value);
+    arrayWeapon.Set(view_as<int>(WEAPONS_DATA_KNOCKBACK), value);
     return true;
 }
 
@@ -424,7 +425,7 @@ public int Native_SetWeaponKnockback(Handle plugin, int numParams)
     GetNativeString(1, weapon, sizeof(weapon));
 
     // If backend not ready, enqueue without resolving index to avoid invalid handle errors
-    if (arrayWeapons == INVALID_HANDLE)
+    if (arrayWeapons == null)
     {
         float pendingValue = GetNativeCell(2);
         if (pendingValue <= 0.0)

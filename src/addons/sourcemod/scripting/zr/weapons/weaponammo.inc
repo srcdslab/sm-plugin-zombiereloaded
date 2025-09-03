@@ -264,7 +264,7 @@ stock bool ZMarketIsGPLoaded()
     }
 
     // Done iterating, close handle.
-    CloseHandle(hPlugins);
+    delete hPlugins;
 
     // Plugin wasn't found.
     return false;

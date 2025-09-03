@@ -42,7 +42,7 @@ void ZCookiesOnCommandsCreate()
 void ZCookiesMenuMain(int client)
 {
     // Create menu handle.
-    Handle zcookies_menu_main = CreateMenu(ZCookiesMenuMainHandle);
+    Menu zcookies_menu_main = new Menu(ZCookiesMenuMainHandle);
 
     // Make client global translations target.
     SetGlobalTransTarget(client);
@@ -71,16 +71,16 @@ void ZCookiesMenuMain(int client)
     bool zmarketenabled = GetConVarBool(g_hCvarsList.CVAR_WEAPONS_ZMARKET);                // For ZMarket loadout.
 
     // Add items to menu.
-    SetMenuTitle(zcookies_menu_main, title);
-    AddMenuItem(zcookies_menu_main, "zhp", zhp, MenuGetItemDraw(zhpcvar));
-    AddMenuItem(zcookies_menu_main, "overlay", overlay, MenuGetItemDraw(overlaytoggle));
-    AddMenuItem(zcookies_menu_main, "zmarket", zmarket, MenuGetItemDraw(zmarketenabled));
+    zcookies_menu_main.SetTitle(title);
+    zcookies_menu_main.AddItem("zhp", zhp, MenuGetItemDraw(zhpcvar));
+    zcookies_menu_main.AddItem("overlay", overlay, MenuGetItemDraw(overlaytoggle));
+    zcookies_menu_main.AddItem("zmarket", zmarket, MenuGetItemDraw(zmarketenabled));
 
     // Create a "Back" button to the main menu.
-    SetMenuExitBackButton(zcookies_menu_main, true);
+    zcookies_menu_main.ExitBackButton = true;
 
     // Display menu to client.
-    DisplayMenu(zcookies_menu_main, client, MENU_TIME_FOREVER);
+    zcookies_menu_main.Display(client, MENU_TIME_FOREVER);
 }
 
 /**
@@ -92,7 +92,7 @@ void ZCookiesMenuMain(int client)
  * @param client    The client index.
  * @param slot      The menu slot selected. (starting from 0)
  */
-public int ZCookiesMenuMainHandle(Handle menu, MenuAction action, int client, int slot)
+public int ZCookiesMenuMainHandle(Menu menu, MenuAction action, int client, int slot)
 {
     // Client selected an option.
     if (action == MenuAction_Select)
@@ -110,7 +110,7 @@ public int ZCookiesMenuMainHandle(Handle menu, MenuAction action, int client, in
             case 1:
             {
                 // If overlay toggle is disabled, then stop.
-                bool overlaytoggle = GetConVarBool(g_hCvarsList.CVAR_CLASSES_OVERLAY_TOGGLE);
+                bool overlaytoggle = g_hCvarsList.CVAR_CLASSES_OVERLAY_TOGGLE.BoolValue;
                 if (overlaytoggle)
                 {
                     // Toggle current overlay channel, retrieve new value, and update cookie.
@@ -148,7 +148,7 @@ public int ZCookiesMenuMainHandle(Handle menu, MenuAction action, int client, in
     // Client exited menu.
     if (action == MenuAction_End)
     {
-        CloseHandle(menu);
+        delete menu;
     }
     return -1;
 }
