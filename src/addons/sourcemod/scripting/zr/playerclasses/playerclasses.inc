@@ -884,7 +884,7 @@ bool ClassReloadPlayerCache(int client, int classindex, int cachetype = ZR_CLASS
             ClassPlayerCache[client].Class_JumpHeight = ClassDataCache[classindex].Class_JumpHeight;
             ClassPlayerCache[client].Class_JumpDistance = ClassDataCache[classindex].Class_JumpDistance;
             
-            /* Persona attribute */
+            /* Personal attribute */
             ClassPlayerCache[client].Class_IsPersonal = ClassDataCache[classindex].Class_IsPersonal;
         }
         default:
