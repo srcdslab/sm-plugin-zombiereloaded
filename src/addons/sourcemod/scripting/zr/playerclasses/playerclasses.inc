@@ -503,7 +503,7 @@ bool ClassPlayerSpawned[MAXPLAYERS + 1];
 ClassSpeedMethods ClassSpeedMethod = ClassSpeed_Prop;
 
 /**
- * Specifies wheter a player is allowed to use a specific class (if personal attribute set to true)
+ * Specifies whether a player is allowed to use a specific class (if personal attribute set to true)
  */
 bool ClassPlayerClassPersonal[MAXPLAYERS + 1][ZR_CLASS_MAX];
 
