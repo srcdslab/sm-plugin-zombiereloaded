@@ -1,56 +1,56 @@
 /*
- * ============================================================================
- *
- *  Zombie:Reloaded
- *
- *  File:          restrict.inc
- *  Type:          Core
- *  Description:   Weapon restriction system.
- *
- *  Copyright (C) 2009-2013  Greyscale, Richard Helgeby
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * ============================================================================
- */
+* ============================================================================
+*
+*  Zombie:Reloaded
+*
+*  File:          restrict.inc
+*  Type:          Core
+*  Description:   Weapon restriction system.
+*
+*  Copyright (C) 2009-2013  Greyscale, Richard Helgeby
+*
+*  This program is free software: you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation, either version 3 of the License, or
+*  (at your option) any later version.
+*
+*  This program is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  You should have received a copy of the GNU General Public License
+*  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*
+* ============================================================================
+*/
 
 /**
- * Maximum types allowed for a single weapon.
- */
+* Maximum types allowed for a single weapon.
+*/
 #define WEAPONS_RESTRICT_MAX_TYPES 8
 
 /**
- * Restrict config data indexes.
- */
+* Restrict config data indexes.
+*/
 enum RestrictData
 {
     RESTRICT_DATA_NAME = 0,
 }
 
 /**
- * Array to block any client from picking up weapons.
- */
+* Array to block any client from picking up weapons.
+*/
 bool g_bRestrictBlockWeapon[MAXPLAYERS + 1];
 
 /**
- * Array to store a list of different weapon groups
- */
+* Array to store a list of different weapon groups
+*/
 ArrayList arrayWeaponTypes = null;
 
 /**
- * Query results returned when (un)restricting a weapon.
- */
+* Query results returned when (un)restricting a weapon.
+*/
 enum RestrictQuery
 {
     Query_Successful,   /** (Un)restrict was successful. */
@@ -60,8 +60,8 @@ enum RestrictQuery
 }
 
 /**
- * Initialize data and hook commands.
- */
+* Initialize data and hook commands.
+*/
 void RestrictInit()
 {
     // Hook buy command.
@@ -71,13 +71,13 @@ void RestrictInit()
 }
 
 /**
- * Auto-create a list of types loaded by weapons module.
- */
+* Auto-create a list of types loaded by weapons module.
+*/
 void RestrictLoad()
 {
     // If array exists, then destroy it.
     delete arrayWeaponTypes;
-    
+
     // Initialize array.
     arrayWeaponTypes = new ArrayList(WEAPONS_MAX_LENGTH);
 
@@ -113,8 +113,8 @@ void RestrictLoad()
 }
 
 /**
- * Hook commands related to restrict here.
- */
+* Hook commands related to restrict here.
+*/
 void RestrictOnCommandsCreate()
 {
     // Create weapon admin commands.
@@ -123,10 +123,10 @@ void RestrictOnCommandsCreate()
 }
 
 /**
- * Client is joining the server.
- *
- * @param client    The client index.
- */
+* Client is joining the server.
+*
+* @param client    The client index.
+*/
 void RestrictClientInit(int client)
 {
     SDKHook(client, SDKHook_WeaponCanUse, RestrictCanUse);
@@ -134,20 +134,20 @@ void RestrictClientInit(int client)
 }
 
 /**
- * Unhook Weapon_CanUse function on a client.
- *
- * @param client    The client index.
- */
+* Unhook Weapon_CanUse function on a client.
+*
+* @param client    The client index.
+*/
 void RestrictOnClientDisconnect(int client)
 {
     SDKUnhook(client, SDKHook_WeaponCanUse, RestrictCanUse);
 }
 
 /**
- * Client is spawning into the game.
- *
- * @param client    The client index.
- */
+* Client is spawning into the game.
+*
+* @param client    The client index.
+*/
 void RestrictOnClientSpawn(int client)
 {
     // Re-hook "canuse" on client.
@@ -164,7 +164,7 @@ void RestrictOnClientSpawn(int client)
 
         if (ZRIsClientOnTeam(client, CS_TEAM_T))
         {
-             GivePlayerItem(client, WEAPONS_SPAWN_CSS_T_WEAPON);
+            GivePlayerItem(client, WEAPONS_SPAWN_CSS_T_WEAPON);
         }
         else if (ZRIsClientOnTeam(client, CS_TEAM_CT))
         {
@@ -174,8 +174,8 @@ void RestrictOnClientSpawn(int client)
 }
 
 /**
- * The round is ending.
- */
+* The round is ending.
+*/
 void RestrictOnRoundEnd()
 {
     bool restrictzombieequip = g_hCvarsList.CVAR_WEAPONS_RESTRICT_ENDEQUIP.BoolValue;
@@ -205,12 +205,12 @@ void RestrictOnRoundEnd()
 }
 
 /**
- * Command callback function for the "buy" command
- * Used to block use of this command under certain conditions.
- *
- * @param client    The client index.
- * @param argc      Argument count.
- */
+* Command callback function for the "buy" command
+* Used to block use of this command under certain conditions.
+*
+* @param client    The client index.
+* @param argc      Argument count.
+*/
 public Action RestrictBuyCommand(int client, int argc)
 {
     // If client isn't valid, then stop.
@@ -262,15 +262,15 @@ public Action RestrictBuyCommand(int client, int argc)
 }
 
 /**
- * Restricts (or unrestricts) a given weapon or weapon type.
- *
- * @param restrict      True to restrict, false to unrestrict.
- * @param target        Weapon or weapon type to restrict/unrestrict.
- * @param single        True if a single weapon is being restricted, false if weapon type.
- * @param returntarget  The proper targetname. (same as param 'target' if invalid)
- * @param maxlen        The maximum length of param 'returntarget.'
- * @return              Query result. (See enum RestrictQuery)
- */
+* Restricts (or unrestricts) a given weapon or weapon type.
+*
+* @param restrict      True to restrict, false to unrestrict.
+* @param target        Weapon or weapon type to restrict/unrestrict.
+* @param single        True if a single weapon is being restricted, false if weapon type.
+* @param returntarget  The proper targetname. (same as param 'target' if invalid)
+* @param maxlen        The maximum length of param 'returntarget.'
+* @return              Query result. (See enum RestrictQuery)
+*/
 RestrictQuery RestrictWeapon(bool restrict, const char[] target, bool &single = true, char[] returntarget, int maxlen)
 {
     // Copy 'target' to 'returntarget' to be possibly changed later.
@@ -328,8 +328,8 @@ RestrictQuery RestrictWeapon(bool restrict, const char[] target, bool &single = 
         // If weapon restriction is redundant then return stopped.
         if (RestrictIsTypeUniform(restrict, typeindex))
         {
-        	// Close handle
-        	delete arrayTypeWeapons;
+            // Close handle
+            delete arrayTypeWeapons;
             return Query_Stopped;
         }
 
@@ -347,23 +347,23 @@ RestrictQuery RestrictWeapon(bool restrict, const char[] target, bool &single = 
             // Set weapon's restricted state.
             RestrictSetWeaponRestricted(weaponindex, false, restrict);
         }
-		
-		// Close handle
-		delete arrayTypeWeapons;
-		
+
+        // Close handle
+        delete arrayTypeWeapons;
+
         // Successfully restricted weapon type.
         return Query_Successful;
     }
 }
 
 /** Print weapon (un)restriction query result to client(s).
- *
- * @param client    The client to print response to. (0 for all clients)
- * @param query     The query result.
- * @param single    True if a single weapon is being restricted.
- * @param restrict  True if the query was to restrict/unrestrict a weapon.
- * @param target    The target to be restricted/unrestricted.
- */
+*
+* @param client    The client to print response to. (0 for all clients)
+* @param query     The query result.
+* @param single    True if a single weapon is being restricted.
+* @param restrict  True if the query was to restrict/unrestrict a weapon.
+* @param target    The target to be restricted/unrestricted.
+*/
 void RestrictPrintQueryResponse(int client, RestrictQuery query, bool single, bool restrict, const char[] target)
 {
     switch(query)
@@ -439,11 +439,11 @@ void RestrictPrintQueryResponse(int client, RestrictQuery query, bool single, bo
 
 stock int RestrictTypeToIndex(const char[] type)
 {
-	if (arrayWeaponTypes == null)
-	{
-		return -1;
-	}
-	
+    if (arrayWeaponTypes == null)
+    {
+        return -1;
+    }
+
     char typename[WEAPONS_MAX_LENGTH];
 
     // x = Array index.
@@ -464,11 +464,11 @@ stock int RestrictTypeToIndex(const char[] type)
 }
 
 /**
- * Gets the name of a weapon type at a given index.
- * @param index     The weapon type index.
- * @param weapon    The string to return name in.
- * @param maxlen    The max length of the string.
- */
+* Gets the name of a weapon type at a given index.
+* @param index     The weapon type index.
+* @param weapon    The string to return name in.
+* @param maxlen    The max length of the string.
+*/
 stock void RestrictWeaponTypeGetName(int index, char[] weapontype, int maxlen)
 {
     // Get weapon type name at given index.
@@ -476,12 +476,12 @@ stock void RestrictWeaponTypeGetName(int index, char[] weapontype, int maxlen)
 }
 
 /**
- * Returns an array containing all weapon indexes matching the given type.
- *
- * @param index             The weapon type index.
- * @param arrayTypeWeapons  A handle to store array containing matching weapons.
- *                          Don't forget to close this!
- */
+* Returns an array containing all weapon indexes matching the given type.
+*
+* @param index             The weapon type index.
+* @param arrayTypeWeapons  A handle to store array containing matching weapons.
+*                          Don't forget to close this!
+*/
 stock int RestrictGetTypeWeapons(int index, ArrayList &arrayTypeWeapons)
 {
     // Create array to hold weapons of the given type.
@@ -527,12 +527,12 @@ stock int RestrictGetTypeWeapons(int index, ArrayList &arrayTypeWeapons)
 }
 
 /**
- * Gets the restricted status on a weapon.
- *
- * @param index     The weapon index.
- * @param toggle    If true, the value is toggled, otherwise 'restrict' param is used.
- * @param restrict  (Only if 'toggle' is 'false') Restricted status of the weapon.
- */
+* Gets the restricted status on a weapon.
+*
+* @param index     The weapon index.
+* @param toggle    If true, the value is toggled, otherwise 'restrict' param is used.
+* @param restrict  (Only if 'toggle' is 'false') Restricted status of the weapon.
+*/
 stock void RestrictSetWeaponRestricted(int index, bool toggle, bool restrict = false)
 {
     // Get array handle of weapon at given index.
@@ -544,38 +544,38 @@ stock void RestrictSetWeaponRestricted(int index, bool toggle, bool restrict = f
 }
 
 /**
- * Gets the restricted status on a weapon.
- *
- * @param index     The weapon index.
- * @return          True if weapon is restricted, false if not.
- */
+* Gets the restricted status on a weapon.
+*
+* @param index     The weapon index.
+* @return          True if weapon is restricted, false if not.
+*/
 stock bool RestrictIsWeaponRestricted(int index)
 {
     // Validate array and index
     if (arrayWeapons == null)
         return false;
-        
+
     if (index < 0 || index >= arrayWeapons.Length)
         return false;
-    
+
     // Get array handle of weapon at given index.
     ArrayList arrayWeapon = arrayWeapons.Get(index);
-    
+
     // Validate the weapon handle
     if (arrayWeapon == null)
         return false;
-    
+
     // Return restricted status.
     return view_as<bool>(arrayWeapon.Get(view_as<int>(WEAPONS_DATA_RESTRICTED)));
 }
 
 /**
- * Used to check if all weapons of a type are restricted.
- *
- * @param restricted    True to check if all weapons of given type are restricted.
- * @param index         The weapon type index.
- * @return              True if all weapons of the given type are restricted or not, false if not.
- */
+* Used to check if all weapons of a type are restricted.
+*
+* @param restricted    True to check if all weapons of given type are restricted.
+* @param index         The weapon type index.
+* @return              True if all weapons of the given type are restricted or not, false if not.
+*/
 stock bool RestrictIsTypeUniform(bool restricted, int index)
 {
     ArrayList arrayTypeWeapons;
@@ -590,26 +590,26 @@ stock bool RestrictIsTypeUniform(bool restricted, int index)
         // If weapon is toggleable and it's not uniform with the given status, then return false.
         if (WeaponsGetToggleable(weaponindex) && RestrictIsWeaponRestricted(weaponindex) != restricted)
         {
-        	// Close handle
-        	delete arrayTypeWeapons;
+            // Close handle
+            delete arrayTypeWeapons;
             return false;
         }
     }
-	
-	// Close handle
-	delete arrayTypeWeapons;
-	
+
+    // Close handle
+    delete arrayTypeWeapons;
+
     // All weapons are restricted, so return true.
     return true;
 }
 
 /**
- * Hook callback, called when a player is trying to pick up a weapon.
- * @param client    The client index.
- * @param weapon    The weapon index.
- * @return          Return Plugin_Handled to stop weapon pickup.
- *                  Plugin_Continue to allow weapon pickup.
- */
+* Hook callback, called when a player is trying to pick up a weapon.
+* @param client    The client index.
+* @param weapon    The weapon index.
+* @return          Return Plugin_Handled to stop weapon pickup.
+*                  Plugin_Continue to allow weapon pickup.
+*/
 public Action RestrictCanUse(int client, int weapon)
 {
     // WARNING: This function is called _frequently_. Every game tick per
@@ -675,16 +675,16 @@ public Action RestrictCanUse(int client, int weapon)
 }
 
 /**
- * Command callbacks.
- */
+* Command callbacks.
+*/
 
 /**
- * Command callback (zr_restrict)
- * Restricts a weapon or group
- *
- * @param client    The client index.
- * @param argc      Argument count.
- */
+* Command callback (zr_restrict)
+* Restricts a weapon or group
+*
+* @param client    The client index.
+* @param argc      Argument count.
+*/
 public Action RestrictCommand(int client, int argc)
 {
     // Check if privileged.
@@ -740,12 +740,12 @@ public Action RestrictCommand(int client, int argc)
 }
 
 /**
- * Command callback (zr_unrestrict)
- * Unrestricts a weapon or group
- *
- * @param client    The client index.
- * @param argc      Argument count.
- */
+* Command callback (zr_unrestrict)
+* Unrestricts a weapon or group
+*
+* @param client    The client index.
+* @param argc      Argument count.
+*/
 public Action UnrestrictCommand(int client, int argc)
 {
     // Check if privileged.
