@@ -31,6 +31,7 @@
 GlobalForward g_hAPIFwdOnClassAttributesApplied = null;
 GlobalForward g_hAPIFwdOnClassApplyModel = null;
 GlobalForward g_hAPIFwdOnClassModelApplied = null;
+GlobalForward g_hAPIFwdOnClassLoaded = null;
 /**
  * @endsection
  */
@@ -53,11 +54,15 @@ void APIClassInit()
     CreateNative("ZR_GetClassDisplayName", APIGetClassDisplayName);
     CreateNative("ZR_GetClassIdentifier", APIGetClassIdentifier);
     CreateNative("ZR_MenuClass", APIMenuClass);
-
+    CreateNative("ZR_GetClassTeamID", APIGetClassTeamID);
+    CreateNative("ZR_RegClassIndex", APIRegClassIndex);
+    CreateNative("ZR_SetClientClassPersonal", APISetClientClassPersonal);
+	
     // Forwards
     g_hAPIFwdOnClassAttributesApplied = new GlobalForward("ZR_OnClassAttributesApplied", ET_Ignore, Param_CellByRef, Param_CellByRef);
     g_hAPIFwdOnClassApplyModel = new GlobalForward("ZR_OnClassApplyModel", ET_Hook, Param_CellByRef, Param_String, Param_CellByRef);
     g_hAPIFwdOnClassModelApplied = new GlobalForward("ZR_OnClassModelApplied", ET_Ignore, Param_CellByRef, Param_String, Param_CellByRef);
+    g_hAPIFwdOnClassLoaded = new GlobalForward("ZR_OnClassLoaded", ET_Ignore);
 }
 
 /**
@@ -312,6 +317,61 @@ public int APIMenuClass(Handle plugin, int numParams)
 }
 
 /**
+ * Gets the team ID for the specified class.
+ *
+ * @param index     Index of the class in a class cache or a client index,
+ *                  depending on the cache type specified.
+ * @param cachetype Optional. Specifies what class cache to read from. Options:
+ *                  ZR_CLASS_CACHE_ORIGINAL - Unchanced class data.
+ *                  ZR_CLASS_CACHE_MODIFIED - Changed/newest class data.
+ *                  ZR_CLASS_CACHE_PLAYER (default) - Player cache. If this one
+ *                  is used, index will be used as a client index.
+ * @return          The team ID if successful, -1 otherwise.
+ */
+public int APIGetClassTeamID(Handle plugin, int numParams)
+{
+	int index = GetNativeCell(1);
+	if (!ClassValidateIndex(index))
+		return -1;
+	
+	int cachetype = GetNativeCell(2);
+	
+	return ClassGetTeamID(index, cachetype);
+}
+
+/**
+ * Native call function (ZR_RegClassIndex)
+ *
+ * native int ZR_RegClassIndex(KeyValues kvClassData);
+ */
+public int APIRegClassIndex(Handle plugin, int numParams)
+{
+	KeyValues kvClassData = view_as<KeyValues>(GetNativeCell(1));
+	
+	return ClassRegIndex(kvClassData);
+}
+
+/**
+ * Native call function (ZR_SetClientClassPersonal)
+ *
+ * native void ZR_SetClientClassPersonal(int client, int skinindex, bool personal);
+ */
+public int APISetClientClassPersonal(Handle plugin, int numParams)
+{
+	int client = GetNativeCell(1);
+	APIValidateClientIndex(client);
+	
+	int skinindex = GetNativeCell(2);
+	if (!ClassValidateIndex(skinindex))
+		return 0;
+		
+	bool personal = view_as<bool>(GetNativeCell(3));
+	
+	ClassSetClientClassPersonal(client, skinindex, personal);
+	return 0;
+}
+
+/**
  * Called after ZR has applied all classes attributes.
  *
  * @param client            The client index.
@@ -371,6 +431,19 @@ void APIOnClassModelApplied(int client, char[] modelpath, int skinIndex)
     Call_PushCellRef(client);
     Call_PushString(modelpath);
     Call_PushCellRef(skinIndex);
+    
+    Call_Finish();
+}
+
+/**
+ * Called right after ZR loaded all classes from playerclasses config file, this is where you should register new classes indexes
+ *
+ * @noreturn
+ */
+void APIOnClassLoaded()
+{
+    // Start forward call.
+    Call_StartForward(g_hAPIFwdOnClassLoaded);
     
     Call_Finish();
 }

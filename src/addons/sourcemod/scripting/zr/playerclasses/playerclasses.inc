@@ -120,6 +120,7 @@
 #define ZR_CLASS_DEFAULT_KNOCKBACK              2.0
 #define ZR_CLASS_DEFAULT_JUMP_HEIGHT            10.0
 #define ZR_CLASS_DEFAULT_JUMP_DISTANCE          0.2
+#define ZR_CLASS_DEFAULT_PERSONAL				"no"
 /**
  * @endsection
  */
@@ -278,6 +279,9 @@ enum struct ClassAttributes
     float Class_KnockBack;
     float Class_JumpHeight;
     float Class_JumpDistance;
+    
+    /* Personal Skin Attribute (boolean value) */
+    bool Class_IsPersonal;
 }
 
 /**
@@ -499,6 +503,11 @@ bool ClassPlayerSpawned[MAXPLAYERS + 1];
 ClassSpeedMethods ClassSpeedMethod = ClassSpeed_Prop;
 
 /**
+ * Specifies wheter a player is allowed to use a specific class (if personal attribute set to true)
+ */
+bool ClassPlayerClassPersonal[MAXPLAYERS + 1][ZR_CLASS_MAX];
+
+/**
  * Mother zombie override system definitions.
  * These are shared between infect.inc and classcommands.inc
  */
@@ -607,18 +616,8 @@ void ClassLoad()
         LogEvent(false, LogType_Fatal, LOG_CORE_EVENTS, LogModule_Playerclasses, "Config Validation", "Can't find any classes in \"%s\"", pathclasses);
     }
 
-    char section_name[64];
-    char name[64];
-    char group[64];
-    char sm_flags[64];
-    char description[256];
-    char model_path[PLATFORM_MAX_PATH];
-    char immunity_mode[32];
-    char overlay_path[PLATFORM_MAX_PATH];
-
     ClassCount = 0;
     int failedcount;
-    int ClassErrorFlags;
 
     // Loop through all classes and store attributes in the ClassData array.
     do
@@ -630,90 +629,16 @@ void ClassLoad()
 
             break;
         }
-
-        /* Class identifier = section name */
-        kvClassData.GetSectionName(section_name, sizeof(section_name));
-        strcopy(ClassData[ClassCount].Class_Identifier, 64, section_name);
-
-        /* General */
-        ClassData[ClassCount].Class_Enabled = ConfigKvGetStringBool(kvClassData, "enabled", ZR_CLASS_DEFAULT_ENABLED);
-        ClassData[ClassCount].Class_Team = kvClassData.GetNum("team", ZR_CLASS_DEFAULT_TEAM);
-        ClassData[ClassCount].Class_TeamDefault = ConfigKvGetStringBool(kvClassData, "team_default", ZR_CLASS_DEFAULT_TEAM_DEFAULT);
-        ClassData[ClassCount].Class_Flags = kvClassData.GetNum("flags", ZR_CLASS_DEFAULT_FLAGS);
-
-        kvClassData.GetString("group", group, sizeof(group), ZR_CLASS_DEFAULT_GROUP);
-        strcopy(ClassData[ClassCount].Class_Group, 64, group);
-
-        kvClassData.GetString("sm_flags", sm_flags, sizeof(sm_flags), ZR_CLASS_DEFAULT_SM_FLAGS);
-        strcopy(ClassData[ClassCount].Class_SM_Flags, 64, sm_flags);
-
-        kvClassData.GetString("name", name, sizeof(name), ZR_CLASS_DEFAULT_NAME);
-        strcopy(ClassData[ClassCount].Class_Name, 64, name);
-
-        kvClassData.GetString("description", description, sizeof(description), ZR_CLASS_DEFAULT_DESCRIPTION);
-        strcopy(ClassData[ClassCount].Class_Description, 256, description);
-
-
-        /* Model */
-        kvClassData.GetString("model_path", model_path, sizeof(model_path), ZR_CLASS_DEFAULT_MODEL_PATH);
-        strcopy(ClassData[ClassCount].Class_ModelPath, PLATFORM_MAX_PATH, model_path);
-
-        ClassData[ClassCount].Class_ModelSkinIndex = kvClassData.GetNum("model_skin_index", ZR_CLASS_DEFAULT_MODEL_SKIN_INDEX);
-        ClassData[ClassCount].Class_AlphaInitial = kvClassData.GetNum("alpha_initial", ZR_CLASS_DEFAULT_ALPHA_INITIAL);
-        ClassData[ClassCount].Class_AlphaDamaged = kvClassData.GetNum("alpha_damaged", ZR_CLASS_DEFAULT_ALPHA_DAMAGED);
-        ClassData[ClassCount].Class_AlphaDamage = kvClassData.GetNum("alpha_damage", ZR_CLASS_DEFAULT_ALPHA_DAMAGE);
-
-
-        /* Hud */
-        kvClassData.GetString("overlay_path", overlay_path, sizeof(overlay_path), ZR_CLASS_DEFAULT_OVERLAY_PATH);
-        strcopy(ClassData[ClassCount].Class_OverlayPath, PLATFORM_MAX_PATH, overlay_path);
-
-        ClassData[ClassCount].Class_Nvgs = ConfigKvGetStringBool(kvClassData, "nvgs", ZR_CLASS_DEFAULT_NVGS);
-        ClassData[ClassCount].Class_Fov = kvClassData.GetNum("fov", ZR_CLASS_DEFAULT_FOV);
-
-
-        /* Effects */
-        ClassData[ClassCount].Class_HasNapalm = ConfigKvGetStringBool(kvClassData, "has_napalm", ZR_CLASS_DEFAULT_HAS_NAPALM);
-        ClassData[ClassCount].Class_NapalmTime = kvClassData.GetFloat("napalm_time", ZR_CLASS_DEFAULT_NAPALM_TIME);
-
-
-        /* Player behaviour */
-        kvClassData.GetString("immunity_mode", immunity_mode, sizeof(immunity_mode), ZR_CLASS_DEFAULT_IMMUNITY_MODE);
-        ClassData[ClassCount].Class_ImmunityMode = ImmunityStringToMode(immunity_mode);
-        ClassData[ClassCount].Class_ImmunityAmount = kvClassData.GetNum("immunity_amount", ZR_CLASS_DEFAULT_IMMUNITY_AMOUNT);
-        ClassData[ClassCount].Class_ImmunityCooldown = kvClassData.GetNum("immunity_cooldown", ZR_CLASS_DEFAULT_IMMUNITY_COOLDOWN);
-        ClassData[ClassCount].Class_NoFallDamage = ConfigKvGetStringBool(kvClassData, "no_fall_damage", ZR_CLASS_DEFAULT_NO_FALL_DAMAGE);
-
-        ClassData[ClassCount].Class_Health = kvClassData.GetNum("health", ZR_CLASS_DEFAULT_HEALTH);
-        ClassData[ClassCount].Class_HealthRegenInterval = kvClassData.GetFloat("health_regen_interval", ZR_CLASS_DEFAULT_HEALTH_REGEN_INTERVAL);
-        ClassData[ClassCount].Class_HealthRegenAmount = kvClassData.GetNum("health_regen_amount", ZR_CLASS_DEFAULT_HEALTH_REGEN_AMOUNT);
-        ClassData[ClassCount].Class_HealthInfectGain = kvClassData.GetNum("health_infect_gain", ZR_CLASS_DEFAULT_HEALTH_INFECT_GAIN);
-        ClassData[ClassCount].Class_KillBonus = kvClassData.GetNum("kill_bonus", ZR_CLASS_DEFAULT_KILL_BONUS);
-
-        ClassData[ClassCount].Class_Speed = kvClassData.GetFloat("speed", ZR_CLASS_DEFAULT_SPEED);
-        ClassData[ClassCount].Class_KnockBack = kvClassData.GetFloat("knockback", ZR_CLASS_DEFAULT_KNOCKBACK);
-        ClassData[ClassCount].Class_JumpHeight = kvClassData.GetFloat("jump_height", ZR_CLASS_DEFAULT_JUMP_HEIGHT);
-        ClassData[ClassCount].Class_JumpDistance = kvClassData.GetFloat("jump_distance", ZR_CLASS_DEFAULT_JUMP_DISTANCE);
-
-        // Validate class attributes if class is enabled.
-        if (ClassData[ClassCount].Class_Enabled)
-        {
-            ClassErrorFlags = ClassValidateAttributes(ClassCount, true);
-            if (ClassErrorFlags > 0)
-            {
-                // There's one or more invalid class attributes. Disable the class
-                // and log an error message.
-                ClassData[ClassCount].Class_Enabled = false;
-                LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Playerclasses, "Config Validation", "Warning: Invalid class at index %d, disabled class. Class error flags: %d.", ClassCount, ClassErrorFlags);
-
-                failedcount++;
-            }
-        }
-
+		
+		bool success = ClassGetClassData(kvClassData);
+		
+		if (!success)
+			failedcount++;
+		
         // Update the counter.
         ClassCount++;
     } while (kvClassData.GotoNextKey());
-
+	
     // Validate team requirements.
     if (!ClassValidateTeamRequirements())
     {
@@ -745,6 +670,9 @@ void ClassLoad()
 
     // Remove key/value cache.
     delete kvClassData;
+    
+    // Call the ZR_OnClassLoaded forward
+	APIOnClassLoaded();
 }
 
 /**
@@ -839,6 +767,9 @@ bool ClassReloadDataCache()
         ClassDataCache[classindex].Class_KnockBack = ClassData[classindex].Class_KnockBack;
         ClassDataCache[classindex].Class_JumpHeight = ClassData[classindex].Class_JumpHeight;
         ClassDataCache[classindex].Class_JumpDistance = ClassData[classindex].Class_JumpDistance;
+        
+        /* Personal Attribute */
+        ClassDataCache[classindex].Class_IsPersonal = ClassData[classindex].Class_IsPersonal;
     }
 
     return true;
@@ -952,6 +883,9 @@ bool ClassReloadPlayerCache(int client, int classindex, int cachetype = ZR_CLASS
             ClassPlayerCache[client].Class_KnockBack = ClassDataCache[classindex].Class_KnockBack;
             ClassPlayerCache[client].Class_JumpHeight = ClassDataCache[classindex].Class_JumpHeight;
             ClassPlayerCache[client].Class_JumpDistance = ClassDataCache[classindex].Class_JumpDistance;
+            
+            /* Persona attribute */
+            ClassPlayerCache[client].Class_IsPersonal = ClassDataCache[classindex].Class_IsPersonal;
         }
         default:
         {
@@ -986,7 +920,8 @@ bool ClassReloadPlayer(int client)
     ClassOnClientDeath(client);         // Dummy event to clean up and turn off stuff.
     ClassReloadPlayerCache(client, activeclass);
     ClassApplyAttributes(client);
-
+	
+	// Reset player personal class 
     return true;
 }
 
@@ -1164,6 +1099,16 @@ void ClassClientSetDefaultIdentifiers(int client = -1)
             zombieindex = ClassGetIndexByIdentifier(zombie_ident);
             humanindex = ClassGetIndexByIdentifier(human_ident);
             adminindex = ClassGetIndexByIdentifier(admin_ident);
+            
+            // Check if class is personal and client is allowed to use it
+            if (zombieindex >= 0 && !ClassIsClientAllowed(client, zombieindex))
+            	zombieindex = -1;
+            
+            if (humanindex >= 0 && !ClassIsClientAllowed(client, humanindex))
+            	humanindex = -1;
+            
+            if (adminindex >= 0 && !ClassIsClientAllowed(client, adminindex))
+            	adminindex = -1;
         }
 
         // Check if class identifiers are set and that the client pass the filter.
@@ -1594,4 +1539,154 @@ int ClassMultiplierToString(int client, ClassMultipliers attribute, char[] buffe
     }
 
     return 0;
+}
+
+/**
+ * Retrieve Class Attributes From a KeyValues.
+ *
+ * @param kvClassData   The Keyvalues handle to read from.
+ * @return				True if class setup was successful, false otherwise            
+ */
+bool ClassGetClassData(KeyValues kvClassData)
+{
+	int ClassErrorFlags;
+	
+	char section_name[64];
+    char name[64];
+    char group[64];
+    char sm_flags[64];
+    char description[256];
+    char model_path[PLATFORM_MAX_PATH];
+    char immunity_mode[32];
+    char overlay_path[PLATFORM_MAX_PATH];
+    
+	/* Class identifier = section name */
+    kvClassData.GetSectionName(section_name, sizeof(section_name)); 	
+    strcopy(ClassData[ClassCount].Class_Identifier, 64, section_name);
+
+    /* General */
+    ClassData[ClassCount].Class_Enabled = ConfigKvGetStringBool(kvClassData, "enabled", ZR_CLASS_DEFAULT_ENABLED);
+    ClassData[ClassCount].Class_Team = kvClassData.GetNum("team", ZR_CLASS_DEFAULT_TEAM);
+    ClassData[ClassCount].Class_TeamDefault = ConfigKvGetStringBool(kvClassData, "team_default", ZR_CLASS_DEFAULT_TEAM_DEFAULT);
+    ClassData[ClassCount].Class_Flags = kvClassData.GetNum("flags", ZR_CLASS_DEFAULT_FLAGS);
+
+    kvClassData.GetString("group", group, sizeof(group), ZR_CLASS_DEFAULT_GROUP);
+    strcopy(ClassData[ClassCount].Class_Group, 64, group);
+
+    kvClassData.GetString("sm_flags", sm_flags, sizeof(sm_flags), ZR_CLASS_DEFAULT_SM_FLAGS);
+    strcopy(ClassData[ClassCount].Class_SM_Flags, 64, sm_flags);
+
+    kvClassData.GetString("name", name, sizeof(name), ZR_CLASS_DEFAULT_NAME);
+    strcopy(ClassData[ClassCount].Class_Name, 64, name);
+
+    kvClassData.GetString("description", description, sizeof(description), ZR_CLASS_DEFAULT_DESCRIPTION);
+    strcopy(ClassData[ClassCount].Class_Description, 256, description);
+
+
+    /* Model */
+    kvClassData.GetString("model_path", model_path, sizeof(model_path), ZR_CLASS_DEFAULT_MODEL_PATH);
+    strcopy(ClassData[ClassCount].Class_ModelPath, PLATFORM_MAX_PATH, model_path);
+
+    ClassData[ClassCount].Class_ModelSkinIndex = kvClassData.GetNum("model_skin_index", ZR_CLASS_DEFAULT_MODEL_SKIN_INDEX);
+    ClassData[ClassCount].Class_AlphaInitial = kvClassData.GetNum("alpha_initial", ZR_CLASS_DEFAULT_ALPHA_INITIAL);
+    ClassData[ClassCount].Class_AlphaDamaged = kvClassData.GetNum("alpha_damaged", ZR_CLASS_DEFAULT_ALPHA_DAMAGED);
+    ClassData[ClassCount].Class_AlphaDamage = kvClassData.GetNum("alpha_damage", ZR_CLASS_DEFAULT_ALPHA_DAMAGE);
+
+
+    /* Hud */
+    kvClassData.GetString("overlay_path", overlay_path, sizeof(overlay_path), ZR_CLASS_DEFAULT_OVERLAY_PATH);
+    strcopy(ClassData[ClassCount].Class_OverlayPath, PLATFORM_MAX_PATH, overlay_path);
+
+    ClassData[ClassCount].Class_Nvgs = ConfigKvGetStringBool(kvClassData, "nvgs", ZR_CLASS_DEFAULT_NVGS);
+    ClassData[ClassCount].Class_Fov = kvClassData.GetNum("fov", ZR_CLASS_DEFAULT_FOV);
+
+
+    /* Effects */
+    ClassData[ClassCount].Class_HasNapalm = ConfigKvGetStringBool(kvClassData, "has_napalm", ZR_CLASS_DEFAULT_HAS_NAPALM);
+    ClassData[ClassCount].Class_NapalmTime = kvClassData.GetFloat("napalm_time", ZR_CLASS_DEFAULT_NAPALM_TIME);
+
+
+    /* Player behaviour */
+    kvClassData.GetString("immunity_mode", immunity_mode, sizeof(immunity_mode), ZR_CLASS_DEFAULT_IMMUNITY_MODE);
+    ClassData[ClassCount].Class_ImmunityMode = ImmunityStringToMode(immunity_mode);
+    ClassData[ClassCount].Class_ImmunityAmount = kvClassData.GetNum("immunity_amount", ZR_CLASS_DEFAULT_IMMUNITY_AMOUNT);
+    ClassData[ClassCount].Class_ImmunityCooldown = kvClassData.GetNum("immunity_cooldown", ZR_CLASS_DEFAULT_IMMUNITY_COOLDOWN);
+    ClassData[ClassCount].Class_NoFallDamage = ConfigKvGetStringBool(kvClassData, "no_fall_damage", ZR_CLASS_DEFAULT_NO_FALL_DAMAGE);
+
+    ClassData[ClassCount].Class_Health = kvClassData.GetNum("health", ZR_CLASS_DEFAULT_HEALTH);
+    ClassData[ClassCount].Class_HealthRegenInterval = kvClassData.GetFloat("health_regen_interval", ZR_CLASS_DEFAULT_HEALTH_REGEN_INTERVAL);
+    ClassData[ClassCount].Class_HealthRegenAmount = kvClassData.GetNum("health_regen_amount", ZR_CLASS_DEFAULT_HEALTH_REGEN_AMOUNT);
+    ClassData[ClassCount].Class_HealthInfectGain = kvClassData.GetNum("health_infect_gain", ZR_CLASS_DEFAULT_HEALTH_INFECT_GAIN);
+    ClassData[ClassCount].Class_KillBonus = kvClassData.GetNum("kill_bonus", ZR_CLASS_DEFAULT_KILL_BONUS);
+
+    ClassData[ClassCount].Class_Speed = kvClassData.GetFloat("speed", ZR_CLASS_DEFAULT_SPEED);
+    ClassData[ClassCount].Class_KnockBack = kvClassData.GetFloat("knockback", ZR_CLASS_DEFAULT_KNOCKBACK);
+    ClassData[ClassCount].Class_JumpHeight = kvClassData.GetFloat("jump_height", ZR_CLASS_DEFAULT_JUMP_HEIGHT);
+    ClassData[ClassCount].Class_JumpDistance = kvClassData.GetFloat("jump_distance", ZR_CLASS_DEFAULT_JUMP_DISTANCE);
+
+	// Personal Skin Attribute (boolean value)
+	ClassData[ClassCount].Class_IsPersonal = ConfigKvGetStringBool(kvClassData, "personal", ZR_CLASS_DEFAULT_PERSONAL);
+	
+    // Validate class attributes if class is enabled.
+    if (ClassData[ClassCount].Class_Enabled)
+    {
+        ClassErrorFlags = ClassValidateAttributes(ClassCount, true);
+        if (ClassErrorFlags > 0)
+        {
+            // There's one or more invalid class attributes. Disable the class
+            // and log an error message.
+            ClassData[ClassCount].Class_Enabled = false;
+            LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Playerclasses, "Config Validation", "Warning: Invalid class at index %d, disabled class. Class error flags: %d.", ClassCount, ClassErrorFlags);
+
+            return false;
+        }
+    }
+    
+    return true;
+}
+
+/**
+ * Register a class index.
+ *
+ * @param kvClassData		The Keyvalues handle to read class attributes from.
+ *
+ * @return                  Class Index, -1 on failure.
+ */
+int ClassRegIndex(KeyValues kvClassData)
+{
+	if (kvClassData == null || ClassCount >= ZR_CLASS_MAX)
+		return -1;
+	
+	int teamid = kvClassData.GetNum("team", ZR_CLASS_DEFAULT_TEAM);
+	if (teamid < ZR_CLASS_TEAM_ZOMBIES || teamid > ZR_CLASS_TEAM_ADMINS)
+		return -1;
+		
+	bool success = ClassGetClassData(kvClassData);
+	ClassCount++;
+	
+	if (!success)
+		return -1;
+		
+	return ClassCount - 1;
+}
+
+/**
+ * Set the class personal attribute to a specific client.
+ *
+ * @param client			The client index
+ * @param skinindex			The class index
+ * @param personal			The boolean value to set the variable to
+ *
+ * @return                  Class Index, -1 on failure.
+ */
+void ClassSetClientClassPersonal(int client, int skinindex, bool personal)
+{
+	if (!ClassValidateIndex(skinindex))
+		return;
+	
+	// If class doesn't have the personal attribute, then stop
+	if (!ClassData[skinindex].Class_IsPersonal)
+		return;
+		
+	ClassPlayerClassPersonal[client][skinindex] = personal;
 }
