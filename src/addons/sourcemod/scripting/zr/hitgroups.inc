@@ -269,7 +269,7 @@ stock void HitgroupsGetName(int index, char[] hitgroup, int maxlen)
 {
 	// Get array handle of hitgroup at given index.
 	ArrayList arrayHitgroup = arrayHitgroups.Get(index);
-	
+
 	// Get hitgroup name.
 	arrayHitgroup.GetString(view_as<int>(HITGROUPS_DATA_NAME), hitgroup, maxlen);
 }
@@ -284,7 +284,7 @@ stock int HitgroupsGetIndex(int index)
 {
 	// Get array handle of hitgroup at given index.
 	ArrayList arrayHitgroup = arrayHitgroups.Get(index);
-	
+
 	// Return hitgroup index of the hitgroup.
 	return arrayHitgroup.Get(view_as<int>(HITGROUPS_DATA_INDEX));
 }
@@ -299,7 +299,7 @@ stock void HitgroupsSetDamage(int index, bool candamage)
 {
 	// Get array handle of hitgroup at given index.
 	ArrayList arrayHitgroup = arrayHitgroups.Get(index);
-	
+
 	// Return true if hitgroup can be damaged, false if not.
 	arrayHitgroup.Set(view_as<int>(HITGROUPS_DATA_DAMAGE), candamage);
 }
@@ -314,7 +314,7 @@ stock bool HitgroupsCanDamage(int index)
 {
 	// Get array handle of hitgroup at given index.
 	ArrayList arrayHitgroup = arrayHitgroups.Get(index);
-	
+
 	// Return true if hitgroup can be damaged, false if not.
 	return view_as<bool>(arrayHitgroup.Get(view_as<int>(HITGROUPS_DATA_DAMAGE)));
 }
@@ -329,7 +329,7 @@ stock void HitgroupsSetKnockback(int index, float knockback)
 {
 	// Get array handle of hitgroup at given index.
 	ArrayList arrayHitgroup = arrayHitgroups.Get(index);
-	
+
 	// Return the knockback multiplier for the hitgroup.
 	arrayHitgroup.Set(view_as<int>(HITGROUPS_DATA_KNOCKBACK), knockback);
 }
@@ -344,7 +344,7 @@ stock float HitgroupsGetKnockback(int index)
 {
 	// Get array handle of hitgroup at given index.
 	ArrayList arrayHitgroup = arrayHitgroups.Get(index);
-	
+
 	// Return the knockback multiplier for the hitgroup.
 	return view_as<float>(arrayHitgroup.Get(view_as<int>(HITGROUPS_DATA_KNOCKBACK)));
 }
@@ -382,7 +382,7 @@ bool HitgroupsMenuHitgroups(int client)
     // Add options to menu.
     menu_hitgroups.SetTitle(title);
     menu_hitgroups.AddItem("Enable All", enableall);
-   	menu_hitgroups.AddItem("Headshots Only", headshotsonly);
+    menu_hitgroups.AddItem("Headshots Only", headshotsonly);
 
     char hitgroupoption[MENU_LINE_REG_LENGTH];
     char hitgroupcandamage[MENU_LINE_SMALL_LENGTH];
