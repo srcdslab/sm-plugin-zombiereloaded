@@ -120,7 +120,7 @@
 #define ZR_CLASS_DEFAULT_KNOCKBACK              2.0
 #define ZR_CLASS_DEFAULT_JUMP_HEIGHT            10.0
 #define ZR_CLASS_DEFAULT_JUMP_DISTANCE          0.2
-#define ZR_CLASS_DEFAULT_PERSONAL				"no"
+#define ZR_CLASS_DEFAULT_PERSONAL                "no"
 /**
  * @endsection
  */
@@ -884,7 +884,7 @@ bool ClassReloadPlayerCache(int client, int classindex, int cachetype = ZR_CLASS
             ClassPlayerCache[client].Class_JumpHeight = ClassDataCache[classindex].Class_JumpHeight;
             ClassPlayerCache[client].Class_JumpDistance = ClassDataCache[classindex].Class_JumpDistance;
             
-            /* Persona attribute */
+            /* Personal attribute */
             ClassPlayerCache[client].Class_IsPersonal = ClassDataCache[classindex].Class_IsPersonal;
         }
         default:
