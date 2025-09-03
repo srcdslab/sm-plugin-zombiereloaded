@@ -90,7 +90,7 @@ void ToolsFindOffsets()
     {
         LogEvent(false, LogType_Fatal, LOG_CORE_EVENTS, LogModule_Tools, "Offsets", "Offset \"CBasePlayer::m_iFOV\" was not found.");
     }
-	
+
     GameData hGameConf = new GameData("zombiereloaded");
     if (hGameConf != null)
     {
