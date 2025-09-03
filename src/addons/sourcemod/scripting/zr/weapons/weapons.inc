@@ -421,11 +421,11 @@ stock void WeaponsClearCache(int index)
  */
 stock int WeaponsNameToIndex(const char[] weapon)
 {
-	if (arrayWeapons == null)
-	{
-		return -1;
-	}
-	
+    if (arrayWeapons == null)
+    {
+        return -1;
+    }
+
     char weaponname[WEAPONS_MAX_LENGTH];
 
     // x = Array index.
