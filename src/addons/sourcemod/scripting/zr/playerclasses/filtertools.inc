@@ -1134,7 +1134,7 @@ stock bool ClassAddToArray(ArrayList array, int teamfilter = -1, ClassFilter fil
             // The class is didn't pass the filter, skip class.
             continue;
         }
-		
+
         // Check team filtering.
         if (hasteamfilter)
         {
