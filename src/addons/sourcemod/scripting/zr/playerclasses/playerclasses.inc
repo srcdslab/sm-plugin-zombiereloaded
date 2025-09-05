@@ -838,6 +838,9 @@ bool ClassReloadPlayerCache(int client, int classindex, int cachetype = ZR_CLASS
             ClassPlayerCache[client].Class_KnockBack = ClassData[classindex].Class_KnockBack;
             ClassPlayerCache[client].Class_JumpHeight = ClassData[classindex].Class_JumpHeight;
             ClassPlayerCache[client].Class_JumpDistance = ClassData[classindex].Class_JumpDistance;
+
+            /* Personal attribute */
+            ClassPlayerCache[client].Class_IsPersonal = ClassData[classindex].Class_IsPersonal;
         }
         case ZR_CLASS_CACHE_MODIFIED:
         {
@@ -920,7 +923,6 @@ bool ClassReloadPlayer(int client)
     ClassReloadPlayerCache(client, activeclass);
     ClassApplyAttributes(client);
 
-	// Reset player personal class 
     return true;
 }
 
