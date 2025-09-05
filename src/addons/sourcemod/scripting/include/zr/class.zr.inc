@@ -166,7 +166,7 @@ native int ZR_MenuClass(int client, int teamid = -1);
  * Gets the class team.
  *
  * @param client        The class index.
- * @return              ZR_CLASS_TEAM_ZOMBIES | ZR_CLASS_TEAM_HUMANS | ZR_CLASS_TEAM_ADMINS.
+ * @return              ZR_CLASS_TEAM_ZOMBIES | ZR_CLASS_TEAM_HUMANS | ZR_CLASS_TEAM_ADMINS on success, -1 on error
  */
 native int ZR_GetClassTeamID(int index, int cachetype = ZR_CLASS_CACHE_PLAYER);
 
@@ -186,9 +186,9 @@ native int ZR_RegClassIndex(KeyValues kvClassData);
  * @param skinindex			The class index
  * @param personal			The boolean value to set the variable to
  *
- * @return                  Class Index, -1 on failure.
+ * @return                  True on success, false otherwise
  */
-native void ZR_SetClientClassPersonal(int client, int skinindex, bool personal);
+native bool ZR_SetClientClassPersonal(int client, int skinindex, bool personal);
 
 /**
  * Called after ZR has applied all classes attributes.
