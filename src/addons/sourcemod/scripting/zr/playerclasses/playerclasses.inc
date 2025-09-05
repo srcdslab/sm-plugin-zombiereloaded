@@ -626,19 +626,18 @@ void ClassLoad()
         {
             // Maximum classes reached. Write a warning and exit the loop.
             LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Playerclasses, "Config Validation", "Warning: Maximum classes reached (%d). Skipping other classes.", ZR_CLASS_MAX + 1);
-
             break;
         }
-		
+
 		bool success = ClassGetClassData(kvClassData);
-		
+
 		if (!success)
 			failedcount++;
-		
+
         // Update the counter.
         ClassCount++;
     } while (kvClassData.GotoNextKey());
-	
+
     // Validate team requirements.
     if (!ClassValidateTeamRequirements())
     {
@@ -670,7 +669,7 @@ void ClassLoad()
 
     // Remove key/value cache.
     delete kvClassData;
-    
+
     // Call the ZR_OnClassLoaded forward
 	APIOnClassLoaded();
 }
@@ -767,7 +766,7 @@ bool ClassReloadDataCache()
         ClassDataCache[classindex].Class_KnockBack = ClassData[classindex].Class_KnockBack;
         ClassDataCache[classindex].Class_JumpHeight = ClassData[classindex].Class_JumpHeight;
         ClassDataCache[classindex].Class_JumpDistance = ClassData[classindex].Class_JumpDistance;
-        
+
         /* Personal Attribute */
         ClassDataCache[classindex].Class_IsPersonal = ClassData[classindex].Class_IsPersonal;
     }
@@ -883,7 +882,7 @@ bool ClassReloadPlayerCache(int client, int classindex, int cachetype = ZR_CLASS
             ClassPlayerCache[client].Class_KnockBack = ClassDataCache[classindex].Class_KnockBack;
             ClassPlayerCache[client].Class_JumpHeight = ClassDataCache[classindex].Class_JumpHeight;
             ClassPlayerCache[client].Class_JumpDistance = ClassDataCache[classindex].Class_JumpDistance;
-            
+
             /* Personal attribute */
             ClassPlayerCache[client].Class_IsPersonal = ClassDataCache[classindex].Class_IsPersonal;
         }
@@ -920,7 +919,7 @@ bool ClassReloadPlayer(int client)
     ClassOnClientDeath(client);         // Dummy event to clean up and turn off stuff.
     ClassReloadPlayerCache(client, activeclass);
     ClassApplyAttributes(client);
-	
+
 	// Reset player personal class 
     return true;
 }
@@ -1099,12 +1098,12 @@ void ClassClientSetDefaultIdentifiers(int client = -1)
             zombieindex = ClassGetIndexByIdentifier(zombie_ident);
             humanindex = ClassGetIndexByIdentifier(human_ident);
             adminindex = ClassGetIndexByIdentifier(admin_ident);
-            
+
             // Fix: if class index was not found, then use default ones
             // Check if class is personal and client is allowed to use it    	
             if (zombieindex == -1 || (zombieindex >= 0 && !ClassIsClientAllowed(client, zombieindex)))
             	zombieindex = ClassGetDefaultSpawnClass(ZR_CLASS_TEAM_ZOMBIES, filter)
-            
+
             if (humanindex == -1 || (humanindex >= 0 && !ClassIsClientAllowed(client, humanindex)))
             	humanindex = ClassGetDefaultSpawnClass(ZR_CLASS_TEAM_HUMANS, filter);
         }
@@ -1548,7 +1547,7 @@ int ClassMultiplierToString(int client, ClassMultipliers attribute, char[] buffe
 bool ClassGetClassData(KeyValues kvClassData)
 {
 	int ClassErrorFlags;
-	
+
 	char section_name[64];
     char name[64];
     char group[64];
@@ -1557,7 +1556,7 @@ bool ClassGetClassData(KeyValues kvClassData)
     char model_path[PLATFORM_MAX_PATH];
     char immunity_mode[32];
     char overlay_path[PLATFORM_MAX_PATH];
-    
+
 	/* Class identifier = section name */
     kvClassData.GetSectionName(section_name, sizeof(section_name)); 	
     strcopy(ClassData[ClassCount].Class_Identifier, 64, section_name);
@@ -1635,11 +1634,10 @@ bool ClassGetClassData(KeyValues kvClassData)
             // and log an error message.
             ClassData[ClassCount].Class_Enabled = false;
             LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Playerclasses, "Config Validation", "Warning: Invalid class at index %d, disabled class. Class error flags: %d.", ClassCount, ClassErrorFlags);
-
             return false;
         }
     }
-    
+
     return true;
 }
 
@@ -1654,14 +1652,14 @@ int ClassRegIndex(KeyValues kvClassData)
 {
 	if (kvClassData == null || ClassCount >= ZR_CLASS_MAX)
 		return -1;
-	
+
 	int teamid = kvClassData.GetNum("team", ZR_CLASS_DEFAULT_TEAM);
 	if (teamid < ZR_CLASS_TEAM_ZOMBIES || teamid > ZR_CLASS_TEAM_ADMINS)
 		return -1;
-		
+
 	bool success = ClassGetClassData(kvClassData);
 	ClassCount++;
-	
+
 	if (!success)
 		return -1;
 
@@ -1682,7 +1680,7 @@ bool ClassSetClientClassPersonal(int client, int skinindex, bool personal)
 {
 	if (!ClassValidateIndex(skinindex))
 		return false;
-	
+
 	// If class doesn't have the personal attribute, then stop
 	if (!ClassIsPersonal(skinindex))
 		return false;
