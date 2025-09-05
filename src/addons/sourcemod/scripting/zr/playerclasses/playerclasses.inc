@@ -279,7 +279,7 @@ enum struct ClassAttributes
     float Class_KnockBack;
     float Class_JumpHeight;
     float Class_JumpDistance;
-    
+
     /* Personal Skin Attribute (boolean value) */
     bool Class_IsPersonal;
 }
