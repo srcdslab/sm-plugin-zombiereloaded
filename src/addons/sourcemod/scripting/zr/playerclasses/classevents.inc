@@ -112,7 +112,7 @@ void ClassOnClientConnected(int client)
 
     // Initialize the admin checked variable.
     g_bAdminChecked[client] = false;
-    
+
     // Reset Player Personal Class
     for (int i = 0; i < ZR_CLASS_MAX; i++)
     {
