@@ -163,10 +163,16 @@ native int ZR_GetClassDisplayName(int index, char[] buffer, int maxlen, int cach
 native int ZR_MenuClass(int client, int teamid = -1);
 
 /**
- * Gets the class team.
+ * Gets the class team based on the provided index.
  *
- * @param client        The class index.
- * @return              ZR_CLASS_TEAM_ZOMBIES | ZR_CLASS_TEAM_HUMANS | ZR_CLASS_TEAM_ADMINS on success, -1 on error
+ * @param client        The index of the class. This should correspond to a valid class index.
+ * @param cachetype     (Optional) The type of cache to use. Default is ZR_CLASS_CACHE_PLAYER.
+ * 
+ * @return              Returns one of the following constants on success:
+ *                      - ZR_CLASS_TEAM_ZOMBIES
+ *                      - ZR_CLASS_TEAM_HUMANS
+ *                      - ZR_CLASS_TEAM_ADMINS
+ *                      Returns -1 on error.
  */
 native int ZR_GetClassTeamID(int index, int cachetype = ZR_CLASS_CACHE_PLAYER);
 
