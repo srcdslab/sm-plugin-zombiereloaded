@@ -57,7 +57,7 @@ void APIClassInit()
     CreateNative("ZR_GetClassTeamID", APIGetClassTeamID);
     CreateNative("ZR_RegClassIndex", APIRegClassIndex);
     CreateNative("ZR_SetClientClassPersonal", APISetClientClassPersonal);
-	
+
     // Forwards
     g_hAPIFwdOnClassAttributesApplied = new GlobalForward("ZR_OnClassAttributesApplied", ET_Ignore, Param_CellByRef, Param_CellByRef);
     g_hAPIFwdOnClassApplyModel = new GlobalForward("ZR_OnClassApplyModel", ET_Hook, Param_CellByRef, Param_String, Param_CellByRef);
@@ -333,9 +333,9 @@ public int APIGetClassTeamID(Handle plugin, int numParams)
 	int index = GetNativeCell(1);
 	if (!ClassValidateIndex(index))
 		return -1;
-	
+
 	int cachetype = GetNativeCell(2);
-	
+
 	return ClassGetTeamID(index, cachetype);
 }
 
@@ -347,7 +347,7 @@ public int APIGetClassTeamID(Handle plugin, int numParams)
 public int APIRegClassIndex(Handle plugin, int numParams)
 {
 	KeyValues kvClassData = view_as<KeyValues>(GetNativeCell(1));
-	
+
 	return ClassRegIndex(kvClassData);
 }
 
@@ -360,13 +360,13 @@ public int APISetClientClassPersonal(Handle plugin, int numParams)
 {
 	int client = GetNativeCell(1);
 	APIValidateClientIndex(client);
-	
+
 	int skinindex = GetNativeCell(2);
 	if (!ClassValidateIndex(skinindex))
 		return 0;
-		
+
 	bool personal = view_as<bool>(GetNativeCell(3));
-	
+
 	ClassSetClientClassPersonal(client, skinindex, personal);
 	return 0;
 }
@@ -382,11 +382,11 @@ void APIOnClassAttributesApplied(int client, int classindex)
 {
     // Start forward call.
     Call_StartForward(g_hAPIFwdOnClassAttributesApplied);
-    
+
     // Push the parameters.
     Call_PushCellRef(client);
     Call_PushCellRef(classindex);
-    
+
     Call_Finish();
 }
 
@@ -402,12 +402,12 @@ Action APIOnClassApplyModel(int client, char[] modelpath, int skinIndex)
 {
     // Start forward call.
     Call_StartForward(g_hAPIFwdOnClassApplyModel);
-    
+
     // Push the parameters.
     Call_PushCellRef(client);
     Call_PushString(modelpath);
     Call_PushCellRef(skinIndex);
-    
+
     // Get what they returned.
     Action result;
     Call_Finish(result);
@@ -426,12 +426,12 @@ void APIOnClassModelApplied(int client, char[] modelpath, int skinIndex)
 {
     // Start forward call.
     Call_StartForward(g_hAPIFwdOnClassModelApplied);
-    
+
     // Push the parameters.
     Call_PushCellRef(client);
     Call_PushString(modelpath);
     Call_PushCellRef(skinIndex);
-    
+
     Call_Finish();
 }
 
@@ -444,6 +444,6 @@ void APIOnClassLoaded()
 {
     // Start forward call.
     Call_StartForward(g_hAPIFwdOnClassLoaded);
-    
+
     Call_Finish();
 }
