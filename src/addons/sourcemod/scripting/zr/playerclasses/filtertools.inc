@@ -951,10 +951,10 @@ stock bool ClassFilterMatch(int index, ClassFilter filter, int cachetype = ZR_CL
             if (GetUserFlagBits(client) & flags != flags)
                 return false;
         }
-        
+
         // Check if class is personal and client is allowed to use it
         if (!ClassIsClientAllowed(client, index))
-        	return false;
+            return false;
     }
 
     // Check if classes with groups are set to be excluded.
@@ -1484,7 +1484,7 @@ stock int ClassGetDefaultSpawnClass(int teamid, ClassFilter filter = ClassNoSpec
  */
 stock bool ClassIsPersonal(int index)
 {
-	return ClassData[index].Class_IsPersonal;
+    return ClassData[index].Class_IsPersonal;
 }
 
 /**
@@ -1496,5 +1496,5 @@ stock bool ClassIsPersonal(int index)
  */
 stock bool ClassIsClientAllowed(int client, int index)
 {
-	return !ClassIsPersonal(index) || ClassPlayerClassPersonal[client][index];
+    return !ClassIsPersonal(index) || ClassPlayerClassPersonal[client][index];
 }
