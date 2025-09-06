@@ -46,7 +46,7 @@
 /**
  * @endsection
  */
- 
+
 /**
  * Results when selecting a class for a player.
  */
@@ -167,7 +167,7 @@ native int ZR_MenuClass(int client, int teamid = -1);
  *
  * @param client        The index of the class. This should correspond to a valid class index.
  * @param cachetype     (Optional) The type of cache to use. Default is ZR_CLASS_CACHE_PLAYER.
- * 
+ *
  * @return              Returns one of the following constants on success:
  *                      - ZR_CLASS_TEAM_ZOMBIES
  *                      - ZR_CLASS_TEAM_HUMANS
@@ -214,7 +214,6 @@ forward void ZR_OnClassAttributesApplied(int &client, int &skinIndex);
  * @return result           Return the result of the Call.
  */
 forward Action ZR_OnClassApplyModel(int &client, char[] modelPath, int &skinIndex);
- 
 
 /**
  * Called right after ZR has applied the model to a player.
