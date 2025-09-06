@@ -36,6 +36,18 @@
  */
 
 /**
+ * @section class teams IDs
+ */
+#if !defined INCLUDED_BY_ZOMBIERELOADED
+	#define ZR_CLASS_TEAM_ZOMBIES   0
+	#define ZR_CLASS_TEAM_HUMANS    1
+	#define ZR_CLASS_TEAM_ADMINS	2
+#endif
+/**
+ * @endsection
+ */
+
+/**
  * Results when selecting a class for a player.
  */
 #if !defined INCLUDED_BY_ZOMBIERELOADED
@@ -151,6 +163,40 @@ native int ZR_GetClassDisplayName(int index, char[] buffer, int maxlen, int cach
 native int ZR_MenuClass(int client, int teamid = -1);
 
 /**
+ * Gets the class team based on the provided index.
+ *
+ * @param client        The index of the class. This should correspond to a valid class index.
+ * @param cachetype     (Optional) The type of cache to use. Default is ZR_CLASS_CACHE_PLAYER.
+ *
+ * @return              Returns one of the following constants on success:
+ *                      - ZR_CLASS_TEAM_ZOMBIES
+ *                      - ZR_CLASS_TEAM_HUMANS
+ *                      - ZR_CLASS_TEAM_ADMINS
+ *                      Returns -1 on error.
+ */
+native int ZR_GetClassTeamID(int index, int cachetype = ZR_CLASS_CACHE_PLAYER);
+
+/**
+ * Register a class index.
+ *
+ * @param kvClassData		The Keyvalues handle to read class attributes from.
+ *
+ * @return                  Class Index, -1 on failure.
+ */
+native int ZR_RegClassIndex(KeyValues kvClassData);
+
+/**
+ * Set the class personal attribute to a specific client.
+ *
+ * @param client			The client index
+ * @param classindex		The class index
+ * @param personal			The boolean value to set the variable to
+ *
+ * @return                  True on success, false otherwise
+ */
+native bool ZR_SetClientClassPersonal(int client, int classindex, bool personal);
+
+/**
  * Called after ZR has applied all classes attributes.
  *
  * @param client            The client index.
@@ -168,7 +214,6 @@ forward void ZR_OnClassAttributesApplied(int &client, int &skinIndex);
  * @return result           Return the result of the Call.
  */
 forward Action ZR_OnClassApplyModel(int &client, char[] modelPath, int &skinIndex);
- 
 
 /**
  * Called right after ZR has applied the model to a player.
@@ -179,3 +224,10 @@ forward Action ZR_OnClassApplyModel(int &client, char[] modelPath, int &skinInde
  * @noreturn
  */
 forward void ZR_OnClassModelApplied(int &client, char[] modelPath, int &skinIndex);
+
+/**
+ * Called right after ZR loaded all classes from playerclasses config file, this is where you should register new classes indexes
+ *
+ * @noreturn
+ */
+forward void ZR_OnClassLoaded();
