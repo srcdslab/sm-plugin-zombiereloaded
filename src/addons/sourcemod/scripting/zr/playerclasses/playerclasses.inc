@@ -1104,7 +1104,7 @@ void ClassClientSetDefaultIdentifiers(int client = -1)
             // Fix: if class index was not found, then use default ones
             // Check if class is personal and client is allowed to use it    	
             if (zombieindex == -1 || (zombieindex >= 0 && !ClassIsClientAllowed(client, zombieindex)))
-            	zombieindex = ClassGetDefaultSpawnClass(ZR_CLASS_TEAM_ZOMBIES, filter)
+            	zombieindex = ClassGetDefaultSpawnClass(ZR_CLASS_TEAM_ZOMBIES, filter);
 
             if (humanindex == -1 || (humanindex >= 0 && !ClassIsClientAllowed(client, humanindex)))
             	humanindex = ClassGetDefaultSpawnClass(ZR_CLASS_TEAM_HUMANS, filter);
