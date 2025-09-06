@@ -116,8 +116,8 @@ void ClassOnClientConnected(int client)
     // Reset Player Personal Class
     for (int i = 0; i < ZR_CLASS_MAX; i++)
     {
-   		ClassPlayerClassPersonal[client][i] = false;
-  	}
+        ClassPlayerClassPersonal[client][i] = false;
+    }
 }
 
 /**
