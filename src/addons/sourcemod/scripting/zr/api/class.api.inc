@@ -72,9 +72,9 @@ void APIClassInit()
  */
 public int APIIsValidClassIndex(Handle plugin, int numParams)
 {
-	int classIndex = GetNativeCell(1);
-	
-	return ClassValidateIndex(classIndex);
+    int classIndex = GetNativeCell(1);
+
+    return ClassValidateIndex(classIndex);
 }
 
 /**
@@ -330,13 +330,13 @@ public int APIMenuClass(Handle plugin, int numParams)
  */
 public int APIGetClassTeamID(Handle plugin, int numParams)
 {
-	int index = GetNativeCell(1);
-	if (!ClassValidateIndex(index))
-		return -1;
+    int index = GetNativeCell(1);
+    if (!ClassValidateIndex(index))
+        return -1;
 
-	int cachetype = GetNativeCell(2);
+    int cachetype = GetNativeCell(2);
 
-	return ClassGetTeamID(index, cachetype);
+    return ClassGetTeamID(index, cachetype);
 }
 
 /**
@@ -346,9 +346,9 @@ public int APIGetClassTeamID(Handle plugin, int numParams)
  */
 public int APIRegClassIndex(Handle plugin, int numParams)
 {
-	KeyValues kvClassData = view_as<KeyValues>(GetNativeCell(1));
+    KeyValues kvClassData = view_as<KeyValues>(GetNativeCell(1));
 
-	return ClassRegIndex(kvClassData);
+    return ClassRegIndex(kvClassData);
 }
 
 /**
@@ -358,17 +358,16 @@ public int APIRegClassIndex(Handle plugin, int numParams)
  */
 public int APISetClientClassPersonal(Handle plugin, int numParams)
 {
-	int client = GetNativeCell(1);
-	APIValidateClientIndex(client);
+    int client = GetNativeCell(1);
+    APIValidateClientIndex(client);
 
-	int skinindex = GetNativeCell(2);
-	if (!ClassValidateIndex(skinindex))
-		return 0;
+    int skinindex = GetNativeCell(2);
+    if (!ClassValidateIndex(skinindex))
+        return 0;
 
-	bool personal = view_as<bool>(GetNativeCell(3));
+    bool personal = view_as<bool>(GetNativeCell(3));
 
-	ClassSetClientClassPersonal(client, skinindex, personal);
-	return 0;
+    return ClassSetClientClassPersonal(client, skinindex, personal);
 }
 
 /**
