@@ -622,20 +622,20 @@ void ClassLoad()
     // Loop through all classes and store attributes in the ClassData array.
     do
     {
-        if (ClassCount >= ZR_CLASS_MAX)
-        {
-            // Maximum classes reached. Write a warning and exit the loop.
-            LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Playerclasses, "Config Validation", "Warning: Maximum classes reached (%d). Skipping other classes.", ZR_CLASS_MAX + 1);
-            break;
-        }
+    if (ClassCount >= ZR_CLASS_MAX)
+    {
+        // Maximum classes reached. Write a warning and exit the loop.
+        LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Playerclasses, "Config Validation", "Warning: Maximum classes reached (%d). Skipping other classes.", ZR_CLASS_MAX + 1);
+        break;
+    }
 
-		bool success = ClassGetClassData(kvClassData);
+    bool success = ClassGetClassData(kvClassData);
 
-		if (!success)
-			failedcount++;
+    if (!success)
+        failedcount++;
 
-        // Update the counter.
-        ClassCount++;
+    // Update the counter.
+    ClassCount++;
     } while (kvClassData.GotoNextKey());
 
     // Validate team requirements.
@@ -671,7 +671,7 @@ void ClassLoad()
     delete kvClassData;
 
     // Call the ZR_OnClassLoaded forward
-	APIOnClassLoaded();
+    APIOnClassLoaded();
 }
 
 /**
@@ -1056,7 +1056,6 @@ void ClassClientSetDefaultIdentifiers(int client = -1)
     bool hashuman;
     bool hasadmin;
 
-
     /*
      *  SETUP CLASS FILTER
      */
@@ -1102,12 +1101,12 @@ void ClassClientSetDefaultIdentifiers(int client = -1)
             adminindex = ClassGetIndexByIdentifier(admin_ident);
 
             // Fix: if class index was not found, then use default ones
-            // Check if class is personal and client is allowed to use it    	
+            // Check if class is personal and client is allowed to use it
             if (zombieindex == -1 || (zombieindex >= 0 && !ClassIsClientAllowed(client, zombieindex)))
-            	zombieindex = ClassGetDefaultSpawnClass(ZR_CLASS_TEAM_ZOMBIES, filter);
+                zombieindex = ClassGetDefaultSpawnClass(ZR_CLASS_TEAM_ZOMBIES, filter);
 
             if (humanindex == -1 || (humanindex >= 0 && !ClassIsClientAllowed(client, humanindex)))
-            	humanindex = ClassGetDefaultSpawnClass(ZR_CLASS_TEAM_HUMANS, filter);
+                humanindex = ClassGetDefaultSpawnClass(ZR_CLASS_TEAM_HUMANS, filter);
         }
 
         // Check if class identifiers are set and that the client pass the filter.
@@ -1544,13 +1543,13 @@ int ClassMultiplierToString(int client, ClassMultipliers attribute, char[] buffe
  * Retrieve Class Attributes From a KeyValues.
  *
  * @param kvClassData   The Keyvalues handle to read from.
- * @return				True if class setup was successful, false otherwise            
+ * @return				True if class setup was successful, false otherwise
  */
 bool ClassGetClassData(KeyValues kvClassData)
 {
-	int ClassErrorFlags;
+    int ClassErrorFlags;
 
-	char section_name[64];
+    char section_name[64];
     char name[64];
     char group[64];
     char sm_flags[64];
@@ -1559,8 +1558,8 @@ bool ClassGetClassData(KeyValues kvClassData)
     char immunity_mode[32];
     char overlay_path[PLATFORM_MAX_PATH];
 
-	/* Class identifier = section name */
-    kvClassData.GetSectionName(section_name, sizeof(section_name)); 	
+    /* Class identifier = section name */
+    kvClassData.GetSectionName(section_name, sizeof(section_name));
     strcopy(ClassData[ClassCount].Class_Identifier, 64, section_name);
 
     /* General */
@@ -1623,9 +1622,9 @@ bool ClassGetClassData(KeyValues kvClassData)
     ClassData[ClassCount].Class_JumpHeight = kvClassData.GetFloat("jump_height", ZR_CLASS_DEFAULT_JUMP_HEIGHT);
     ClassData[ClassCount].Class_JumpDistance = kvClassData.GetFloat("jump_distance", ZR_CLASS_DEFAULT_JUMP_DISTANCE);
 
-	// Personal Skin Attribute (boolean value)
-	ClassData[ClassCount].Class_IsPersonal = ConfigKvGetStringBool(kvClassData, "personal", ZR_CLASS_DEFAULT_PERSONAL);
-	
+    // Personal Skin Attribute (boolean value)
+    ClassData[ClassCount].Class_IsPersonal = ConfigKvGetStringBool(kvClassData, "personal", ZR_CLASS_DEFAULT_PERSONAL);
+
     // Validate class attributes if class is enabled.
     if (ClassData[ClassCount].Class_Enabled)
     {
@@ -1652,21 +1651,21 @@ bool ClassGetClassData(KeyValues kvClassData)
  */
 int ClassRegIndex(KeyValues kvClassData)
 {
-	if (kvClassData == null || ClassCount >= ZR_CLASS_MAX)
-		return -1;
+    if (kvClassData == null || ClassCount >= ZR_CLASS_MAX)
+        return -1;
 
-	int teamid = kvClassData.GetNum("team", ZR_CLASS_DEFAULT_TEAM);
-	if (teamid < ZR_CLASS_TEAM_ZOMBIES || teamid > ZR_CLASS_TEAM_ADMINS)
-		return -1;
+    int teamid = kvClassData.GetNum("team", ZR_CLASS_DEFAULT_TEAM);
+    if (teamid < ZR_CLASS_TEAM_ZOMBIES || teamid > ZR_CLASS_TEAM_ADMINS)
+        return -1;
 
-	bool success = ClassGetClassData(kvClassData);
-	ClassCount++;
+    bool success = ClassGetClassData(kvClassData);
+    ClassCount++;
 
-	if (!success)
-		return -1;
+    if (!success)
+        return -1;
 
-    ClassReloadDataCache();	
-	return ClassCount - 1;
+    ClassReloadDataCache();
+    return ClassCount - 1;
 }
 
 /**
@@ -1680,13 +1679,13 @@ int ClassRegIndex(KeyValues kvClassData)
  */
 bool ClassSetClientClassPersonal(int client, int skinindex, bool personal)
 {
-	if (!ClassValidateIndex(skinindex))
-		return false;
+    if (!ClassValidateIndex(skinindex))
+        return false;
 
-	// If class doesn't have the personal attribute, then stop
-	if (!ClassIsPersonal(skinindex))
-		return false;
+    // If class doesn't have the personal attribute, then stop
+    if (!ClassIsPersonal(skinindex))
+        return false;
 
-	ClassPlayerClassPersonal[client][skinindex] = personal;
-	return true;
+    ClassPlayerClassPersonal[client][skinindex] = personal;
+    return true;
 }
