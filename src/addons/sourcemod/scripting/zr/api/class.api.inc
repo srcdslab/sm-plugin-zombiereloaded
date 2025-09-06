@@ -354,20 +354,20 @@ public int APIRegClassIndex(Handle plugin, int numParams)
 /**
  * Native call function (ZR_SetClientClassPersonal)
  *
- * native void ZR_SetClientClassPersonal(int client, int skinindex, bool personal);
+ * native void ZR_SetClientClassPersonal(int client, int classindex, bool personal);
  */
 public int APISetClientClassPersonal(Handle plugin, int numParams)
 {
     int client = GetNativeCell(1);
     APIValidateClientIndex(client);
 
-    int skinindex = GetNativeCell(2);
-    if (!ClassValidateIndex(skinindex))
+    int classindex = GetNativeCell(2);
+    if (!ClassValidateIndex(classindex))
         return 0;
 
     bool personal = view_as<bool>(GetNativeCell(3));
 
-    return ClassSetClientClassPersonal(client, skinindex, personal);
+    return ClassSetClientClassPersonal(client, classindex, personal);
 }
 
 /**
