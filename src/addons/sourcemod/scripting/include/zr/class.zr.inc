@@ -189,12 +189,12 @@ native int ZR_RegClassIndex(KeyValues kvClassData);
  * Set the class personal attribute to a specific client.
  *
  * @param client			The client index
- * @param skinindex			The class index
+ * @param classindex		The class index
  * @param personal			The boolean value to set the variable to
  *
  * @return                  True on success, false otherwise
  */
-native bool ZR_SetClientClassPersonal(int client, int skinindex, bool personal);
+native bool ZR_SetClientClassPersonal(int client, int classindex, bool personal);
 
 /**
  * Called after ZR has applied all classes attributes.
