@@ -27,13 +27,8 @@ project:
       unpack:
       - source: /addons
         dest: /addons
-    - name: sourcetvmanager
-      type: git
-      repo: https://github.com/peace-maker/sourcetvmanager
-      unpack:
-      - source: /sourcetvmanager.inc
-        dest: /addons/sourcemod/scripting/include/sourcetvmanager.inc
   root: /src
   output: /src/addons/sourcemod/plugins
   targets:
     - zombiereloaded
+
