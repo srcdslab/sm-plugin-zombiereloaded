@@ -30,8 +30,6 @@
  #undef REQUIRE_EXTENSIONS
 #endif
 
-#tryinclude "sourcetvmanager.inc"
-
 /* Restore old REQUIRE_EXTENSIONS value if necessary */
 #if defined TEMP_REQUIRE_EXTENSIONS
  #define REQUIRE_EXTENSIONS
@@ -87,17 +85,12 @@ enum RoundEndOutcome
  */
 Handle g_tRoundEnd = null;
 
-bool g_SourceTVManagerLoaded = false;
-
 /**
  * All plugins have finished loading.
  */
 void RoundEndOnAllPluginsLoaded()
 {
-    #if defined _stvmngr_included
-    g_SourceTVManagerLoaded = LibraryExists("sourcetvmanager");
-    LogMessage("SourceTV Manager: %s", (g_SourceTVManagerLoaded ? "loaded" : "not loaded"));
-    #endif
+    // Not used for now.
 }
 
 /**
@@ -105,11 +98,7 @@ void RoundEndOnAllPluginsLoaded()
  */
 void RoundEndOnLibraryAdded(const char[] name)
 {
-    if (strcmp(name, "sourcetvmanager", false) == 0)
-    {
-        // sourcetvmanager loaded.
-        g_SourceTVManagerLoaded = true;
-    }
+    // Not used for now.
 }
 
 /**
@@ -117,11 +106,7 @@ void RoundEndOnLibraryAdded(const char[] name)
  */
 void RoundEndOnLibraryRemoved(const char[] name)
 {
-    if (strcmp(name, "sourcetvmanager") == 0)
-    {
-        // sourcetvmanager unloaded.
-        g_SourceTVManagerLoaded = false;
-    }
+    // Not used for now.
 }
 
 /**
@@ -289,13 +274,8 @@ void RoundEndDisplayStats()
                 sPlayerID, sPlayerName, sPlayerAuth, sPlayerState, sPlayerTeam);
         }
 
-        #if defined _stvmngr_included
-        if (g_SourceTVManagerLoaded)
-        {
-            SourceTV_PrintToDemoConsole("# %8s %40s %24s %5s %6s",
-                sPlayerID, sPlayerName, sPlayerAuth, sPlayerState, sPlayerTeam);
-        }
-        #endif
+        LogMessage("# %8s %40s %24s %5s %6s",
+            sPlayerID, sPlayerName, sPlayerAuth, sPlayerState, sPlayerTeam);
     }
 }
 
