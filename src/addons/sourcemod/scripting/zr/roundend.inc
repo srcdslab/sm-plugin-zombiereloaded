@@ -98,7 +98,8 @@ void RoundEndOnAllPluginsLoaded()
  */
 void RoundEndOnLibraryAdded(const char[] name)
 {
-    // Not used for now.
+    // Not used for now, delete the line below if this function was ever used.
+    #pragma unused name
 }
 
 /**
@@ -106,7 +107,8 @@ void RoundEndOnLibraryAdded(const char[] name)
  */
 void RoundEndOnLibraryRemoved(const char[] name)
 {
-    // Not used for now.
+    // Not used for now, delete the line below if this function was ever used.
+    #pragma unused name
 }
 
 /**

@@ -285,7 +285,7 @@ public void OnConfigsExecuted()
     ClassOnModulesLoaded();
 
     // Fake roundstart
-    EventRoundStart(INVALID_HANDLE, "", false);
+    EventRoundStart(null, "", false);
 
     if (g_bLate)
     {
