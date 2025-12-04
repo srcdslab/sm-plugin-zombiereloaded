@@ -78,7 +78,7 @@ void DownloadsLoad()
         if (!FileExists(downloadpath, false))
         {
             // Remove client from array.
-           	arrayDownloads.Erase(x);
+            arrayDownloads.Erase(x);
 
             // Subtract one from count.
             downloads--;
