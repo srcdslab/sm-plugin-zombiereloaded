@@ -7,4 +7,4 @@
 #define ZR_VER_PATCH            "24"
 #define ZR_VERSION              ZR_VER_MAJOR..."."...ZR_VER_MINOR..."."...ZR_VER_PATCH
 #define ZR_VER_LICENSE          "GNU GPL, Version 3"
-#define ZR_VER_DATE             "Thu Oct 16 12:26:24 CEST 2025"
+#define ZR_VER_DATE             "Thu Dec 04 14:50:24 CET 2025"
