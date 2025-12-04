@@ -7,9 +7,9 @@
 			"m_LastHitGroup"
 			{
 				"windows"	"4779"
+				"windows64" "4779"
 				"linux"		"4780"
 			}
 		}
 	}
 }
-
