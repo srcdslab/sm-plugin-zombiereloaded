@@ -543,7 +543,7 @@ void CvarsHook(bool unhook = false)
 
     // Hook cvar to prevent it from changing.
     g_hAutoTeamBalance.AddChangeHook(CvarsHookLocked);
-   	g_hLimitTeams.AddChangeHook(CvarsHookLocked);
+    g_hLimitTeams.AddChangeHook(CvarsHookLocked);
     g_hRestartGame.AddChangeHook(CvarsHookRestartGame);
 
     g_hCvarsList.CVAR_VOL.AddChangeHook(VolEnabledChanged);
