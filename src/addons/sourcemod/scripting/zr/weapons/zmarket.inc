@@ -1131,7 +1131,15 @@ stock bool ZMarketEquip(int client, const char[] weapon, bool rebuy = false)
         if (strcmp(weaponentity, "item_kevlar", false) == 0)
         {
             SetEntProp(client, Prop_Send, "m_ArmorValue", 100);
+        }
+        else if (StrEqual(weaponentity, "item_assaultsuit"))
+        {
+            SetEntProp(client, Prop_Send, "m_ArmorValue", 100);
             SetEntProp(client, Prop_Send, "m_bHasHelmet", 1);
+        }
+        else if (StrEqual(weaponentity, "item_defuser"))
+        {
+            SetEntProp(client, Prop_Send, "m_bHasDefuser", 1);
         }
         else if (strcmp(weaponentity, "item_nvgs", false) == 0)
         {
@@ -1140,7 +1148,7 @@ stock bool ZMarketEquip(int client, const char[] weapon, bool rebuy = false)
         else
         {
             // Give client the weapon.
-           entity = GivePlayerItem(client, weaponentity);
+            entity = GivePlayerItem(client, weaponentity);
         }
 
         if (!rebuy)
