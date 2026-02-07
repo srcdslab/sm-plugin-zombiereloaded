@@ -49,6 +49,11 @@ bool g_bRestrictBlockWeapon[MAXPLAYERS + 1];
 ArrayList arrayWeaponTypes = null;
 
 /**
+* Array to block any client from picking up specific weapons.
+*/
+bool g_bRestrictBlockWeaponOne[MAXPLAYERS + 1][WEAPONS_MAX_NUM];
+
+/**
 * Query results returned when (un)restricting a weapon.
 */
 enum RestrictQuery
@@ -131,6 +136,7 @@ void RestrictClientInit(int client)
 {
     SDKHook(client, SDKHook_WeaponCanUse, RestrictCanUse);
     g_bRestrictBlockWeapon[client] = false;
+    RestrictSetClientWeaponRestrictAll(client, false);
 }
 
 /**
@@ -247,9 +253,9 @@ public Action RestrictBuyCommand(int client, int argc)
         // Allow command.
         return Plugin_Continue;
     }
-
-    // If weapon is restricted, then stop.
-    if (RestrictIsWeaponRestricted(weaponindex))
+	
+    // If weapon is restricted or client cannot use it, then stop.
+    if (RestrictIsWeaponRestricted(weaponindex) || g_bRestrictBlockWeaponOne[client][weaponindex])
     {
         TranslationPrintToChat(client, "Weapon is restricted", weaponname);
 
@@ -799,4 +805,138 @@ public Action UnrestrictCommand(int client, int argc)
     }
 
     return Plugin_Handled;
+}
+
+/**
+* Set all wepaon restrict array for the specified client.
+* @param client    The client index.
+* @param value	   The restrict value
+* @noreturn        
+*/
+public void RestrictSetClientWeaponRestrictAll(int client, bool value)
+{
+    for (int i = 0; i < sizeof(g_bRestrictBlockWeaponOne[]); i++)
+	{
+		g_bRestrictBlockWeaponOne[client][i] = value;
+	}
+}
+
+/**
+* Set all wepaon restrict array for all clients.
+* @param value	   The restrict value
+* @noreturn        
+*/
+public void RestrictSetAllRestrictAll(bool value)
+{
+	for (int i = 1; i <= MaxClients; i++)
+	{
+	    for (int j = 0; j < sizeof(g_bRestrictBlockWeaponOne[]); j++)
+		{
+			g_bRestrictBlockWeaponOne[i][j] = value;
+		}
+	}
+}
+
+/**
+* Set weapon restrict value to a specific client.
+* @param client    		 The client index.
+* @param returntarget    The weapon or weapon type name.
+* @param value	   		 The restrict value
+* @noreturn        
+*/
+public bool RestrictSetClientWeaponRestrict(int client, const char[] returntarget, bool value)
+{
+	// Find index of the given weapon type.
+    int typeindex = RestrictTypeToIndex(returntarget);
+
+    // Single weapon.
+    if (typeindex == -1)
+    {
+        int weaponindex = WeaponsNameToIndex(returntarget);
+
+        // If weapon index is invalid, then return invalid.
+        if (weaponindex == -1)
+        {
+            return false;
+        }
+
+        g_bRestrictBlockWeaponOne[client][weaponindex] = value;
+        return true;
+    }
+    // Weapon type.
+    else
+    {
+        // Get all weapons in the given type.
+        ArrayList arrayTypeWeapons;
+        int count = RestrictGetTypeWeapons(typeindex, arrayTypeWeapons);
+
+        for (int x = 0; x < count; x++)
+        {
+            // Get weapon index.
+            int weaponindex = arrayTypeWeapons.Get(x);
+
+            g_bRestrictBlockWeaponOne[client][weaponindex] = value;
+        }
+
+        // Close handle
+        delete arrayTypeWeapons;
+
+        // Successfully restricted weapon type.
+        return true;
+    }
+}
+
+/**
+* Set weapon restrict value to all clients.
+* @param returntarget    The weapon or weapon type name.
+* @param value	   		 The restrict value
+* @noreturn        
+*/
+public bool RestrictSetAllWeaponRestrict(const char[] returntarget, bool value)
+{
+	// Find index of the given weapon type.
+    int typeindex = RestrictTypeToIndex(returntarget);
+
+    // Single weapon.
+    if (typeindex == -1)
+    {
+        int weaponindex = WeaponsNameToIndex(returntarget);
+
+        // If weapon index is invalid, then return invalid.
+        if (weaponindex == -1)
+        {
+            return false;
+        }
+		
+		for (int i = 1; i <= MaxClients; i++)
+		{
+        	g_bRestrictBlockWeaponOne[i][weaponindex] = value;
+        }
+        
+        return true;
+    }
+    // Weapon type.
+    else
+    {
+        // Get all weapons in the given type.
+        ArrayList arrayTypeWeapons;
+        int count = RestrictGetTypeWeapons(typeindex, arrayTypeWeapons);
+
+        for (int x = 0; x < count; x++)
+        {
+            // Get weapon index.
+            int weaponindex = arrayTypeWeapons.Get(x);
+
+            for (int i = 1; i <= MaxClients; i++)
+			{
+	        	g_bRestrictBlockWeaponOne[i][weaponindex] = value;
+	        }
+        }
+
+        // Close handle
+        delete arrayTypeWeapons;
+
+        // Successfully restricted weapon type.
+        return true;
+    }
 }

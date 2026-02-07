@@ -1038,9 +1038,9 @@ stock bool ZMarketEquip(int client, const char[] weapon, bool rebuy = false)
     char weapondisplay[WEAPONS_MAX_LENGTH];
     WeaponsGetName(weaponindex, weapondisplay, sizeof(weapondisplay));
 
-    // Check to make sure the weapon isn't restricted.
+    // Check to make sure the weapon isn't restricted or player can use it.
     bool restricted = RestrictIsWeaponRestricted(weaponindex);
-    if (restricted)
+    if (restricted || g_bRestrictBlockWeaponOne[client][weaponindex])
     {
         TranslationPrintToChat(client, "Weapon is restricted", weapondisplay);
         return false;
