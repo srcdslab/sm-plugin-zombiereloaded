@@ -1122,7 +1122,7 @@ stock bool ZMarketEquip(int client, const char[] weapon, bool rebuy = false)
                 else
                 {
                     // Force client to drop the weapon.
-                    SDKHooks_DropWeapon(client, weapons[slot], _, {120.0, 0.0, 50.0});
+                    SDKHooks_DropWeapon(client, weapons[slot], _, {200.0, 200.0, 200.0});
                 }
             }
         }
