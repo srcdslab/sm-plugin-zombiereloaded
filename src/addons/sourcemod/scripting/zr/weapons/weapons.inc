@@ -878,18 +878,23 @@ stock void WeaponsRemoveAllClientWeapons(int client, bool weaponsdrop)
 
         if (view_as<WeaponsSlot>(x) == Slot_Projectile)
         {
-       		while ((weapons[x] = GetPlayerWeaponSlot(client, x)) != -1)
-       		{
-       			// Force client to drop weapon
-       			CS_DropWeapon(client, weapons[x], true, false);
-       			
-       			if (!weaponsdrop)
-       			{
-       				// Strip weapon.
-            		AcceptEntityInput(weapons[x], "Kill");
-       			}
-       		}
-      	}
+            int iterations = 0;
+            const int maxIterations = 16;
+
+            while ((weapons[x] = GetPlayerWeaponSlot(client, x)) != -1 && iterations < maxIterations)
+            {
+                // Force client to drop weapon
+                CS_DropWeapon(client, weapons[x], true, false);
+
+                if (!weaponsdrop)
+                {
+                    // Strip weapon.
+                    AcceptEntityInput(weapons[x], "Kill");
+                }
+
+                iterations++;
+            }
+        }
     }
 
     // Revert block weapon array to its original value so the zombie can get the knife
