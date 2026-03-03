@@ -821,7 +821,7 @@ stock void WeaponsRefreshClientWeapon(int client, WeaponsSlot slot)
     GetEdictClassname(weaponindex, entityname, sizeof(entityname));
 
     // Refresh weapon.
-    SDKHooks_DropWeapon(client, weaponindex, _, {200.0, 200.0, 200.0});
+    SDKHooks_DropWeapon(client, weaponindex, _, {0.0, 0.0, 50.0});
     AcceptEntityInput(weaponindex, "Kill");
     GivePlayerItem(client, entityname);
 }
@@ -861,14 +861,14 @@ stock void WeaponsRemoveAllClientWeapons(int client, bool weaponsdrop)
             // Strip knife.
             if (removeknife)
             {
-                SDKHooks_DropWeapon(client, weapons[x], _, {200.0, 200.0, 200.0});
+                SDKHooks_DropWeapon(client, weapons[x], _, {0.0, 0.0, 50.0});
                 AcceptEntityInput(weapons[x], "Kill");
             }
             continue;
         }
 
 		// Force client to drop weapon.
-		SDKHooks_DropWeapon(client, weapons[x], _, {200.0, 200.0, 200.0});
+		SDKHooks_DropWeapon(client, weapons[x], _, {0.0, 0.0, 50.0});
 		
         if (!weaponsdrop)
         {
@@ -884,7 +884,7 @@ stock void WeaponsRemoveAllClientWeapons(int client, bool weaponsdrop)
             while ((weapons[x] = GetPlayerWeaponSlot(client, x)) != -1 && iterations < maxIterations)
             {
                 // Force client to drop weapon
-                SDKHooks_DropWeapon(client, weapons[x], _, {200.0, 200.0, 200.0});
+                SDKHooks_DropWeapon(client, weapons[x], _, {0.0, 0.0, 50.0});
 
                 if (!weaponsdrop)
                 {
