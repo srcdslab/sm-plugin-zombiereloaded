@@ -842,8 +842,8 @@ stock void WeaponsRemoveAllClientWeapons(int client, bool weaponsdrop)
     WeaponsGetClientWeapons(client, weapons);
 
 	// Fix potential bugs with functions execution timeout
-	bool originallyBlocked = g_bRestrictBlockWeapon[client];
-	g_bRestrictBlockWeapon[client] = true;
+    bool originallyBlocked = g_bRestrictBlockWeapon[client];
+    g_bRestrictBlockWeapon[client] = true;
 
     // Loop through array slots and force drop.
     // x = weapon slot.
