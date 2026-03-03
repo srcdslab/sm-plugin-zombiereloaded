@@ -1090,7 +1090,7 @@ bool InfectZombieToHuman(int client, bool respawn = false, bool protect = false)
     int knife;
     while ((knife = GetPlayerWeaponSlot(client, view_as<int>(Slot_Melee))) != -1)
     {
-        CS_DropWeapon(client, knife, true, false);
+        SDKHooks_DropWeapon(client, knife);
         AcceptEntityInput(knife, "Kill");
     }
 
