@@ -801,55 +801,6 @@ stock WeaponsSlot WeaponsGetActiveWeaponSlot(int client)
 }
 
 /**
- * Forces player to drop weapon index. (Simplified wrapper)
- *
- * @param client    The client index.
- * @param weapon    The weapon index to force client to drop.
- */
-stock void WeaponsForceClientDrop(int client, int weapon)
-{
-    // Fix: Exception reported: Weapon x is not owned by client x
-    if (IsValidEntity(weapon) && IsValidEdict(weapon))
-    {
-        int owner = GetEntPropEnt(weapon, Prop_Data, "m_hOwnerEntity");
-        if (owner == client)
-        {
-            // Force client to drop weapon.
-            CS_DropWeapon(client, weapon, true, false);
-        }
-    }
-}
-
-/**
- * Used to explicitly remove projectile weapons from a client.
- *
- * @param client    The client index.
- * @param weaponsdrop   True to force drop on all weapons, false to strip.
- */
-stock void WeaponsClearClientWeaponSlot(int client, WeaponsSlot slot, bool weaponsdrop)
-{
-    // This while-structure is a stupid sloppy annoying workaround to stop the "unintended assignment" warning. I hate those.
-    // While GetPlayerWeaponSlot returns a valid weapon, remove it and then test again.
-    int weapon = GetPlayerWeaponSlot(client, view_as<int>(slot));
-    while (weapon != -1)
-    {
-        // Check if we drop or strip the weapon.
-        if (weaponsdrop)
-        {
-            WeaponsForceClientDrop(client, weapon);
-        }
-        else
-        {
-            RemovePlayerItem(client, weapon);
-            AcceptEntityInput(weapon, "Kill");
-        }
-
-        // Find next weapon.
-        weapon = GetPlayerWeaponSlot(client, view_as<int>(slot));
-    }
-}
-
-/**
  * Refresh a weapon by taking it and giving it back.
  *
  * @param client        The client index.
@@ -870,7 +821,7 @@ stock void WeaponsRefreshClientWeapon(int client, WeaponsSlot slot)
     GetEdictClassname(weaponindex, entityname, sizeof(entityname));
 
     // Refresh weapon.
-    RemovePlayerItem(client, weaponindex);
+    CS_DropWeapon(client, weaponindex, true, false);
     AcceptEntityInput(weaponindex, "Kill");
     GivePlayerItem(client, entityname);
 }
@@ -890,6 +841,10 @@ stock void WeaponsRemoveAllClientWeapons(int client, bool weaponsdrop)
     int weapons[Slot_MAXSIZE];
     WeaponsGetClientWeapons(client, weapons);
 
+	// Fix potential bugs with functions execution timeout
+	bool originallyBlocked = g_bRestrictBlockWeapon[client];
+	g_bRestrictBlockWeapon[client] = true;
+
     // Loop through array slots and force drop.
     // x = weapon slot.
     for (int x = 0; x < WEAPONS_SLOTS_MAX; x++)
@@ -906,34 +861,40 @@ stock void WeaponsRemoveAllClientWeapons(int client, bool weaponsdrop)
             // Strip knife.
             if (removeknife)
             {
-                RemovePlayerItem(client, weapons[x]);
+                CS_DropWeapon(client, weapons[x], true, false);
                 AcceptEntityInput(weapons[x], "Kill");
             }
             continue;
         }
 
-        if (weaponsdrop)
-        {
-            // Force client to drop weapon.
-            WeaponsForceClientDrop(client, weapons[x]);
-        }
-        else
+		// Force client to drop weapon.
+		CS_DropWeapon(client, weapons[x], true, false);
+		
+        if (!weaponsdrop)
         {
             // Strip weapon.
-            RemovePlayerItem(client, weapons[x]);
             AcceptEntityInput(weapons[x], "Kill");
         }
+
+        if (view_as<WeaponsSlot>(x) == Slot_Projectile)
+        {
+       		while ((weapons[x] = GetPlayerWeaponSlot(client, x)) != -1)
+       		{
+       			// Force client to drop weapon
+       			CS_DropWeapon(client, weapons[x], true, false);
+       			
+       			if (!weaponsdrop)
+       			{
+       				// Strip weapon.
+            		AcceptEntityInput(weapons[x], "Kill");
+       			}
+       		}
+      	}
     }
 
-    // Remove left-over knifes.
-    WeaponsClearClientWeaponSlot(client, Slot_Melee, false);
-
-    // Remove left-over projectiles.
-    WeaponsClearClientWeaponSlot(client, Slot_Projectile, weaponsdrop);
-
-    // Remove left-over explosives.
-    WeaponsClearClientWeaponSlot(client, Slot_Explosive, weaponsdrop);
-
+    // Revert block weapon array to its original value so the zombie can get the knife
+    g_bRestrictBlockWeapon[client] = originallyBlocked;
+	
     // Give zombie a new knife. (If you leave the old one there will be glitches with the knife positioning)
     GivePlayerItem(client, "weapon_knife");
 }
