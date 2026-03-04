@@ -801,6 +801,26 @@ stock WeaponsSlot WeaponsGetActiveWeaponSlot(int client)
 }
 
 /**
+ * Forces player to drop weapon index. (Simplified wrapper)
+ *
+ * @param client    The client index.
+ * @param weapon    The weapon index to force client to drop.
+ */
+stock void WeaponsForceClientDrop(int client, int weapon)
+{
+    // Fix: Exception reported: Weapon x is not owned by client x
+    if (IsValidEntity(weapon) && IsValidEdict(weapon))
+    {
+        int owner = GetEntPropEnt(weapon, Prop_Data, "m_hOwnerEntity");
+        if (owner == client)
+        {
+            // Force client to drop weapon.
+            SDKHooks_DropWeapon(client, weapon, _, {0.0, 0.0, 50.0}, .bypassHooks=false);
+        }
+    }
+}
+
+/**
  * Refresh a weapon by taking it and giving it back.
  *
  * @param client        The client index.
@@ -821,7 +841,7 @@ stock void WeaponsRefreshClientWeapon(int client, WeaponsSlot slot)
     GetEdictClassname(weaponindex, entityname, sizeof(entityname));
 
     // Refresh weapon.
-    SDKHooks_DropWeapon(client, weaponindex, _, {0.0, 0.0, 50.0}, .bypassHooks=false);
+    RemovePlayerItem(client, weaponindex)
     AcceptEntityInput(weaponindex, "Kill");
     GivePlayerItem(client, entityname);
 }
@@ -861,18 +881,21 @@ stock void WeaponsRemoveAllClientWeapons(int client, bool weaponsdrop)
             // Strip knife.
             if (removeknife)
             {
-                SDKHooks_DropWeapon(client, weapons[x], _, {0.0, 0.0, 50.0}, .bypassHooks=false);
+                RemovePlayerItem(client, weapons[x]);
                 AcceptEntityInput(weapons[x], "Kill");
             }
             continue;
         }
 
-		// Force client to drop weapon.
-		SDKHooks_DropWeapon(client, weapons[x], _, {0.0, 0.0, 50.0}, .bypassHooks=false);
-		
-        if (!weaponsdrop)
+        if (weaponsdrop)
+        {
+            // Force client to drop weapon.
+            WeaponsForceClientDrop(client, weapons[x]);
+        }
+        else
         {
             // Strip weapon.
+            RemovePlayerItem(client, weapons[x]);
             AcceptEntityInput(weapons[x], "Kill");
         }
 
@@ -883,12 +906,14 @@ stock void WeaponsRemoveAllClientWeapons(int client, bool weaponsdrop)
 
             while ((weapons[x] = GetPlayerWeaponSlot(client, x)) != -1 && iterations < maxIterations)
             {
-                // Force client to drop weapon
-                SDKHooks_DropWeapon(client, weapons[x], _, {0.0, 0.0, 50.0}, .bypassHooks=false);
-
-                if (!weaponsdrop)
+                if (weaponsdrop)
+                {
+                    // Force client to drop weapon.
+                    WeaponsForceClientDrop(client, weapons[x]);
+                }
                 {
                     // Strip weapon.
+                    RemovePlayerItem(client, weapons[x]);
                     AcceptEntityInput(weapons[x], "Kill");
                 }
 
