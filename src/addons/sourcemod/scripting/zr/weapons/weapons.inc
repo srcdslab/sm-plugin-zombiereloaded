@@ -841,7 +841,7 @@ stock void WeaponsRefreshClientWeapon(int client, WeaponsSlot slot)
     GetEdictClassname(weaponindex, entityname, sizeof(entityname));
 
     // Refresh weapon.
-    RemovePlayerItem(client, weaponindex)
+    RemovePlayerItem(client, weaponindex);
     AcceptEntityInput(weaponindex, "Kill");
     GivePlayerItem(client, entityname);
 }
