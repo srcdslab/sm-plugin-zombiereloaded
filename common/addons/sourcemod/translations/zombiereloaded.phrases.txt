@@ -748,6 +748,22 @@
 		"en"		"Buyzone Only - {1}"
 	}
 
+	"Weapons menu restrict per player"
+	{
+		"en"		"Players Weapons Restriction"
+	}
+
+	"Weapons menu restrict per player title"
+	{
+		"en"		"Players Weapons Restriction\nSelect a player"
+	}
+
+	"Weapons menu restrict types per-player title"
+	{
+		"#format"	"{1:N}"
+		"en"		"Players Weapons Restriction\nPlayer: {1}\nSelect a weapons type"
+	}
+
 	// Menu (ZMarket)
 
 	"Weapons menu zmarket main title"

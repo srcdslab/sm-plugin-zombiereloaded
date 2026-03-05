@@ -808,6 +808,53 @@ public Action UnrestrictCommand(int client, int argc)
 }
 
 /**
+* Used to check if all weapons of a type are restricted for a specific player.
+*
+* @param client		   The Client index.
+* @param restricted    True to check if all weapons of given type are restricted.
+* @param index         The weapon type index.
+* @return              True if all weapons of the given type are restricted for that player or not, false if not.
+*/
+stock bool RestrictIsTypeClientRestricted(int client, bool restricted, int index)
+{
+    ArrayList arrayTypeWeapons;
+    int count = RestrictGetTypeWeapons(index, arrayTypeWeapons);
+
+    // x = array index
+    for (int x = 0; x < count; x++)
+    {
+        // Get weapon index to check restricted status of.
+        int weaponindex = arrayTypeWeapons.Get(x);
+
+        // If weapon is toggleable and it's not uniform with the given status, then return false.
+        if (WeaponsGetToggleable(weaponindex) && RestrictIsClientWeaponRestrict(client, weaponindex) != restricted)
+        {
+            // Close handle
+            delete arrayTypeWeapons;
+            return false;
+        }
+    }
+
+    // Close handle
+    delete arrayTypeWeapons;
+
+    // All weapons are restricted, so return true.
+    return true;
+}
+
+/**
+* Retrieves whether the specified weapon is restricted for the client.
+* @param client    The client index.
+* @param weapon	   The weapon index.
+* @noreturn        
+*/
+public bool RestrictIsClientWeaponRestrict(int client, int weapon)
+{
+	
+	return g_bRestrictBlockWeaponOne[client][weapon];
+}
+
+/**
 * Set all wepaon restrict array for the specified client.
 * @param client    The client index.
 * @param value	   The restrict value

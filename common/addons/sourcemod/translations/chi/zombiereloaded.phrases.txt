@@ -769,6 +769,21 @@
 		"chi"		"弹药"
 	}
 
+	"Weapons menu restrict per player"
+	{
+		"chi"		"玩家武器限制"
+	}
+
+	"Weapons menu restrict per player title"
+	{
+		"chi"		"玩家武器限制\n选择一名玩家"
+	}
+
+	"Weapons menu restrict types per-player title"
+	{
+		"chi"		"玩家武器限制\n玩家：{1}\n选择武器类型"
+	}
+
 	// ===========================
 	// Hitgroups (core)
 	// ===========================

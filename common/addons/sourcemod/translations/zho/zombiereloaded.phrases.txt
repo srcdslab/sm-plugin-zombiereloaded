@@ -769,6 +769,21 @@
 		"zho"		"彈藥"
 	}
 
+	"Weapons menu restrict per player"
+	{
+		"zho"		"玩家武器限制"
+	}
+
+	"Weapons menu restrict per player title"
+	{
+		"zho"		"玩家武器限制\n選擇一名玩家"
+	}
+
+	"Weapons menu restrict types per-player title"
+	{
+		"zho"		"玩家武器限制\n玩家：{1}\n選擇武器類型"
+	}
+
 	// ===========================
 	// Hitgroups (core)
 	// ===========================

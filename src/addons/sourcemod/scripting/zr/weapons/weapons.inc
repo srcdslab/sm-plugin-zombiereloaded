@@ -982,6 +982,9 @@ stock bool WeaponsIsClientInBuyZone(int client)
 */
 public void WeaponsSetClientWeaponRestrictAll(int client, bool value)
 {
+	if (!g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER.BoolValue)
+		return;
+
     RestrictSetClientWeaponRestrictAll(client, value);
 }
 
@@ -992,6 +995,9 @@ public void WeaponsSetClientWeaponRestrictAll(int client, bool value)
 */
 public void WeaponsSetAllRestrictAll(bool value)
 {
+	if (!g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER.BoolValue)
+		return;
+
 	RestrictSetAllRestrictAll(value);
 }
 
@@ -1004,6 +1010,9 @@ public void WeaponsSetAllRestrictAll(bool value)
 */
 public bool WeaponsSetClientWeaponRestrict(int client, const char[] returntarget, bool value)
 {
+	if (!g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER.BoolValue)
+		return false;
+
 	return RestrictSetClientWeaponRestrict(client, returntarget, value);
 }
 
@@ -1015,5 +1024,8 @@ public bool WeaponsSetClientWeaponRestrict(int client, const char[] returntarget
 */
 public bool WeaponsSetAllWeaponRestrict(const char[] returntarget, bool value)
 {
+	if (!g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER.BoolValue)
+		return false;
+
 	return RestrictSetAllWeaponRestrict(returntarget, value);
 }

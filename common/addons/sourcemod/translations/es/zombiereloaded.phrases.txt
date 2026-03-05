@@ -771,6 +771,21 @@
 		"es"		"Municion"
 	}
 
+	"Weapons menu restrict per player"
+	{
+		"es"		"Restricción de armas de los jugadores"
+	}
+
+	"Weapons menu restrict per player title"
+	{
+		"es"		"Restricción de armas de los jugadores\nSeleccionar un jugador"
+	}
+
+	"Weapons menu restrict types per-player title"
+	{
+		"es"		"Restricción de armas de los jugadores\nJugador: {1}\nSeleccionar un tipo de arma"
+	}
+
 	// ===========================
 	// Hitgroups (core)
 	// ===========================
