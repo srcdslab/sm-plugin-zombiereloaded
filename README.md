@@ -113,6 +113,7 @@ Find all cvars details on [online docs](https://srcdslab.github.io/sm-plugin-zom
 - zr_classes_overlay_default        - "1" -                                 Default class overlay toggle state set on connecting player.
 - zr_weapons                        - "1" -                                 Enable weapons module, disabling this will disable any weapons-related features. (weapon restrictions, weapon knockback multipliers, etc)
 - zr_weapons_restrict               - "1" -                                 Enable weapon restriction module, disabling this will disable weapon restriction commands.
+- zr_weapons_restrict_perplayer               - "0" -                       Enable weapon restriction per-player module. [Dependency: zr_weapons_restrict]
 - zr_weapons_restrict_endequip      - "1" -                                 Restricts zombies from picking up weapons after the round has ended but before the next round has begun.
 - zr_weapons_zmarket                - "1" -                                 Allow player to buy from a list of weapons in the weapons config.
 - zr_weapons_zmarket_buyzone        - "1" -                                 Requires player to be inside a buyzone to use ZMarket. [Dependency: zr_weapons_zmarket]

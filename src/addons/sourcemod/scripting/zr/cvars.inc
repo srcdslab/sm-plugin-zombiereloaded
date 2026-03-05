@@ -299,7 +299,7 @@ void CvarsCreate()
 
     // Restrict
     g_hCvarsList.CVAR_WEAPONS_RESTRICT                 =    CreateConVar("zr_weapons_restrict",            "1",    "Enable weapon restriction module, disabling this will disable weapon restriction commands.");
-    g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER       =    CreateConVar("zr_weapons_restrict_perplayer",  "1",    "Enable weapon restriction per-player module. [Dependency: zr_weapons_restrict]");
+    g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER       =    CreateConVar("zr_weapons_restrict_perplayer",  "0",    "Enable weapon restriction per-player module. [Dependency: zr_weapons_restrict]");
     g_hCvarsList.CVAR_WEAPONS_RESTRICT_ENDEQUIP        =    CreateConVar("zr_weapons_restrict_endequip",   "1",    "Restricts zombies from picking up weapons after the round has ended but before the next round has begun.");
 
     // ZMarket
