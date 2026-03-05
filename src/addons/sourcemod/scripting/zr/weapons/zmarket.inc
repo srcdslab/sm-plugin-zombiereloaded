@@ -1155,7 +1155,7 @@ stock bool ZMarketEquip(int client, const char[] weapon, bool rebuy = false)
                 pack.WriteCell(GetClientUserId(client));
                 pack.WriteString(weaponentity);
                 
-                RequestFrame(ZmarketEquipRebuyFailure, pack);
+                RequestFrame(ZmarketEquipFailure, pack);
             }
         }
 
@@ -1241,7 +1241,8 @@ void ZmarketEquipFailure(DataPack pack)
 	
 	char weaponname[WEAPONS_MAX_LENGTH];
 	pack.ReadString(weaponname, sizeof(weaponname));
-	
+	delete pack;
+
 	GivePlayerItem(client, weaponname);
 }
 
