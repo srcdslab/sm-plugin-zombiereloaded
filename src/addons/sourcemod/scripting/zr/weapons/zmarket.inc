@@ -1149,6 +1149,14 @@ stock bool ZMarketEquip(int client, const char[] weapon, bool rebuy = false)
         {
             // Give client the weapon.
             entity = GivePlayerItem(client, weaponentity);
+            if (entity == -1)
+            {
+                DataPack pack = new DataPack();
+                pack.WriteCell(GetClientUserId(client));
+                pack.WriteString(weaponentity);
+                
+                RequestFrame(ZmarketEquipRebuyFailure, pack);
+            }
         }
 
         if (!rebuy)
@@ -1212,6 +1220,29 @@ stock bool ZMarketEquip(int client, const char[] weapon, bool rebuy = false)
     }
 
     return true;
+}
+
+/**
+ * Retries giving the player the weapon on failure.
+ *
+ * @param pack      The DataPack handle.
+ * @noreturn       	
+ */
+void ZmarketEquipFailure(DataPack pack)
+{
+	pack.Reset();
+	int client = GetClientOfUserId(pack.ReadCell());
+	
+	if (!client)
+	{
+		delete pack;
+		return;
+	}
+	
+	char weaponname[WEAPONS_MAX_LENGTH];
+	pack.ReadString(weaponname, sizeof(weaponname));
+	
+	GivePlayerItem(client, weaponname);
 }
 
 /**
