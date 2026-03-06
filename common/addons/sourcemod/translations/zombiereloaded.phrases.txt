@@ -761,7 +761,7 @@
 	"Weapons menu restrict types per-player title"
 	{
 		"#format"	"{1:N}"
-		"en"		"Players Weapons Restriction\nPlayer: {1}\nSelect a weapons type"
+		"en"		"Players Weapons Restriction\nPlayer: {1}\nSelect a weapon type"
 	}
 
 	// Menu (ZMarket)
