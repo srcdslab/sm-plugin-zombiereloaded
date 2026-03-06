@@ -718,29 +718,22 @@ stock void WeaponsGetZMarketCommand(int index, char[] command, int maxlen)
  */
 stock bool WeaponsClientHasWeapon(int client, const char[] weapon)
 {
-    // Get all of client's current weapons.
-    int weapons[Slot_MAXSIZE];
-    WeaponsGetClientWeapons(client, weapons);
+    int max = GetEntPropArraySize(client, Prop_Send, "m_hMyWeapons");
+    if (!max)
+        return false;
 
-    char classname[64];
-
-    // x = slot index
-    for (int x = 0; x < WEAPONS_SLOTS_MAX; x++)
+    for (int i = 0; i < max; i++)
     {
-        // If slot is empty, then stop.
-        if (weapons[x] == -1)
-        {
+        int ent = GetEntPropEnt(client, Prop_Send, "m_hMyWeapons", i);
+        if (ent == -1 || !IsValidEntity(ent))
             continue;
-        }
 
-        // If the weapon's classname matches, then return true.
-        GetEdictClassname(weapons[x], classname, sizeof(classname));
-        if (strcmp(weapon, classname, false) == 0)
-        {
+        char className[32];
+        GetEntityClassname(ent, className, sizeof(className));
+        if (strcmp(className, weapon, false) == 0)
             return true;
-        }
     }
-
+    
     return false;
 }
 
@@ -993,28 +986,4 @@ stock bool WeaponsIsClientInBuyZone(int client)
 {
     // Return if client is in buyzone.
     return view_as<bool>(GetEntData(client, g_iToolsInBuyZone));
-}
-
-/**
- * Checks if the player has the specified weapon entity in inventory.
- *
- * @param client    The client index.
- * @param weapon    The weapon entity name
- */
-stock bool WeaponsHasPlayerItem(int client, const char[] weapon)
-{
-    int max = GetEntPropArraySize(client, Prop_Send, "m_hMyWeapons");
-    for (int i = 0; i < max; i++)
-    {
-        int ent = GetEntPropEnt(client, Prop_Send, "m_hMyWeapons", i);
-        if (ent == -1)
-            continue;
-
-        char className[32];
-        GetEntityClassname(ent, className, sizeof(className));
-        if (strcmp(className, weapon, false) == 0)
-            return true;
-    }
-
-    return false;
 }
