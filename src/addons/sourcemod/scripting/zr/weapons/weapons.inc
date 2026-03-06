@@ -827,14 +827,13 @@ stock void WeaponsForceClientDrop(int client, int weapon)
 }
 
 /**
- * Strips one weapon currently present in a slot from a client without dropping it.
+ * Strips a specific weapon entity from a client without dropping it.
  *
  * @param client        The client index.
- * @param slot          The weapon slot to strip.
+ * @param weapon        The weapon entity index to strip.
  */
-stock void WeaponsStripClientWeaponSlot(int client, WeaponsSlot slot)
+stock void WeaponsStripClientWeaponSlot(int client, int weapon)
 {
-    int weapon = GetPlayerWeaponSlot(client, view_as<int>(slot));
     if (weapon != -1)
     {
         RemovePlayerItem(client, weapon);
@@ -866,7 +865,7 @@ stock void WeaponsClearClientWeaponSlot(int client, WeaponsSlot slot, bool weapo
             }
             else
             {
-                WeaponsStripClientWeaponSlot(client, slot);
+                WeaponsStripClientWeaponSlot(client, weapon);
             }
 
             clearIterations++;
@@ -884,7 +883,7 @@ stock void WeaponsClearClientWeaponSlot(int client, WeaponsSlot slot, bool weapo
             }
             else
             {
-                WeaponsStripClientWeaponSlot(client, slot);
+                WeaponsStripClientWeaponSlot(client, weapon);
             }
         }
     }
@@ -919,7 +918,7 @@ stock void WeaponsRefreshClientWeapon(int client, WeaponsSlot slot)
 /**
  * Remove all weapons, except knife, on a client, with options.
  * Optimized: uses a single if per slot for unique-weapon slots (primary, secondary, explosive),
- * and a while loop only for the projectile slot (grenades) which can hold multiple items.
+ * and a loop for multi-entity slots (projectile grenades, and melee knives when removeknife is enabled).
  *
  * @param client        The client index.
  * @param weaponsdrop   True to force drop on all weapons, false to strip.
