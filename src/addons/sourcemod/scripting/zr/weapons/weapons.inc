@@ -41,6 +41,12 @@
 #define WEAPONS_SLOTS_MAX 5
 
 /**
+ * Maximum iterations when clearing a weapon slot.
+ * Prevents hangs if the engine keeps returning the same entity.
+ */
+#define WEAPONS_SLOT_CLEAR_MAX_ITERATIONS 8
+
+/**
  * @section start weapons.
  */
 #define WEAPONS_SPAWN_CSS_T_WEAPON "weapon_glock"
@@ -852,7 +858,8 @@ stock void WeaponsClearClientWeaponSlot(int client, WeaponsSlot slot, bool weapo
     {
         // Projectile slot can hold multiple grenades: loop until empty.
         int weapon;
-        while ((weapon = GetPlayerWeaponSlot(client, view_as<int>(Slot_Projectile))) != -1)
+        int clearIterations = 0;
+        while ((weapon = GetPlayerWeaponSlot(client, view_as<int>(Slot_Projectile))) != -1 && clearIterations < WEAPONS_SLOT_CLEAR_MAX_ITERATIONS)
         {
             if (weaponsdrop)
                 WeaponsForceClientDrop(client, weapon);
@@ -861,6 +868,8 @@ stock void WeaponsClearClientWeaponSlot(int client, WeaponsSlot slot, bool weapo
                 RemovePlayerItem(client, weapon);
                 AcceptEntityInput(weapon, "Kill");
             }
+
+            clearIterations++;
         }
     }
     else
@@ -916,7 +925,7 @@ stock void WeaponsRefreshClientWeapon(int client, WeaponsSlot slot)
  */
 stock void WeaponsRemoveAllClientWeapons(int client, bool weaponsdrop)
 {
-    // Give a new knife to player when he get infected
+    // Check if we should replace the knife during infection/spawn
     bool removeknife = g_hCvarsList.CVAR_WEAPONS_INFECT_REMOVE_KNIFE.BoolValue;
 
     int weapon;
@@ -951,16 +960,24 @@ stock void WeaponsRemoveAllClientWeapons(int client, bool weaponsdrop)
         }
     }
 
-    // Melee/knife (slot 2): strip only (never drop knife), re-give later.
-    weapon = GetPlayerWeaponSlot(client, view_as<int>(Slot_Melee));
-    if (weapon != -1 && removeknife)
+    // Melee/knife (slot 2): 
+    // If removeknife is enabled, we strip all existing knives to prevent positioning glitches.
+    // If disabled (e.g., for maps using custom knife items), we leave the current knife untouched.
+    if (removeknife)
     {
-        RemovePlayerItem(client, weapon);
-        AcceptEntityInput(weapon, "Kill");
+        int knifeIterations = 0;
+        const int maxKnifeIterations = 8;
+        while ((weapon = GetPlayerWeaponSlot(client, view_as<int>(Slot_Melee))) != -1 && knifeIterations < maxKnifeIterations)
+        {
+            RemovePlayerItem(client, weapon);
+            AcceptEntityInput(weapon, "Kill");
+            knifeIterations++;
+        }
     }
 
     // Projectiles (slot 3): while loop — player can carry multiple grenades.
-    while ((weapon = GetPlayerWeaponSlot(client, view_as<int>(Slot_Projectile))) != -1)
+    int projectileIterations = 0;
+    while ((weapon = GetPlayerWeaponSlot(client, view_as<int>(Slot_Projectile))) != -1 && projectileIterations < WEAPONS_SLOT_CLEAR_MAX_ITERATIONS)
     {
         if (weaponsdrop)
         {
@@ -971,6 +988,8 @@ stock void WeaponsRemoveAllClientWeapons(int client, bool weaponsdrop)
             RemovePlayerItem(client, weapon);
             AcceptEntityInput(weapon, "Kill");
         }
+
+        projectileIterations++;
     }
 
     // Explosive/C4 (slot 4): at most 1 weapon.
@@ -988,8 +1007,14 @@ stock void WeaponsRemoveAllClientWeapons(int client, bool weaponsdrop)
         }
     }
 
-    // Give zombie a new knife. (If you leave the old one there will be glitches with the knife positioning)
-    GivePlayerItem(client, "weapon_knife");
+    // Final knife handling:
+    // Only give a new standard knife if we stripped the previous ones.
+    // This prevents double knives when the CVAR is set to 0 for specific maps.
+    if (removeknife)
+    {
+        // Give a new knife. (If you leave the old one there will be glitches with the knife positioning)
+        GivePlayerItem(client, "weapon_knife");
+    }
 }
 
 /**
