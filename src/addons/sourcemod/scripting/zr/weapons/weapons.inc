@@ -994,3 +994,27 @@ stock bool WeaponsIsClientInBuyZone(int client)
     // Return if client is in buyzone.
     return view_as<bool>(GetEntData(client, g_iToolsInBuyZone));
 }
+
+/**
+ * Checks if the player has the specified weapon entity in inventory.
+ *
+ * @param client    The client index.
+ * @param weapon    The weapon entity name
+ */
+stock bool WeaponsHasPlayerItem(int client, const char[] weapon)
+{
+	int max = GetEntPropArraySize(client, Prop_Send, "m_hMyWeapons");
+	for (int i = 0; i < max; i++)
+	{
+		int ent = GetEntPropEnt(client, Prop_Send, "m_hMyWeapons", i);
+		if (ent == -1)
+			continue;
+
+		char className[32];
+		GetEntityClassname(ent, className, sizeof(className));
+		if (strcmp(className, weapon, false) == 0)
+			return true;
+	}
+
+	return false;
+}
