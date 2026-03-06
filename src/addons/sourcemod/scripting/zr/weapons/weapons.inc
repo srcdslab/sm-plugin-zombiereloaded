@@ -733,7 +733,7 @@ stock bool WeaponsClientHasWeapon(int client, const char[] weapon)
         if (strcmp(className, weapon, false) == 0)
             return true;
     }
-    
+
     return false;
 }
 
@@ -927,7 +927,7 @@ stock void WeaponsRemoveAllClientWeapons(int client, bool weaponsdrop)
     // Secondary (slot 1): at most 1 weapon.
     WeaponsClearClientWeaponSlot(client, Slot_Secondary, weaponsdrop);
 
-    // Melee/knife (slot 2): 
+    // Melee/knife (slot 2):
     // If removeknife is enabled, we strip all existing knives to prevent positioning glitches.
     // If disabled (e.g., for maps using custom knife items), we leave the current knife untouched.
     if (removeknife)
