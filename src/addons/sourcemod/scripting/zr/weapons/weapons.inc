@@ -814,38 +814,69 @@ stock void WeaponsForceClientDrop(int client, int weapon)
         int owner = GetEntPropEnt(weapon, Prop_Data, "m_hOwnerEntity");
         if (owner == client)
         {
-            // Force client to drop weapon.
-            CS_DropWeapon(client, weapon, true, false);
+            // Use SDKHooks_DropWeapon for direct engine-level drop (faster than CS_DropWeapon).
+            SDKHooks_DropWeapon(client, weapon, _, _, .bypassHooks = false);
         }
     }
 }
 
 /**
- * Used to explicitly remove projectile weapons from a client.
+ * Strips a single weapon slot from a client without dropping it.
+ * For slots that can hold only one weapon (primary, secondary, melee).
  *
- * @param client    The client index.
- * @param weaponsdrop   True to force drop on all weapons, false to strip.
+ * @param client        The client index.
+ * @param slot          The weapon slot to strip.
+ */
+stock void WeaponsStripClientWeaponSlot(int client, WeaponsSlot slot)
+{
+    int weapon = GetPlayerWeaponSlot(client, view_as<int>(slot));
+    if (weapon != -1)
+    {
+        RemovePlayerItem(client, weapon);
+        AcceptEntityInput(weapon, "Kill");
+    }
+}
+
+/**
+ * Drops or strips all weapons in a given slot.
+ * Uses a simple if for single-weapon slots (primary, secondary, melee).
+ * Uses a while loop for the projectile slot (multiple grenades possible).
+ *
+ * @param client        The client index.
+ * @param slot          The weapon slot to clear.
+ * @param weaponsdrop   True to drop weapons, false to strip them.
  */
 stock void WeaponsClearClientWeaponSlot(int client, WeaponsSlot slot, bool weaponsdrop)
 {
-    // This while-structure is a stupid sloppy annoying workaround to stop the "unintended assignment" warning. I hate those.
-    // While GetPlayerWeaponSlot returns a valid weapon, remove it and then test again.
-    int weapon = GetPlayerWeaponSlot(client, view_as<int>(slot));
-    while (weapon != -1)
+    if (slot == Slot_Projectile)
     {
-        // Check if we drop or strip the weapon.
-        if (weaponsdrop)
+        // Projectile slot can hold multiple grenades: loop until empty.
+        int weapon;
+        while ((weapon = GetPlayerWeaponSlot(client, view_as<int>(Slot_Projectile))) != -1)
         {
-            WeaponsForceClientDrop(client, weapon);
+            if (weaponsdrop)
+                WeaponsForceClientDrop(client, weapon);
+            else
+            {
+                RemovePlayerItem(client, weapon);
+                AcceptEntityInput(weapon, "Kill");
+            }
         }
-        else
+    }
+    else
+    {
+        // All other slots hold at most one weapon: simple if is sufficient.
+        int weapon = GetPlayerWeaponSlot(client, view_as<int>(slot));
+        if (weapon != -1)
         {
-            RemovePlayerItem(client, weapon);
-            AcceptEntityInput(weapon, "Kill");
+            if (weaponsdrop)
+                WeaponsForceClientDrop(client, weapon);
+            else
+            {
+                RemovePlayerItem(client, weapon);
+                AcceptEntityInput(weapon, "Kill");
+            }
         }
-
-        // Find next weapon.
-        weapon = GetPlayerWeaponSlot(client, view_as<int>(slot));
     }
 }
 
@@ -877,6 +908,8 @@ stock void WeaponsRefreshClientWeapon(int client, WeaponsSlot slot)
 
 /**
  * Remove all weapons, except knife, on a client, with options.
+ * Optimized: uses a single if per slot for unique-weapon slots (primary, secondary, explosive),
+ * and a while loop only for the projectile slot (grenades) which can hold multiple items.
  *
  * @param client        The client index.
  * @param weaponsdrop   True to force drop on all weapons, false to strip.
@@ -886,53 +919,74 @@ stock void WeaponsRemoveAllClientWeapons(int client, bool weaponsdrop)
     // Give a new knife to player when he get infected
     bool removeknife = g_hCvarsList.CVAR_WEAPONS_INFECT_REMOVE_KNIFE.BoolValue;
 
-    // Get a list of all client's weapon indexes.
-    int weapons[Slot_MAXSIZE];
-    WeaponsGetClientWeapons(client, weapons);
+    int weapon;
 
-    // Loop through array slots and force drop.
-    // x = weapon slot.
-    for (int x = 0; x < WEAPONS_SLOTS_MAX; x++)
+    // Primary (slot 0): at most 1 weapon.
+    weapon = GetPlayerWeaponSlot(client, view_as<int>(Slot_Primary));
+    if (weapon != -1)
     {
-        // If weapon is invalid, then stop.
-        if (weapons[x] == -1)
-        {
-            continue;
-        }
-
-        // If this is the knife slot, then strip it and stop.
-        if (view_as<WeaponsSlot>(x) == Slot_Melee)
-        {
-            // Strip knife.
-            if (removeknife)
-            {
-                RemovePlayerItem(client, weapons[x]);
-                AcceptEntityInput(weapons[x], "Kill");
-            }
-            continue;
-        }
-
         if (weaponsdrop)
         {
-            // Force client to drop weapon.
-            WeaponsForceClientDrop(client, weapons[x]);
+            WeaponsForceClientDrop(client, weapon);
         }
         else
         {
-            // Strip weapon.
-            RemovePlayerItem(client, weapons[x]);
-            AcceptEntityInput(weapons[x], "Kill");
+            RemovePlayerItem(client, weapon);
+            AcceptEntityInput(weapon, "Kill");
         }
     }
 
-    // Remove left-over knifes.
-    WeaponsClearClientWeaponSlot(client, Slot_Melee, false);
+    // Secondary (slot 1): at most 1 weapon.
+    weapon = GetPlayerWeaponSlot(client, view_as<int>(Slot_Secondary));
+    if (weapon != -1)
+    {
+        if (weaponsdrop)
+        {
+            WeaponsForceClientDrop(client, weapon);
+        }
+        else
+        {
+            RemovePlayerItem(client, weapon);
+            AcceptEntityInput(weapon, "Kill");
+        }
+    }
 
-    // Remove left-over projectiles.
-    WeaponsClearClientWeaponSlot(client, Slot_Projectile, weaponsdrop);
+    // Melee/knife (slot 2): strip only (never drop knife), re-give later.
+    weapon = GetPlayerWeaponSlot(client, view_as<int>(Slot_Melee));
+    if (weapon != -1 && removeknife)
+    {
+        RemovePlayerItem(client, weapon);
+        AcceptEntityInput(weapon, "Kill");
+    }
 
-    // Remove left-over explosives.
-    WeaponsClearClientWeaponSlot(client, Slot_Explosive, weaponsdrop);
+    // Projectiles (slot 3): while loop — player can carry multiple grenades.
+    while ((weapon = GetPlayerWeaponSlot(client, view_as<int>(Slot_Projectile))) != -1)
+    {
+        if (weaponsdrop)
+        {
+            WeaponsForceClientDrop(client, weapon);
+        }
+        else
+        {
+            RemovePlayerItem(client, weapon);
+            AcceptEntityInput(weapon, "Kill");
+        }
+    }
+
+    // Explosive/C4 (slot 4): at most 1 weapon.
+    weapon = GetPlayerWeaponSlot(client, view_as<int>(Slot_Explosive));
+    if (weapon != -1)
+    {
+        if (weaponsdrop)
+        {
+            WeaponsForceClientDrop(client, weapon);
+        }
+        else
+        {
+            RemovePlayerItem(client, weapon);
+            AcceptEntityInput(weapon, "Kill");
+        }
+    }
 
     // Give zombie a new knife. (If you leave the old one there will be glitches with the knife positioning)
     GivePlayerItem(client, "weapon_knife");
