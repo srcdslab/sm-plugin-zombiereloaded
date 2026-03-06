@@ -726,7 +726,7 @@ public int WeaponsMenuWeaponsTypeTargetHandle(Menu menu_weapons_type_target, Men
         {
         	int target = GetClientOfUserId(g_iWeaponsCurTarget[client]);
         	if (target)
-        		WeaponsMenuWeaponsTypesTarget(client, target)
+        		WeaponsMenuWeaponsTypesTarget(client, target);
         	else
             	WeaponsMenuPerPlayerRestrict(client);
         }
