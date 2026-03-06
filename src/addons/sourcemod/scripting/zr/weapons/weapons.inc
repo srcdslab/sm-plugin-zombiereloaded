@@ -821,7 +821,7 @@ stock void WeaponsForceClientDrop(int client, int weapon)
         if (owner == client)
         {
             // Use SDKHooks_DropWeapon for direct engine-level drop (faster than CS_DropWeapon).
-            SDKHooks_DropWeapon(client, weapon, NULL_VECTOR, NULL_VECTOR, .bypassHooks = false);
+            SDKHooks_DropWeapon(client, weapon, NULL_VECTOR, {0.0, 0.0, 40.0}, .bypassHooks = false);
         }
     }
 }
