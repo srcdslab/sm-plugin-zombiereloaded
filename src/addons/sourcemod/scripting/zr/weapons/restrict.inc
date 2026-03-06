@@ -855,7 +855,7 @@ public bool RestrictIsClientWeaponRestrict(int client, int weapon)
 }
 
 /**
-* Set all wepaon restrict array for the specified client.
+* Set all weapon restrict array for the specified client.
 * @param client    The client index.
 * @param value	   The restrict value
 * @noreturn        
@@ -869,7 +869,7 @@ public void RestrictSetClientWeaponRestrictAll(int client, bool value)
 }
 
 /**
-* Set all wepaon restrict array for all clients.
+* Set all weapon restrict array for all clients.
 * @param value	   The restrict value
 * @noreturn        
 */

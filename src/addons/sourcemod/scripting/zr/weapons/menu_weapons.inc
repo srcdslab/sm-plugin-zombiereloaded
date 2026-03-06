@@ -392,7 +392,7 @@ void WeaponsMenuPerPlayerRestrict(int client)
 
     menu_weapons_perplayerrestrict.SetTitle(title);
 
-	char display[MENU_LINE_SMALL_LENGTH]
+	char display[MENU_LINE_SMALL_LENGTH];
 
 	// x = Client index
 	for (int x = 1; x <= MaxClients; x++)

@@ -119,7 +119,7 @@ native bool ZR_GetWeaponZMarketCommand(const char[] weapon, char[] command, int 
 native bool ZR_SetWeaponKnockback(const char[] weapon, float value);
 
 /**
- * Set all wepaon restrict array for the specified client.
+ * Set all weapon restrict array for the specified client.
  * @param client    The client index.
  * @param value	   The restrict value
  * @noreturn        
@@ -127,7 +127,7 @@ native bool ZR_SetWeaponKnockback(const char[] weapon, float value);
 native void ZR_SetClientWeaponRestrictAll(int client, bool value);
 
 /**
- * Set all wepaon restrict array for all clients.
+ * Set all weapon restrict array for all clients.
  * @param client    The client index.
  * @param value	   The restrict value
  * @noreturn        
