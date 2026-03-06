@@ -1003,18 +1003,18 @@ stock bool WeaponsIsClientInBuyZone(int client)
  */
 stock bool WeaponsHasPlayerItem(int client, const char[] weapon)
 {
-	int max = GetEntPropArraySize(client, Prop_Send, "m_hMyWeapons");
-	for (int i = 0; i < max; i++)
-	{
-		int ent = GetEntPropEnt(client, Prop_Send, "m_hMyWeapons", i);
-		if (ent == -1)
-			continue;
+    int max = GetEntPropArraySize(client, Prop_Send, "m_hMyWeapons");
+    for (int i = 0; i < max; i++)
+    {
+        int ent = GetEntPropEnt(client, Prop_Send, "m_hMyWeapons", i);
+        if (ent == -1)
+            continue;
 
-		char className[WEAPONS_MAX_LENGTH];
-		GetEntityClassname(ent, className, sizeof(className));
-		if (strcmp(className, weapon, false) == 0)
-			return true;
-	}
+        char className[32];
+        GetEntityClassname(ent, className, sizeof(className));
+        if (strcmp(className, weapon, false) == 0)
+            return true;
+    }
 
-	return false;
+    return false;
 }
