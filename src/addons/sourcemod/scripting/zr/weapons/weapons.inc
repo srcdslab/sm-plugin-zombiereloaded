@@ -1010,7 +1010,7 @@ stock bool WeaponsHasPlayerItem(int client, const char[] weapon)
 		if (ent == -1)
 			continue;
 
-		char className[32];
+		char className[WEAPONS_MAX_LENGTH];
 		GetEntityClassname(ent, className, sizeof(className));
 		if (strcmp(className, weapon, false) == 0)
 			return true;
