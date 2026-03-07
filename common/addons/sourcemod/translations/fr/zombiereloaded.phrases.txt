@@ -769,6 +769,21 @@
 		"fr"		"Munitions"
 	}
 
+	"Weapons menu restrict per player"
+	{
+		"fr"		"Restriction d'armes des joueurs"
+	}
+
+	"Weapons menu restrict per player title"
+	{
+		"fr"		"Restriction d'armes des joueurs\nSélectionnez un joueur"
+	}
+
+	"Weapons menu restrict types per-player title"
+	{
+		"fr"		"Restriction d'armes des joueurs\nJoueur : {1}\nSélectionnez un type d'arme"
+	}
+
 	// ===========================
 	// Hitgroups (core)
 	// ===========================

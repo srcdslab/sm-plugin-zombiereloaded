@@ -770,6 +770,21 @@
 		"no"		"Ammunisjon"
 	}
 
+	"Weapons menu restrict per player"
+	{
+		"no"		"Spillernes våpenbegrensning"
+	}
+
+	"Weapons menu restrict per player title"
+	{
+		"no"		"Spillernes våpenbegrensning\nVelg en spiller"
+	}
+
+	"Weapons menu restrict types per-player title"
+	{
+		"no"		"Spillernes våpenbegrensning\nSpiller: {1}\nVelg en våpentype"
+	}
+
 	// ===========================
 	// Hitgroups (core)
 	// ===========================
