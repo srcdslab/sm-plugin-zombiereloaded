@@ -1069,7 +1069,7 @@ stock bool ZMarketEquip(int client, const char[] weapon, bool rebuy = false)
         }
 
         // How many grenades does the client currently have?
-        int grenadecount = WeaponAmmoGetGrenadeCount(client, grenadetype);
+        int grenadecount = hasweapon ? WeaponAmmoGetGrenadeCount(client, grenadetype) : 0;
 
         // How many grenades can the client hold?
         int grenadelimit = WeaponAmmoGetGrenadeLimit(grenadetype);
