@@ -41,6 +41,12 @@
 #define WEAPONS_SLOTS_MAX 5
 
 /**
+ * Maximum iterations when clearing a weapon slot.
+ * Prevents hangs if the engine keeps returning the same entity.
+ */
+#define WEAPONS_SLOT_CLEAR_MAX_ITERATIONS 8
+
+/**
  * @section start weapons.
  */
 #define WEAPONS_SPAWN_CSS_T_WEAPON "weapon_glock"
@@ -712,27 +718,20 @@ stock void WeaponsGetZMarketCommand(int index, char[] command, int maxlen)
  */
 stock bool WeaponsClientHasWeapon(int client, const char[] weapon)
 {
-    // Get all of client's current weapons.
-    int weapons[Slot_MAXSIZE];
-    WeaponsGetClientWeapons(client, weapons);
+    int max = GetEntPropArraySize(client, Prop_Send, "m_hMyWeapons");
+    if (!max)
+        return false;
 
-    char classname[64];
-
-    // x = slot index
-    for (int x = 0; x < WEAPONS_SLOTS_MAX; x++)
+    for (int i = 0; i < max; i++)
     {
-        // If slot is empty, then stop.
-        if (weapons[x] == -1)
-        {
+        int ent = GetEntPropEnt(client, Prop_Send, "m_hMyWeapons", i);
+        if (ent == -1 || !IsValidEntity(ent))
             continue;
-        }
 
-        // If the weapon's classname matches, then return true.
-        GetEdictClassname(weapons[x], classname, sizeof(classname));
-        if (strcmp(weapon, classname, false) == 0)
-        {
+        char className[32];
+        GetEntityClassname(ent, className, sizeof(className));
+        if (strcmp(className, weapon, false) == 0)
             return true;
-        }
     }
 
     return false;
@@ -814,38 +813,72 @@ stock void WeaponsForceClientDrop(int client, int weapon)
         int owner = GetEntPropEnt(weapon, Prop_Data, "m_hOwnerEntity");
         if (owner == client)
         {
-            // Force client to drop weapon.
-            CS_DropWeapon(client, weapon, true, false);
+            // Use SDKHooks_DropWeapon for direct engine-level drop (faster than CS_DropWeapon).
+            SDKHooks_DropWeapon(client, weapon, NULL_VECTOR, {0.0, 0.0, 40.0}, .bypassHooks = false);
         }
     }
 }
 
 /**
- * Used to explicitly remove projectile weapons from a client.
+ * Strips a specific weapon entity from a client without dropping it.
  *
- * @param client    The client index.
- * @param weaponsdrop   True to force drop on all weapons, false to strip.
+ * @param client        The client index.
+ * @param weapon        The weapon entity index to strip.
+ */
+stock void WeaponsStripClientWeaponSlot(int client, int weapon)
+{
+    if (weapon != -1)
+    {
+        RemovePlayerItem(client, weapon);
+        AcceptEntityInput(weapon, "Kill");
+    }
+}
+
+/**
+ * Drops or strips all weapons in a given slot.
+ * Uses a loop with safety cap for slots that can contain multiple entities
+ * (projectiles and melee/knives), and a single pass for the other slots.
+ *
+ * @param client        The client index.
+ * @param slot          The weapon slot to clear.
+ * @param weaponsdrop   True to drop weapons, false to strip them.
  */
 stock void WeaponsClearClientWeaponSlot(int client, WeaponsSlot slot, bool weaponsdrop)
 {
-    // This while-structure is a stupid sloppy annoying workaround to stop the "unintended assignment" warning. I hate those.
-    // While GetPlayerWeaponSlot returns a valid weapon, remove it and then test again.
-    int weapon = GetPlayerWeaponSlot(client, view_as<int>(slot));
-    while (weapon != -1)
+    if (slot == Slot_Projectile || slot == Slot_Melee)
     {
-        // Check if we drop or strip the weapon.
-        if (weaponsdrop)
+        // Projectile and melee slots can contain multiple entities.
+        int weapon;
+        int clearIterations = 0;
+        while ((weapon = GetPlayerWeaponSlot(client, view_as<int>(slot))) != -1 && clearIterations < WEAPONS_SLOT_CLEAR_MAX_ITERATIONS)
         {
-            WeaponsForceClientDrop(client, weapon);
-        }
-        else
-        {
-            RemovePlayerItem(client, weapon);
-            AcceptEntityInput(weapon, "Kill");
-        }
+            if (weaponsdrop)
+            {
+                WeaponsForceClientDrop(client, weapon);
+            }
+            else
+            {
+                WeaponsStripClientWeaponSlot(client, weapon);
+            }
 
-        // Find next weapon.
-        weapon = GetPlayerWeaponSlot(client, view_as<int>(slot));
+            clearIterations++;
+        }
+    }
+    else
+    {
+        // All other slots hold at most one entity.
+        int weapon = GetPlayerWeaponSlot(client, view_as<int>(slot));
+        if (weapon != -1)
+        {
+            if (weaponsdrop)
+            {
+                WeaponsForceClientDrop(client, weapon);
+            }
+            else
+            {
+                WeaponsStripClientWeaponSlot(client, weapon);
+            }
+        }
     }
 }
 
@@ -877,65 +910,46 @@ stock void WeaponsRefreshClientWeapon(int client, WeaponsSlot slot)
 
 /**
  * Remove all weapons, except knife, on a client, with options.
+ * Optimized: uses a single if per slot for unique-weapon slots (primary, secondary, explosive),
+ * and a loop for multi-entity slots (projectile grenades, and melee knives when removeknife is enabled).
  *
  * @param client        The client index.
  * @param weaponsdrop   True to force drop on all weapons, false to strip.
  */
 stock void WeaponsRemoveAllClientWeapons(int client, bool weaponsdrop)
 {
-    // Give a new knife to player when he get infected
+    // Check if we should replace the knife during infection/spawn
     bool removeknife = g_hCvarsList.CVAR_WEAPONS_INFECT_REMOVE_KNIFE.BoolValue;
 
-    // Get a list of all client's weapon indexes.
-    int weapons[Slot_MAXSIZE];
-    WeaponsGetClientWeapons(client, weapons);
+    // Primary (slot 0): at most 1 weapon.
+    WeaponsClearClientWeaponSlot(client, Slot_Primary, weaponsdrop);
 
-    // Loop through array slots and force drop.
-    // x = weapon slot.
-    for (int x = 0; x < WEAPONS_SLOTS_MAX; x++)
+    // Secondary (slot 1): at most 1 weapon.
+    WeaponsClearClientWeaponSlot(client, Slot_Secondary, weaponsdrop);
+
+    // Melee/knife (slot 2):
+    // If removeknife is enabled, we strip all existing knives to prevent positioning glitches.
+    // If disabled (e.g., for maps using custom knife items), we leave the current knife untouched.
+    if (removeknife)
     {
-        // If weapon is invalid, then stop.
-        if (weapons[x] == -1)
-        {
-            continue;
-        }
-
-        // If this is the knife slot, then strip it and stop.
-        if (view_as<WeaponsSlot>(x) == Slot_Melee)
-        {
-            // Strip knife.
-            if (removeknife)
-            {
-                RemovePlayerItem(client, weapons[x]);
-                AcceptEntityInput(weapons[x], "Kill");
-            }
-            continue;
-        }
-
-        if (weaponsdrop)
-        {
-            // Force client to drop weapon.
-            WeaponsForceClientDrop(client, weapons[x]);
-        }
-        else
-        {
-            // Strip weapon.
-            RemovePlayerItem(client, weapons[x]);
-            AcceptEntityInput(weapons[x], "Kill");
-        }
+        // Always strip knife entities instead of dropping them.
+        WeaponsClearClientWeaponSlot(client, Slot_Melee, false);
     }
 
-    // Remove left-over knifes.
-    WeaponsClearClientWeaponSlot(client, Slot_Melee, false);
-
-    // Remove left-over projectiles.
+    // Projectiles (slot 3): while loop — player can carry multiple grenades.
     WeaponsClearClientWeaponSlot(client, Slot_Projectile, weaponsdrop);
 
-    // Remove left-over explosives.
+    // Explosive/C4 (slot 4): at most 1 weapon.
     WeaponsClearClientWeaponSlot(client, Slot_Explosive, weaponsdrop);
 
-    // Give zombie a new knife. (If you leave the old one there will be glitches with the knife positioning)
-    GivePlayerItem(client, "weapon_knife");
+    // Final knife handling:
+    // Only give a new standard knife if we stripped the previous ones.
+    // This prevents double knives when the CVAR is set to 0 for specific maps.
+    if (removeknife)
+    {
+        // Give a new knife. (If you leave the old one there will be glitches with the knife positioning)
+        GivePlayerItem(client, "weapon_knife");
+    }
 }
 
 /**
