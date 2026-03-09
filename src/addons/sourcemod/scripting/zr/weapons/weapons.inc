@@ -813,8 +813,7 @@ stock void WeaponsForceClientDrop(int client, int weapon)
         int owner = GetEntPropEnt(weapon, Prop_Data, "m_hOwnerEntity");
         if (owner == client)
         {
-            // Use SDKHooks_DropWeapon for direct engine-level drop (faster than CS_DropWeapon).
-            SDKHooks_DropWeapon(client, weapon, NULL_VECTOR, {0.0, 0.0, 40.0}, .bypassHooks = false);
+            CS_DropWeapon(client, weapon, true, false);
         }
     }
 }
