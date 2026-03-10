@@ -106,9 +106,9 @@ public int WeaponsMenuMainHandle(Menu menu_weapons_main, MenuAction action, int 
             }
             case 2:
             {
-            	// Per-Player restrict system, a menu will pop up
-            	WeaponsMenuPerPlayerRestrict(client);
-            	return 0;
+                // Per-Player restrict system, a menu will pop up
+                WeaponsMenuPerPlayerRestrict(client);
+                return 0;
             }
         }
     }
