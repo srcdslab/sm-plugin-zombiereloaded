@@ -232,7 +232,7 @@ void APIWeaponsInit()
     CreateNative("ZR_SetAllRestrictAll", Native_SetAllRestrictAll);
     CreateNative("ZR_SetClientWeaponRestrict", Native_SetClientWeaponRestrict);
     CreateNative("ZR_SetAllWeaponRestrict", Native_SetAllWeaponRestrict);
-	
+
     // Forwards
 }
 
@@ -240,16 +240,16 @@ public int Native_GetWeaponEntity(Handle plugin, int numParams)
 {
     char weapon[WEAPONS_MAX_LENGTH];
     GetNativeString(1, weapon, sizeof(weapon));
-    
+
     int index = WeaponsNameToIndex(weapon);
     if (index == -1)
     {
         return false;
     }
-    
+
     char entity[WEAPONS_MAX_LENGTH];
     WeaponsGetEntity(index, entity, sizeof(entity));
-    
+
     SetNativeString(2, entity, GetNativeCell(3));
     return true;
 }
@@ -258,16 +258,16 @@ public int Native_GetWeaponType(Handle plugin, int numParams)
 {
     char weapon[WEAPONS_MAX_LENGTH];
     GetNativeString(1, weapon, sizeof(weapon));
-    
+
     int index = WeaponsNameToIndex(weapon);
     if (index == -1)
     {
         return false;
     }
-    
+
     char type[WEAPONS_MAX_LENGTH];
     WeaponsGetType(index, type, sizeof(type));
-    
+
     SetNativeString(2, type, GetNativeCell(3));
     return true;
 }
@@ -276,13 +276,13 @@ public int Native_GetWeaponSlot(Handle plugin, int numParams)
 {
     char weapon[WEAPONS_MAX_LENGTH];
     GetNativeString(1, weapon, sizeof(weapon));
-    
+
     int index = WeaponsNameToIndex(weapon);
     if (index == -1)
     {
         return -1;
     }
-    
+
     return view_as<int>(WeaponsGetSlot(index));
 }
 
@@ -290,13 +290,13 @@ public int Native_GetWeaponRestrictDefault(Handle plugin, int numParams)
 {
     char weapon[WEAPONS_MAX_LENGTH];
     GetNativeString(1, weapon, sizeof(weapon));
-    
+
     int index = WeaponsNameToIndex(weapon);
     if (index == -1)
     {
         return false;
     }
-    
+
     return WeaponsGetRestrictDefault(index);
 }
 
@@ -304,13 +304,13 @@ public int Native_GetWeaponToggleable(Handle plugin, int numParams)
 {
     char weapon[WEAPONS_MAX_LENGTH];
     GetNativeString(1, weapon, sizeof(weapon));
-    
+
     int index = WeaponsNameToIndex(weapon);
     if (index == -1)
     {
         return false;
     }
-    
+
     return WeaponsGetToggleable(index);
 }
 
@@ -318,16 +318,16 @@ public int Native_GetWeaponAmmoType(Handle plugin, int numParams)
 {
     char weapon[WEAPONS_MAX_LENGTH];
     GetNativeString(1, weapon, sizeof(weapon));
-    
+
     int index = WeaponsNameToIndex(weapon);
     if (index == -1)
     {
         return false;
     }
-    
+
     char ammotype[WEAPONS_MAX_LENGTH];
     WeaponsGetAmmoType(index, ammotype, sizeof(ammotype));
-    
+
     SetNativeString(2, ammotype, GetNativeCell(3));
     return true;
 }
@@ -336,13 +336,13 @@ public int Native_GetWeaponAmmoPrice(Handle plugin, int numParams)
 {
     char weapon[WEAPONS_MAX_LENGTH];
     GetNativeString(1, weapon, sizeof(weapon));
-    
+
     int index = WeaponsNameToIndex(weapon);
     if (index == -1)
     {
         return -1;
     }
-    
+
     return WeaponsGetAmmoPrice(index);
 }
 
@@ -350,13 +350,13 @@ public int Native_GetWeaponKnockback(Handle plugin, int numParams)
 {
     char weapon[WEAPONS_MAX_LENGTH];
     GetNativeString(1, weapon, sizeof(weapon));
-    
+
     int index = WeaponsNameToIndex(weapon);
     if (index == -1)
     {
         return view_as<int>(0.0);
     }
-    
+
     return view_as<int>(WeaponsGetKnockback(index));
 }
 
@@ -364,16 +364,16 @@ public int Native_GetWeaponZMarketName(Handle plugin, int numParams)
 {
     char weapon[WEAPONS_MAX_LENGTH];
     GetNativeString(1, weapon, sizeof(weapon));
-    
+
     int index = WeaponsNameToIndex(weapon);
     if (index == -1)
     {
         return false;
     }
-    
+
     char name[WEAPONS_MAX_LENGTH];
     WeaponsGetZMarketName(index, name, sizeof(name));
-    
+
     SetNativeString(2, name, GetNativeCell(3));
     return true;
 }
@@ -382,13 +382,13 @@ public int Native_GetWeaponZMarketPrice(Handle plugin, int numParams)
 {
     char weapon[WEAPONS_MAX_LENGTH];
     GetNativeString(1, weapon, sizeof(weapon));
-    
+
     int index = WeaponsNameToIndex(weapon);
     if (index == -1)
     {
         return -1;
     }
-    
+
     return WeaponsGetZMarketPrice(index);
 }
 
@@ -396,13 +396,13 @@ public int Native_GetWeaponZMarketPurchaseMax(Handle plugin, int numParams)
 {
     char weapon[WEAPONS_MAX_LENGTH];
     GetNativeString(1, weapon, sizeof(weapon));
-    
+
     int index = WeaponsNameToIndex(weapon);
     if (index == -1)
     {
         return -1;
     }
-    
+
     return WeaponsGetZMarketPurchaseMax(index);
 }
 
@@ -410,16 +410,16 @@ public int Native_GetWeaponZMarketCommand(Handle plugin, int numParams)
 {
     char weapon[WEAPONS_MAX_LENGTH];
     GetNativeString(1, weapon, sizeof(weapon));
-    
+
     int index = WeaponsNameToIndex(weapon);
     if (index == -1)
     {
         return false;
     }
-    
+
     char command[WEAPONS_MAX_LENGTH];
     WeaponsGetZMarketCommand(index, command, sizeof(command));
-    
+
     SetNativeString(2, command, GetNativeCell(3));
     return true;
 }
@@ -446,7 +446,7 @@ public int Native_SetWeaponKnockback(Handle plugin, int numParams)
     {
         return false;
     }
-    
+
     float value = GetNativeCell(2);
     if (value <= 0.0)
     {
@@ -469,10 +469,10 @@ public int Native_SetClientWeaponRestrictAll(Handle plugin, int numParams)
         return ThrowNativeError(SP_ERROR_NATIVE, "Per-player restriction is disabled.");
 
     int client = GetNativeCell(1);
-    
+
     // Validate the client index.
     APIValidateClientIndex(client);
-    
+
     bool restrictvalue = view_as<bool>(GetNativeCell(2));
     WeaponsSetClientWeaponRestrictAll(client, restrictvalue);
     return 1;
@@ -494,15 +494,15 @@ public int Native_SetClientWeaponRestrict(Handle plugin, int numParams)
         return ThrowNativeError(SP_ERROR_NATIVE, "Per-player restriction is disabled.");
 
     int client = GetNativeCell(1);
-    
+
     // Validate the client index.
     APIValidateClientIndex(client);
-    
+
     char weapon[WEAPONS_MAX_LENGTH];
     GetNativeString(2, weapon, sizeof(weapon));
-    
+
     bool restrictvalue = view_as<bool>(GetNativeCell(3));
-    
+
     return WeaponsSetClientWeaponRestrict(client, weapon, restrictvalue);
 }
 
@@ -513,12 +513,12 @@ public int Native_SetAllWeaponRestrict(Handle plugin, int numParams)
 
     char weapon[WEAPONS_MAX_LENGTH];
     GetNativeString(1, weapon, sizeof(weapon));
-    
+
     bool restrictvalue = view_as<bool>(GetNativeCell(2));
-    
+
     return WeaponsSetAllWeaponRestrict(weapon, restrictvalue);
 }
 
 /**
  * @endsection
- */ 
+ */
