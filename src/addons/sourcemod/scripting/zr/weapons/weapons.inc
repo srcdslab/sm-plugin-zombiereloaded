@@ -993,7 +993,7 @@ stock bool WeaponsIsClientInBuyZone(int client)
 * @param value	   The restrict value
 * @noreturn        
 */
-public void WeaponsSetClientWeaponRestrictAll(int client, bool value)
+stock void WeaponsSetClientWeaponRestrictAll(int client, bool value)
 {
 	if (!g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER.BoolValue || !g_hCvarsList.CVAR_WEAPONS_RESTRICT.BoolValue)
 		return;
@@ -1006,7 +1006,7 @@ public void WeaponsSetClientWeaponRestrictAll(int client, bool value)
 * @param value	   The restrict value
 * @noreturn        
 */
-public void WeaponsSetAllRestrictAll(bool value)
+stock void WeaponsSetAllRestrictAll(bool value)
 {
 	if (!g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER.BoolValue || !g_hCvarsList.CVAR_WEAPONS_RESTRICT.BoolValue)
 		return;
@@ -1021,7 +1021,7 @@ public void WeaponsSetAllRestrictAll(bool value)
 * @param value	   		 The restrict value
 * @return				 True on success, false otherwise            
 */
-public bool WeaponsSetClientWeaponRestrict(int client, const char[] weapon, bool value)
+stock bool WeaponsSetClientWeaponRestrict(int client, const char[] weapon, bool value)
 {
 	if (!g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER.BoolValue || !g_hCvarsList.CVAR_WEAPONS_RESTRICT.BoolValue)
 		return false;
@@ -1035,7 +1035,7 @@ public bool WeaponsSetClientWeaponRestrict(int client, const char[] weapon, bool
 * @param value	   		 The restrict value
 * @return				 True on success, false otherwise        
 */
-public bool WeaponsSetAllWeaponRestrict(const char[] weapon, bool value)
+stock bool WeaponsSetAllWeaponRestrict(const char[] weapon, bool value)
 {
 	if (!g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER.BoolValue || !g_hCvarsList.CVAR_WEAPONS_RESTRICT.BoolValue)
 		return false;

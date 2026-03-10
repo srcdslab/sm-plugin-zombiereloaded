@@ -255,7 +255,7 @@ public Action RestrictBuyCommand(int client, int argc)
     }
 	
     // If weapon is restricted or client cannot use it, then stop.
-    if (RestrictIsWeaponRestricted(weaponindex) || g_bRestrictBlockWeaponOne[client][weaponindex])
+    if (RestrictIsWeaponRestricted(weaponindex) || RestrictIsClientWeaponRestrict(client, weaponindex))
     {
         TranslationPrintToChat(client, "Weapon is restricted", weaponname);
 
@@ -846,10 +846,13 @@ stock bool RestrictIsTypeClientRestricted(int client, bool restricted, int index
 * Retrieves whether the specified weapon is restricted for the client.
 * @param client    The client index.
 * @param weapon	   The weapon index.
-* @noreturn        
+* @return          True if weapon was restricted for that client, false otherwise        
 */
-public bool RestrictIsClientWeaponRestrict(int client, int weapon)
+stock bool RestrictIsClientWeaponRestrict(int client, int weapon)
 {
+    if (!g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER.BoolValue || !g_hCvarsList.CVAR_WEAPONS_RESTRICT.BoolValue)
+        return false;
+
 	return g_bRestrictBlockWeaponOne[client][weapon];
 }
 
@@ -859,7 +862,7 @@ public bool RestrictIsClientWeaponRestrict(int client, int weapon)
 * @param value	   The restrict value
 * @noreturn        
 */
-public void RestrictSetClientWeaponRestrictAll(int client, bool value)
+stock void RestrictSetClientWeaponRestrictAll(int client, bool value)
 {
     for (int i = 0; i < sizeof(g_bRestrictBlockWeaponOne[]); i++)
 	{
@@ -872,7 +875,7 @@ public void RestrictSetClientWeaponRestrictAll(int client, bool value)
 * @param value	   The restrict value
 * @noreturn        
 */
-public void RestrictSetAllRestrictAll(bool value)
+stock void RestrictSetAllRestrictAll(bool value)
 {
 	for (int i = 1; i <= MaxClients; i++)
 	{
@@ -890,7 +893,7 @@ public void RestrictSetAllRestrictAll(bool value)
 * @param value	   		 The restrict value
 * @noreturn        
 */
-public bool RestrictSetClientWeaponRestrict(int client, const char[] weapon, bool value)
+stock bool RestrictSetClientWeaponRestrict(int client, const char[] weapon, bool value)
 {
 	// Find index of the given weapon type.
     int typeindex = RestrictTypeToIndex(weapon);
@@ -938,7 +941,7 @@ public bool RestrictSetClientWeaponRestrict(int client, const char[] weapon, boo
 * @param value	   		 The restrict value
 * @noreturn        
 */
-public bool RestrictSetAllWeaponRestrict(const char[] weapon, bool value)
+stock bool RestrictSetAllWeaponRestrict(const char[] weapon, bool value)
 {
 	// Find index of the given weapon type.
     int typeindex = RestrictTypeToIndex(weapon);

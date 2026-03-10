@@ -465,7 +465,7 @@ public int Native_SetWeaponKnockback(Handle plugin, int numParams)
 
 public int Native_SetClientWeaponRestrictAll(Handle plugin, int numParams)
 {
-    if (!g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER.BoolValue)
+    if (!g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER.BoolValue || !g_hCvarsList.CVAR_WEAPONS_RESTRICT.BoolValue)
         return ThrowNativeError(SP_ERROR_NATIVE, "Per-player restriction is disabled.");
 
     int client = GetNativeCell(1);
@@ -480,7 +480,7 @@ public int Native_SetClientWeaponRestrictAll(Handle plugin, int numParams)
 
 public int Native_SetAllRestrictAll(Handle plugin, int numParams)
 {
-    if (!g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER.BoolValue)
+    if (!g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER.BoolValue || !g_hCvarsList.CVAR_WEAPONS_RESTRICT.BoolValue)
         return ThrowNativeError(SP_ERROR_NATIVE, "Per-player restriction is disabled.");
 
     bool restrictvalue = view_as<bool>(GetNativeCell(1));
@@ -490,7 +490,7 @@ public int Native_SetAllRestrictAll(Handle plugin, int numParams)
 
 public int Native_SetClientWeaponRestrict(Handle plugin, int numParams)
 {
-    if (!g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER.BoolValue)
+    if (!g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER.BoolValue || !g_hCvarsList.CVAR_WEAPONS_RESTRICT.BoolValue)
         return ThrowNativeError(SP_ERROR_NATIVE, "Per-player restriction is disabled.");
 
     int client = GetNativeCell(1);
@@ -508,7 +508,7 @@ public int Native_SetClientWeaponRestrict(Handle plugin, int numParams)
 
 public int Native_SetAllWeaponRestrict(Handle plugin, int numParams)
 {
-    if (!g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER.BoolValue)
+    if (!g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER.BoolValue || !g_hCvarsList.CVAR_WEAPONS_RESTRICT.BoolValue)
         return ThrowNativeError(SP_ERROR_NATIVE, "Per-player restriction is disabled.");
 
     char weapon[WEAPONS_MAX_LENGTH];
