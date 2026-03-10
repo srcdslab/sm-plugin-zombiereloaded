@@ -253,7 +253,7 @@ public Action RestrictBuyCommand(int client, int argc)
         // Allow command.
         return Plugin_Continue;
     }
-	
+
     // If weapon is restricted or client cannot use it, then stop.
     if (RestrictIsWeaponRestricted(weaponindex) || RestrictIsClientWeaponRestrict(client, weaponindex))
     {
