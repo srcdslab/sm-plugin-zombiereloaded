@@ -850,7 +850,6 @@ stock bool RestrictIsTypeClientRestricted(int client, bool restricted, int index
 */
 public bool RestrictIsClientWeaponRestrict(int client, int weapon)
 {
-	
 	return g_bRestrictBlockWeaponOne[client][weapon];
 }
 
@@ -887,19 +886,19 @@ public void RestrictSetAllRestrictAll(bool value)
 /**
 * Set weapon restrict value to a specific client.
 * @param client    		 The client index.
-* @param returntarget    The weapon or weapon type name.
+* @param weapon          The weapon or weapon type name.
 * @param value	   		 The restrict value
 * @noreturn        
 */
-public bool RestrictSetClientWeaponRestrict(int client, const char[] returntarget, bool value)
+public bool RestrictSetClientWeaponRestrict(int client, const char[] weapon, bool value)
 {
 	// Find index of the given weapon type.
-    int typeindex = RestrictTypeToIndex(returntarget);
+    int typeindex = RestrictTypeToIndex(weapon);
 
     // Single weapon.
     if (typeindex == -1)
     {
-        int weaponindex = WeaponsNameToIndex(returntarget);
+        int weaponindex = WeaponsNameToIndex(weapon);
 
         // If weapon index is invalid, then return invalid.
         if (weaponindex == -1)
@@ -935,19 +934,19 @@ public bool RestrictSetClientWeaponRestrict(int client, const char[] returntarge
 
 /**
 * Set weapon restrict value to all clients.
-* @param returntarget    The weapon or weapon type name.
+* @param weapon    The weapon or weapon type name.
 * @param value	   		 The restrict value
 * @noreturn        
 */
-public bool RestrictSetAllWeaponRestrict(const char[] returntarget, bool value)
+public bool RestrictSetAllWeaponRestrict(const char[] weapon, bool value)
 {
 	// Find index of the given weapon type.
-    int typeindex = RestrictTypeToIndex(returntarget);
+    int typeindex = RestrictTypeToIndex(weapon);
 
     // Single weapon.
     if (typeindex == -1)
     {
-        int weaponindex = WeaponsNameToIndex(returntarget);
+        int weaponindex = WeaponsNameToIndex(weapon);
 
         // If weapon index is invalid, then return invalid.
         if (weaponindex == -1)

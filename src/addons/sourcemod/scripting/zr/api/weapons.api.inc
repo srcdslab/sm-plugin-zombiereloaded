@@ -227,7 +227,6 @@ void APIWeaponsInit()
     CreateNative("ZR_GetWeaponZMarketPurchaseMax", Native_GetWeaponZMarketPurchaseMax);
     CreateNative("ZR_GetWeaponZMarketCommand", Native_GetWeaponZMarketCommand);
     CreateNative("ZR_SetWeaponKnockback", Native_SetWeaponKnockback);
-	
     // Restrict Natives
     CreateNative("ZR_SetClientWeaponRestrictAll", Native_SetClientWeaponRestrictAll);
     CreateNative("ZR_SetAllRestrictAll", Native_SetAllRestrictAll);
@@ -466,6 +465,9 @@ public int Native_SetWeaponKnockback(Handle plugin, int numParams)
 
 public int Native_SetClientWeaponRestrictAll(Handle plugin, int numParams)
 {
+    if (!g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER.BoolValue)
+        return ThrowNativeError(SP_ERROR_NATIVE, "Per-player restriction is disabled.");
+
     int client = GetNativeCell(1);
     
     // Validate the client index.
@@ -478,6 +480,9 @@ public int Native_SetClientWeaponRestrictAll(Handle plugin, int numParams)
 
 public int Native_SetAllRestrictAll(Handle plugin, int numParams)
 {
+    if (!g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER.BoolValue)
+        return ThrowNativeError(SP_ERROR_NATIVE, "Per-player restriction is disabled.");
+
     bool restrictvalue = view_as<bool>(GetNativeCell(1));
     WeaponsSetAllRestrictAll(restrictvalue);
     return 1;
@@ -485,6 +490,9 @@ public int Native_SetAllRestrictAll(Handle plugin, int numParams)
 
 public int Native_SetClientWeaponRestrict(Handle plugin, int numParams)
 {
+    if (!g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER.BoolValue)
+        return ThrowNativeError(SP_ERROR_NATIVE, "Per-player restriction is disabled.");
+
     int client = GetNativeCell(1);
     
     // Validate the client index.
@@ -500,6 +508,9 @@ public int Native_SetClientWeaponRestrict(Handle plugin, int numParams)
 
 public int Native_SetAllWeaponRestrict(Handle plugin, int numParams)
 {
+    if (!g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER.BoolValue)
+        return ThrowNativeError(SP_ERROR_NATIVE, "Per-player restriction is disabled.");
+
     char weapon[WEAPONS_MAX_LENGTH];
     GetNativeString(1, weapon, sizeof(weapon));
     

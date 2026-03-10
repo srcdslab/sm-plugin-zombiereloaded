@@ -128,7 +128,6 @@ native void ZR_SetClientWeaponRestrictAll(int client, bool value);
 
 /**
  * Set all weapon restrict array for all clients.
- * @param client    The client index.
  * @param value	   The restrict value
  * @noreturn        
  */
@@ -137,16 +136,16 @@ native void ZR_SetAllRestrictAll(bool value);
 /**
  * Set weapon restrict value to a specific client.
  * @param client    		 The client index.
- * @param returntarget    The weapon or weapon type name.
+ * @param weapon    The weapon or weapon type name.
  * @param value	   		 The restrict value
  * @return				 True on success, false otherwise            
  */
-native bool ZR_SetClientWeaponRestrict(int client, const char[] returntarget, bool value);
+native bool ZR_SetClientWeaponRestrict(int client, const char[] weapon, bool value);
 
 /**
  * Set weapon restrict value to all clients.
- * @param returntarget    The weapon or weapon type name.
+ * @param weapon    The weapon or weapon type name.
  * @param value	   		 The restrict value
  * @return				 True on success, false otherwise        
  */
-native bool ZR_SetAllWeaponRestrict(const char[] returntarget, bool value);
+native bool ZR_SetAllWeaponRestrict(const char[] weapon, bool value);

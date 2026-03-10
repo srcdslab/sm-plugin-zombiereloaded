@@ -995,7 +995,7 @@ stock bool WeaponsIsClientInBuyZone(int client)
 */
 public void WeaponsSetClientWeaponRestrictAll(int client, bool value)
 {
-	if (!g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER.BoolValue)
+	if (!g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER.BoolValue || !g_hCvarsList.CVAR_WEAPONS_RESTRICT.BoolValue)
 		return;
 
     RestrictSetClientWeaponRestrictAll(client, value);
@@ -1008,7 +1008,7 @@ public void WeaponsSetClientWeaponRestrictAll(int client, bool value)
 */
 public void WeaponsSetAllRestrictAll(bool value)
 {
-	if (!g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER.BoolValue)
+	if (!g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER.BoolValue || !g_hCvarsList.CVAR_WEAPONS_RESTRICT.BoolValue)
 		return;
 
 	RestrictSetAllRestrictAll(value);
@@ -1017,28 +1017,28 @@ public void WeaponsSetAllRestrictAll(bool value)
 /**
 * Set weapon restrict value to a specific client.
 * @param client    		 The client index.
-* @param returntarget    The weapon or weapon type name.
+* @param weapon    The weapon or weapon type name.
 * @param value	   		 The restrict value
 * @return				 True on success, false otherwise            
 */
-public bool WeaponsSetClientWeaponRestrict(int client, const char[] returntarget, bool value)
+public bool WeaponsSetClientWeaponRestrict(int client, const char[] weapon, bool value)
 {
-	if (!g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER.BoolValue)
+	if (!g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER.BoolValue || !g_hCvarsList.CVAR_WEAPONS_RESTRICT.BoolValue)
 		return false;
 
-	return RestrictSetClientWeaponRestrict(client, returntarget, value);
+	return RestrictSetClientWeaponRestrict(client, weapon, value);
 }
 
 /**
 * Set weapon restrict value to all clients.
-* @param returntarget    The weapon or weapon type name.
+* @param weapon    The weapon or weapon type name.
 * @param value	   		 The restrict value
 * @return				 True on success, false otherwise        
 */
-public bool WeaponsSetAllWeaponRestrict(const char[] returntarget, bool value)
+public bool WeaponsSetAllWeaponRestrict(const char[] weapon, bool value)
 {
-	if (!g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER.BoolValue)
+	if (!g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER.BoolValue || !g_hCvarsList.CVAR_WEAPONS_RESTRICT.BoolValue)
 		return false;
 
-	return RestrictSetAllWeaponRestrict(returntarget, value);
+	return RestrictSetAllWeaponRestrict(weapon, value);
 }
