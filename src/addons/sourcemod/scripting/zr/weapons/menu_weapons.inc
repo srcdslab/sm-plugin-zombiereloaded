@@ -63,7 +63,7 @@ bool WeaponsMenuMain(int client)
     Format(restrict, sizeof(restrict), "%t", "Weapons menu restrict main restrict");
     Format(zmarket, sizeof(zmarket), "%t", "Weapons menu restrict main market");
     Format(perplayerestrict, sizeof(perplayerestrict), "%t", "Weapons menu restrict per player");
-	
+
     // Draw items, make unselectable if module is disabled.
     menu_weapons_main.SetTitle(title);
     menu_weapons_main.AddItem("restrict", restrict, MenuGetItemDraw(g_hCvarsList.CVAR_WEAPONS_RESTRICT.BoolValue));
@@ -392,22 +392,22 @@ void WeaponsMenuPerPlayerRestrict(int client)
 
     menu_weapons_perplayerrestrict.SetTitle(title);
 
-	char display[MENU_LINE_SMALL_LENGTH];
+    char display[MENU_LINE_SMALL_LENGTH];
 
-	// x = Client index
-	for (int x = 1; x <= MaxClients; x++)
-	{
-		if (!IsClientInGame(x) || IsFakeClient(x))
-			continue;
-		
-		int userid = GetClientUserId(x);
-		
-		char useridStr[8];
-		IntToString(userid, useridStr, sizeof(useridStr));
-		
-		FormatEx(display, sizeof(display), "[#%d] %N", userid, x);
-		menu_weapons_perplayerrestrict.AddItem(useridStr, display);
-	}
+    // x = Client index
+    for (int x = 1; x <= MaxClients; x++)
+    {
+        if (!IsClientInGame(x) || IsFakeClient(x))
+            continue;
+
+        int userid = GetClientUserId(x);
+
+        char useridStr[8];
+        IntToString(userid, useridStr, sizeof(useridStr));
+
+        FormatEx(display, sizeof(display), "[#%d] %N", userid, x);
+        menu_weapons_perplayerrestrict.AddItem(useridStr, display);
+    }
 
     // Set menu back button.
     menu_weapons_perplayerrestrict.ExitBackButton = true;
@@ -432,17 +432,17 @@ public int WeaponsMenuPerPlayerRestrictHandle(Menu menu_weapons_perplayerrestric
         // Get the userid of the player selected
         char data[10];
         menu_weapons_perplayerrestrict.GetItem(slot, data, sizeof(data));
-        
+
         int userid = StringToInt(data);
 
         int target = GetClientOfUserId(userid);
         if (!target)
         {
-       		WeaponsMenuPerPlayerRestrict(client);
-       		return 0;
-      	}
+            WeaponsMenuPerPlayerRestrict(client);
+            return 0;
+        }
 
-		g_iWeaponsCurTarget[client] = userid;
+        g_iWeaponsCurTarget[client] = userid;
         WeaponsMenuWeaponsTypesTarget(client, target);
         return 0;
     }
@@ -470,18 +470,18 @@ public int WeaponsMenuPerPlayerRestrictHandle(Menu menu_weapons_perplayerrestric
  */
 void WeaponsMenuWeaponsTypesTarget(int client, int target = 0)
 {
-	// Get target index from userid.
-	if (!target)
-		target = GetClientOfUserId(g_iWeaponsCurTarget[client]);
-	
-	// If the target is not available anymore, then stop.
-	if (!target)
-		return;
+    // Get target index from userid.
+    if (!target)
+        target = GetClientOfUserId(g_iWeaponsCurTarget[client]);
 
-	// Create menu handle.
+    // If the target is not available anymore, then stop.
+    if (!target)
+        return;
+
+    // Create menu handle.
     Menu menu_weapon_types_target = new Menu(WeaponsMenuWeaponsTypesTargetHandle);
 
-   	SetGlobalTransTarget(client);
+    SetGlobalTransTarget(client);
 
     char title[MENU_LINE_TITLE_LENGTH];
     Format(title, sizeof(title), "%t\n ", "Weapons menu restrict types per-player title", target);
@@ -560,15 +560,15 @@ public int WeaponsMenuWeaponsTypesTargetHandle(Menu menu_weapon_types_target, Me
  */
 void WeaponsMenuWeaponsTypeTarget(int client, int target = 0)
 {
-	// Get target index from userid.
-	if (!target)
-		target = GetClientOfUserId(g_iWeaponsCurTarget[client]);
-	
-	// If the target is not available anymore, then stop.
-	if (!target)
-		return;
+    // Get target index from userid.
+    if (!target)
+        target = GetClientOfUserId(g_iWeaponsCurTarget[client]);
 
-	// Create menu handle.
+    // If the target is not available anymore, then stop.
+    if (!target)
+        return;
+
+    // Create menu handle.
     Menu menu_weapons_type_target = new Menu(WeaponsMenuWeaponsTypeTargetHandle);
 
     char typename[WEAPONS_MAX_LENGTH];
@@ -639,15 +639,15 @@ public int WeaponsMenuWeaponsTypeTargetHandle(Menu menu_weapons_type_target, Men
     // Client selected an option.
     if (action == MenuAction_Select)
     {
-    	// Get the target index.
-    	int target = GetClientOfUserId(g_iWeaponsCurTarget[client]);
-    	
-    	// If target is not available anymore, then stop.
-    	if (!target)
-    	{
-    		WeaponsMenuPerPlayerRestrict(client);
-    		return 0;
-   		}
+        // Get the target index.
+        int target = GetClientOfUserId(g_iWeaponsCurTarget[client]);
+
+        // If target is not available anymore, then stop.
+        if (!target)
+        {
+            WeaponsMenuPerPlayerRestrict(client);
+            return 0;
+        }
 
         // Get name of current weapon type.
         char typename[WEAPONS_MAX_LENGTH];
@@ -690,7 +690,7 @@ public int WeaponsMenuWeaponsTypeTargetHandle(Menu menu_weapons_type_target, Men
                     delete menu_weapons_type_target;
                     return -1;
                 }
-				
+
                 // If weapon isn't restricted, then restrict it.
                 if (!RestrictIsClientWeaponRestrict(target, weaponindex))
                 {
@@ -724,11 +724,11 @@ public int WeaponsMenuWeaponsTypeTargetHandle(Menu menu_weapons_type_target, Men
         // Client hit "Back" button.
         if (slot == MenuCancel_ExitBack)
         {
-        	int target = GetClientOfUserId(g_iWeaponsCurTarget[client]);
-        	if (target)
-        		WeaponsMenuWeaponsTypesTarget(client, target);
-        	else
-            	WeaponsMenuPerPlayerRestrict(client);
+            int target = GetClientOfUserId(g_iWeaponsCurTarget[client]);
+            if (target)
+                WeaponsMenuWeaponsTypesTarget(client, target);
+            else
+                WeaponsMenuPerPlayerRestrict(client);
         }
     }
     // Client hit "Exit" button.
