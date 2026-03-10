@@ -810,7 +810,7 @@ public Action UnrestrictCommand(int client, int argc)
 /**
 * Used to check if all weapons of a type are restricted for a specific player.
 *
-* @param client		   The Client index.
+* @param client        The Client index.
 * @param restricted    True to check if all weapons of given type are restricted.
 * @param index         The weapon type index.
 * @return              True if all weapons of the given type are restricted for that player or not, false if not.
@@ -853,45 +853,45 @@ stock bool RestrictIsClientWeaponRestrict(int client, int weapon)
     if (!g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER.BoolValue || !g_hCvarsList.CVAR_WEAPONS_RESTRICT.BoolValue)
         return false;
 
-	return g_bRestrictBlockWeaponOne[client][weapon];
+    return g_bRestrictBlockWeaponOne[client][weapon];
 }
 
 /**
 * Set all weapon restrict array for the specified client.
 * @param client    The client index.
-* @param value	   The restrict value
-* @noreturn        
+* @param value     The restrict value
+* @noreturn
 */
 stock void RestrictSetClientWeaponRestrictAll(int client, bool value)
 {
     for (int i = 0; i < sizeof(g_bRestrictBlockWeaponOne[]); i++)
-	{
-		g_bRestrictBlockWeaponOne[client][i] = value;
-	}
+    {
+        g_bRestrictBlockWeaponOne[client][i] = value;
+    }
 }
 
 /**
 * Set all weapon restrict array for all clients.
-* @param value	   The restrict value
-* @noreturn        
+* @param value     The restrict value
+* @noreturn
 */
 stock void RestrictSetAllRestrictAll(bool value)
 {
-	for (int i = 1; i <= MaxClients; i++)
-	{
-	    for (int j = 0; j < sizeof(g_bRestrictBlockWeaponOne[]); j++)
-		{
-			g_bRestrictBlockWeaponOne[i][j] = value;
-		}
-	}
+    for (int i = 1; i <= MaxClients; i++)
+    {
+        for (int j = 0; j < sizeof(g_bRestrictBlockWeaponOne[]); j++)
+        {
+            g_bRestrictBlockWeaponOne[i][j] = value;
+        }
+    }
 }
 
 /**
 * Set weapon restrict value to a specific client.
-* @param client    		 The client index.
-* @param weapon          The weapon or weapon type name.
-* @param value	   		 The restrict value
-* @noreturn        
+* @param client     The client index.
+* @param weapon     The weapon or weapon type name.
+* @param value      The restrict value
+* @noreturn
 */
 stock bool RestrictSetClientWeaponRestrict(int client, const char[] weapon, bool value)
 {
@@ -937,13 +937,13 @@ stock bool RestrictSetClientWeaponRestrict(int client, const char[] weapon, bool
 
 /**
 * Set weapon restrict value to all clients.
-* @param weapon    The weapon or weapon type name.
-* @param value	   		 The restrict value
-* @noreturn        
+* @param weapon     The weapon or weapon type name.
+* @param value      The restrict value
+* @noreturn
 */
 stock bool RestrictSetAllWeaponRestrict(const char[] weapon, bool value)
 {
-	// Find index of the given weapon type.
+    // Find index of the given weapon type.
     int typeindex = RestrictTypeToIndex(weapon);
 
     // Single weapon.
@@ -956,10 +956,10 @@ stock bool RestrictSetAllWeaponRestrict(const char[] weapon, bool value)
         {
             return false;
         }
-		
-		for (int i = 1; i <= MaxClients; i++)
-		{
-        	g_bRestrictBlockWeaponOne[i][weaponindex] = value;
+        
+        for (int i = 1; i <= MaxClients; i++)
+        {
+            g_bRestrictBlockWeaponOne[i][weaponindex] = value;
         }
         
         return true;
@@ -977,9 +977,9 @@ stock bool RestrictSetAllWeaponRestrict(const char[] weapon, bool value)
             int weaponindex = arrayTypeWeapons.Get(x);
 
             for (int i = 1; i <= MaxClients; i++)
-			{
-	        	g_bRestrictBlockWeaponOne[i][weaponindex] = value;
-	        }
+            {
+                g_bRestrictBlockWeaponOne[i][weaponindex] = value;
+            }
         }
 
         // Close handle
