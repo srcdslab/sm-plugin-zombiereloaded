@@ -419,10 +419,10 @@ void WeaponsMenuPerPlayerRestrict(int client)
 /**
  * Called when client selects an item in per-player restrictions menu.
  *
- * @param menu_weapons_perplayerrestrict  	Handle of the menu being used.
- * @param action                    		The action done on the menu (see menus.inc, enum MenuAction).
- * @param client                    		The client index.
- * @param slot                      		The slot index selected (starting from 0).
+ * @param menu_weapons_perplayerrestrict    Handle of the menu being used.
+ * @param action                            The action done on the menu (see menus.inc, enum MenuAction).
+ * @param client                            The client index.
+ * @param slot                              The slot index selected (starting from 0).
  */
 public int WeaponsMenuPerPlayerRestrictHandle(Menu menu_weapons_perplayerrestrict, MenuAction action, int client, int slot)
 {
@@ -520,10 +520,10 @@ void WeaponsMenuWeaponsTypesTarget(int client, int target = 0)
 /**
  * Called when client selects an item in per-player weapons types restriction.
  *
- * @param menu_weapon_types_target  		Handle of the menu being used.
- * @param action                    		The action done on the menu (see menus.inc, enum MenuAction).
- * @param client                    		The client index.
- * @param slot                      		The slot index selected (starting from 0).
+ * @param menu_weapon_types_target          Handle of the menu being used.
+ * @param action                            The action done on the menu (see menus.inc, enum MenuAction).
+ * @param client                            The client index.
+ * @param slot                              The slot index selected (starting from 0).
  */
 public int WeaponsMenuWeaponsTypesTargetHandle(Menu menu_weapon_types_target, MenuAction action, int client, int slot)
 {
@@ -629,10 +629,10 @@ void WeaponsMenuWeaponsTypeTarget(int client, int target = 0)
 /**
  * Called when client selects option in the per-player weapon group menu, and handles it.
  *
- * @param menu_weapons_type_target  	Handle of the menu being used.
- * @param action                    	The action done on the menu (see menus.inc, enum MenuAction).
- * @param client                    	The client index.
- * @param slot                      	The slot index selected (starting from 0).
+ * @param menu_weapons_type_target      Handle of the menu being used.
+ * @param action                        The action done on the menu (see menus.inc, enum MenuAction).
+ * @param client                        The client index.
+ * @param slot                          The slot index selected (starting from 0).
  */
 public int WeaponsMenuWeaponsTypeTargetHandle(Menu menu_weapons_type_target, MenuAction action, int client, int slot)
 {
