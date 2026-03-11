@@ -66,9 +66,13 @@ bool WeaponsMenuMain(int client)
 
     // Draw items, make unselectable if module is disabled.
     menu_weapons_main.SetTitle(title);
-    menu_weapons_main.AddItem("restrict", restrict, MenuGetItemDraw(g_hCvarsList.CVAR_WEAPONS_RESTRICT.BoolValue));
+
+    bool restrictenabled = g_hCvarsList.CVAR_WEAPONS_RESTRICT.BoolValue;
+    menu_weapons_main.AddItem("restrict", restrict, MenuGetItemDraw(restrictenabled));
     menu_weapons_main.AddItem("zmarket", zmarket, MenuGetItemDraw(g_hCvarsList.CVAR_WEAPONS_ZMARKET.BoolValue));
-    menu_weapons_main.AddItem("perplayerestrict", perplayerestrict, MenuGetItemDraw(g_hCvarsList.CVAR_WEAPONS_RESTRICT.BoolValue && g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER.BoolValue));
+
+    bool perplayerestrictenabled = restrictenabled && g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER.BoolValue && ZRIsClientPrivileged(client, OperationType_Generic);
+    menu_weapons_main.AddItem("perplayerestrict", perplayerestrict, MenuGetItemDraw(perplayerestrictenabled));
 
     // Create a "Back" button to the weapons main menu.
     menu_weapons_main.ExitBackButton = true;
