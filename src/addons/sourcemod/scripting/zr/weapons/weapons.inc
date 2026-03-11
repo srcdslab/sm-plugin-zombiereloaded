@@ -986,3 +986,59 @@ stock bool WeaponsIsClientInBuyZone(int client)
     // Return if client is in buyzone.
     return view_as<bool>(GetEntData(client, g_iToolsInBuyZone));
 }
+
+/**
+* Set all weapon restrict array for the specified client.
+* @param client        The client index.
+* @param value         The restrict value
+* @noreturn
+*/
+stock void WeaponsSetClientWeaponRestrictAll(int client, bool value)
+{
+    if (!g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER.BoolValue || !g_hCvarsList.CVAR_WEAPONS_RESTRICT.BoolValue)
+        return;
+
+    RestrictSetClientWeaponRestrictAll(client, value);
+}
+
+/**
+* Set all weapon restrict array for all clients.
+* @param value        The restrict value
+* @noreturn 
+*/
+stock void WeaponsSetAllRestrictAll(bool value)
+{
+    if (!g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER.BoolValue || !g_hCvarsList.CVAR_WEAPONS_RESTRICT.BoolValue)
+        return;
+
+    RestrictSetAllRestrictAll(value);
+}
+
+/**
+* Set weapon restrict value to a specific client.
+* @param client        The client index.
+* @param weapon        The weapon or weapon type name.
+* @param value         The restrict value
+* @return              True on success, false otherwise
+*/
+stock bool WeaponsSetClientWeaponRestrict(int client, const char[] weapon, bool value)
+{
+    if (!g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER.BoolValue || !g_hCvarsList.CVAR_WEAPONS_RESTRICT.BoolValue)
+        return false;
+
+    return RestrictSetClientWeaponRestrict(client, weapon, value);
+}
+
+/**
+* Set weapon restrict value to all clients.
+* @param weapon        The weapon or weapon type name.
+* @param value         The restrict value
+* @return              True on success, false otherwise
+*/
+stock bool WeaponsSetAllWeaponRestrict(const char[] weapon, bool value)
+{
+    if (!g_hCvarsList.CVAR_WEAPONS_RESTRICT_PERPLAYER.BoolValue || !g_hCvarsList.CVAR_WEAPONS_RESTRICT.BoolValue)
+        return false;
+
+    return RestrictSetAllWeaponRestrict(weapon, value);
+}

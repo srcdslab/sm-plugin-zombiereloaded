@@ -769,6 +769,21 @@
 		"ru"		"Боеприпасы"
 	}
 
+	"Weapons menu restrict per player"
+	{
+		"ru"		"Ограничения на оружие игроков"
+	}
+
+	"Weapons menu restrict per player title"
+	{
+		"ru"		"Ограничения на оружие игроков\nВыберите игрока"
+	}
+
+	"Weapons menu restrict types per-player title"
+	{
+		"ru"		"Ограничения на оружие игроков\nИгрок: {1}\nВыберите тип оружия"
+	}
+	
 	// ===========================
 	// Hitgroups (core)
 	// ===========================
