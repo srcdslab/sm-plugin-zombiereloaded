@@ -862,6 +862,7 @@ void InfectStopCountdown()
  * @param motherinfect      (Optional) Indicates a mother zombie infect.
  * @param respawnoverride   (Optional) Set to true to override respawn cvar.
  * @param respawn           (Optional) Value to override with.
+ * @param forcemotherinfect (Optional) Set to true to let ZR pick a random human to subsitute a motherzombie.
  */
 bool InfectHumanToZombie(int client, int attacker = -1, bool motherinfect = false, bool respawnoverride = false, bool respawn = false, bool forcemotherinfect = false)
 {
