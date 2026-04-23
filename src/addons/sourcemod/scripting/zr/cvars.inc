@@ -108,7 +108,6 @@ enum struct CvarsList
     ConVar CVAR_INFECT_SPAWNTIME_MAX;
     ConVar CVAR_INFECT_CONSECUTIVE_BLOCK;
     ConVar CVAR_INFECT_ROUND_ROBIN;
-    ConVar CVAR_INFECT_ROUND_ROBIN_RTD;
     ConVar CVAR_INFECT_WEAPONS_DROP;
     ConVar CVAR_INFECT_KNIFE_COOLDOWN;
     ConVar CVAR_INFECT_MAX_DISTANCE;
@@ -120,9 +119,6 @@ enum struct CvarsList
     ConVar CVAR_INFECT_MZOMBIE_COUNTDOWN;
     ConVar CVAR_INFECT_MZOMBIE_RESPAWN;
     ConVar CVAR_INFECT_MZOMBIE_RESPAWN_WARNING;
-    ConVar CVAR_INFECT_MZOMBIE_WEIGHT_NEW;
-    ConVar CVAR_INFECT_MZOMBIE_WEIGHT_RTD;
-    ConVar CVAR_INFECT_MZOMBIE_WEIGHT_BOTH;
     ConVar CVAR_INFECT_EXPLOSION;
     ConVar CVAR_INFECT_FIREBALL;
     ConVar CVAR_INFECT_SMOKE;
@@ -331,14 +327,10 @@ void CvarsCreate()
     g_hCvarsList.CVAR_INFECT_MZOMBIE_COUNTDOWN          =    CreateConVar("zr_infect_mzombie_countdown",           "1",                        "Counts down to the first infection of the round.  Countdown is printed in the middle of the client's screen.");
     g_hCvarsList.CVAR_INFECT_MZOMBIE_RESPAWN            =    CreateConVar("zr_infect_mzombie_respawn",             "0",                        "Teleport mother zombies back to spawn on infect.");
     g_hCvarsList.CVAR_INFECT_MZOMBIE_RESPAWN_WARNING    =    CreateConVar("zr_infect_mzombie_respawn_warning",     "1",                        "Whether to warn players of zombies spawning between humans.");
-    g_hCvarsList.CVAR_INFECT_MZOMBIE_WEIGHT_NEW         =    CreateConVar("zr_infect_mzombie_weight_new",          "0.0",                      "Weight for players who never were mother zombie (0.0-1.0)");
-    g_hCvarsList.CVAR_INFECT_MZOMBIE_WEIGHT_RTD         =    CreateConVar("zr_infect_mzombie_weight_rtd",          "0.25",                     "Weight for players in RTD cycle only (0.0-1.0)");
-    g_hCvarsList.CVAR_INFECT_MZOMBIE_WEIGHT_BOTH        =    CreateConVar("zr_infect_mzombie_weight_both",         "0.75",                     "Weight for players in both cycles (0.0-1.0)");
     g_hCvarsList.CVAR_INFECT_SPAWNTIME_MIN              =    CreateConVar("zr_infect_spawntime_min",               "30.0",                     "Minimum time from the start of the round until picking the mother zombie(s).");
     g_hCvarsList.CVAR_INFECT_SPAWNTIME_MAX              =    CreateConVar("zr_infect_spawntime_max",               "50.0",                     "Maximum time from the start of the round until picking the mother zombie(s).");
     g_hCvarsList.CVAR_INFECT_CONSECUTIVE_BLOCK          =    CreateConVar("zr_infect_consecutive_block",           "1",                        "Prevent a player from being chosen as mother zombie two rounds in a row.");
     g_hCvarsList.CVAR_INFECT_ROUND_ROBIN                =    CreateConVar("zr_infect_round_robin",                 "1",                        "Use randomized round-robin (with SteamID cache) for mother zombie infection.");
-    g_hCvarsList.CVAR_INFECT_ROUND_ROBIN_RTD            =    CreateConVar("zr_infect_round_robin_rtd",             "1",                        "Roll the dice for players new to the random round-robin SteamID cache to make it fair for late joiners.");
     g_hCvarsList.CVAR_INFECT_WEAPONS_DROP               =    CreateConVar("zr_infect_weapons_drop",                "1",                        "Force player to drop all weapons on infect, disabling this will strip weapons instead.");
     g_hCvarsList.CVAR_INFECT_KNIFE_COOLDOWN             =    CreateConVar("zr_infect_knife_cooldown",              "1.0",                      "Time in seconds during which knife can not be used after becoming a zombie.");
     g_hCvarsList.CVAR_INFECT_MAX_DISTANCE               =    CreateConVar("zr_infect_max_distance",                "80.0",                     "The maximum allowed distance between a client and an attacker for a successful infection. [0.0 = Disabled]");

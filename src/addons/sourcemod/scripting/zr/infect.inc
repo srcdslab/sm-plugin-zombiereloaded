@@ -103,7 +103,6 @@ bool g_bInfectMotherLast[MAXPLAYERS + 1];
  * SteamID cache for storing client mother zombie protection status.
  */
 ArrayList g_hInfectMotherCycle = null;
-ArrayList g_hInfectMotherCycleRTD = null;
 
 /**
  * Available mother zombie infection modes.
@@ -179,7 +178,6 @@ void InfectOnMapEnd()
 
     // Clear mother zombie round-robin cycle storage.
     SteamidCacheReset(g_hInfectMotherCycle);
-    SteamidCacheReset(g_hInfectMotherCycleRTD);
 }
 
 /**
@@ -189,9 +187,7 @@ void InfectLoad()
 {
     // Create mother zombie round-robin cycle storage.
     g_hInfectMotherCycle = SteamidCacheCreate();
-   	
-    g_hInfectMotherCycleRTD = SteamidCacheCreate();
-    
+
     // Initialize mother zombie overrides
     ResetMotherZombieOverrides();
 }
@@ -206,37 +202,6 @@ void InfectOnCommandsCreate()
 }
 
 /**
- * Calculates the weight of a player for mother zombie selection.
- * Higher weight means higher chance of being selected.
- *
- * @param client    The client index.
- * @return          The weight value (0.0-1.0).
- */
-float CalculatePlayerWeight(int client)
-{
-    float weight;
-
-    // If player is not in RTD cycle, they never were mother zombie
-    if (!SteamidCacheClientExists(g_hInfectMotherCycleRTD, client))
-    {
-        weight = 1.0 - g_hCvarsList.CVAR_INFECT_MZOMBIE_WEIGHT_NEW.FloatValue;
-    }
-    // If player is in RTD cycle but not in main cycle
-    else if (!SteamidCacheClientExists(g_hInfectMotherCycle, client))
-    {
-        weight = 1.0 - g_hCvarsList.CVAR_INFECT_MZOMBIE_WEIGHT_RTD.FloatValue;
-    }
-    // Player is in both cycles
-    else
-    {
-        weight = 1.0 - g_hCvarsList.CVAR_INFECT_MZOMBIE_WEIGHT_BOTH.FloatValue;
-    }
-
-    // Ensure weight is not negative
-    return (weight < 0.0) ? 0.0 : weight;
-}
-
-/**
  * Client is joining the server.
  *
  * @param client    The client index.
@@ -248,47 +213,6 @@ void InfectClientInit(int client)
 
     // Reset mother zombie last flag.
     g_bInfectMotherLast[client] = false;
-
-    bool infectroundrobinrtd = g_hCvarsList.CVAR_INFECT_ROUND_ROBIN_RTD.BoolValue;
-    if (infectroundrobinrtd && !SteamidCacheClientExists(g_hInfectMotherCycleRTD, client))
-    {
-        SteamidCacheAddClient(g_hInfectMotherCycleRTD, client);
-
-        int players = 0;
-        int playersInList = 0;
-        for (int x = 1; x <= MaxClients; x++)
-        {
-            if (!IsClientInGame(x))
-                continue;
-
-            #if defined _AFKManager_Included
-            if (g_AFKManagerLoaded)
-            {
-                if (!IsFakeClient(x) && GetClientIdleTime(x) > 3 * 60)
-                    continue;
-            }
-            #endif
-
-            players++;
-
-            if (SteamidCacheClientExists(g_hInfectMotherCycle, x))
-                playersInList++;
-        }
-
-        if (players && playersInList)
-        {
-            // Calculate player's weight
-            float playerWeight = CalculatePlayerWeight(client);
-            
-            // Adjust probability based on weight
-            // Higher weight means lower chance of being added
-            float mzombiechance = (float(playersInList) / float(players)) * (1.0 - playerWeight);
-            float dice = GetRandomFloat();
-
-            if (dice < mzombiechance)
-                SteamidCacheAddClient(g_hInfectMotherCycle, client);
-        }
-    }
 }
 
 /**
@@ -609,18 +533,18 @@ public Action InfectOnRoundEnd(Handle Timer)
  *
  * @param timer     The timer handle.
  */
-public Action InfectMotherZombie(Handle timer)
+public Action InfectMotherZombie(Handle timer, int mothercount)
 {
     // Reset timer handle.
     g_tInfect = null;
 
     // Warmup
-    #if defined _TeamManager_include
+#if defined _TeamManager_include
     if (g_TeamManagerLoaded && TeamManager_HasWarmup() && TeamManager_InWarmup())
     {
-        return Plugin_Continue;
+        return Plugin_Stop;
     }
-    #endif
+#endif
 
     // Create eligible player list.
     ArrayList arrayEligibleClients = new ArrayList();
@@ -631,77 +555,86 @@ public Action InfectMotherZombie(Handle timer)
     {
         // Destroy handle.
         delete arrayEligibleClients;
-        return Plugin_Continue;
+        return Plugin_Stop;
     }
 
-    // Move all clients to CT.
-    InfectMoveAllToCT();
+	bool mothercountforced = mothercount > 0;
+	if (mothercountforced && g_bZombieSpawned)
+	{
+		// Stop if all original mother zombies successfully spawned, the purpose of forced mother count is to subsitute an existing mz.
+		return Plugin_Stop;
+	}
 
-    int mothercount;
-    int ratio = g_hCvarsList.CVAR_INFECT_MZOMBIE_RATIO.IntValue;
-    int min = g_hCvarsList.CVAR_INFECT_MZOMBIE_MIN.IntValue;
-    int max = g_hCvarsList.CVAR_INFECT_MZOMBIE_MAX.IntValue;
-
-    // Count valid human clients.
-    int humancount;
-    ZRCountValidClients(_, humancount, _, true);
-
-    // Get and validate infection mode. This will also log a warning on error.
-    InfectMode mode = InfectGetModeOrFail();
-
-    // Apply infection mode.
-    switch (mode)
+    if (!mothercountforced)
     {
-        case InfectMode_Invalid:
-        {
-            // Validation failed. Fall back to one mother zombie.
-            mothercount = 1;
-        }
-        case InfectMode_Dynamic:
-        {
-            // Dynamic mode. Every n-th player is infected.
+    	// Move all clients to CT.
+    	InfectMoveAllToCT();
 
-            // A ratio of 0 will infect one zombie (to keep backwards compatibility).
-            if (ratio == 0)
-            {
-                mothercount = 1;
-            }
-
-            // Calculate number of zombies to infect.
-            mothercount = RoundToNearest(float(humancount) / ratio);
-
-            // Require at least one mother zombie.
-            if (mothercount == 0)
-            {
-                mothercount = 1;
-            }
-        }
-        case InfectMode_Absolute:
-        {
-            if (ratio > 0)
-            {
-                // Infect n humans.
-                mothercount = ratio;
-            }
-            else
-            {
-                // Infect all but n humans. Since ratio already is negative
-                // just add the numbers. (Zero ratio is catched by validator.)
-                mothercount = humancount + ratio;
-
-                // Force at least one mother zombie.
-                if (mothercount == 0)
-                {
-                    mothercount = 1;
-                }
-            }
-        }
-        case InfectMode_Range:
-        {
-            // Get a random number between the range.
-            mothercount = Math_GetRandomInt(min, max);
-        }
-    }
+	    int ratio = g_hCvarsList.CVAR_INFECT_MZOMBIE_RATIO.IntValue;
+	    int min = g_hCvarsList.CVAR_INFECT_MZOMBIE_MIN.IntValue;
+	    int max = g_hCvarsList.CVAR_INFECT_MZOMBIE_MAX.IntValue;
+	
+	    // Count valid human clients.
+	    int humancount;
+	    ZRCountValidClients(_, humancount, _, true);
+	
+	    // Get and validate infection mode. This will also log a warning on error.
+	    InfectMode mode = InfectGetModeOrFail();
+	
+	    // Apply infection mode.
+	    switch (mode)
+	    {
+	        case InfectMode_Invalid:
+	        {
+	            // Validation failed. Fall back to one mother zombie.
+	            mothercount = 1;
+	        }
+	        case InfectMode_Dynamic:
+	        {
+	            // Dynamic mode. Every n-th player is infected.
+	
+	            // A ratio of 0 will infect one zombie (to keep backwards compatibility).
+	            if (ratio == 0)
+	            {
+	                mothercount = 1;
+	            }
+	
+	            // Calculate number of zombies to infect.
+	            mothercount = RoundToNearest(float(humancount) / ratio);
+	
+	            // Require at least one mother zombie.
+	            if (mothercount == 0)
+	            {
+	                mothercount = 1;
+	            }
+	        }
+	        case InfectMode_Absolute:
+	        {
+	            if (ratio > 0)
+	            {
+	                // Infect n humans.
+	                mothercount = ratio;
+	            }
+	            else
+	            {
+	                // Infect all but n humans. Since ratio already is negative
+	                // just add the numbers. (Zero ratio is catched by validator.)
+	                mothercount = humancount + ratio;
+	
+	                // Force at least one mother zombie.
+	                if (mothercount == 0)
+	                {
+	                    mothercount = 1;
+	                }
+	            }
+	        }
+	        case InfectMode_Range:
+	        {
+	            // Get a random number between the range.
+	            mothercount = Math_GetRandomInt(min, max);
+	        }
+	    }
+	}
 
     bool infectroundrobin = g_hCvarsList.CVAR_INFECT_ROUND_ROBIN.BoolValue;
     int candidatesMain = 0;
@@ -732,11 +665,20 @@ public Action InfectMotherZombie(Handle timer)
         }
     }
 
-    // Remove mother zombie last flag from all players.
-    for (int client = 0; client <= MaxClients; client++)
-    {
-        g_bInfectMotherLast[client] = false;
-    }
+	// If we could not find any candidates to infect then stop.
+	if (!candidatesMain && !candidatesAlt)
+	{
+		return Plugin_Stop;
+	}
+
+	if (!mothercountforced)
+	{
+	    // Remove mother zombie last flag from all players.
+	    for (int client = 0; client <= MaxClients; client++)
+	    {
+	        g_bInfectMotherLast[client] = false;
+	    }
+	}
 
     bool resetcycle;
 
@@ -769,7 +711,6 @@ public Action InfectMotherZombie(Handle timer)
                 resetcycle = true;
                 // Clear mother zombie round-robin cycle storage.
                 SteamidCacheReset(g_hInfectMotherCycle);
-                SteamidCacheReset(g_hInfectMotherCycleRTD);
 
                 // Announce start of new cycle
                 TranslationPrintToChatAll(true, false, "Mother zombie infect cycle reset");
@@ -807,7 +748,7 @@ public Action InfectMotherZombie(Handle timer)
     delete aCandidatesMain;
     delete aCandidatesAlt;
 
-    return Plugin_Continue;
+    return (infected == 0 ? Plugin_Stop : Plugin_Continue);
 }
 
 /**
@@ -916,13 +857,13 @@ void InfectStopCountdown()
  * Infects a client. Execute events, sets attributes and flags that indicate
  * that the client is a zombie.
  *
- * @param client            The client to infect.
+ * @param client            The client to infect. Can be optional when moterinfect is forced
  * @param attacker          (Optional) The attacker who did the infect.
  * @param motherinfect      (Optional) Indicates a mother zombie infect.
  * @param respawnoverride   (Optional) Set to true to override respawn cvar.
  * @param respawn           (Optional) Value to override with.
  */
-bool InfectHumanToZombie(int client, int attacker = -1, bool motherinfect = false, bool respawnoverride = false, bool respawn = false)
+bool InfectHumanToZombie(int client, int attacker = -1, bool motherinfect = false, bool respawnoverride = false, bool respawn = false, bool forcemotherinfect = false)
 {
     if (!g_bRoundFullyStarted)
     {
@@ -937,6 +878,12 @@ bool InfectHumanToZombie(int client, int attacker = -1, bool motherinfect = fals
     {
         return false;
     }
+
+	// If this is a motherinfect and motherinfect is forced, then let's infect a random human. (client is optional here).
+	if (motherinfect && forcemotherinfect)
+	{
+		return (InfectMotherZombie(null, 1) == Plugin_Continue);
+	}
 
     // Reset mother zombie attributes when client becomes zombie
     ClassResetMotherZombieAttributes(client);

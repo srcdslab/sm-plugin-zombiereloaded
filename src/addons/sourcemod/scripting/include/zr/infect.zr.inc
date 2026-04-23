@@ -60,11 +60,12 @@ native bool ZR_IsClientHuman(int client);
  *
  * Note: If the player already is a zombie, the player will be re-infected.
  *
- * @param client            The client to infect.
+ * @param client            The client to infect. Can be optional if this is a forced mother infect
  * @param attacker          (Optional) The attacker who did the infect.
  * @param motherInfect      (Optional) Infect as a mother zombie.
  * @param respawnOverride   (Optional) Set to true to override respawn cvar.
  * @param respawn           (Optional) Value to override with.
+ * @param forcemotherinfect (Optional) Set to true to let ZR pick a random human to subsitute a motherzombie.
  *
  * @return                  True if the client was infected, false if not.
  * @error                   Invalid client index, not connected or not alive.
