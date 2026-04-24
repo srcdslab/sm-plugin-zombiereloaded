@@ -562,6 +562,7 @@ public Action InfectMotherZombie(Handle timer, int mothercount)
 	if (mothercountforced && g_bZombieSpawned)
 	{
 		// Stop if all original mother zombies successfully spawned, the purpose of forced mother count is to subsitute an existing mz.
+		delete arrayEligibleClients;
 		return Plugin_Stop;
 	}
 
@@ -668,6 +669,9 @@ public Action InfectMotherZombie(Handle timer, int mothercount)
 	// If we could not find any candidates to infect then stop.
 	if (!candidatesMain && !candidatesAlt)
 	{
+		delete arrayEligibleClients;
+		delete aCandidatesMain;
+		delete aCandidatesAlt;
 		return Plugin_Stop;
 	}
 
@@ -857,12 +861,12 @@ void InfectStopCountdown()
  * Infects a client. Execute events, sets attributes and flags that indicate
  * that the client is a zombie.
  *
- * @param client            The client to infect. Can be optional when moterinfect is forced
+ * @param client            The client to infect. Can be optional if this is a forced mother infect
  * @param attacker          (Optional) The attacker who did the infect.
  * @param motherinfect      (Optional) Indicates a mother zombie infect.
  * @param respawnoverride   (Optional) Set to true to override respawn cvar.
  * @param respawn           (Optional) Value to override with.
- * @param forcemotherinfect (Optional) Set to true to let ZR pick a random human to subsitute a motherzombie.
+ * @param forcemotherinfect (Optional) Set to true to let ZR pick a random human to substitute a motherzombie.
  */
 bool InfectHumanToZombie(int client, int attacker = -1, bool motherinfect = false, bool respawnoverride = false, bool respawn = false, bool forcemotherinfect = false)
 {
