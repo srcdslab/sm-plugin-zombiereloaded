@@ -671,9 +671,10 @@ public Action InfectMotherZombie(Handle timer)
 
     // Snapshot g_bInfectMotherLast BEFORE resetting the flag, so we can still
     // use it during candidate selection even after the global reset.
+    bool bMotherLastSnapshot[MAXPLAYERS + 1];
     for (int i = 0; i <= MaxClients; i++)
     {
-        g_bInfectMotherLast[i] = g_bInfectMotherLast[i];
+        bMotherLastSnapshot[i] = g_bInfectMotherLast[i];
     }
 
     int candidatesMain = 0;
@@ -729,7 +730,7 @@ public Action InfectMotherZombie(Handle timer)
             // If this client was mother zombie last round and there are other
             // candidates available, push them to the back and retry.
             // Fallback: if they're the only one left, let them through anyway.
-            if (consecutiveblock && g_bInfectMotherLast[client] && candidatesMain > 1)
+            if (consecutiveblock && bMotherLastSnapshot[client] && candidatesMain > 1)
             {
                 aCandidatesMain.Erase(i);
                 aCandidatesMain.Push(client);
@@ -768,7 +769,7 @@ public Action InfectMotherZombie(Handle timer)
                 int client = aCandidatesAlt.Get(i);
 
                 // Same consecutive protection on alt candidates.
-                if (consecutiveblock && g_bInfectMotherLast[client] && candidatesAlt > 1)
+                if (consecutiveblock && bMotherLastSnapshot[client] && candidatesAlt > 1)
                 {
                     aCandidatesAlt.Erase(i);
                     aCandidatesAlt.Push(client);
