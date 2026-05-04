@@ -535,13 +535,24 @@ public Action InfectOnRoundEnd(Handle Timer)
  */
 public Action InfectMotherZombie(Handle timer, int mothercount)
 {
+    const bool DEBUG_INFECT = true;
+
     // Reset timer handle.
     g_tInfect = null;
+
+    if (DEBUG_INFECT)
+    {
+        LogMessage("[INFECT-DEBUG] InfectMotherZombie() called | input mothercount=%d | g_bZombieSpawned=%d", mothercount, g_bZombieSpawned);
+    }
 
     // Warmup
 #if defined _TeamManager_include
     if (g_TeamManagerLoaded && TeamManager_HasWarmup() && TeamManager_InWarmup())
     {
+        if (DEBUG_INFECT)
+        {
+            LogMessage("[INFECT-DEBUG] Abort: warmup active");
+        }
         return Plugin_Stop;
     }
 #endif
@@ -550,10 +561,29 @@ public Action InfectMotherZombie(Handle timer, int mothercount)
     ArrayList arrayEligibleClients = new ArrayList();
     int eligibleclients = ZRCreateEligibleClientList(arrayEligibleClients, true, true, true, true);
 
+    if (DEBUG_INFECT)
+    {
+        LogMessage("[INFECT-DEBUG] Eligible clients count: %d", eligibleclients);
+        for (int i = 0; i < eligibleclients; i++)
+        {
+            int c = arrayEligibleClients.Get(i);
+            char n[MAX_NAME_LENGTH];
+            GetClientName(c, n, sizeof(n));
+
+            bool inCycle = SteamidCacheClientExists(g_hInfectMotherCycle, c);
+            LogMessage("[INFECT-DEBUG]   eligible[%d]=%N (%s) | userid=%d | fake=%d | alive=%d | inGame=%d | motherLast=%d | inCycle=%d | human=%d",
+                i, c, n, GetClientUserId(c), IsFakeClient(c), IsPlayerAlive(c), IsClientInGame(c), g_bInfectMotherLast[c], inCycle, InfectIsClientHuman(c));
+        }
+    }
+
     // If there are no eligible client's then stop.
     if (!eligibleclients)
     {
-        // Destroy handle.
+        if (DEBUG_INFECT)
+        {
+            LogMessage("[INFECT-DEBUG] Abort: no eligible clients");
+        }
+
         delete arrayEligibleClients;
         return Plugin_Stop;
     }
@@ -561,7 +591,11 @@ public Action InfectMotherZombie(Handle timer, int mothercount)
     bool mothercountforced = mothercount > 0;
     if (mothercountforced && g_bZombieSpawned)
     {
-        // Stop if all original mother zombies successfully spawned, the purpose of forced mother count is to subsitute an existing mz.
+        if (DEBUG_INFECT)
+        {
+            LogMessage("[INFECT-DEBUG] Abort: mothercount forced but zombies already spawned");
+        }
+
         delete arrayEligibleClients;
         return Plugin_Stop;
     }
@@ -579,31 +613,29 @@ public Action InfectMotherZombie(Handle timer, int mothercount)
         int humancount;
         ZRCountValidClients(_, humancount, _, true);
 
-        // Get and validate infection mode. This will also log a warning on error.
+        // Get and validate infection mode.
         InfectMode mode = InfectGetModeOrFail();
 
-        // Apply infection mode.
+        if (DEBUG_INFECT)
+        {
+            LogMessage("[INFECT-DEBUG] Mode calc | mode=%d ratio=%d min=%d max=%d humancount=%d", mode, ratio, min, max, humancount);
+        }
+
         switch (mode)
         {
             case InfectMode_Invalid:
             {
-                // Validation failed. Fall back to one mother zombie.
                 mothercount = 1;
             }
             case InfectMode_Dynamic:
             {
-                // Dynamic mode. Every n-th player is infected.
-
-                // A ratio of 0 will infect one zombie (to keep backwards compatibility).
                 if (ratio == 0)
                 {
                     mothercount = 1;
                 }
 
-                // Calculate number of zombies to infect.
                 mothercount = RoundToNearest(float(humancount) / ratio);
 
-                // Require at least one mother zombie.
                 if (mothercount == 0)
                 {
                     mothercount = 1;
@@ -613,16 +645,12 @@ public Action InfectMotherZombie(Handle timer, int mothercount)
             {
                 if (ratio > 0)
                 {
-                    // Infect n humans.
                     mothercount = ratio;
                 }
                 else
                 {
-                    // Infect all but n humans. Since ratio already is negative
-                    // just add the numbers. (Zero ratio is catched by validator.)
                     mothercount = humancount + ratio;
 
-                    // Force at least one mother zombie.
                     if (mothercount == 0)
                     {
                         mothercount = 1;
@@ -631,33 +659,36 @@ public Action InfectMotherZombie(Handle timer, int mothercount)
             }
             case InfectMode_Range:
             {
-                // Get a random number between the range.
                 mothercount = Math_GetRandomInt(min, max);
             }
+        }
+
+        if (DEBUG_INFECT)
+        {
+            LogMessage("[INFECT-DEBUG] Computed mothercount=%d", mothercount);
         }
     }
 
     bool infectroundrobin = g_hCvarsList.CVAR_INFECT_ROUND_ROBIN.BoolValue;
+    bool infectconsecutiveblock = g_hCvarsList.CVAR_INFECT_CONSECUTIVE_BLOCK.BoolValue;
+
     int candidatesMain = 0;
     int candidatesAlt = 0;
     ArrayList aCandidatesMain = new ArrayList();
     ArrayList aCandidatesAlt = new ArrayList();
 
-    // Build candidates with current rules.
+    // Build candidates
     for (int n = 0; n < eligibleclients; n++)
     {
         int client = arrayEligibleClients.Get(n);
 
-        // Exclude last round mother when consecutive block is active.
         if (!g_bInfectMotherLast[client])
         {
-            // Main candidates = not in cycle (or cycle disabled)
             if (!infectroundrobin || !SteamidCacheClientExists(g_hInfectMotherCycle, client))
             {
                 aCandidatesMain.Push(client);
                 candidatesMain++;
             }
-            // Alt candidates = in cycle
             else
             {
                 aCandidatesAlt.Push(client);
@@ -666,40 +697,54 @@ public Action InfectMotherZombie(Handle timer, int mothercount)
         }
     }
 
-    // Fallback for low-player scenarios (ex: solo):
-    // If no candidate is available, relax consecutive-block once and rebuild.
-    if (!candidatesMain && !candidatesAlt && !mothercountforced)
+    if (DEBUG_INFECT)
     {
-        bool infectconsecutiveblock = g_hCvarsList.CVAR_INFECT_CONSECUTIVE_BLOCK.BoolValue;
-        if (infectconsecutiveblock)
+        LogMessage("[INFECT-DEBUG] Candidates after first build | main=%d alt=%d | roundRobin=%d consecutiveBlock=%d",
+            candidatesMain, candidatesAlt, infectroundrobin, infectconsecutiveblock);
+    }
+
+    // Fallback low-player case
+    if (!candidatesMain && !candidatesAlt && !mothercountforced && infectconsecutiveblock)
+    {
+        if (DEBUG_INFECT)
         {
-            for (int client = 1; client <= MaxClients; client++)
-            {
-                g_bInfectMotherLast[client] = false;
-            }
+            LogMessage("[INFECT-DEBUG] No candidates -> clearing g_bInfectMotherLast and rebuilding");
+        }
 
-            // Rebuild candidate lists.
-            for (int n = 0; n < eligibleclients; n++)
-            {
-                int client = arrayEligibleClients.Get(n);
+        for (int client = 1; client <= MaxClients; client++)
+        {
+            g_bInfectMotherLast[client] = false;
+        }
 
-                if (!infectroundrobin || !SteamidCacheClientExists(g_hInfectMotherCycle, client))
-                {
-                    aCandidatesMain.Push(client);
-                    candidatesMain++;
-                }
-                else
-                {
-                    aCandidatesAlt.Push(client);
-                    candidatesAlt++;
-                }
+        for (int n = 0; n < eligibleclients; n++)
+        {
+            int client = arrayEligibleClients.Get(n);
+
+            if (!infectroundrobin || !SteamidCacheClientExists(g_hInfectMotherCycle, client))
+            {
+                aCandidatesMain.Push(client);
+                candidatesMain++;
             }
+            else
+            {
+                aCandidatesAlt.Push(client);
+                candidatesAlt++;
+            }
+        }
+
+        if (DEBUG_INFECT)
+        {
+            LogMessage("[INFECT-DEBUG] Candidates after fallback rebuild | main=%d alt=%d", candidatesMain, candidatesAlt);
         }
     }
 
-    // If we still could not find any candidates then stop.
     if (!candidatesMain && !candidatesAlt)
     {
+        if (DEBUG_INFECT)
+        {
+            LogMessage("[INFECT-DEBUG] Abort: still no candidates after fallback");
+        }
+
         delete arrayEligibleClients;
         delete aCandidatesMain;
         delete aCandidatesAlt;
@@ -708,82 +753,108 @@ public Action InfectMotherZombie(Handle timer, int mothercount)
 
     if (!mothercountforced)
     {
-        // Remove mother zombie last flag from all players.
         for (int client = 0; client <= MaxClients; client++)
         {
             g_bInfectMotherLast[client] = false;
         }
+
+        if (DEBUG_INFECT)
+        {
+            LogMessage("[INFECT-DEBUG] Cleared g_bInfectMotherLast for new round selection");
+        }
     }
 
     bool resetcycle = false;
-
-    // Infect players.
     int infected = 0;
+
     while (infected < mothercount)
     {
-        // Infect one of the main candidates.
         if (candidatesMain)
         {
-            // Get a random array index.
             int i = Math_GetRandomInt(0, candidatesMain - 1);
-
-            // Get the client stored in the random array index.
             int client = aCandidatesMain.Get(i);
 
-            // Infect player.
-            if (InfectHumanToZombie(client, _, true))
+            if (DEBUG_INFECT)
             {
-                infected++;
+                LogMessage("[INFECT-DEBUG] Pick MAIN idx=%d/%d -> client=%N (%d)", i, candidatesMain, client, client);
             }
 
-            // Remove player from eligible client list.
+            bool ok = InfectHumanToZombie(client, _, true);
+            if (ok)
+            {
+                infected++;
+                if (DEBUG_INFECT)
+                {
+                    LogMessage("[INFECT-DEBUG]   Infect SUCCESS (MAIN) client=%N", client);
+                }
+            }
+            else if (DEBUG_INFECT)
+            {
+                LogMessage("[INFECT-DEBUG]   Infect FAILED (MAIN) client=%N", client);
+            }
+
             aCandidatesMain.Erase(i);
             candidatesMain--;
         }
         else
         {
-            // No main candidates, reset the mother zombie cycle now before infecting anyone else.
             if (infectroundrobin && !resetcycle)
             {
                 resetcycle = true;
-
-                // Clear mother zombie round-robin cycle storage.
                 SteamidCacheReset(g_hInfectMotherCycle);
-
-                // Announce start of new cycle.
                 TranslationPrintToChatAll(true, false, "Mother zombie infect cycle reset");
+
+                if (DEBUG_INFECT)
+                {
+                    LogMessage("[INFECT-DEBUG] Round-robin cycle RESET triggered");
+                }
             }
 
-            // Infect one of the alternate candidates.
             if (candidatesAlt)
             {
-                // Get a random array index.
                 int i = Math_GetRandomInt(0, candidatesAlt - 1);
-
-                // Get the client stored in the random array index.
                 int client = aCandidatesAlt.Get(i);
 
-                // Infect player.
-                if (InfectHumanToZombie(client, _, true))
+                if (DEBUG_INFECT)
                 {
-                    infected++;
+                    LogMessage("[INFECT-DEBUG] Pick ALT idx=%d/%d -> client=%N (%d)", i, candidatesAlt, client, client);
                 }
 
-                // Remove player from eligible client list.
+                bool ok = InfectHumanToZombie(client, _, true);
+                if (ok)
+                {
+                    infected++;
+                    if (DEBUG_INFECT)
+                    {
+                        LogMessage("[INFECT-DEBUG]   Infect SUCCESS (ALT) client=%N", client);
+                    }
+                }
+                else if (DEBUG_INFECT)
+                {
+                    LogMessage("[INFECT-DEBUG]   Infect FAILED (ALT) client=%N", client);
+                }
+
                 aCandidatesAlt.Erase(i);
                 candidatesAlt--;
             }
-            else // We have no candidates at all, abort!
+            else
             {
+                if (DEBUG_INFECT)
+                {
+                    LogMessage("[INFECT-DEBUG] Abort loop: no candidates left");
+                }
                 break;
             }
         }
     }
 
-    // Mother zombies have been infected.
     g_bZombieSpawned = true;
 
-    // Destroy client list.
+    if (DEBUG_INFECT)
+    {
+        LogMessage("[INFECT-DEBUG] End InfectMotherZombie | infected=%d / requested=%d | g_bZombieSpawned=%d", infected, mothercount, g_bZombieSpawned);
+    }
+
     delete arrayEligibleClients;
     delete aCandidatesMain;
     delete aCandidatesAlt;
