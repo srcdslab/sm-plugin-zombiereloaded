@@ -118,17 +118,11 @@ public int APIInfectClient(Handle plugin, int numParams)
     bool motherInfect = view_as<bool>(GetNativeCell(3));
     bool respawnOverride = view_as<bool>(GetNativeCell(4));
     bool respawn = view_as<bool>(GetNativeCell(5));
-	bool forcemotherinfect = false;
-
-	if (numParams >= 6)
-	{
-		forcemotherinfect = view_as<bool>(GetNativeCell(6));
-	}
 
     // Validate the client index.
     APIValidateClientIndex(client, Condition_True);
 
-    InfectHumanToZombie(client, attacker, motherInfect, respawnOverride, respawn, forcemotherinfect);
+    InfectHumanToZombie(client, attacker, motherInfect, respawnOverride, respawn);
     return -1;
 }
 
