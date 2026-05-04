@@ -134,6 +134,7 @@ Find all cvars details on [online docs](https://srcdslab.github.io/sm-plugin-zom
 - zr_infect_spawntime_max           - "50.0" -                              Maximum time from the start of the round until picking the mother zombie(s).
 - zr_infect_consecutive_block       - "1" -                                 Prevent a player from being chosen as mother zombie two rounds in a row.
 - zr_infect_round_robin             - "1" -                                 Use randomized round-robin (with SteamID cache) for mother zombie infection.
+- zr_infect_round_robin_rtd         - "1" -                                 Roll the dice for players new to the random round-robin SteamID cache to make it fair for late joiners.
 - zr_infect_weapons_drop            - "1" -                                 Force player to drop all weapons on infect, disabling this will strip weapons instead.
 - zr_infect_knife_cooldown          - "1.0" -                               Time in seconds during which knife can not be used after becoming a zombie.
 - zr_infect_max_distance            - "80.0" -                              The maximum allowed distance between a client and an attacker for a successful infection. [0.0 = Disabled]
