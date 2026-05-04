@@ -631,12 +631,6 @@ public Action InfectMotherZombie(Handle timer, int mothercount)
                 mothercount = Math_GetRandomInt(min, max);
             }
         }
-
-        // Remove mother zombie last flag from all players.
-        for (int client = 0; client <= MaxClients; client++)
-        {
-            g_bInfectMotherLast[client] = false;
-        }
     }
 
     bool infectroundrobin = g_hCvarsList.CVAR_INFECT_ROUND_ROBIN.BoolValue;
@@ -699,6 +693,15 @@ public Action InfectMotherZombie(Handle timer, int mothercount)
         delete aCandidatesMain;
         delete aCandidatesAlt;
         return Plugin_Stop;
+    }
+
+    if (!mothercountforced)
+    {
+        // Remove mother zombie last flag from all players.
+        for (int client = 0; client <= MaxClients; client++)
+        {
+            g_bInfectMotherLast[client] = false;
+        }
     }
 
     // Infect players.
