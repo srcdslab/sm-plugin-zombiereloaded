@@ -710,11 +710,14 @@ public Action InfectMotherZombie(Handle timer, bool onemotherzombie)
         }
     }
 
-    // Remove mother zombie last flag from all players.
-    for (int client = 0; client <= MaxClients; client++)
-    {
-        g_bInfectMotherLast[client] = false;
-    }
+	if (!onemotherzombie)
+	{
+	    // Remove mother zombie last flag from all players.
+	    for (int client = 0; client <= MaxClients; client++)
+	    {
+	        g_bInfectMotherLast[client] = false;
+	    }
+	}
 
     bool resetcycle;
 
