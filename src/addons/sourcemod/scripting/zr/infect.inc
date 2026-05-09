@@ -529,7 +529,7 @@ void InfectOnRoundFreezeEnd()
     // Pick random time between min and max.
     float randomtime = GetRandomFloat(infectspawntimemin, infectspawntimemax);
 
-    g_tInfect = CreateTimer(randomtime, InfectMotherZombie, false, TIMER_FLAG_NO_MAPCHANGE);
+    g_tInfect = CreateTimer(randomtime, InfectMotherZombieTimer, false, TIMER_FLAG_NO_MAPCHANGE);
 
     // Check cvar and start a countdown timer if enabled.
     bool countdown = g_hCvarsList.CVAR_INFECT_MZOMBIE_COUNTDOWN.BoolValue;
@@ -572,11 +572,22 @@ public Action InfectOnRoundEnd(Handle Timer)
  *
  * @param timer     The timer handle.
  */
-public Action InfectMotherZombie(Handle timer, bool onemotherzombie)
+public Action InfectMotherZombieTimer(Handle timer)
 {
-    // Reset timer handle.
+	// Reset timer handle.
     g_tInfect = null;
 
+	InfectMotherZombie();
+}
+
+/**
+ * chooses mother zombies.
+ *
+ * @param onemotherzombie     Infect one mother zombie only?
+ * @param excludedClient	  The client index to exclude from being mother zombie.
+ */
+void InfectMotherZombie(bool onemotherzombie = false, int excludedClient = -1)
+{
     // Warmup
     #if defined _TeamManager_include
     if (g_TeamManagerLoaded && TeamManager_HasWarmup() && TeamManager_InWarmup())
@@ -690,6 +701,12 @@ public Action InfectMotherZombie(Handle timer, bool onemotherzombie)
     {
         // Get the client stored in the array index.
         int client = arrayEligibleClients.Get(n);
+
+		// Exclude this client from being infected as mother zombie.
+		if (client == excludedClient)
+		{
+			continue;
+		}
 
         // If client hasn't been chosen last round.
         if (!g_bInfectMotherLast[client])
@@ -949,7 +966,7 @@ bool InfectHumanToZombie(int client, int attacker = -1, bool motherinfect = fals
         	// If the human is already in the mother zombie cycle, then pick someone else
             if (!SteamidCacheAddClient(g_hInfectMotherCycle, client))
             {
-           		InfectMotherZombie(null, true);
+           		InfectMotherZombie(true, client);
            		return false;
           	}
         }
