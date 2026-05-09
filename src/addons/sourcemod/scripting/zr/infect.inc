@@ -529,7 +529,7 @@ void InfectOnRoundFreezeEnd()
     // Pick random time between min and max.
     float randomtime = GetRandomFloat(infectspawntimemin, infectspawntimemax);
 
-    g_tInfect = CreateTimer(randomtime, InfectMotherZombie, _, TIMER_FLAG_NO_MAPCHANGE);
+    g_tInfect = CreateTimer(randomtime, InfectMotherZombie, false, TIMER_FLAG_NO_MAPCHANGE);
 
     // Check cvar and start a countdown timer if enabled.
     bool countdown = g_hCvarsList.CVAR_INFECT_MZOMBIE_COUNTDOWN.BoolValue;
@@ -572,7 +572,7 @@ public Action InfectOnRoundEnd(Handle Timer)
  *
  * @param timer     The timer handle.
  */
-public Action InfectMotherZombie(Handle timer, bool onemotherzombie = false)
+public Action InfectMotherZombie(Handle timer, bool onemotherzombie)
 {
     // Reset timer handle.
     g_tInfect = null;
@@ -604,7 +604,7 @@ public Action InfectMotherZombie(Handle timer, bool onemotherzombie = false)
 	    InfectMoveAllToCT();
 	}
 
-    int mothercount;
+	int mothercount;
     int ratio = g_hCvarsList.CVAR_INFECT_MZOMBIE_RATIO.IntValue;
     int min = g_hCvarsList.CVAR_INFECT_MZOMBIE_MIN.IntValue;
     int max = g_hCvarsList.CVAR_INFECT_MZOMBIE_MAX.IntValue;
