@@ -572,7 +572,7 @@ public Action InfectOnRoundEnd(Handle Timer)
  *
  * @param timer     The timer handle.
  */
-public Action InfectMotherZombie(Handle timer)
+public Action InfectMotherZombie(Handle timer, bool onemotherzombie = false)
 {
     // Reset timer handle.
     g_tInfect = null;
@@ -597,8 +597,12 @@ public Action InfectMotherZombie(Handle timer)
         return Plugin_Continue;
     }
 
-    // Move all clients to CT.
-    InfectMoveAllToCT();
+	// We don't need to move clinets to CT if this is just a one mother zombie mode.
+	if (!onemotherzombie)
+	{
+	    // Move all clients to CT.
+	    InfectMoveAllToCT();
+	}
 
     int mothercount;
     int ratio = g_hCvarsList.CVAR_INFECT_MZOMBIE_RATIO.IntValue;
@@ -610,7 +614,7 @@ public Action InfectMotherZombie(Handle timer)
     ZRCountValidClients(_, humancount, _, true);
 
     // Get and validate infection mode. This will also log a warning on error.
-    InfectMode mode = InfectGetModeOrFail();
+    InfectMode mode = (!onemotherzombie) ? InfectGetModeOrFail() : InfectMode_Invalid;
 
     // Apply infection mode.
     switch (mode)
@@ -930,12 +934,6 @@ bool InfectHumanToZombie(int client, int attacker = -1, bool motherinfect = fals
         return false;
     }
 
-    // Reset mother zombie attributes when client becomes zombie
-    ClassResetMotherZombieAttributes(client);
-
-    // Mark player as zombie.
-    g_bZombie[client] = true;
-
     // Check if consecutive infection protection is enabled.
     bool infectconsecutiveblock = g_hCvarsList.CVAR_INFECT_CONSECUTIVE_BLOCK.BoolValue;
     bool infectroundrobin = g_hCvarsList.CVAR_INFECT_ROUND_ROBIN.BoolValue;
@@ -943,12 +941,24 @@ bool InfectHumanToZombie(int client, int attacker = -1, bool motherinfect = fals
     // If this is a mother infect, update the mother zombie protection status
     if (motherinfect)
     {
-        g_bInfectMotherLast[client] = infectconsecutiveblock;
         if (infectroundrobin)
         {
-            SteamidCacheAddClient(g_hInfectMotherCycle, client);
+        	// If the human is already in the mother zombie cycle, then pick someone else
+            if (!SteamidCacheAddClient(g_hInfectMotherCycle, client))
+            {
+           		InfectMotherZombie(null, true);
+           		return false;
+          	}
         }
+
+        g_bInfectMotherLast[client] = infectconsecutiveblock;
     }
+
+	// Reset mother zombie attributes when client becomes zombie
+    ClassResetMotherZombieAttributes(client);
+
+    // Mark player as zombie.
+    g_bZombie[client] = true;
 
     // Apply effects.
     InfectFireEffects(client);
