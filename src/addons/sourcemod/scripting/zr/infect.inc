@@ -529,7 +529,7 @@ void InfectOnRoundFreezeEnd()
     // Pick random time between min and max.
     float randomtime = GetRandomFloat(infectspawntimemin, infectspawntimemax);
 
-    g_tInfect = CreateTimer(randomtime, InfectMotherZombieTimer, false, TIMER_FLAG_NO_MAPCHANGE);
+    g_tInfect = CreateTimer(randomtime, InfectMotherZombieTimer, _, TIMER_FLAG_NO_MAPCHANGE);
 
     // Check cvar and start a countdown timer if enabled.
     bool countdown = g_hCvarsList.CVAR_INFECT_MZOMBIE_COUNTDOWN.BoolValue;
@@ -592,7 +592,7 @@ void InfectMotherZombie(bool onemotherzombie = false, int excludedClient = -1)
     #if defined _TeamManager_include
     if (g_TeamManagerLoaded && TeamManager_HasWarmup() && TeamManager_InWarmup())
     {
-        return Plugin_Continue;
+        return;
     }
     #endif
 
@@ -605,7 +605,7 @@ void InfectMotherZombie(bool onemotherzombie = false, int excludedClient = -1)
     {
         // Destroy handle.
         delete arrayEligibleClients;
-        return Plugin_Continue;
+        return;
     }
 
 	// We don't need to move clinets to CT if this is just a one mother zombie mode.
@@ -822,8 +822,6 @@ void InfectMotherZombie(bool onemotherzombie = false, int excludedClient = -1)
     delete arrayEligibleClients;
     delete aCandidatesMain;
     delete aCandidatesAlt;
-
-    return Plugin_Continue;
 }
 
 /**
