@@ -962,7 +962,7 @@ bool InfectHumanToZombie(int client, int attacker = -1, bool motherinfect = fals
         if (infectroundrobin)
         {
         	// If the human is already in the mother zombie cycle, then pick someone else
-            if (!SteamidCacheAddClient(g_hInfectMotherCycle, client))
+            if (!IsFakeClient(client) && GetSteamAccountID(client) != 0 && !SteamidCacheAddClient(g_hInfectMotherCycle, client))
             {
            		InfectMotherZombie(true, client);
            		return false;
