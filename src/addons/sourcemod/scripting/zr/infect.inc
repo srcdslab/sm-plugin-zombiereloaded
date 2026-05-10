@@ -578,6 +578,7 @@ public Action InfectMotherZombieTimer(Handle timer)
     g_tInfect = null;
 
 	InfectMotherZombie();
+    return Plugin_Continue;
 }
 
 /**
@@ -600,22 +601,21 @@ void InfectMotherZombie(bool onemotherzombie = false, int excludedClient = -1)
     ArrayList arrayEligibleClients = new ArrayList();
     int eligibleclients = ZRCreateEligibleClientList(arrayEligibleClients, true, true, true, true);
 
-    // If there are no eligible client's then stop.
+    // If there are no eligible clients then stop.
     if (!eligibleclients)
     {
-        // Destroy handle.
         delete arrayEligibleClients;
         return;
     }
 
-	// We don't need to move clinets to CT if this is just a one mother zombie mode.
-	if (!onemotherzombie)
-	{
-	    // Move all clients to CT.
-	    InfectMoveAllToCT();
-	}
+    // We don't need to move clients to CT if this is just a one mother zombie mode.
+    if (!onemotherzombie)
+    {
+        // Move all clients to CT.
+        InfectMoveAllToCT();
+    }
 
-	int mothercount;
+    int mothercount;
     int ratio = g_hCvarsList.CVAR_INFECT_MZOMBIE_RATIO.IntValue;
     int min = g_hCvarsList.CVAR_INFECT_MZOMBIE_MIN.IntValue;
     int max = g_hCvarsList.CVAR_INFECT_MZOMBIE_MAX.IntValue;
@@ -624,7 +624,7 @@ void InfectMotherZombie(bool onemotherzombie = false, int excludedClient = -1)
     int humancount;
     ZRCountValidClients(_, humancount, _, true);
 
-    // Get and validate infection mode. This will also log a warning on error.
+    // Get and validate infection mode.
     InfectMode mode = (!onemotherzombie) ? InfectGetModeOrFail() : InfectMode_Invalid;
 
     // Apply infection mode.
@@ -638,15 +638,10 @@ void InfectMotherZombie(bool onemotherzombie = false, int excludedClient = -1)
         case InfectMode_Dynamic:
         {
             // Dynamic mode. Every n-th player is infected.
-
             // A ratio of 0 will infect one zombie (to keep backwards compatibility).
-            if (ratio == 0)
-            {
-                mothercount = 1;
-            }
-
             // Calculate number of zombies to infect.
-            mothercount = RoundToNearest(float(humancount) / ratio);
+
+            mothercount = (ratio == 0) ? 1 : RoundToNearest(float(humancount) / ratio);
 
             // Require at least one mother zombie.
             if (mothercount == 0)
@@ -656,28 +651,25 @@ void InfectMotherZombie(bool onemotherzombie = false, int excludedClient = -1)
         }
         case InfectMode_Absolute:
         {
-            if (ratio > 0)
-            {
-                // Infect n humans.
-                mothercount = ratio;
-            }
-            else
-            {
-                // Infect all but n humans. Since ratio already is negative
-                // just add the numbers. (Zero ratio is catched by validator.)
-                mothercount = humancount + ratio;
+            // Keep n humans (negative n) or infect n zombies (positive n).
+            mothercount = (ratio > 0) ? ratio : humancount + ratio;
 
-                // Force at least one mother zombie.
-                if (mothercount == 0)
-                {
-                    mothercount = 1;
-                }
+            // Require at least one mother zombie.
+            if (mothercount == 0)
+            {
+                mothercount = 1;
             }
         }
         case InfectMode_Range:
         {
             // Get a random number between the range.
             mothercount = Math_GetRandomInt(min, max);
+
+            // Require at least one mother zombie.
+            if (mothercount == 0)
+            {
+                mothercount = 1;
+            }
         }
     }
 
@@ -702,11 +694,11 @@ void InfectMotherZombie(bool onemotherzombie = false, int excludedClient = -1)
         // Get the client stored in the array index.
         int client = arrayEligibleClients.Get(n);
 
-		// Exclude this client from being infected as mother zombie.
-		if (client == excludedClient)
-		{
-			continue;
-		}
+        // Exclude this client from being infected as mother zombie.
+        if (client == excludedClient)
+        {
+            continue;
+        }
 
         // If client hasn't been chosen last round.
         if (!g_bInfectMotherLast[client])
@@ -717,7 +709,6 @@ void InfectMotherZombie(bool onemotherzombie = false, int excludedClient = -1)
                 aCandidatesMain.Push(client);
                 candidatesMain++;
             }
-
             // Else put into aCandidatesAlt array.
             else
             {
@@ -727,23 +718,47 @@ void InfectMotherZombie(bool onemotherzombie = false, int excludedClient = -1)
         }
     }
 
-	if (!onemotherzombie)
-	{
-	    // Remove mother zombie last flag from all players.
-	    for (int client = 0; client <= MaxClients; client++)
-	    {
-	        g_bInfectMotherLast[client] = false;
-	    }
-	}
+    // Fallback: if all players were filtered out by MotherLast/RoundRobin,
+    // reset the cycle and build the candidate list from the full eligible list.
+    if (candidatesMain == 0 && candidatesAlt == 0)
+    {
+        // Clear mother zombie round-robin cycle storage.
+        SteamidCacheReset(g_hInfectMotherCycle);
+        SteamidCacheReset(g_hInfectMotherCycleRTD);
 
-    bool resetcycle;
+        // Announce start of new cycle
+        TranslationPrintToChatAll(true, false, "Mother zombie infect cycle reset");
 
-    // Infect players.
+        // Build main candidate list from full eligible list.
+        for (int n = 0; n < eligibleclients; n++)
+        {
+            int client = arrayEligibleClients.Get(n);
+            if (client == excludedClient) continue;
+
+            aCandidatesMain.Push(client);
+            candidatesMain++;
+        }
+    }
+
+    // Reset mother zombie last flag from all players.
+    if (!onemotherzombie)
+    {
+        for (int client = 0; client <= MaxClients; client++)
+        {
+            g_bInfectMotherLast[client] = false;
+        }
+    }
+
+    bool resetcycle = false;
+
+    // Track skipped clients to avoid infinite loops with consecutive protection.
+    ArrayList hSkippedMain = new ArrayList();
+    ArrayList hSkippedAlt  = new ArrayList();
+
     int infected = 0;
     while (infected < mothercount)
     {
-        // Infect one of the main candidates.
-        if (candidatesMain)
+        if (candidatesMain > 0)
         {
             // Get a random array index.
             int i = Math_GetRandomInt(0, candidatesMain - 1);
@@ -751,14 +766,34 @@ void InfectMotherZombie(bool onemotherzombie = false, int excludedClient = -1)
             // Get the client stored in the random array index.
             int client = aCandidatesMain.Get(i);
 
-            // If this client was mother zombie last round and there are other
-            // candidates available, push them to the back and retry.
-            // Fallback: if they're the only one left, let them through anyway.
-            if (consecutiveblock && bMotherLastSnapshot[client] && candidatesMain > 1)
+            // Consecutive protection: skip this client only if not already skipped
+            // and there are other non-skipped candidates available.
+            bool alreadySkipped = hSkippedMain.FindValue(client) != -1;
+            bool canSkip = consecutiveblock && bMotherLastSnapshot[client] && !alreadySkipped;
+
+            if (canSkip)
             {
-                aCandidatesMain.Erase(i);
-                aCandidatesMain.Push(client);
-                continue;
+                bool hasNonSkipped = false;
+
+                // Check for non-skipped candidates first, to avoid skipping candidates when they are the only ones left.
+                for (int k = 0; k < candidatesMain; k++)
+                {
+                    int c = aCandidatesMain.Get(k);
+                    if (c != client && hSkippedMain.FindValue(c) == -1 && !bMotherLastSnapshot[c])
+                    {
+                        hasNonSkipped = true;
+                        break;
+                    }
+                }
+
+                // If we can skip and there is a non-skipped candidate, skip this client for now and put them at the end of the list.
+                if (hasNonSkipped)
+                {
+                    hSkippedMain.Push(client);
+                    aCandidatesMain.Erase(i);
+                    aCandidatesMain.Push(client);
+                    continue;
+                }
             }
 
             // Infect player.
@@ -769,49 +804,85 @@ void InfectMotherZombie(bool onemotherzombie = false, int excludedClient = -1)
             aCandidatesMain.Erase(i);
             candidatesMain--;
         }
-        else
+        else if (!resetcycle && infectroundrobin)
         {
-            // No main candidates, reset the mother zombie cycle now before infecting anyone else.
-            if (infectroundrobin && !resetcycle)
-            {
-                resetcycle = true;
-                // Clear mother zombie round-robin cycle storage.
-                SteamidCacheReset(g_hInfectMotherCycle);
-                SteamidCacheReset(g_hInfectMotherCycleRTD);
+            // Main candidates exhausted mid-loop: reset the cycle and move alt candidates to main so infection can continue.
+            resetcycle = true;
 
-                // Announce start of new cycle
-                TranslationPrintToChatAll(true, false, "Mother zombie infect cycle reset");
+            // Clear mother zombie round-robin cycle storage.
+            SteamidCacheReset(g_hInfectMotherCycle);
+            SteamidCacheReset(g_hInfectMotherCycleRTD);
+
+            // Announce start of new cycle
+            TranslationPrintToChatAll(true, false, "Mother zombie infect cycle reset");
+
+            // Move alt candidates to main.
+            for (int n = 0; n < candidatesAlt; n++)
+            {
+                aCandidatesMain.Push(aCandidatesAlt.Get(n));
+                candidatesMain++;
             }
 
-            // Infect one of the alternate candidates.
-            if (candidatesAlt)
+            // Clear alt candidate list and skipped tracking.
+            aCandidatesAlt.Clear();
+            candidatesAlt = 0;
+            hSkippedMain.Clear();
+            hSkippedAlt.Clear();
+
+            if (candidatesMain == 0)
+                break;
+
+            continue;
+        }
+        else if (candidatesAlt > 0)
+        {
+            // Get a random array index.
+            int i = Math_GetRandomInt(0, candidatesAlt - 1);
+
+            // Get the client stored in the random array index.
+            int client = aCandidatesAlt.Get(i);
+
+            // Same consecutive protection on alt candidates.
+            bool alreadySkipped = hSkippedAlt.FindValue(client) != -1;
+            bool canSkip = consecutiveblock && bMotherLastSnapshot[client] && !alreadySkipped;
+
+            if (canSkip)
             {
-                // Get a random array index.
-                int i = Math_GetRandomInt(0, candidatesAlt - 1);
+                bool hasNonSkipped = false;
 
-                // Get the client stored in the random array index.
-                int client = aCandidatesAlt.Get(i);
-
-                // Same consecutive protection on alt candidates.
-                if (consecutiveblock && bMotherLastSnapshot[client] && candidatesAlt > 1)
+                // Check main candidates for non-skipped candidates first, to avoid skipping alt candidates when main candidates are still available.
+                for (int k = 0; k < candidatesAlt; k++)
                 {
+                    int c = aCandidatesAlt.Get(k);
+                    if (c != client && hSkippedAlt.FindValue(c) == -1 && !bMotherLastSnapshot[c])
+                    {
+                        hasNonSkipped = true;
+                        break;
+                    }
+                }
+
+                // If no non-skipped candidates in alt, check main candidates before deciding to skip.
+                if (hasNonSkipped)
+                {
+                    hSkippedAlt.Push(client);
                     aCandidatesAlt.Erase(i);
                     aCandidatesAlt.Push(client);
                     continue;
                 }
-
-                // Infect player.
-                if (InfectHumanToZombie(client, _, true))
-                    infected++;
-
-                // Remove player from eligible client list.
-                aCandidatesAlt.Erase(i);
-                candidatesAlt--;
             }
-            else // We have no candidates at all, abort!
-            {
-                break;
-            }
+
+            // Infect player.
+            if (InfectHumanToZombie(client, _, true))
+                infected++;
+
+            // Remove player from eligible client list.
+            aCandidatesAlt.Erase(i);
+            candidatesAlt--;
+        }
+        else
+        {
+            // No candidates left at all, abort.
+            break;
         }
     }
 
@@ -822,6 +893,8 @@ void InfectMotherZombie(bool onemotherzombie = false, int excludedClient = -1)
     delete arrayEligibleClients;
     delete aCandidatesMain;
     delete aCandidatesAlt;
+    delete hSkippedMain;
+    delete hSkippedAlt;
 }
 
 /**
