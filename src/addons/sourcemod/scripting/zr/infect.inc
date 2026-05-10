@@ -574,10 +574,10 @@ public Action InfectOnRoundEnd(Handle Timer)
  */
 public Action InfectMotherZombieTimer(Handle timer)
 {
-	// Reset timer handle.
+    // Reset timer handle.
     g_tInfect = null;
 
-	InfectMotherZombie();
+    InfectMotherZombie();
     return Plugin_Continue;
 }
 
@@ -1034,18 +1034,18 @@ bool InfectHumanToZombie(int client, int attacker = -1, bool motherinfect = fals
     {
         if (infectroundrobin)
         {
-        	// If the human is already in the mother zombie cycle, then pick someone else
+            // If the human is already in the mother zombie cycle, then pick someone else
             if (!IsFakeClient(client) && GetSteamAccountID(client) != 0 && !SteamidCacheAddClient(g_hInfectMotherCycle, client))
             {
-           		InfectMotherZombie(true, client);
-           		return false;
-          	}
+                InfectMotherZombie(true, client);
+                return false;
+            }
         }
 
         g_bInfectMotherLast[client] = infectconsecutiveblock;
     }
 
-	// Reset mother zombie attributes when client becomes zombie
+    // Reset mother zombie attributes when client becomes zombie
     ClassResetMotherZombieAttributes(client);
 
     // Mark player as zombie.
