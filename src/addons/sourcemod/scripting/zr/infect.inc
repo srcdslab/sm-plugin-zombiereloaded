@@ -583,11 +583,8 @@ public Action InfectMotherZombieTimer(Handle timer)
 
 /**
  * chooses mother zombies.
- *
- * @param onemotherzombie     Infect one mother zombie only?
- * @param excludedClient	  The client index to exclude from being mother zombie.
  */
-void InfectMotherZombie(bool onemotherzombie = false, int excludedClient = -1)
+public void InfectMotherZombie()
 {
     // Warmup
     #if defined _TeamManager_include
@@ -601,19 +598,16 @@ void InfectMotherZombie(bool onemotherzombie = false, int excludedClient = -1)
     ArrayList arrayEligibleClients = new ArrayList();
     int eligibleclients = ZRCreateEligibleClientList(arrayEligibleClients, true, true, true, true);
 
-    // If there are no eligible clients then stop.
+    // If there are no eligible client's then stop.
     if (!eligibleclients)
     {
+        // Destroy handle.
         delete arrayEligibleClients;
         return;
     }
 
-    // We don't need to move clients to CT if this is just a one mother zombie mode.
-    if (!onemotherzombie)
-    {
-        // Move all clients to CT.
-        InfectMoveAllToCT();
-    }
+    // Move all clients to CT.
+    InfectMoveAllToCT();
 
     int mothercount;
     int ratio = g_hCvarsList.CVAR_INFECT_MZOMBIE_RATIO.IntValue;
@@ -624,8 +618,8 @@ void InfectMotherZombie(bool onemotherzombie = false, int excludedClient = -1)
     int humancount;
     ZRCountValidClients(_, humancount, _, true);
 
-    // Get and validate infection mode.
-    InfectMode mode = (!onemotherzombie) ? InfectGetModeOrFail() : InfectMode_Invalid;
+    // Get and validate infection mode. This will also log a warning on error.
+    InfectMode mode = InfectGetModeOrFail();
 
     // Apply infection mode.
     switch (mode)
@@ -638,67 +632,62 @@ void InfectMotherZombie(bool onemotherzombie = false, int excludedClient = -1)
         case InfectMode_Dynamic:
         {
             // Dynamic mode. Every n-th player is infected.
+
             // A ratio of 0 will infect one zombie (to keep backwards compatibility).
-            // Calculate number of zombies to infect.
-
-            mothercount = (ratio == 0) ? 1 : RoundToNearest(float(humancount) / ratio);
-
-            // Require at least one mother zombie.
-            if (mothercount == 0)
+            if (ratio == 0)
             {
                 mothercount = 1;
             }
+            else
+            {
+	            // Calculate number of zombies to infect.
+	            mothercount = RoundToNearest(float(humancount) / ratio);
+	
+	            // Require at least one mother zombie.
+	            if (mothercount == 0)
+	            {
+	                mothercount = 1;
+	            }
+	        }
         }
         case InfectMode_Absolute:
         {
-            // Keep n humans (negative n) or infect n zombies (positive n).
-            mothercount = (ratio > 0) ? ratio : humancount + ratio;
-
-            // Require at least one mother zombie.
-            if (mothercount == 0)
+            if (ratio > 0)
             {
-                mothercount = 1;
+                // Infect n humans.
+                mothercount = ratio;
+            }
+            else
+            {
+                // Infect all but n humans. Since ratio already is negative
+                // just add the numbers. (Zero ratio is catched by validator.)
+                mothercount = humancount + ratio;
+
+                // Force at least one mother zombie.
+                if (mothercount == 0)
+                {
+                    mothercount = 1;
+                }
             }
         }
         case InfectMode_Range:
         {
             // Get a random number between the range.
             mothercount = Math_GetRandomInt(min, max);
-
-            // Require at least one mother zombie.
-            if (mothercount == 0)
-            {
-                mothercount = 1;
-            }
         }
     }
 
     bool infectroundrobin = g_hCvarsList.CVAR_INFECT_ROUND_ROBIN.BoolValue;
-    bool consecutiveblock = g_hCvarsList.CVAR_INFECT_CONSECUTIVE_BLOCK.BoolValue;
-
-    // Snapshot g_bInfectMotherLast BEFORE resetting the flag, so we can still
-    // use it during candidate selection even after the global reset.
-    bool bMotherLastSnapshot[MAXPLAYERS + 1];
-    for (int i = 0; i <= MaxClients; i++)
-    {
-        bMotherLastSnapshot[i] = g_bInfectMotherLast[i];
-    }
-
     int candidatesMain = 0;
     int candidatesAlt = 0;
+    int oldMotherZombies = 0;
     ArrayList aCandidatesMain = new ArrayList();
     ArrayList aCandidatesAlt = new ArrayList();
-
+    ArrayList aOldMotherZombies = new ArrayList();
     for (int n = 0; n < eligibleclients; n++)
     {
         // Get the client stored in the array index.
         int client = arrayEligibleClients.Get(n);
-
-        // Exclude this client from being infected as mother zombie.
-        if (client == excludedClient)
-        {
-            continue;
-        }
 
         // If client hasn't been chosen last round.
         if (!g_bInfectMotherLast[client])
@@ -709,6 +698,7 @@ void InfectMotherZombie(bool onemotherzombie = false, int excludedClient = -1)
                 aCandidatesMain.Push(client);
                 candidatesMain++;
             }
+
             // Else put into aCandidatesAlt array.
             else
             {
@@ -716,49 +706,27 @@ void InfectMotherZombie(bool onemotherzombie = false, int excludedClient = -1)
                 candidatesAlt++;
             }
         }
-    }
-
-    // Fallback: if all players were filtered out by MotherLast/RoundRobin,
-    // reset the cycle and build the candidate list from the full eligible list.
-    if (candidatesMain == 0 && candidatesAlt == 0)
-    {
-        // Clear mother zombie round-robin cycle storage.
-        SteamidCacheReset(g_hInfectMotherCycle);
-        SteamidCacheReset(g_hInfectMotherCycleRTD);
-
-        // Announce start of new cycle
-        TranslationPrintToChatAll(true, false, "Mother zombie infect cycle reset");
-
-        // Build main candidate list from full eligible list.
-        for (int n = 0; n < eligibleclients; n++)
+        else
         {
-            int client = arrayEligibleClients.Get(n);
-            if (client == excludedClient) continue;
-
-            aCandidatesMain.Push(client);
-            candidatesMain++;
-        }
+       		aOldMotherZombies.Push(client);
+       		oldMotherZombies++;
+      	}
     }
 
-    // Reset mother zombie last flag from all players.
-    if (!onemotherzombie)
+    // Remove mother zombie last flag from all players.
+    for (int client = 0; client <= MaxClients; client++)
     {
-        for (int client = 0; client <= MaxClients; client++)
-        {
-            g_bInfectMotherLast[client] = false;
-        }
+        g_bInfectMotherLast[client] = false;
     }
 
-    bool resetcycle = false;
+    bool resetcycle;
 
-    // Track skipped clients to avoid infinite loops with consecutive protection.
-    ArrayList hSkippedMain = new ArrayList();
-    ArrayList hSkippedAlt  = new ArrayList();
-
+    // Infect players.
     int infected = 0;
     while (infected < mothercount)
     {
-        if (candidatesMain > 0)
+        // Infect one of the main candidates.
+        if (candidatesMain)
         {
             // Get a random array index.
             int i = Math_GetRandomInt(0, candidatesMain - 1);
@@ -766,135 +734,134 @@ void InfectMotherZombie(bool onemotherzombie = false, int excludedClient = -1)
             // Get the client stored in the random array index.
             int client = aCandidatesMain.Get(i);
 
-            // Consecutive protection: skip this client only if not already skipped
-            // and there are other non-skipped candidates available.
-            bool alreadySkipped = hSkippedMain.FindValue(client) != -1;
-            bool canSkip = consecutiveblock && bMotherLastSnapshot[client] && !alreadySkipped;
-
-            if (canSkip)
-            {
-                bool hasNonSkipped = false;
-
-                // Check for non-skipped candidates first, to avoid skipping candidates when they are the only ones left.
-                for (int k = 0; k < candidatesMain; k++)
-                {
-                    int c = aCandidatesMain.Get(k);
-                    if (c != client && hSkippedMain.FindValue(c) == -1 && !bMotherLastSnapshot[c])
-                    {
-                        hasNonSkipped = true;
-                        break;
-                    }
-                }
-
-                // If we can skip and there is a non-skipped candidate, skip this client for now and put them at the end of the list.
-                if (hasNonSkipped)
-                {
-                    hSkippedMain.Push(client);
-                    aCandidatesMain.Erase(i);
-                    aCandidatesMain.Push(client);
-                    continue;
-                }
-            }
-
             // Infect player.
             if (InfectHumanToZombie(client, _, true))
-                infected++;
+            	infected++;
 
             // Remove player from eligible client list.
             aCandidatesMain.Erase(i);
             candidatesMain--;
         }
-        else if (!resetcycle && infectroundrobin)
-        {
-            // Main candidates exhausted mid-loop: reset the cycle and move alt candidates to main so infection can continue.
-            resetcycle = true;
-
-            // Clear mother zombie round-robin cycle storage.
-            SteamidCacheReset(g_hInfectMotherCycle);
-            SteamidCacheReset(g_hInfectMotherCycleRTD);
-
-            // Announce start of new cycle
-            TranslationPrintToChatAll(true, false, "Mother zombie infect cycle reset");
-
-            // Move alt candidates to main.
-            for (int n = 0; n < candidatesAlt; n++)
-            {
-                aCandidatesMain.Push(aCandidatesAlt.Get(n));
-                candidatesMain++;
-            }
-
-            // Clear alt candidate list and skipped tracking.
-            aCandidatesAlt.Clear();
-            candidatesAlt = 0;
-            hSkippedMain.Clear();
-            hSkippedAlt.Clear();
-
-            if (candidatesMain == 0)
-                break;
-
-            continue;
-        }
-        else if (candidatesAlt > 0)
-        {
-            // Get a random array index.
-            int i = Math_GetRandomInt(0, candidatesAlt - 1);
-
-            // Get the client stored in the random array index.
-            int client = aCandidatesAlt.Get(i);
-
-            // Same consecutive protection on alt candidates.
-            bool alreadySkipped = hSkippedAlt.FindValue(client) != -1;
-            bool canSkip = consecutiveblock && bMotherLastSnapshot[client] && !alreadySkipped;
-
-            if (canSkip)
-            {
-                bool hasNonSkipped = false;
-
-                // Check main candidates for non-skipped candidates first, to avoid skipping alt candidates when main candidates are still available.
-                for (int k = 0; k < candidatesAlt; k++)
-                {
-                    int c = aCandidatesAlt.Get(k);
-                    if (c != client && hSkippedAlt.FindValue(c) == -1 && !bMotherLastSnapshot[c])
-                    {
-                        hasNonSkipped = true;
-                        break;
-                    }
-                }
-
-                // If no non-skipped candidates in alt, check main candidates before deciding to skip.
-                if (hasNonSkipped)
-                {
-                    hSkippedAlt.Push(client);
-                    aCandidatesAlt.Erase(i);
-                    aCandidatesAlt.Push(client);
-                    continue;
-                }
-            }
-
-            // Infect player.
-            if (InfectHumanToZombie(client, _, true))
-                infected++;
-
-            // Remove player from eligible client list.
-            aCandidatesAlt.Erase(i);
-            candidatesAlt--;
-        }
         else
         {
-            // No candidates left at all, abort.
-            break;
+            // No main candidates, reset the mother zombie cycle now before infecting anyone else.
+            if (infectroundrobin && !resetcycle)
+            {
+                resetcycle = true;
+                // Clear mother zombie round-robin cycle storage.
+                SteamidCacheReset(g_hInfectMotherCycle);
+                SteamidCacheReset(g_hInfectMotherCycleRTD);
+
+                // Announce start of new cycle
+                TranslationPrintToChatAll(true, false, "Mother zombie infect cycle reset");
+            }
+
+            // Infect one of the alternate candidates.
+            if (candidatesAlt)
+            {
+                // Get a random array index.
+                int i = Math_GetRandomInt(0, candidatesAlt - 1);
+
+                // Get the client stored in the random array index.
+                int client = aCandidatesAlt.Get(i);
+
+                // Infect player.
+	            int finalclient = -1;
+	            int finalindex = i;
+	            if (!InfectHumanToZombie(client, _, true, .finalclient=finalclient))
+	            {
+	           		// Infection failed, let's see if the client index got changed.
+	           		if (client != finalclient)
+	           		{
+	           			// finalclient should not be a motherzombie, remove the index from ALT candidates.
+	           			for (int j = 0; j < candidatesAlt; j++)
+	           			{
+	           				int thisclient = aCandidatesAlt.Get(j);
+	           				if (finalclient == thisclient)
+	           				{
+	           					aCandidatesAlt.Erase(j);
+	           					candidatesAlt--;
+	           					if (j < i)
+	           					{
+	           						finalindex--;
+	           					}
+								CPrintToChatAll("Protecting {olive}%N {default}from being mz: New MZ: {olive}%N", client, finalclient);
+	           					break;
+	           				}
+	           			}
+	           		}
+	          	}
+				else
+				{
+					infected++;
+				}
+
+                // Remove player from eligible client list.
+                aCandidatesAlt.Erase(finalindex);
+                candidatesAlt--;
+            }
+            else // Try to get candidates from old mother zombies (Last round).
+            {
+            	if (oldMotherZombies)
+            	{
+            		// Get a random array index.
+            		int i = Math_GetRandomInt(0, oldMotherZombies - 1);
+
+					// Get the client stored in the random array index.
+					int client = aOldMotherZombies.Get(i);
+
+					// Infect player.
+					int finalclient = -1;
+	            	int finalindex = i;
+					if (!InfectHumanToZombie(client, _, true, .finalclient=finalclient))
+		            {
+		           		// Infection failed, let's see if the client index got changed.
+		           		if (client != finalclient)
+		           		{
+		           			// finalclient should not be a motherzombie, remove the index from ALT candidates.
+		           			for (int j = 0; j < oldMotherZombies; j++)
+		           			{
+		           				int thisclient = aOldMotherZombies.Get(j);
+		           				if (finalclient == thisclient)
+		           				{
+		           					aOldMotherZombies.Erase(j);
+		           					oldMotherZombies--;
+		           					if (j < i)
+		           					{
+		           						finalindex--;
+		           					}
+									CPrintToChatAll("Protecting {olive}%N {default}from being mz: New MZ: {olive}%N (OLD MZ)", client, finalclient);
+		           					break;
+		           				}
+		           			}
+		           		}
+		          	}
+					else
+					{
+						infected++;
+					}
+
+					// Remove player from eligible client list.
+					aOldMotherZombies.Erase(finalindex);
+					oldMotherZombies--;
+				}
+				else // We have no candidates at all, abort!
+				{
+					PrintToChatAll("No candidates at all broo");
+                	break;
+                }
+            }
         }
     }
 
     // Mother zombies have been infected.
     g_bZombieSpawned = true;
 
-    // Destroy client lists.
+    // Destroy client list.
     delete arrayEligibleClients;
     delete aCandidatesMain;
     delete aCandidatesAlt;
-    delete hSkippedMain;
-    delete hSkippedAlt;
+    delete aOldMotherZombies;
 }
 
 /**
@@ -1008,8 +975,9 @@ void InfectStopCountdown()
  * @param motherinfect      (Optional) Indicates a mother zombie infect.
  * @param respawnoverride   (Optional) Set to true to override respawn cvar.
  * @param respawn           (Optional) Value to override with.
+ * @param finalclient		(Reference) The final client index, it matters if API somehow changed the client index.
  */
-bool InfectHumanToZombie(int client, int attacker = -1, bool motherinfect = false, bool respawnoverride = false, bool respawn = false)
+bool InfectHumanToZombie(int client, int attacker = -1, bool motherinfect = false, bool respawnoverride = false, bool respawn = false, int &finalclient = -1)
 {
     if (!g_bRoundFullyStarted)
     {
@@ -1017,6 +985,8 @@ bool InfectHumanToZombie(int client, int attacker = -1, bool motherinfect = fals
     }
 
     // Forward pre-event to modules.
+    // We need to check if client was ever changed.
+    finalclient = client;
     Action result = APIOnClientInfect(client, attacker, motherinfect, respawnoverride, respawn);
 
     // Check if infection should be blocked.
@@ -1034,10 +1004,13 @@ bool InfectHumanToZombie(int client, int attacker = -1, bool motherinfect = fals
     {
         if (infectroundrobin)
         {
-            // If the human is already in the mother zombie cycle, then pick someone else
-            if (!IsFakeClient(client) && GetSteamAccountID(client) != 0 && !SteamidCacheAddClient(g_hInfectMotherCycle, client))
+        	// Add the client to the steamid cache and use the return value later.
+        	bool success = SteamidCacheAddClient(g_hInfectMotherCycle, client);
+
+            // If the client index somehow got changed by API and the new client is already in the mother zombie cycle, then stop.
+            if (!success && finalclient != client && !IsFakeClient(client) && GetSteamAccountID(client) != 0)
             {
-                InfectMotherZombie(true, client);
+            	finalclient = client;
                 return false;
             }
         }
@@ -1560,24 +1533,38 @@ stock void InfectManualInfect(int client, int[] targets, int count, bool respawn
         if (!zombiespawned)
         {
             // Turn client into a mother zombie.
-            InfectHumanToZombie(targets[x], _, true, respawnoverride, respawn);
+            // The loop is for the case where API could change the client index.
+            int finalclient = -1;
+            for (int j = 0; j < 16; j++)
+            {
+            	int thisclient = (finalclient == -1) ? targets[x] : finalclient;
+           		if (InfectHumanToZombie(thisclient, _, true, respawnoverride, respawn, finalclient))
+           		{
+           			// Log action to game events.
+            		LogEvent(false, LogType_Normal, LOG_GAME_EVENTS, LogModule_Infect, "Manual Infect", "\"%L\" turned \"%L\" into a mother zombie", client, thisclient);
+            		LogAction(client, -1, "[ZR] \"%L\" turned \"%L\" into a mother zombie.", client, thisclient);
 
-            // Log action to game events.
-            LogEvent(false, LogType_Normal, LOG_GAME_EVENTS, LogModule_Infect, "Manual Infect", "\"%L\" turned \"%L\" into a mother zombie", client, targets[x]);
-            LogAction(client, -1, "[ZR] \"%L\" turned \"%L\" into a mother zombie.", client, targets[x]);
+            		success = true;
+            		if (count == 1)
+            		{
+            			GetClientName(thisclient, targetname, sizeof(targetname));
+            		}
 
-            success = true;
-            continue;
+            		break;
+            	}
+          	}
         }
-
-        // Turn client into a zombie.
-        InfectHumanToZombie(targets[x], _, false, respawnoverride, respawn);
-
-        // Log action to game events.
-        LogEvent(false, LogType_Normal, LOG_GAME_EVENTS, LogModule_Infect, "Manual Infect", "\"%L\" turned \"%L\" into a zombie", client, targets[x]);
-        LogAction(client, -1, "[ZR] \"%L\" turned \"%L\" into a zombie.", client, targets[x]);
-
-        success = true;
+		else
+		{
+	        // Turn client into a zombie.
+	        InfectHumanToZombie(targets[x], _, false, respawnoverride, respawn);
+	
+	        // Log action to game events.
+	        LogEvent(false, LogType_Normal, LOG_GAME_EVENTS, LogModule_Infect, "Manual Infect", "\"%L\" turned \"%L\" into a zombie", client, targets[x]);
+	        LogAction(client, -1, "[ZR] \"%L\" turned \"%L\" into a zombie.", client, targets[x]);
+	
+	        success = true;
+	    }
     }
 
     // Tell admin the outcome of the command.
