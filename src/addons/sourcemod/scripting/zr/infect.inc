@@ -785,7 +785,8 @@ public void InfectMotherZombie()
                                 {
                                     finalindex--;
                                 }
-                                LogEvent(false, LogType_Normal, LOG_DEBUG_DETAIL, LogModule_Infect, "Protecting %N from being mz: New MZ: %N (ALT)", client, finalclient);
+                                LogEvent(false, LogType_Normal, LOG_DEBUG_DETAIL, LogModule_Infect, "Infect Cycle", "Protecting %N from being mz: New MZ: %N (ALT)", client, finalclient);
+
                                 break;
                             }
                         }
@@ -830,7 +831,7 @@ public void InfectMotherZombie()
                                     {
                                         finalindex--;
                                     }
-                                    LogEvent(false, LogType_Normal, LOG_DEBUG_DETAIL, LogModule_Infect, "Protecting %N from being mz: New MZ: %N (OLD MZ)", client, finalclient);
+                                    LogEvent(false, LogType_Normal, LOG_DEBUG_DETAIL, LogModule_Infect, "Infect Cycle", "Protecting %N from being mz: New MZ: %N (OLD MZ)", client, finalclient);
                                     break;
                                 }
                             }
@@ -847,7 +848,7 @@ public void InfectMotherZombie()
                 }
                 else // We have no candidates at all, abort!
                 {
-                    LogEvent(false, LogType_Normal, LOG_DEBUG, LogModule_Infect, "Failed to choose mother zombie: No candidates left to infect.");
+                    LogEvent(false, LogType_Normal, LOG_DEBUG, LogModule_Infect, "Infect Cycle", "Failed to choose mother zombie: No candidates left to infect.");
                     break;
                 }
             }
