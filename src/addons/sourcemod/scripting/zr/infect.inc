@@ -61,11 +61,11 @@ bool g_TeamManagerLoaded = false;
 /**
  * @endsection
  */
- 
- /**
+
+/**
  * @section Other defines.
  */
- #define MAX_EVENT_LENGTH 32
+#define MAX_EVENT_LENGTH 32
 /**
  * @endsection
  */
@@ -640,15 +640,15 @@ public void InfectMotherZombie()
             }
             else
             {
-	            // Calculate number of zombies to infect.
-	            mothercount = RoundToNearest(float(humancount) / ratio);
-	
-	            // Require at least one mother zombie.
-	            if (mothercount == 0)
-	            {
-	                mothercount = 1;
-	            }
-	        }
+                // Calculate number of zombies to infect.
+                mothercount = RoundToNearest(float(humancount) / ratio);
+
+                // Require at least one mother zombie.
+                if (mothercount == 0)
+                {
+                    mothercount = 1;
+                }
+            }
         }
         case InfectMode_Absolute:
         {
@@ -708,9 +708,9 @@ public void InfectMotherZombie()
         }
         else
         {
-       		aOldMotherZombies.Push(client);
-       		oldMotherZombies++;
-      	}
+            aOldMotherZombies.Push(client);
+            oldMotherZombies++;
+        }
     }
 
     // Remove mother zombie last flag from all players.
@@ -736,7 +736,7 @@ public void InfectMotherZombie()
 
             // Infect player.
             if (InfectHumanToZombie(client, _, true))
-            	infected++;
+                infected++;
 
             // Remove player from eligible client list.
             aCandidatesMain.Erase(i);
@@ -766,35 +766,35 @@ public void InfectMotherZombie()
                 int client = aCandidatesAlt.Get(i);
 
                 // Infect player.
-	            int finalclient = -1;
-	            int finalindex = i;
-	            if (!InfectHumanToZombie(client, _, true, .finalclient=finalclient))
-	            {
-	           		// Infection failed, let's see if the client index got changed.
-	           		if (client != finalclient)
-	           		{
-	           			// finalclient should not be a motherzombie, remove the index from ALT candidates.
-	           			for (int j = 0; j < candidatesAlt; j++)
-	           			{
-	           				int thisclient = aCandidatesAlt.Get(j);
-	           				if (finalclient == thisclient)
-	           				{
-	           					aCandidatesAlt.Erase(j);
-	           					candidatesAlt--;
-	           					if (j < i)
-	           					{
-	           						finalindex--;
-	           					}
-								CPrintToChatAll("Protecting {olive}%N {default}from being mz: New MZ: {olive}%N", client, finalclient);
-	           					break;
-	           				}
-	           			}
-	           		}
-	          	}
-				else
-				{
-					infected++;
-				}
+                int finalclient = -1;
+                int finalindex = i;
+                if (!InfectHumanToZombie(client, _, true, .finalclient=finalclient))
+                {
+                    // Infection failed, let's see if the client index got changed.
+                    if (client != finalclient)
+                    {
+                        // finalclient should not be a motherzombie, remove the index from ALT candidates.
+                        for (int j = 0; j < candidatesAlt; j++)
+                        {
+                            int thisclient = aCandidatesAlt.Get(j);
+                            if (finalclient == thisclient)
+                            {
+                                aCandidatesAlt.Erase(j);
+                                candidatesAlt--;
+                                if (j < i)
+                                {
+                                    finalindex--;
+                                }
+                                LogEvent(false, LogType_Normal, LOG_DEBUG_DETAIL, LogModule_Infect, "Protecting %N from being mz: New MZ: %N (ALT)", client, finalclient);
+                                break;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    infected++;
+                }
 
                 // Remove player from eligible client list.
                 aCandidatesAlt.Erase(finalindex);
@@ -802,53 +802,53 @@ public void InfectMotherZombie()
             }
             else // Try to get candidates from old mother zombies (Last round).
             {
-            	if (oldMotherZombies)
-            	{
-            		// Get a random array index.
-            		int i = Math_GetRandomInt(0, oldMotherZombies - 1);
+                if (oldMotherZombies)
+                {
+                    // Get a random array index.
+                    int i = Math_GetRandomInt(0, oldMotherZombies - 1);
 
-					// Get the client stored in the random array index.
-					int client = aOldMotherZombies.Get(i);
+                    // Get the client stored in the random array index.
+                    int client = aOldMotherZombies.Get(i);
 
-					// Infect player.
-					int finalclient = -1;
-	            	int finalindex = i;
-					if (!InfectHumanToZombie(client, _, true, .finalclient=finalclient))
-		            {
-		           		// Infection failed, let's see if the client index got changed.
-		           		if (client != finalclient)
-		           		{
-		           			// finalclient should not be a motherzombie, remove the index from ALT candidates.
-		           			for (int j = 0; j < oldMotherZombies; j++)
-		           			{
-		           				int thisclient = aOldMotherZombies.Get(j);
-		           				if (finalclient == thisclient)
-		           				{
-		           					aOldMotherZombies.Erase(j);
-		           					oldMotherZombies--;
-		           					if (j < i)
-		           					{
-		           						finalindex--;
-		           					}
-									CPrintToChatAll("Protecting {olive}%N {default}from being mz: New MZ: {olive}%N (OLD MZ)", client, finalclient);
-		           					break;
-		           				}
-		           			}
-		           		}
-		          	}
-					else
-					{
-						infected++;
-					}
+                    // Infect player.
+                    int finalclient = -1;
+                    int finalindex = i;
+                    if (!InfectHumanToZombie(client, _, true, .finalclient=finalclient))
+                    {
+                        // Infection failed, let's see if the client index got changed.
+                        if (client != finalclient)
+                        {
+                            // finalclient should not be a motherzombie, remove the index from ALT candidates.
+                            for (int j = 0; j < oldMotherZombies; j++)
+                            {
+                                int thisclient = aOldMotherZombies.Get(j);
+                                if (finalclient == thisclient)
+                                {
+                                    aOldMotherZombies.Erase(j);
+                                    oldMotherZombies--;
+                                    if (j < i)
+                                    {
+                                        finalindex--;
+                                    }
+                                    LogEvent(false, LogType_Normal, LOG_DEBUG_DETAIL, LogModule_Infect, "Protecting %N from being mz: New MZ: %N (OLD MZ)", client, finalclient);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        infected++;
+                    }
 
-					// Remove player from eligible client list.
-					aOldMotherZombies.Erase(finalindex);
-					oldMotherZombies--;
-				}
-				else // We have no candidates at all, abort!
-				{
-					PrintToChatAll("No candidates at all broo");
-                	break;
+                    // Remove player from eligible client list.
+                    aOldMotherZombies.Erase(finalindex);
+                    oldMotherZombies--;
+                }
+                else // We have no candidates at all, abort!
+                {
+                    LogEvent(false, LogType_Normal, LOG_DEBUG, LogModule_Infect, "Failed to choose mother zombie: No candidates left to infect.");
+                    break;
                 }
             }
         }
@@ -1004,13 +1004,13 @@ bool InfectHumanToZombie(int client, int attacker = -1, bool motherinfect = fals
     {
         if (infectroundrobin)
         {
-        	// Add the client to the steamid cache and use the return value later.
-        	bool success = SteamidCacheAddClient(g_hInfectMotherCycle, client);
+            // Add the client to the steamid cache and use the return value later.
+            bool success = SteamidCacheAddClient(g_hInfectMotherCycle, client);
 
             // If the client index somehow got changed by API and the new client is already in the mother zombie cycle, then stop.
             if (!success && finalclient != client && !IsFakeClient(client) && GetSteamAccountID(client) != 0)
             {
-            	finalclient = client;
+                finalclient = client;
                 return false;
             }
         }
@@ -1420,10 +1420,10 @@ bool InfectIsClientMotherInfected(int client)
 
 /**
  * Returns if a client is infected.
- * 
+ *
  * @param client	The client index.
  * @return		  True if the client has been infected, false otherwise.
- */	
+ */
 bool InfectIsClientInfected(int client)
 {
     // If client is invalid, then stop.
@@ -1537,34 +1537,37 @@ stock void InfectManualInfect(int client, int[] targets, int count, bool respawn
             int finalclient = -1;
             for (int j = 0; j < 16; j++)
             {
-            	int thisclient = (finalclient == -1) ? targets[x] : finalclient;
-           		if (InfectHumanToZombie(thisclient, _, true, respawnoverride, respawn, finalclient))
-           		{
-           			// Log action to game events.
-            		LogEvent(false, LogType_Normal, LOG_GAME_EVENTS, LogModule_Infect, "Manual Infect", "\"%L\" turned \"%L\" into a mother zombie", client, thisclient);
-            		LogAction(client, -1, "[ZR] \"%L\" turned \"%L\" into a mother zombie.", client, thisclient);
+                int thisclient = (finalclient == -1) ? targets[x] : finalclient;
+                if (InfectHumanToZombie(thisclient, _, true, respawnoverride, respawn, finalclient))
+                {
+                    // Log action to game events.
+                    LogEvent(false, LogType_Normal, LOG_GAME_EVENTS, LogModule_Infect, "Manual Infect", "\"%L\" turned \"%L\" into a mother zombie", client, thisclient);
+                    LogAction(client, -1, "[ZR] \"%L\" turned \"%L\" into a mother zombie.", client, thisclient);
 
-            		success = true;
-            		if (count == 1)
-            		{
-            			GetClientName(thisclient, targetname, sizeof(targetname));
-            		}
-
-            		break;
-            	}
-          	}
+                    success = true;
+                    if (count == 1)
+                    {
+                        GetClientName(thisclient, targetname, sizeof(targetname));
+                    }
+                    break;
+                }
+                else
+                {
+                    LogEvent(false, LogType_Error, LOG_GAME_EVENTS, LogModule_Infect, "Manual Infect", "[#%d] Failed to infect %L", j, thisclient);
+                }
+            }
         }
-		else
-		{
-	        // Turn client into a zombie.
-	        InfectHumanToZombie(targets[x], _, false, respawnoverride, respawn);
-	
-	        // Log action to game events.
-	        LogEvent(false, LogType_Normal, LOG_GAME_EVENTS, LogModule_Infect, "Manual Infect", "\"%L\" turned \"%L\" into a zombie", client, targets[x]);
-	        LogAction(client, -1, "[ZR] \"%L\" turned \"%L\" into a zombie.", client, targets[x]);
-	
-	        success = true;
-	    }
+        else
+        {
+            // Turn client into a zombie.
+            InfectHumanToZombie(targets[x], _, false, respawnoverride, respawn);
+
+            // Log action to game events.
+            LogEvent(false, LogType_Normal, LOG_GAME_EVENTS, LogModule_Infect, "Manual Infect", "\"%L\" turned \"%L\" into a zombie", client, targets[x]);
+            LogAction(client, -1, "[ZR] \"%L\" turned \"%L\" into a zombie.", client, targets[x]);
+
+            success = true;
+        }
     }
 
     // Tell admin the outcome of the command.
