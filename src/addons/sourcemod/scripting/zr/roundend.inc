@@ -252,7 +252,7 @@ void RoundEndDisplayStats()
 
     APIOnRoundEndStats(count);
 
-    // Print to console and log as before
+    // Print to console and log
     for (int player = 1; player <= MaxClients; player++)
     {
         if (!IsClientInGame(player) || (IsFakeClient(player) && !IsClientSourceTV(player)))
@@ -260,12 +260,14 @@ void RoundEndDisplayStats()
 
         int userid = GetClientUserId(player);
 
-        static char sPlayerName[MAX_NAME_LENGTH + 2];
+        static char sPlayerName[MAX_NAME_LENGTH + 1];
+        static char sPlayerNameQuoted[MAX_NAME_LENGTH + 3];
         static char sPlayerAuth[24];
         static char sPlayerTeam[8];
         static char sPlayerState[8];
 
         FormatEx(sPlayerName, sizeof(sPlayerName), "%N", player);
+        FormatEx(sPlayerNameQuoted, sizeof(sPlayerNameQuoted), "\"%s\"", sPlayerName);
 
         if (!GetClientAuthId(player, authType, sPlayerAuth, sizeof(sPlayerAuth)))
             FormatEx(sPlayerAuth, sizeof(sPlayerAuth), "STEAM_ID_PENDING");
@@ -287,10 +289,10 @@ void RoundEndDisplayStats()
             if (!IsClientInGame(client))
                 continue;
 
-            PrintToConsole(client, "# %8d %40s %24s %5s %6s", userid, sPlayerName, sPlayerAuth, sPlayerState, sPlayerTeam);
+            PrintToConsole(client, "# %8d %40s %24s %5s %6s", userid, sPlayerNameQuoted, sPlayerAuth, sPlayerState, sPlayerTeam);
         }
 
-        LogMessage("# %8d %40s %24s %5s %6s", userid, sPlayerName, sPlayerAuth, sPlayerState, sPlayerTeam);
+        LogMessage("# %8d %40s %24s %5s %6s", userid, sPlayerNameQuoted, sPlayerAuth, sPlayerState, sPlayerTeam);
 
         APIOnRoundEndPlayer(userid, sPlayerName, sPlayerAuth, alive, zombie);
     }
