@@ -48,6 +48,7 @@
 #include "knockback.api"
 #include "weapons.api"
 #include "ztele.api"
+#include "roundend.api"
 
 /**
  * Initializes all main natives and forwards.
@@ -62,6 +63,7 @@ void APIInit()
     APIKnockbackInit();
     APIWeaponsInit();
     APIZteleInit();
+    APIRoundEndInit();
 }
 
 /**
