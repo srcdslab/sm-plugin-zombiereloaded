@@ -38,6 +38,7 @@
 #include <zr/knockback.zr>
 #include <zr/ztele.zr>
 #include <zr/weapons.zr>
+#include <zr/roundend.zr>
 
 public SharedPlugin __pl_zombiereloaded =
 {

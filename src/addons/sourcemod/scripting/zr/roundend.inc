@@ -25,6 +25,8 @@
  * ============================================================================
  */
 
+#include <zr/roundend.zr>
+
 #if defined REQUIRE_EXTENSIONS
  #define TEMP_REQUIRE_EXTENSIONS
  #undef REQUIRE_EXTENSIONS
@@ -240,29 +242,44 @@ void RoundEndDisplayStats()
 {
     AuthIdType authType = view_as<AuthIdType>(g_hCvarsList.CVAR_ROUNDEND_AUTHID_TYPE.IntValue);
 
+    int count = 0;
+
     for (int player = 1; player <= MaxClients; player++)
     {
         if (!IsClientInGame(player) || (IsFakeClient(player) && !IsClientSourceTV(player)))
             continue;
 
-        static char sPlayerID[8];
+        count++;
+    }
+
+    APIOnRoundEndStats(count);
+
+    // Print to console and log as before
+    for (int player = 1; player <= MaxClients; player++)
+    {
+        if (!IsClientInGame(player) || (IsFakeClient(player) && !IsClientSourceTV(player)))
+            continue;
+
+        int userid = GetClientUserId(player);
+
         static char sPlayerName[MAX_NAME_LENGTH + 2];
         static char sPlayerAuth[24];
         static char sPlayerTeam[8];
         static char sPlayerState[8];
 
-        FormatEx(sPlayerID, sizeof(sPlayerID), "%d", GetClientUserId(player));
-        FormatEx(sPlayerName, sizeof(sPlayerName), "\"%N\"", player);
+        FormatEx(sPlayerName, sizeof(sPlayerName), "%N", player);
 
         if (!GetClientAuthId(player, authType, sPlayerAuth, sizeof(sPlayerAuth)))
             FormatEx(sPlayerAuth, sizeof(sPlayerAuth), "STEAM_ID_PENDING");
 
-        if (IsPlayerAlive(player))
+        bool alive = IsPlayerAlive(player);
+        if (alive)
             FormatEx(sPlayerState, sizeof(sPlayerState), "alive");
         else
             FormatEx(sPlayerState, sizeof(sPlayerState), "dead");
 
-        if (InfectIsClientInfected(player))
+        bool zombie = InfectIsClientInfected(player);
+        if (zombie)
             FormatEx(sPlayerTeam, sizeof(sPlayerTeam), "zombie");
         else
             FormatEx(sPlayerTeam, sizeof(sPlayerTeam), "human");
@@ -272,12 +289,12 @@ void RoundEndDisplayStats()
             if (!IsClientInGame(client))
                 continue;
 
-            PrintToConsole(client, "# %8s %40s %24s %5s %6s",
-                sPlayerID, sPlayerName, sPlayerAuth, sPlayerState, sPlayerTeam);
+            PrintToConsole(client, "# %8d %40s %24s %5s %6s", userid, sPlayerName, sPlayerAuth, sPlayerState, sPlayerTeam);
         }
 
-        LogMessage("# %8s %40s %24s %5s %6s",
-            sPlayerID, sPlayerName, sPlayerAuth, sPlayerState, sPlayerTeam);
+        LogMessage("# %8d %40s %24s %5s %6s", userid, sPlayerName, sPlayerAuth, sPlayerState, sPlayerTeam);
+
+        APIOnRoundEndPlayer(userid, sPlayerName, sPlayerAuth, alive, zombie);
     }
 }
 
