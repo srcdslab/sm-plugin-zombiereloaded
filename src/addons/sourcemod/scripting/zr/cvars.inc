@@ -54,6 +54,8 @@ enum struct CvarsList
     ConVar CVAR_CONFIG_PATH_WEAPONS;
     ConVar CVAR_CONFIG_PATH_HITGROUPS;
     ConVar CVAR_PERMISSIONS_USE_GROUPS;
+    ConVar CVAR_PERMISSIONS_FLAG_GENERIC;
+    ConVar CVAR_PERMISSIONS_FLAG_CONFIGURATION;
     ConVar CVAR_CLASSES_MENU_SPAWN;
     ConVar CVAR_CLASSES_MENU_JOIN;
     ConVar CVAR_CLASSES_RANDOM;
@@ -255,6 +257,8 @@ void CvarsCreate()
     // Permission Settings
     // ===========================
     g_hCvarsList.CVAR_PERMISSIONS_USE_GROUPS    =    CreateConVar("zr_permissions_use_groups",     "0",    "Use group authentication instead of flags to access admin features. Generic admin flag is still required on some features.");
+    g_hCvarsList.CVAR_PERMISSIONS_FLAG_GENERIC   =    CreateConVar("zr_permissions_flag_generic",      "d",    "Admin flag used for generic admin operations when group authentication is disabled. ['d' = ban]", FCVAR_NONE);
+    g_hCvarsList.CVAR_PERMISSIONS_FLAG_CONFIGURATION = CreateConVar("zr_permissions_flag_configuration","i",    "Admin flag used for configuration operations when group authentication is disabled. ['i' = config]", FCVAR_NONE);
 
 
     // ===========================

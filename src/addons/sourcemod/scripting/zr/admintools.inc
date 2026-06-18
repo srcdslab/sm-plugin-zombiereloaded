@@ -45,6 +45,47 @@ enum OperationTypes
     OperationType_Configuration,    /** Changing settings. */
 }
 
+/**
+ * Resolves an admin flag from the first character in a cvar.
+ * Falls back to defaultFlag if the cvar is empty or invalid.
+ *
+ * @param cvar          Cvar with flag character.
+ * @param defaultFlag   Fallback admin flag.
+ * @return              Resolved admin flag.
+ */
+stock AdminFlag ZRGetPermissionFlagFromCvar(ConVar cvar, AdminFlag defaultFlag)
+{
+    char flagString[16];
+    cvar.GetString(flagString, sizeof(flagString));
+
+    switch (flagString[0])
+    {
+        case 'a', 'A': return Admin_Reservation;
+        case 'b', 'B': return Admin_Generic;
+        case 'c', 'C': return Admin_Kick;
+        case 'd', 'D': return Admin_Ban;
+        case 'e', 'E': return Admin_Unban;
+        case 'f', 'F': return Admin_Slay;
+        case 'g', 'G': return Admin_Changemap;
+        case 'h', 'H': return Admin_Convars;
+        case 'i', 'I': return Admin_Config;
+        case 'j', 'J': return Admin_Chat;
+        case 'k', 'K': return Admin_Vote;
+        case 'l', 'L': return Admin_Password;
+        case 'm', 'M': return Admin_RCON;
+        case 'n', 'N': return Admin_Cheats;
+        case 'o', 'O': return Admin_Custom1;
+        case 'p', 'P': return Admin_Custom2;
+        case 'q', 'Q': return Admin_Custom3;
+        case 'r', 'R': return Admin_Custom4;
+        case 's', 'S': return Admin_Custom5;
+        case 't', 'T': return Admin_Custom6;
+        case 'z', 'Z': return Admin_Root;
+    }
+
+    return defaultFlag;
+}
+
 
 /**
  * Returns whether a player is allowed to do a certain operation or not.
@@ -115,11 +156,11 @@ stock bool ZRIsClientPrivileged(int client, OperationTypes operationType = Opera
         {
             case OperationType_Generic:
             {
-                flag = Admin_Ban;
+                flag = ZRGetPermissionFlagFromCvar(g_hCvarsList.CVAR_PERMISSIONS_FLAG_GENERIC, Admin_Ban);
             }
             case OperationType_Configuration:
             {
-                flag = Admin_Config;
+                flag = ZRGetPermissionFlagFromCvar(g_hCvarsList.CVAR_PERMISSIONS_FLAG_CONFIGURATION, Admin_Config);
             }
             default:
             {

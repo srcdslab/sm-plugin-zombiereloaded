@@ -93,6 +93,8 @@ Find all cvars details on [online docs](https://srcdslab.github.io/sm-plugin-zom
 - zr_config_path_weapons            -  "configs/zr/weapons.txt" -           Path, relative to root sourcemod directory, to weapons config file.
 - zr_config_path_hitgroups          -  "configs/zr/hitgroups.txt" -         Path, relative to root sourcemod directory, to hitgroups config file.
 - zr_permissions_use_groups         -  "0" -                                Use group authentication instead of flags to access admin features. Generic admin flag is still required on some features.
+- zr_permissions_flag_generic       -  "d" -                                Admin flag used for generic admin operations when group authentication is disabled. [Single flag char, e.g. d = ban | Levels: https://wiki.alliedmods.net/Adding_Admins_(SourceMod)#Levels]
+- zr_permissions_flag_configuration -  "i" -                                Admin flag used for configuration operations when group authentication is disabled. [Single flag char, e.g. i = config | Levels: https://wiki.alliedmods.net/Adding_Admins_(SourceMod)#Levels]
 - zr_classes_menu_spawn             -  "0" -                                Re-display class selection menu every spawn.
 - zr_classes_menu_join              -  "0" -                                Display class selection menu when a player spawn for the first time.
 - zr_classes_random                 -  "0" -                                Player is assigned a random class every spawn. [Override: zr_classes_default_*]
