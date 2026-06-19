@@ -55,9 +55,13 @@ enum OperationTypes
  */
 stock AdminFlag ZRResolveAdminFlag(ConVar cvar, AdminFlag defaultFlag)
 {
+    if (cvar == null)
+    {
+        return defaultFlag;
+    }
+
     char flagString[16];
     cvar.GetString(flagString, sizeof(flagString));
-
     switch (flagString[0])
     {
         case 'a', 'A': return Admin_Reservation;
