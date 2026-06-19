@@ -4949,23 +4949,23 @@ Zombie:Reloaded.</p>
 
 <p>Admins must have the appropriate
 <a href="http://wiki.alliedmods.net/Adding_Admins_(SourceMod)#Levels">SourceMod admin flags</a> to
-do certain types of operations. Below is a list of all flags used in Zombie:Reloaded and what type
-of operation they grant:</p>
+do certain types of operations. The required flag is configurable per operation type through
+permissions cvars:</p>
 
 <blockquote><table>
 	<caption>Admin Flags Used In Zombie:Reloaded</caption>
 	<tr>
-		<th>Flag:</th>
+		<th>Flag cvar (default):</th>
 		<th>Operation type:</th>
 	</tr>
 	
 	<tr>
-		<td class="parameter">Admin_Ban</td>
+		<td class="parameter">zr_permissions_flag_generic (Admin_Ban)</td>
 		<td>Access to generic operations like infecting, teleporting, and spawning players.</td>
 	</tr>
 	
 	<tr>
-		<td class="parameter">Admin_Root</td>
+		<td class="parameter">zr_permissions_flag_configuration (Admin_Config)</td>
 		<td>Access to operations that change settings in Zombie:Reloaded.</td>
 	</tr>
 </table></blockquote>
