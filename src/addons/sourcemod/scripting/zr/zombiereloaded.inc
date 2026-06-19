@@ -354,6 +354,12 @@ stock bool ZRIsClientAdmin(int client, AdminFlag flag = Admin_Generic)
         return false;
     }
 
+    // Keep default admin checks aligned with permission settings.
+    if (flag == Admin_Generic)
+    {
+        flag = ZRResolveAdminFlag(CvarsGetPermissionFlagGeneric(), Admin_Ban);
+    }
+
     // If client doesn't have the specified flag, then stop.
     if (!GetAdminFlag(GetUserAdmin(client), flag))
     {

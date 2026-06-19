@@ -191,6 +191,22 @@ enum struct CvarsList
 CvarsList g_hCvarsList;
 
 /**
+ * Returns the cvar handle used for generic permission flags.
+ */
+ConVar CvarsGetPermissionFlagGeneric()
+{
+    return g_hCvarsList.CVAR_PERMISSIONS_FLAG_GENERIC;
+}
+
+/**
+ * Returns the cvar handle used for configuration permission flags.
+ */
+ConVar CvarsGetPermissionFlagConfiguration()
+{
+    return g_hCvarsList.CVAR_PERMISSIONS_FLAG_CONFIGURATION;
+}
+
+/**
  * @section Global cvar handles.
  */
 ConVar g_hAutoTeamBalance;

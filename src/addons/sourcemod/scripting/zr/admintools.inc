@@ -53,7 +53,7 @@ enum OperationTypes
  * @param defaultFlag   Fallback admin flag.
  * @return              Resolved admin flag.
  */
-stock AdminFlag ZRGetPermissionFlagFromCvar(ConVar cvar, AdminFlag defaultFlag)
+stock AdminFlag ZRResolveAdminFlag(ConVar cvar, AdminFlag defaultFlag)
 {
     char flagString[16];
     cvar.GetString(flagString, sizeof(flagString));
@@ -85,7 +85,6 @@ stock AdminFlag ZRGetPermissionFlagFromCvar(ConVar cvar, AdminFlag defaultFlag)
 
     return defaultFlag;
 }
-
 
 /**
  * Returns whether a player is allowed to do a certain operation or not.
@@ -156,11 +155,11 @@ stock bool ZRIsClientPrivileged(int client, OperationTypes operationType = Opera
         {
             case OperationType_Generic:
             {
-                flag = ZRGetPermissionFlagFromCvar(g_hCvarsList.CVAR_PERMISSIONS_FLAG_GENERIC, Admin_Ban);
+                flag = ZRResolveAdminFlag(CvarsGetPermissionFlagGeneric(), Admin_Ban);
             }
             case OperationType_Configuration:
             {
-                flag = ZRGetPermissionFlagFromCvar(g_hCvarsList.CVAR_PERMISSIONS_FLAG_CONFIGURATION, Admin_Config);
+                flag = ZRResolveAdminFlag(CvarsGetPermissionFlagConfiguration(), Admin_Config);
             }
             default:
             {
