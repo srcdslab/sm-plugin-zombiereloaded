@@ -32,6 +32,7 @@ void ZAdminOnCommandsCreate()
 {
     // Register ZAdmin command.
     RegConsoleCmd(SAYHOOKS_KEYWORD_ZADMIN, ZAdminCommand, "Opens ZR admin menu.");
+    RegConsoleCmd("sm_zadmin", ZAdminCommand, "Opens ZR admin menu.");
 }
 
 /**

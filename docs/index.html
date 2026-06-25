@@ -13,9 +13,9 @@
 <div class="content">
 <h1>Zombie:Reloaded User Manual</h1>
 
-<p class="headerinfo">Based on Plugin Version 3.12.11 (<a href="https://github.com/srcdslab/sm-plugin-zombiereloaded">From SRCDSLAB GitHub Repository</a>)<br />
+<p class="headerinfo">Based on Plugin Version 3.13.1 (<a href="https://github.com/srcdslab/sm-plugin-zombiereloaded">From SRCDSLAB GitHub Repository</a>)<br />
 Written by Richard Helgeby<br />
-User Manual updated by .Rushaway (2025/06/21)</p>
+User Manual updated by .Rushaway (2026/06/18)</p>
 
 <h2>Index</h2>
 
@@ -4949,23 +4949,23 @@ Zombie:Reloaded.</p>
 
 <p>Admins must have the appropriate
 <a href="http://wiki.alliedmods.net/Adding_Admins_(SourceMod)#Levels">SourceMod admin flags</a> to
-do certain types of operations. Below is a list of all flags used in Zombie:Reloaded and what type
-of operation they grant:</p>
+do certain types of operations. The required flag is configurable per operation type through
+permissions cvars:</p>
 
 <blockquote><table>
 	<caption>Admin Flags Used In Zombie:Reloaded</caption>
 	<tr>
-		<th>Flag:</th>
+		<th>Flag cvar (default):</th>
 		<th>Operation type:</th>
 	</tr>
 	
 	<tr>
-		<td class="parameter">Admin_Ban</td>
+		<td class="parameter">zr_permissions_flag_generic (Admin_Ban)</td>
 		<td>Access to generic operations like infecting, teleporting, and spawning players.</td>
 	</tr>
 	
 	<tr>
-		<td class="parameter">Admin_Root</td>
+		<td class="parameter">zr_permissions_flag_configuration (Admin_Config)</td>
 		<td>Access to operations that change settings in Zombie:Reloaded.</td>
 	</tr>
 </table></blockquote>
@@ -5018,6 +5018,31 @@ following operations:</p>
 			flag is still required on some features.</p>
 			<p>Options:<br />
 			0 or 1</p>
+		</td>
+	</tr>
+
+	<tr>
+		<td class="commandheader">zr_permissions_flag_generic</td>
+		<td class="commandheader">d</td>
+	</tr>
+	<tr>
+		<td class="indent" colspan="2">
+			<p>Admin flag used for generic admin operations when group authentication is disabled.</p>
+			<p>Options:<br />
+			Any single SourceMod admin flag character (a-t or z). Recommended default: d (ban).</p>
+	</tr>
+
+	<tr>
+		<td class="commandheader">zr_permissions_flag_configuration</td>
+		<td class="commandheader">i</td>
+	</tr>
+	<tr>
+		<td class="indent" colspan="2">
+			<p>Admin flag used for configuration operations when group authentication is disabled.</p>
+			<p>Options:<br />
+			Any single SourceMod admin flag character (a-t or z). Recommended default: i (config).</p>
+			<p>See SourceMod flag levels:<br />
+			<a href="https://wiki.alliedmods.net/Adding_Admins_(SourceMod)#Levels">https://wiki.alliedmods.net/Adding_Admins_(SourceMod)#Levels</a></p>
 		</td>
 	</tr>
 </table></blockquote>

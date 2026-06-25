@@ -4,7 +4,7 @@
 #define ZR_VER_BRANCH           "master"
 #define ZR_VER_MAJOR            "3"
 #define ZR_VER_MINOR            "13"
-#define ZR_VER_PATCH            "0"
+#define ZR_VER_PATCH            "1"
 #define ZR_VERSION              ZR_VER_MAJOR..."."...ZR_VER_MINOR..."."...ZR_VER_PATCH
 #define ZR_VER_LICENSE          "GNU GPL, Version 3"
-#define ZR_VER_DATE             "Sat May 23 CEST 2026"
+#define ZR_VER_DATE             "Thu Jun 18 CEST 2026"

@@ -31,6 +31,12 @@
 #define ZR_CONSOLE_INDEX 0
 
 /**
+ * Sentinel flag value used by ZRIsClientAdmin() to resolve the generic admin
+ * flag from configured permissions.
+ */
+#define ZR_ADMINFLAG_USE_CVAR view_as<AdminFlag>(-1)
+
+/**
  * @section Conversion factors.
  */
 #define CONVERSION_UNITS_TO_FEET    16.000
@@ -343,15 +349,21 @@ stock bool ZRTeamHasClients(int team = -1)
  * Returns whether a player is a admin or not.
  *
  * @param client    The client index.
- * @param flag      Optional. Flag to check. Default is generic admin flag.
- * @return          True if generic admin, false otherwise.
+ * @param flag      Optional. Admin flag to check. Default resolves from configured generic permission flag.
+ * @return          True if client has the requested admin flag, false otherwise.
  */
-stock bool ZRIsClientAdmin(int client, AdminFlag flag = Admin_Generic)
+stock bool ZRIsClientAdmin(int client, AdminFlag flag = ZR_ADMINFLAG_USE_CVAR)
 {
     // If index is invalid, then stop.
     if (!ZRIsClientValid(client))
     {
         return false;
+    }
+
+    // Keep default admin checks aligned with permission settings.
+    if (flag == ZR_ADMINFLAG_USE_CVAR)
+    {
+        flag = ZRResolveAdminFlag(CvarsGetPermissionFlagGeneric(), Admin_Ban);
     }
 
     // If client doesn't have the specified flag, then stop.
