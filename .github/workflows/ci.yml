@@ -4,26 +4,41 @@ on: [push, pull_request, workflow_dispatch]
 
 jobs:
   build:
-    name: "Build"
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-24.04]
-        include:
-          - os: ubuntu-24.04
+    name: Build
+    runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v7
-      - name: Build sourcemod plugin
-        uses: maxime1907/action-sourceknight@v1
+
+      - name: Setup SourcePawn compiler
+        uses: rumblefrog/setup-sp@master
         with:
-          cmd: build
+          version: "1.12.x"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install dependencies
+        run: |
+          git clone --depth=1 -b "1.12-dev" https://github.com/alliedmodders/sourcemod.git sm_core
+          cp -R sm_core/addons/sourcemod/* addons/sourcemod/
+          git clone --depth=1 https://github.com/srcdslab/sm-plugin-MultiColors.git
+          cp -R sm-plugin-MultiColors/addons/sourcemod/* addons/sourcemod/
+          git clone --depth=1 https://github.com/srcdslab/sm-plugin-AFKManager.git
+          cp -R sm-plugin-AFKManager/addons/sourcemod/* addons/sourcemod/
+          git clone --depth=1 https://github.com/srcdslab/sm-plugin-TeamManager.git
+          cp -R sm-plugin-TeamManager/addons/sourcemod/* addons/sourcemod/
+
+      - name: Build sourcemod plugin
+        working-directory: addons/sourcemod/scripting
+        run: |
+          spcomp -i include -o ../plugins/zombiereloaded.smx zombiereloaded.sp
 
       - name: Create package
         run: |
           mkdir -p /tmp/package
-          cp -R .sourceknight/package/* /tmp/package
-          cp -R common /tmp/package
+          cp -R addons /tmp/package
+          if [ -d "common" ]; then
+            cp -R common /tmp/package/
+          fi
 
       - name: Upload build archive for test runners
         uses: actions/upload-artifact@v7
@@ -35,12 +50,11 @@ jobs:
     name: Tag
     needs: build
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v7
-        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
 
       - uses: dev-drprasad/delete-tag-and-release@v1.1
-        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
         with:
           delete_release: true
           tag_name: latest
@@ -48,9 +62,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: rickstaa/action-create-tag@v1
-        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
         with:
-          tag: "latest"
+          tag: latest
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
   release:
@@ -68,24 +81,22 @@ jobs:
       - name: Versioning
         run: |
           version="latest"
-          if [[ "${{ github.ref_type }}" == 'tag' ]]; then
-            version=`echo $GITHUB_REF | sed "s/refs\/tags\///"`;
+          if [[ "${{ github.ref_type }}" == "tag" ]]; then
+            version="${GITHUB_REF_NAME}"
           fi
-          echo "RELEASE_VERSION=$version" >> $GITHUB_ENV
+          echo "RELEASE_VERSION=$version" >> "$GITHUB_ENV"
 
       - name: Package
         run: |
           cd artifacts
-          ls -Rall
           tar -czf ../${{ github.event.repository.name }}-${{ env.RELEASE_VERSION }}.tar.gz .
           cd ..
-          ls -la *.tar.gz
 
       - name: Release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: '*.tar.gz'
+          file: "*.tar.gz"
           tag: ${{ env.RELEASE_VERSION }}
           file_glob: true
           overwrite: true
