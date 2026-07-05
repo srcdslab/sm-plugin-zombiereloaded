@@ -1,77 +1,61 @@
 name: CI
-
 on: [push, pull_request, workflow_dispatch]
-
 jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v7
-
       - name: Setup SourcePawn compiler
-        uses: rumblefrog/setup-sp@v1
+        uses: rumblefrog/setup-sp@v1.3.1
         with:
           version: "1.12.x"
           github-token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Install dependencies
         run: |
+          set -euo pipefail
           mkdir -p addons/sourcemod/scripting/include
-
           git clone --depth=1 https://github.com/srcdslab/sm-plugin-MultiColors.git deps/multicolors
           cp -R deps/multicolors/addons/sourcemod/scripting/include/* addons/sourcemod/scripting/include/
-
           git clone --depth=1 https://github.com/srcdslab/sm-plugin-AFKManager.git deps/afkmanager
           cp -R deps/afkmanager/addons/sourcemod/scripting/include/* addons/sourcemod/scripting/include/
-
           git clone --depth=1 https://github.com/srcdslab/sm-plugin-TeamManager.git deps/teammanager
           cp -R deps/teammanager/addons/sourcemod/scripting/include/* addons/sourcemod/scripting/include/
-
       - name: Build sourcemod plugin
         working-directory: src/addons/sourcemod/scripting
         run: |
+          set -euo pipefail
           mkdir -p ../plugins
-          spcomp -i include -i "$GITHUB_WORKSPACE/addons/sourcemod/scripting/include" -i "$includePath" -o ../plugins/zombiereloaded.smx zombiereloaded.sp
-
+          spcomp -i include -i "$GITHUB_WORKSPACE/addons/sourcemod/scripting/include" -o ../plugins/zombiereloaded.smx zombiereloaded.sp
       - name: Create package
         run: |
+          set -euo pipefail
           mkdir -p /tmp/package/addons/sourcemod/plugins
           cp src/addons/sourcemod/plugins/*.smx /tmp/package/addons/sourcemod/plugins/
-
           if [ -d "common" ]; then
             cp -R common/* /tmp/package/
           fi
-
       - name: Upload build archive for test runners
         uses: actions/upload-artifact@v7
         with:
           name: ${{ runner.os }}
           path: /tmp/package
-
   tag:
     name: Tag
     needs: build
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
-        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
-
       - uses: dev-drprasad/delete-tag-and-release@v1.1
-        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
         with:
           delete_release: true
           tag_name: latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - uses: rickstaa/action-create-tag@v1
-        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
         with:
           tag: latest
           github_token: ${{ secrets.GITHUB_TOKEN }}
-
   release:
     name: Release
     if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
@@ -83,21 +67,20 @@ jobs:
         with:
           name: ${{ runner.os }}
           path: artifacts
-
       - name: Versioning
         run: |
+          set -euo pipefail
           version="latest"
           if [[ "${{ github.ref_type }}" == "tag" ]]; then
             version="${GITHUB_REF_NAME}"
           fi
           echo "RELEASE_VERSION=$version" >> "$GITHUB_ENV"
-
       - name: Package
         run: |
+          set -euo pipefail
           cd artifacts
-          tar -czf ../${{ github.event.repository.name }}-${{ env.RELEASE_VERSION }}.tar.gz .
+          tar -czf "../${{ github.event.repository.name }}-${{ env.RELEASE_VERSION }}.tar.gz" .
           cd ..
-
       - name: Release
         uses: svenstaro/upload-release-action@v2
         with:
