@@ -30,11 +30,14 @@
  */
 enum ZR_RespawnCondition
 {
-    ZR_Repsawn_Default = -1,    /** Let ZR decide according to its settings. */
+    ZR_Respawn_Default = -1,    /** Let ZR decide according to its settings. */
     ZR_Respawn_Human = 0,       /** Respawn as a human. */
     ZR_Respawn_Zombie,          /** Respawn as a zombie. */
     ZR_Respawn_ZombieIfSuicide  /** Respawn as a zombie if killed by world damage. */
 }
+
+/** Deprecated misspelled alias, kept for source compat with existing third-party plugins. */
+#define ZR_Repsawn_Default ZR_Respawn_Default
 
 /**
  * Spawns a player into the round.
@@ -44,7 +47,7 @@ enum ZR_RespawnCondition
  *                          ZR settings. See ZR_RespawnCondition for details.
  * @error                   Invalid client index, not connected or already alive.
  */
-native void ZR_RespawnClient(int client, ZR_RespawnCondition condition = ZR_Repsawn_Default);
+native void ZR_RespawnClient(int client, ZR_RespawnCondition condition = ZR_Respawn_Default);
 
 /**
  * Called right before ZR is about to respawn a player.

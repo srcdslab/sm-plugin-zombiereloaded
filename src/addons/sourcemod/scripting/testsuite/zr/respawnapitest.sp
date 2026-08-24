@@ -101,7 +101,7 @@ public Action RespawnClientCommand(int client, int argc)
         return Plugin_Handled;
     }
 
-    ZR_RespawnClient(target, ZR_Repsawn_Default);
+    ZR_RespawnClient(target, ZR_Respawn_Default);
 
     return Plugin_Handled;
 }
