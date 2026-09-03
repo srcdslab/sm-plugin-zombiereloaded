@@ -200,11 +200,43 @@ bool ClassApplyModel(int client, int classindex, int cachetype = ZR_CLASS_CACHE_
         return false;
     }
 
-    // Check if the model is precached.
+    // Check if the model is precached. Models added to models.txt after the map
+    // has loaded (or through a config reload) are never precached by
+    // ModelsPrecache(), so a zombie assigned such a model used to silently keep
+    // whatever model it currently had - most often the default human/CT model.
+    // Try to precache it on demand, and if that still fails fall back to a
+    // random model that is known to be precached for the wanted team instead of
+    // leaving the player with the wrong skin.
     if (!IsModelPrecached(modelpath))
     {
-        LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Playerclasses, "Config Validation", "Warning: Model not precached, not applying model. \"%s\"", modelpath);
-        return true;
+        if (FileExists(modelpath, true))
+        {
+            PrecacheModel(modelpath, true);
+        }
+
+        if (!IsModelPrecached(modelpath))
+        {
+            LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Playerclasses, "Config Validation", "Warning: Model not precached: \"%s\". Falling back to a random precached model.", modelpath);
+
+            int fallbackModel = ModelsGetRandomModel(-1, team, MODEL_ACCESS_PUBLIC);
+            if (fallbackModel < 0)
+            {
+                fallbackModel = ModelsGetRandomModel(-1, ModelTeam_Invalid, MODEL_ACCESS_PUBLIC);
+            }
+
+            if (fallbackModel < 0)
+            {
+                // Nothing usable, leave the model untouched.
+                return true;
+            }
+
+            ModelsGetFullPath(fallbackModel, modelpath, sizeof(modelpath));
+
+            if (!IsModelPrecached(modelpath))
+            {
+                return true;
+            }
+        }
     }
 
     SetEntityModel(client, modelpath);
