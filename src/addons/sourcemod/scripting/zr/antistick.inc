@@ -163,7 +163,7 @@ public void AntiStickStartTouch(int client, int entity)
     {
         // Disable collisions to unstick, and start timers to re-solidify.
         AntiStickSetCollisionGroup(client, ANTISTICK_COLLISIONS_OFF);
-        CreateTimer(0.0, AntiStickSolidifyTimer, client, TIMER_FLAG_NO_MAPCHANGE | TIMER_REPEAT);
+        CreateTimer(0.0, AntiStickSolidifyTimer, GetClientUserId(client), TIMER_FLAG_NO_MAPCHANGE | TIMER_REPEAT);
     }
 }
 
@@ -172,10 +172,15 @@ public void AntiStickStartTouch(int client, int entity)
  *
  * @param client        The client index.
  */
-public Action AntiStickSolidifyTimer(Handle timer, any client)
+public Action AntiStickSolidifyTimer(Handle timer, any userid)
 {
+    // Resolve the userid now. This timer repeats and its handle isn't stored,
+    // so it can't be killed on disconnect - without this it would keep running
+    // against whoever inherits the slot.
+    int client = GetClientOfUserId(userid);
+
     // If client has left, then stop.
-    if (!IsClientInGame(client))
+    if (!ZRIsClientValid(client) || !IsClientInGame(client))
     {
         return Plugin_Stop;
     }

@@ -171,7 +171,7 @@ public Action EventPlayerTeam(Event event, const char[] name, bool dontBroadcast
 
     // Fire post joinclass command. (Bots dont joinclass, so we fire it from here instead.)
     if (IsFakeClient(index) && !IsClientSourceTV(index))
-        CreateTimer(0.1, CommandPlayerClassPost, index);
+        CreateTimer(0.1, CommandPlayerClassPost, event.GetInt("userid"));
 
     return Plugin_Handled;
 }
@@ -214,7 +214,7 @@ public Action EventPlayerSpawn(Event event, const char[] name, bool dontBroadcas
     ImmunityClientSpawn(index);
 
     // Fire post player_spawn event.
-    CreateTimer(0.1, EventPlayerSpawnPost, index);
+    CreateTimer(0.1, EventPlayerSpawnPost, event.GetInt("userid"));
     return Plugin_Continue;
 }
 
@@ -226,8 +226,12 @@ public Action EventPlayerSpawn(Event event, const char[] name, bool dontBroadcas
  * @param name      Name of the event.
  * @dontBroadcast   If true, event is broadcasted to all clients, false if not.
  */
-public Action EventPlayerSpawnPost(Handle timer, any client)
+public Action EventPlayerSpawnPost(Handle timer, any userid)
 {
+    // Resolve the userid now: the slot may hold a different player by the time
+    // this fires.
+    int client = GetClientOfUserId(userid);
+
     // If client isn't in-game, then stop.
     if (client <= 0 || client > MaxClients || !IsClientConnected(client) || !IsClientInGame(client))
     {
@@ -302,18 +306,9 @@ public Action EventPlayerDeath(Event event, const char[] name, bool dontBroadcas
  */
 public Action EventPlayerJump(Event event, const char[] name, bool dontBroadcast)
 {
-    // Get all required event info.
-    int index = GetClientOfUserId(event.GetInt("userid"));
-
-    // The userid may no longer map to a client. Client index 0 is invalid for
-    // the client natives used in the post callback.
-    if (!ZRIsClientValid(index))
-    {
-        return Plugin_Continue;
-    }
-
-    // Fire post player_jump event.
-    CreateTimer(0.0, EventPlayerJumpPost, index);
+    // Fire post player_jump event. The userid is resolved in the callback, so
+    // a slot reused by another player can't be mistaken for the jumper.
+    CreateTimer(0.0, EventPlayerJumpPost, event.GetInt("userid"));
     return Plugin_Continue;
 }
 
@@ -325,10 +320,14 @@ public Action EventPlayerJump(Event event, const char[] name, bool dontBroadcast
  * @param name      Name of the event.
  * @dontBroadcast   If true, event is broadcasted to all clients, false if not.
  */
-public Action EventPlayerJumpPost(Handle timer, any client)
+public Action EventPlayerJumpPost(Handle timer, any userid)
 {
+    // Resolve the userid now: the slot may hold a different player by the time
+    // this fires.
+    int client = GetClientOfUserId(userid);
+
     // If client isn't in-game, then stop.
-    if (!IsClientInGame(client))
+    if (!ZRIsClientValid(client) || !IsClientInGame(client))
     {
         return Plugin_Continue;
     }
@@ -349,7 +348,7 @@ public Action EventPlayerJumpPost(Handle timer, any client)
 public Action CommandPlayerClass(int client, const char[] command, int argc)
 {
     // Fire post joinclass command.
-    CreateTimer(0.1, CommandPlayerClassPost, client);
+    CreateTimer(0.1, CommandPlayerClassPost, GetClientUserId(client));
     return Plugin_Continue;
 }
 
@@ -361,10 +360,14 @@ public Action CommandPlayerClass(int client, const char[] command, int argc)
  * @param command   The command performed.
  * @param argc      The amount of arguments.
  */
-public Action CommandPlayerClassPost(Handle timer, any client)
+public Action CommandPlayerClassPost(Handle timer, any userid)
 {
+    // Resolve the userid now: the slot may hold a different player by the time
+    // this fires.
+    int client = GetClientOfUserId(userid);
+
     // If client isn't in-game, then stop.
-    if (!IsClientInGame(client))
+    if (!ZRIsClientValid(client) || !IsClientInGame(client))
     {
         return Plugin_Continue;
     }

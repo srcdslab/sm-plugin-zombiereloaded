@@ -305,7 +305,7 @@ void ClassOnClientSpawn(int client)
         ClassAllowInstantChange[client] = true;
 
         // Create timer to disable instant change.
-        CreateTimer(instantspawn, Event_ClassDisableInstantSpawn, client, TIMER_FLAG_NO_MAPCHANGE);
+        CreateTimer(instantspawn, Event_ClassDisableInstantSpawn, GetClientUserId(client), TIMER_FLAG_NO_MAPCHANGE);
     }
     else
     {
@@ -483,8 +483,16 @@ void ClassOnClientInfected(int client, bool motherzombie = false) //responsavel 
 /**
  * Timer callback for disabling instant class change setting on a client.
  */
-public Action Event_ClassDisableInstantSpawn(Handle timer, any client)
+public Action Event_ClassDisableInstantSpawn(Handle timer, any userid)
 {
+    // Resolve the userid now: this delay is operator-configurable, so the slot
+    // can easily hold a different player by the time it fires.
+    int client = GetClientOfUserId(userid);
+    if (!ZRIsClientValid(client))
+    {
+        return Plugin_Continue;
+    }
+
     // Disable instant class change.
     ClassAllowInstantChange[client] = false;
     return Plugin_Continue;
