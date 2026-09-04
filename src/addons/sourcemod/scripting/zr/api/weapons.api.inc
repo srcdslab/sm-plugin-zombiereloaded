@@ -84,8 +84,10 @@ static void KBQ_CleanupJob(KnockbackJob job, Handle currentTimer = null, bool fr
         }
         else
         {
-            // Cancel a pending timer safely.
-            KillTimer(job.hTimer);
+            // Cancel a pending timer safely. autoClose closes the DataPack
+            // carried as timer data, which the callback would otherwise have
+            // been responsible for.
+            KillTimer(job.hTimer, true);
             job.hTimer = null;
         }
     }
