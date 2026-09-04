@@ -95,10 +95,10 @@ void ModelsLoad()
     // Loop through all models and store attributes in ModelData array.
     do
     {
-        if (ModelCount > MODELS_MAX)
+        if (ModelCount >= MODELS_MAX)
         {
             // Maximum number of models reached. Log a warning and exit the loop.
-            LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Models, "Config Validation", "Warning: Maximum number of models reached (%d). Skipping other models.", MODELS_MAX + 1);
+            LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Models, "Config Validation", "Warning: Maximum number of models reached (%d). Skipping other models.", MODELS_MAX);
 
             break;
         }
