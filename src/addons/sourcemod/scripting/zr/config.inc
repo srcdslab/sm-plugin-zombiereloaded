@@ -769,7 +769,6 @@ stock bool ConfigOpenConfigFile(ConfigFile config, Handle &hConfig)
 			if (!FileToKeyValues(hConfig, configpath))
 			{
 				delete hConfig;
-				hConfig = null;
 				return false;
 			}
 
