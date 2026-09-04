@@ -212,6 +212,7 @@ ConVar CvarsGetPermissionFlagConfiguration()
 ConVar g_hAutoTeamBalance;
 ConVar g_hLimitTeams;
 ConVar g_hRestartGame;
+ConVar g_hStartMoney;
 /**
  * @endsection
  */
@@ -225,6 +226,7 @@ void CvarsInit()
     g_hAutoTeamBalance = FindConVar("mp_autoteambalance");
     g_hLimitTeams = FindConVar("mp_limitteams");
     g_hRestartGame = FindConVar("mp_restartgame");
+    g_hStartMoney = FindConVar("mp_startmoney");
 
     // Create zombiereloaded cvars.
     CvarsCreate();
