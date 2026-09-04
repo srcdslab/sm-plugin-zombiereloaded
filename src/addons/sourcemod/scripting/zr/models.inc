@@ -171,7 +171,8 @@ void ModelsLoad()
         // Check if failed.
         if (dir == null)
         {
-            LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Models, "Config Validation", "Error opening directory: %s", dir);
+            LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Models, "Config Validation", "Error opening directory: \"%s\"", path);
+            failedCount++;
             continue;
         }
 
