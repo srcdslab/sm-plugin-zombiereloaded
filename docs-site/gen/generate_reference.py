@@ -38,15 +38,60 @@ _MINMAX_RE = re.compile(
 )
 
 # RegConsoleCmd("name", Handler, "help") / RegAdminCmd("name", Handler, ADMFLAG_x, "help")
+# The command name is a string literal or a #define constant (SAYHOOKS_KEYWORD_*).
 _REG_CMD_RE = re.compile(
     r"""Reg(?P<kind>Console|Admin)Cmd\(\s*
-        "(?P<name>[^"]+)"\s*,\s*
+        (?P<name>"[^"]+"|[A-Za-z_][A-Za-z0-9_]*)\s*,\s*
         [A-Za-z0-9_]+\s*
         (?:,\s*(?P<flags>[A-Za-z0-9_|]+)\s*)?
         (?:,\s*"(?P<help>(?:[^"\\]|\\.)*)")?
     """,
     re.VERBOSE,
 )
+
+# #define SOME_NAME "literal" - used to resolve constant command names.
+_DEFINE_STR_RE = re.compile(r'#define\s+(?P<name>[A-Za-z_][A-Za-z0-9_]*)\s+"(?P<value>[^"]*)"')
+
+
+def strip_comments(text: str) -> str:
+    """Remove C/C++ comments while leaving string and char literals intact.
+
+    The plugin has ``CreateConVar`` / ``Reg*Cmd`` calls sitting inside ``//`` and
+    ``/* */`` comments (dead code); without this they leak into the reference.
+    """
+    out: list[str] = []
+    i, n = 0, len(text)
+    while i < n:
+        c = text[i]
+        if c in ('"', "'"):
+            quote = c
+            out.append(c)
+            i += 1
+            while i < n:
+                if text[i] == "\\" and i + 1 < n:
+                    out.append(text[i])
+                    out.append(text[i + 1])
+                    i += 2
+                    continue
+                out.append(text[i])
+                if text[i] == quote:
+                    i += 1
+                    break
+                i += 1
+            continue
+        if c == "/" and i + 1 < n and text[i + 1] == "/":
+            while i < n and text[i] != "\n":
+                i += 1
+            continue
+        if c == "/" and i + 1 < n and text[i + 1] == "*":
+            i += 2
+            while i + 1 < n and not (text[i] == "*" and text[i + 1] == "/"):
+                i += 1
+            i += 2
+            continue
+        out.append(c)
+        i += 1
+    return "".join(out)
 
 
 class ConVar:
@@ -70,10 +115,10 @@ def parse_convars(root: Path) -> list[ConVar]:
     found: dict[str, ConVar] = {}
     for path in sorted(scripting.rglob("*.inc")):
         rel = path.relative_to(scripting).as_posix()
-        text = path.read_text(encoding="utf-8", errors="replace")
+        text = strip_comments(path.read_text(encoding="utf-8", errors="replace"))
         for m in _CREATE_CONVAR_RE.finditer(text):
             name = m.group("name")
-            if not name.startswith(("zr_", "gs_")):
+            if not name.startswith("zr_"):
                 continue
             cv = ConVar(name, m.group("default"), m.group("description"), rel)
             mm = _MINMAX_RE.search(m.group("rest") or "")
@@ -98,14 +143,31 @@ class Command:
         self.source = source
 
 
-def parse_commands(root: Path) -> list[Command]:
+def parse_defines(root: Path) -> dict[str, str]:
+    """Collect ``#define NAME "literal"`` pairs so constant command names resolve."""
+    scripting = root / SCRIPTING_SUBDIR
+    defines: dict[str, str] = {}
+    for path in sorted(scripting.rglob("*.inc")):
+        text = strip_comments(path.read_text(encoding="utf-8", errors="replace"))
+        for m in _DEFINE_STR_RE.finditer(text):
+            defines.setdefault(m.group("name"), m.group("value"))
+    return defines
+
+
+def parse_commands(root: Path, defines: dict[str, str]) -> list[Command]:
     scripting = root / SCRIPTING_SUBDIR
     found: dict[str, Command] = {}
     for path in sorted(scripting.rglob("*.inc")):
         rel = path.relative_to(scripting).as_posix()
-        text = path.read_text(encoding="utf-8", errors="replace")
+        text = strip_comments(path.read_text(encoding="utf-8", errors="replace"))
         for m in _REG_CMD_RE.finditer(text):
-            name = m.group("name")
+            raw = m.group("name")
+            if raw.startswith('"'):
+                name = raw.strip('"')
+            else:
+                name = defines.get(raw)
+                if name is None:  # dynamic or unknown constant - can't document it
+                    continue
             found[name] = Command(name, m.group("kind"), m.group("flags"), m.group("help"), rel)
     return sorted(found.values(), key=lambda c: c.name)
 
@@ -169,32 +231,38 @@ def render_convars(convars: list[ConVar], version: str) -> str:
 
 def render_commands(commands: list[Command], version: str) -> str:
     stamp = _dt.datetime.now(_dt.timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
-    console = [c for c in commands if c.kind == "Console"]
-    admin = [c for c in commands if c.kind == "Admin"]
+    # ZR registers everything with RegConsoleCmd and checks privileges at runtime,
+    # so there is no reliable Console/Admin split to parse. Only add the flags
+    # column if some command is actually registered with RegAdminCmd.
+    with_flags = any(c.kind == "Admin" for c in commands)
+
+    def esc(text: str) -> str:
+        return text.replace("|", "\\|")
+
     out: list[str] = []
     out.append("# Commands\n")
     out.append(
         "!!! info\n"
         f"    Auto-generated from the plugin source for **v{version}** on {stamp}.\n"
+        "    Names without an `sm_` prefix also work as chat triggers (`!name` / `/name`).\n"
+    )
+    out.append(
+        f"\nThe plugin registers **{len(commands)}** commands. Admin-only commands "
+        "(infect, class editing, weapon restrictions, ...) enforce their access at "
+        "runtime rather than through an admin flag.\n"
     )
 
-    def table(rows: list[Command], with_flags: bool) -> None:
-        if with_flags:
-            out.append("\n| Command | Admin flags | Description |")
-            out.append("| --- | --- | --- |")
-            for c in rows:
-                out.append(f"| `{c.name}` | `{c.flags or '-'}` | {c.help.replace('|', chr(92)+'|')} |")
-        else:
-            out.append("\n| Command | Description |")
-            out.append("| --- | --- |")
-            for c in rows:
-                out.append(f"| `{c.name}` | {c.help.replace('|', chr(92)+'|')} |")
-        out.append("")
-
-    out.append(f"\n## Player commands ({len(console)})\n")
-    table(console, with_flags=False)
-    out.append(f"\n## Admin commands ({len(admin)})\n")
-    table(admin, with_flags=True)
+    if with_flags:
+        out.append("\n| Command | Admin flags | Description |")
+        out.append("| --- | --- | --- |")
+        for c in commands:
+            out.append(f"| `{c.name}` | `{c.flags or '-'}` | {esc(c.help)} |")
+    else:
+        out.append("\n| Command | Description |")
+        out.append("| --- | --- |")
+        for c in commands:
+            out.append(f"| `{c.name}` | {esc(c.help)} |")
+    out.append("")
     return "\n".join(out) + "\n"
 
 
@@ -210,10 +278,14 @@ def main(argv: list[str]) -> int:
 
     version = read_version(root)
     convars = parse_convars(root)
-    commands = parse_commands(root)
+    commands = parse_commands(root, parse_defines(root))
 
     if not convars:
         print("error: no ConVars parsed - regex or layout changed", file=sys.stderr)
+        return 1
+
+    if not commands:
+        print("error: no commands parsed - regex or layout changed", file=sys.stderr)
         return 1
 
     (out / "convars.md").write_text(render_convars(convars, version), encoding="utf-8")

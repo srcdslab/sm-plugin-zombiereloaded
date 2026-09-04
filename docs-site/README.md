@@ -25,7 +25,7 @@ docs-site/
 ```bash
 pip install -r docs-site/requirements.txt
 python docs-site/gen/generate_reference.py
-cp -r docs docs-site/docs/manual        # legacy manual
+mkdir -p docs-site/docs/manual && cp -R docs/. docs-site/docs/manual/   # legacy manual
 mkdocs serve -f docs-site/mkdocs.yml
 ```
 
@@ -33,7 +33,9 @@ mkdocs serve -f docs-site/mkdocs.yml
 
 `generate_reference.py` scans `src/addons/sourcemod/scripting/**/*.inc` for
 `CreateConVar(...)` and `RegConsoleCmd/RegAdminCmd(...)` calls and regenerates
-`docs/reference/*.md`. The CI job runs it on every push to `master`, so any cvar
-change ships with matching docs automatically. The job also fails if zero
-cvars are parsed, which catches an accidental change to the cvar declaration
-style.
+`docs/reference/*.md`. Comments (`//` and `/* */`) are stripped first so dead
+code does not leak in, and constant command names (`SAYHOOKS_KEYWORD_*`) are
+resolved via their `#define`. The CI job runs it on every push to `master`, so
+any cvar or command change ships with matching docs automatically. The job
+fails if zero cvars or zero commands are parsed, which catches an accidental
+change to the declaration style.
