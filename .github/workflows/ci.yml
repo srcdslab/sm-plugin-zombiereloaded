@@ -1,5 +1,7 @@
 name: CI
 on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: write
 jobs:
   build:
     name: Build
@@ -46,6 +48,10 @@ jobs:
     if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          fetch-tags: true
       - name: Delete existing "latest" release and tag
         run: |
           set -euo pipefail
@@ -55,6 +61,7 @@ jobs:
       - uses: rickstaa/action-create-tag@v1
         with:
           tag: latest
+          force_push_tag: true
           github_token: ${{ secrets.GITHUB_TOKEN }}
   release:
     name: Release
