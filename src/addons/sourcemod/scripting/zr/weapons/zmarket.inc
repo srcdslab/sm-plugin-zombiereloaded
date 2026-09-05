@@ -290,6 +290,13 @@ void ZMarketResetPurchaseCount(int client)
  */
 void ZMarketSetPurchaseCount(int client, const char[] weapon, int value, bool add = false)
 {
+    // The trie is destroyed on disconnect, so a deferred caller can land here
+    // with nothing to write to.
+    if (g_hZMarketPurchaseCount[client] == null)
+    {
+        return;
+    }
+
     // Initialize variable (value is 0)
     int purchasemax;
 
@@ -314,6 +321,14 @@ int ZMarketGetPurchaseCount(int client, const char[] weapon)
 {
     // Get value in client's trie.
     int value;
+
+    // The trie is destroyed on disconnect, so a deferred caller can land here
+    // with nothing to read from.
+    if (g_hZMarketPurchaseCount[client] == null)
+    {
+        return 0;
+    }
+
     g_hZMarketPurchaseCount[client].GetValue(weapon, value);
     return value;
 }
@@ -962,7 +977,13 @@ void DelayedBuyRefund(DataPack hPack)
     int iDefaultCash = hPack.ReadCell();
     delete hPack;
 
+    // The player may have left between the buy and this frame.
     int client = GetClientOfUserId(userid);
+    if (!ZRIsClientValid(client))
+    {
+        return;
+    }
+
     AccountSetClientCash(client, iDefaultCash);
 }
 
