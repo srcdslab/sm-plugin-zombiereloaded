@@ -154,7 +154,6 @@ public Action EventPlayerTeam(Event event, const char[] name, bool dontBroadcast
 {
     // Get all required event info.
     int index = GetClientOfUserId(event.GetInt("userid"));
-    int team = event.GetInt("team");
 
     // The engine fires player_team while a client is disconnecting, so the
     // userid may no longer map to a client. Client index 0 is invalid for
@@ -163,6 +162,8 @@ public Action EventPlayerTeam(Event event, const char[] name, bool dontBroadcast
     {
         return Plugin_Handled;
     }
+
+    int team = event.GetInt("team");
 
     // Forward event to modules.
     InfectOnClientTeam(index, team);
