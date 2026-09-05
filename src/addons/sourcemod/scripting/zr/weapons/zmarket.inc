@@ -954,12 +954,12 @@ public Action CommandPlayerBuy(int client, const char[] command, int argc)
     if (!(zmarketfreespawn && !InfectHasZombieSpawned()))
         return Plugin_Continue;
 
-    ConVar cv_StartMoney = FindConVar("mp_startmoney");
-    if (cv_StartMoney == null)
+    // Cached in CvarsInit(). ConVar handles are owned by SourceMod and must
+    // never be closed by the plugin.
+    if (g_hStartMoney == null)
         return Plugin_Continue;
 
-    int iDefaultCash = GetConVarInt(cv_StartMoney);
-    delete cv_StartMoney;
+    int iDefaultCash = g_hStartMoney.IntValue;
 
     DataPack hPack = new DataPack();
     hPack.WriteCell(GetClientUserId(client));
