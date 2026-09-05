@@ -280,6 +280,30 @@ void ModelsPrecache()
 }
 
 /**
+ * Makes sure a model is precached, precaching it on demand when the file is
+ * available but wasn't picked up by ModelsPrecache() (for example models added
+ * to models.txt after the map has loaded, or through a config reload).
+ *
+ * @param path      Full path to the model file.
+ * @return          True if the model is precached (or was just precached),
+ *                  false otherwise.
+ */
+bool ModelsPrecacheOnDemand(const char[] path)
+{
+    if (IsModelPrecached(path))
+    {
+        return true;
+    }
+
+    if (FileExists(path, true))
+    {
+        PrecacheModel(path, true);
+    }
+
+    return IsModelPrecached(path);
+}
+
+/**
  * Returns a random model index according to the specified filter settings.
  *
  * @param client                Optional. Client index used to check for
@@ -291,9 +315,11 @@ void ModelsPrecache()
  *                              ModelTeam_Zombies.
  * @param accessRequireFlags    Optional. One or more required access flags.
  *                              Default is MODEL_ACCESS_PUBLIC.
+ * @param requirePrecached      Optional. Only return models that are currently
+ *                              precached. Default is false.
  * @return              Random model index according to filter, or -1 on error.
  */
-int ModelsGetRandomModel(int client = -1, ModelTeam teamFilter = ModelTeam_Zombies, int accessRequireFlags = MODEL_ACCESS_PUBLIC)
+int ModelsGetRandomModel(int client = -1, ModelTeam teamFilter = ModelTeam_Zombies, int accessRequireFlags = MODEL_ACCESS_PUBLIC, bool requirePrecached = false)
 {
     int modelIndexes[MODELS_MAX];
     int listCount;
@@ -344,6 +370,19 @@ int ModelsGetRandomModel(int client = -1, ModelTeam teamFilter = ModelTeam_Zombi
                     // Client not authorized to use this model.
                     continue;
                 }
+            }
+        }
+
+        // Skip models that aren't precached right now if requested, so callers
+        // that need a model they can apply immediately don't get a dud.
+        if (requirePrecached)
+        {
+            char modelPath[PLATFORM_MAX_PATH];
+            ModelsGetFullPath(index, modelPath, sizeof(modelPath));
+
+            if (!IsModelPrecached(modelPath))
+            {
+                continue;
             }
         }
 
