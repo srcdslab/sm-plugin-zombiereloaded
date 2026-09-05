@@ -154,6 +154,15 @@ public Action EventPlayerTeam(Event event, const char[] name, bool dontBroadcast
 {
     // Get all required event info.
     int index = GetClientOfUserId(event.GetInt("userid"));
+
+    // The engine fires player_team while a client is disconnecting, so the
+    // userid may no longer map to a client. Client index 0 is invalid for
+    // every client native below.
+    if (!ZRIsClientValid(index))
+    {
+        return Plugin_Handled;
+    }
+
     int team = event.GetInt("team");
 
     // Forward event to modules.
@@ -295,6 +304,13 @@ public Action EventPlayerJump(Event event, const char[] name, bool dontBroadcast
 {
     // Get all required event info.
     int index = GetClientOfUserId(event.GetInt("userid"));
+
+    // The userid may no longer map to a client. Client index 0 is invalid for
+    // the client natives used in the post callback.
+    if (!ZRIsClientValid(index))
+    {
+        return Plugin_Continue;
+    }
 
     // Fire post player_jump event.
     CreateTimer(0.0, EventPlayerJumpPost, index);

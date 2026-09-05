@@ -95,19 +95,19 @@ void ModelsLoad()
     // Loop through all models and store attributes in ModelData array.
     do
     {
-        if (ModelCount > MODELS_MAX)
+        if (ModelCount >= MODELS_MAX)
         {
             // Maximum number of models reached. Log a warning and exit the loop.
-            LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Models, "Config Validation", "Warning: Maximum number of models reached (%d). Skipping other models.", MODELS_MAX + 1);
+            LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Models, "Config Validation", "Warning: Maximum number of models reached (%d). Skipping other models.", MODELS_MAX);
 
             break;
         }
 
         kvModels.GetString("name", name, sizeof(name));
-        strcopy(ModelData[ModelCount].Model_Name, 64, name);
+        strcopy(ModelData[ModelCount].Model_Name, sizeof(ModelData[].Model_Name), name);
 
         kvModels.GetString("path", path, sizeof(path));
-        strcopy(ModelData[ModelCount].Model_Path, 64, path);
+        strcopy(ModelData[ModelCount].Model_Path, sizeof(ModelData[].Model_Path), path);
 
         kvModels.GetString("team", team, sizeof(team));
         ModelData[ModelCount].Model_Team = ModelsStringToTeam(team);
@@ -116,7 +116,7 @@ void ModelsLoad()
         ModelData[ModelCount].Model_Access = ModelsStringToAccess(access);
 
         kvModels.GetString("group", group, sizeof(group));
-        strcopy(ModelData[ModelCount].Model_Group, 64, group);
+        strcopy(ModelData[ModelCount].Model_Group, sizeof(ModelData[].Model_Group), group);
 
 
         // Validate model attributes.
@@ -171,7 +171,8 @@ void ModelsLoad()
         // Check if failed.
         if (dir == null)
         {
-            LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Models, "Config Validation", "Error opening directory: %s", dir);
+            LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Models, "Config Validation", "Error opening directory: \"%s\"", path);
+            failedCount++;
             continue;
         }
 
