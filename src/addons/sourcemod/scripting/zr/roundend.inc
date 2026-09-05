@@ -172,9 +172,14 @@ void RoundEndOnRoundFreezeEnd()
 {
     // Calculate round length, in seconds.
     // Get mp_roundtime. (in minutes) - cached in CvarsInit().
+    static bool s_LoggedMissingRoundTime;
     if (g_hRoundTime == null)
     {
-        LogError("[ZR] Can't find \"mp_roundtime\", round end timer not started.");
+        if (!s_LoggedMissingRoundTime)
+        {
+            LogError("[ZR] Can't find \"mp_roundtime\", round end timer not started.");
+            s_LoggedMissingRoundTime = true;
+        }
         return;
     }
 
