@@ -130,6 +130,9 @@ void ClassClientInit(int client)
 
     // Reset spawn flag.
     ClassPlayerSpawned[client] = false;
+
+    // The original model is captured on the client's first spawn.
+    ClassOriginalPlayerModelCached[client] = false;
 }
 
 /**
@@ -228,9 +231,17 @@ void ClassOnClientSpawn(int client)
     // Restore class indexes to be selected on spawn, if available.
     ClassRestoreNextIndexes(client);
 
-    // Cache original player model.
-    GetClientModel(client, originalmodel, sizeof(originalmodel));
-    strcopy(ClassOriginalPlayerModel[client], PLATFORM_MAX_PATH, originalmodel);
+    // Cache the original player model, once per connection. Re-reading it on
+    // every spawn is unsafe: right after CS_RespawnPlayer() (zr_respawn +
+    // zr_respawn_team_zombie) the player can still be carrying the zombie model
+    // this module applied last life, and caching that would later restore a
+    // zombie skin onto a human through a class whose model is "default".
+    if (!ClassOriginalPlayerModelCached[client])
+    {
+        GetClientModel(client, originalmodel, sizeof(originalmodel));
+        strcopy(ClassOriginalPlayerModel[client], PLATFORM_MAX_PATH, originalmodel);
+        ClassOriginalPlayerModelCached[client] = true;
+    }
 
     // Check if the player should spawn in admin mode.
     if (ClassPlayerInAdminMode[client])
