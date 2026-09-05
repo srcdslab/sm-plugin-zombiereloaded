@@ -217,8 +217,9 @@ stock bool VoiceIsClientMuted(int client)
  */
 stock void VoiceReset()
 {
-    // Is alltalk enabled?
-    bool alltalk = GetConVarBool(FindConVar("sv_alltalk"));
+    // Is alltalk enabled? (sv_alltalk is cached in CvarsInit(); treat a
+    // missing cvar as disabled rather than dereferencing null.)
+    bool alltalk = (g_hAllTalk != null) && g_hAllTalk.BoolValue;
 
     // Determine new voice flags based off of alltalk.
     int voiceflags = alltalk ? VOICE_SPEAKALL | VOICE_LISTENALL : VOICE_TEAM | VOICE_LISTENTEAM;

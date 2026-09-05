@@ -213,6 +213,8 @@ ConVar g_hAutoTeamBalance;
 ConVar g_hLimitTeams;
 ConVar g_hRestartGame;
 ConVar g_hStartMoney;
+ConVar g_hRoundTime;
+ConVar g_hAllTalk;
 /**
  * @endsection
  */
@@ -227,6 +229,8 @@ void CvarsInit()
     g_hLimitTeams = FindConVar("mp_limitteams");
     g_hRestartGame = FindConVar("mp_restartgame");
     g_hStartMoney = FindConVar("mp_startmoney");
+    g_hRoundTime = FindConVar("mp_roundtime");
+    g_hAllTalk = FindConVar("sv_alltalk");
 
     // Create zombiereloaded cvars.
     CvarsCreate();

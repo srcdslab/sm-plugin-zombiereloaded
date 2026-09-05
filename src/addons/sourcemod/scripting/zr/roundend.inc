@@ -171,8 +171,19 @@ void RoundEndOnRoundStart()
 void RoundEndOnRoundFreezeEnd()
 {
     // Calculate round length, in seconds.
-    // Get mp_roundtime. (in minutes)
-    float roundtime = FindConVar("mp_roundtime").FloatValue;
+    // Get mp_roundtime. (in minutes) - cached in CvarsInit().
+    static bool s_LoggedMissingRoundTime;
+    if (g_hRoundTime == null)
+    {
+        if (!s_LoggedMissingRoundTime)
+        {
+            LogError("[ZR] Can't find \"mp_roundtime\", round end timer not started.");
+            s_LoggedMissingRoundTime = true;
+        }
+        return;
+    }
+
+    float roundtime = g_hRoundTime.FloatValue;
 
     // Convert to seconds.
     roundtime *= 60.0;
