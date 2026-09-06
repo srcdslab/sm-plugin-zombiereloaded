@@ -36,6 +36,7 @@ theme:
 markdown_extensions:
   - admonition
   - attr_list
+  - md_in_html
   - toc:
       permalink: true
   - pymdownx.highlight
@@ -46,10 +47,25 @@ markdown_extensions:
 plugins:
   - search
 
+extra_css:
+  - stylesheets/manual.css
+
 nav:
   - Home: index.md
   - Getting started: getting-started.md
+  - Guide:
+      - Overview: guide/index.md
+      - Installation: guide/installation.md
+      - Configuration: guide/configuration.md
+      - Player classes: guide/classes.md
+      - Weapons & ZMarket: guide/weapons.md
+      - Hit groups & knockback: guide/hitgroups.md
+      - Gameplay features: guide/features.md
+      - Map volumes: guide/volumes.md
+      - Admin access: guide/admin.md
+      - How to play: guide/how-to-play.md
+      - Troubleshooting: guide/troubleshooting.md
+      - Server administration: guide/server-admin.md
   - Reference:
       - ConVars: reference/convars.md
       - Commands: reference/commands.md
-  - Legacy manual: manual/index.html

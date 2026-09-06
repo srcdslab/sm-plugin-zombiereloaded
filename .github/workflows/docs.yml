@@ -6,7 +6,6 @@ on:
   pull_request:
     paths:
       - 'docs-site/**'
-      - 'docs/**'
       - 'src/addons/sourcemod/scripting/**'
       - '.github/workflows/docs.yml'
   workflow_dispatch:
@@ -37,13 +36,8 @@ jobs:
       - name: Generate reference docs from plugin source
         run: python docs-site/gen/generate_reference.py
 
-      - name: Bundle legacy manual
-        run: |
-          mkdir -p docs-site/docs/manual
-          cp -R docs/. docs-site/docs/manual/
-
       - name: Build MkDocs site
-        run: mkdocs build -f docs-site/mkdocs.yml -d "$GITHUB_WORKSPACE/site"
+        run: mkdocs build -f docs-site/mkdocs.yml -d "$GITHUB_WORKSPACE/site" --strict
 
       - name: Upload Pages artifact
         if: github.event_name != 'pull_request'

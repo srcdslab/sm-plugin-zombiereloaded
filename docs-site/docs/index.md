@@ -12,14 +12,18 @@ everyone.
 | Page | What's in it |
 | --- | --- |
 | [Getting started](getting-started.md) | Install, requirements, first run |
+| [Guide](guide/index.md) | The full hand-written manual: configuration file formats, classes, weapons, volumes, admin access, tactics and troubleshooting |
 | [ConVars](reference/convars.md) | **Every** `zr_*` console variable, its default and range - generated from the source on every push |
 | [Commands](reference/commands.md) | Player and admin commands - generated from the source |
-| [Legacy manual](manual/index.html) | The full hand-written user manual (models, classes, volumes, logging...) |
 
-## Why the reference pages are trustworthy
+## Two kinds of pages
 
-The **ConVars** and **Commands** pages are not maintained by hand. A CI job runs
-[`docs-site/gen/generate_reference.py`](https://github.com/srcdslab/sm-plugin-zombiereloaded/blob/master/docs-site/gen/generate_reference.py)
+The **Guide** is written and maintained by hand. It explains *how* each system
+works and how to configure it - the depth the reference tables don't carry.
+
+The **ConVars** and **Commands** pages are the opposite: never edited by hand. A
+CI job runs
+[`docs-site/gen/generate_reference.py`](https://github.com/srcdslab/sm-plugin-zombiereloaded/blob/master/docs-site/gen/generate_reference.py),
 which reads every `CreateConVar(...)` / `Reg*Cmd(...)` call in the plugin and
-rebuilds the tables. If a cvar is added, removed, or its default/description
-changes, the docs update automatically on the next merge to `master`.
+rebuilds the tables, so an added or renamed cvar shows up on the next merge to
+`master` with no manual step.

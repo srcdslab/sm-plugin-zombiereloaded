@@ -3,7 +3,6 @@ release/
 
 # docs-site build artifacts
 docs-site/site/
-docs-site/docs/manual/
 docs-site/docs/reference/convars.md
 docs-site/docs/reference/commands.md
 

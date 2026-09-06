@@ -1,6 +1,6 @@
 # docs-site
 
-Modern documentation for Zombie:Reloaded, built with
+Documentation for Zombie:Reloaded, built with
 [MkDocs Material](https://squidfunk.github.io/mkdocs-material/) and published to
 GitHub Pages by [`.github/workflows/docs.yml`](../.github/workflows/docs.yml).
 
@@ -14,18 +14,27 @@ docs-site/
 └── docs/
     ├── index.md
     ├── getting-started.md
-    ├── manual/                # copied from repo-root docs/ at build time
+    ├── stylesheets/manual.css # table styling for the guide pages
+    ├── guide/                 # the hand-written manual, one page per topic - EDIT THESE
+    │   └── *.md
     └── reference/
         ├── convars.md         # GENERATED - do not edit
         └── commands.md        # GENERATED - do not edit
 ```
+
+## Two kinds of content
+
+- **`docs/guide/*.md`** - the hand-written manual (formerly the single
+  `docs/index.html`). Explains how each system works and how to configure it.
+  Edit these directly as Markdown.
+- **`docs/reference/{convars,commands}.md`** - generated from the plugin source
+  on every build, git-ignored. Never edit by hand.
 
 ## Build locally
 
 ```bash
 pip install -r docs-site/requirements.txt
 python docs-site/gen/generate_reference.py
-mkdir -p docs-site/docs/manual && cp -R docs/. docs-site/docs/manual/   # legacy manual
 mkdocs serve -f docs-site/mkdocs.yml
 ```
 
