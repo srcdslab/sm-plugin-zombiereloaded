@@ -131,8 +131,11 @@ void ClassClientInit(int client)
     // Reset spawn flag.
     ClassPlayerSpawned[client] = false;
 
-    // The original model is captured on the client's first spawn.
+    // The original model is captured on the client's first spawn. Clear the
+    // stored path too, so a slot reused by a new occupant can't hand the
+    // previous player's model to a "default" restore before that capture runs.
     ClassOriginalPlayerModelCached[client] = false;
+    ClassOriginalPlayerModel[client][0] = 0;
 }
 
 /**
