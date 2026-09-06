@@ -1,6 +1,11 @@
 build/
 release/
 
+# docs-site build artifacts
+docs-site/site/
+docs-site/docs/reference/convars.md
+docs-site/docs/reference/commands.md
+
 .DS_Store
 .vscode
 
@@ -8,3 +13,5 @@ release/
 plugins/
 .sourceknight
 .venv
+
+/site/

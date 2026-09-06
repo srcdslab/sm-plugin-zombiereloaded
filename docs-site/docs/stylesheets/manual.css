@@ -1,0 +1,72 @@
+/* Layout helpers for the pages converted from the hand-written manual
+   (docs/index.html). Colours come from Material's theme variables so the
+   tables read correctly in both the light and dark palettes. */
+
+.md-typeset .manual-table {
+  overflow-x: auto;
+}
+
+/* the manual wraps most of its tables in a <blockquote> purely for indentation;
+   drop the quote styling and keep just the offset */
+.md-typeset blockquote {
+  border-left: none;
+  padding-left: 0;
+  color: inherit;
+}
+.md-typeset blockquote > .manual-table,
+.md-typeset blockquote > table {
+  margin-left: 0;
+}
+
+/* attribute / command name cells: monospace, like the original */
+.md-typeset td.commandheader,
+.md-typeset td.parameter,
+.md-typeset td.valueoption,
+.md-typeset td.code,
+.md-typeset .code,
+.md-typeset li.code {
+  font-family: var(--md-code-font-family, monospace);
+  font-size: .85em;
+}
+
+.md-typeset td.commandheader {
+  border-bottom: 1px dashed var(--md-default-fg-color--lighter);
+  white-space: nowrap;
+}
+
+/* description rows sit under their name row, indented */
+.md-typeset td.indent {
+  padding-left: 2rem;
+}
+.md-typeset td.indent > p:first-child {
+  margin-top: 0;
+}
+
+.md-typeset td.parameter,
+.md-typeset td.valueoption {
+  white-space: nowrap;
+  vertical-align: top;
+}
+
+.md-typeset .namewidth  { width: 12rem; }
+.md-typeset .mediumwidth { width: 9rem; }
+.md-typeset .tinywidth   { width: 5rem; }
+
+.md-typeset table caption {
+  caption-side: top;
+  text-align: left;
+  font-weight: 700;
+  padding: .4rem 0;
+  color: var(--md-default-fg-color--light);
+}
+
+.md-typeset .imagetext {
+  font-size: .75rem;
+  color: var(--md-default-fg-color--light);
+}
+
+/* nested value-option tables inside a description cell: tighter, no full border box */
+.md-typeset td .manual-table table,
+.md-typeset td table {
+  margin: .4rem 0;
+}
