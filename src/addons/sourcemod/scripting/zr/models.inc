@@ -255,6 +255,12 @@ public void ModelsOnConfigReload(ConfigFile config)
 
 /**
  * Precaches all models.
+ *
+ * An unprecached model can't be applied without risking a server crash. If a
+ * whole team ends up with none of its models precached, the plugin is stopped
+ * (LogType_Fatal) here - at map load and on `zr_config_reload models` - so the
+ * server owner fixes models.txt or the FastDL setup instead of running with
+ * zombies (or humans) stuck on the wrong model.
  */
 void ModelsPrecache()
 {
@@ -264,6 +270,10 @@ void ModelsPrecache()
     // check if we have hitboxchanger extension running
     bool hitboxchangerLoaded = (GetFeatureStatus(FeatureType_Native, "SetNumHitboxes") == FeatureStatus_Available);
 #endif
+
+    // Per-team tally: models configured vs models that actually precached.
+    int zombieCount, zombiePrecached;
+    int humanCount, humanPrecached;
 
     // Loop through all models, build full path and cache them.
     for (int model = 0; model < ModelCount; model++)
@@ -276,6 +286,41 @@ void ModelsPrecache()
 #else
         PrecacheModel(file);
 #endif
+
+        bool precached = IsModelPrecached(file);
+
+        switch (ModelsGetTeam(model))
+        {
+            case ModelTeam_Zombies:
+            {
+                zombieCount++;
+                if (precached)
+                {
+                    zombiePrecached++;
+                }
+            }
+            case ModelTeam_Humans:
+            {
+                humanCount++;
+                if (precached)
+                {
+                    humanPrecached++;
+                }
+            }
+        }
+    }
+
+    // A team that has models configured but none precached is unusable: applying
+    // any of them would risk crashing the server. Stop the plugin so the server
+    // owner fixes the model list / FastDL.
+    if (zombieCount && !zombiePrecached)
+    {
+        LogEvent(false, LogType_Fatal, LOG_CORE_EVENTS, LogModule_Models, "Config Validation", "None of the %d configured zombie model(s) could be precached. Check models.txt and that the model files exist on the server / FastDL.", zombieCount);
+    }
+
+    if (humanCount && !humanPrecached)
+    {
+        LogEvent(false, LogType_Fatal, LOG_CORE_EVENTS, LogModule_Models, "Config Validation", "None of the %d configured human model(s) could be precached. Check models.txt and that the model files exist on the server / FastDL.", humanCount);
     }
 }
 
