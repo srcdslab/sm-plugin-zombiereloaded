@@ -60,5 +60,17 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      # Force the "GitHub Actions" build type so a leftover "Deploy from a branch"
+      # source can't trigger the legacy Jekyll builder (which fails: there is no
+      # /docs directory - the site lives in docs-site/ and is built by MkDocs).
+      - name: Pin the Pages build type to GitHub Actions
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api -X PUT "repos/${{ github.repository }}/pages" -f build_type=workflow \
+            || gh api -X POST "repos/${{ github.repository }}/pages" -f build_type=workflow \
+            || echo "::warning::Could not set the Pages build type; switch Settings -> Pages -> Source to 'GitHub Actions' by hand."
+
       - id: deployment
         uses: actions/deploy-pages@v4
