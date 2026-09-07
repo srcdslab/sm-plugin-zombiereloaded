@@ -1,0 +1,17 @@
+# Hit groups & knockback
+
+<p>Hit group configuration makes it possible to disable damage or adjust knock back per hit group. This is useful for fine tuning game balance.</p>
+
+<p>The hit group configuration file is a file in Valve's key/value format with the root key "hitgroups" and a sub key for each hit group.</p>
+
+<p>The default file is:</p>
+
+<blockquote><p><code>addons/sourcemod/configs/zr/hitgroups.txt</code></p></blockquote>
+
+<blockquote><table> <caption>Hit Group Console Variables</caption> <tr> <th>Console variable:</th> <th>Default:</th> </tr> <tr> <td class="commandheader">zr_hitgroups</td> <td class="commandheader">1</td> </tr> <tr> <td class="indent" colspan="2"> <p>Enable hitgroups module, <strong>disabling this will disable hitgroup-related features</strong>. (hitgroup knockback multipliers, hitgroup damage control)</p> <p>Options:<br/> 0 or 1</p> </td> </tr> <tr> <td class="commandheader">zr_knockback_maxvel</td> <td class="commandheader">0</td> </tr> <tr> <td class="indent" colspan="2"> <p>Set maximum velocity zombies can get from knockback [0 = Off].</p> <p>Options:<br/> 0 or &gt;0</p> </td> </tr> </table></blockquote>
+
+<blockquote><table> <caption>Hit Group Commands</caption> <tr> <th>Syntax:</th> </tr> <tr> <td class="commandheader">zr_hitgroup &lt;hitgroup name&gt; [value]</td> </tr> <tr> <td class="indent"> <p>Toggles or sets if a zombie's hitgroup can be damaged.</p> <p>Parameters:</p> <table> <tr> <td class="parameter">hitgrup name</td> <td>Name of the hit group to adjust. Options: <ul> <li class="code">generic</li> <li class="code">head</li> <li class="code">chest</li> <li class="code">stomach</li> <li class="code">leftarm</li> <li class="code">rightarm</li> <li class="code">leftleg</li> <li class="code">rightleg</li> <li class="code">gear</li> </ul> </td> </tr> <tr><td class="parameter">value</td><td>Optional. Enable hit group damage. Default action is to toggle setting. Options: 0 or 1</td></tr> </table> </td> </tr> </table></blockquote>
+
+## Hit Group Attributes
+
+<blockquote><table> <caption>Hit Group Attributes</caption> <tr> <th>Attribute:</th> <th>Type:</th> <th>Limits/Requirements:</th> </tr> <tr> <td class="commandheader">index</td> <td class="commandheader">number</td> <td class="commandheader">-</td> </tr> <tr> <td class="indent" colspan="3"> <p>The hit group index.</p> <p>Options:</p> <table> <tr><td class="valueoption">0</td><td>Generic</td></tr> <tr><td class="valueoption">1</td><td>Head</td></tr> <tr><td class="valueoption">2</td><td>Chest</td></tr> <tr><td class="valueoption">3</td><td>Stomach</td></tr> <tr><td class="valueoption">4</td><td>Left Arm</td></tr> <tr><td class="valueoption">5</td><td>Right Arm</td></tr> <tr><td class="valueoption">6</td><td>Left Leg</td></tr> <tr><td class="valueoption">7</td><td>Right Leg</td></tr> <tr><td class="valueoption">8</td><td>Gear</td></tr> </table> </td> </tr> <tr> <td class="commandheader">damage</td> <td class="commandheader">text</td> <td class="commandheader">"yes" or "no"</td> </tr> <tr> <td class="indent" colspan="3"> <p>Allows damage to be done on the specified hit group for zombies.</p> <p>Options:</p> <table> <tr><td class="valueoption">yes</td><td>Allow damage</td></tr> <tr><td class="valueoption">no</td><td>Ignore damage</td></tr> </table> </td> </tr> <tr> <td class="commandheader">knockback</td> <td class="commandheader">decimal</td> <td class="commandheader">-</td> </tr> <tr> <td class="indent" colspan="3"> <p>The knock back multiplier for the hitgroup. 1.0 for no change.</p> </td> </tr> </table></blockquote>

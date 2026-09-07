@@ -1,0 +1,71 @@
+site_name: Zombie:Reloaded Documentation
+site_description: Infection / survival gameplay for SourceMod - configuration reference and manual
+site_url: https://srcdslab.github.io/sm-plugin-zombiereloaded/
+repo_url: https://github.com/srcdslab/sm-plugin-zombiereloaded
+repo_name: srcdslab/sm-plugin-zombiereloaded
+edit_uri: edit/master/docs-site/docs/
+docs_dir: docs
+
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: green
+      accent: light green
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: green
+      accent: light green
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.top
+    - navigation.sections
+    - content.code.copy
+    - search.suggest
+    - search.highlight
+    - toc.follow
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.details
+  - tables
+
+plugins:
+  - search
+
+extra_css:
+  - stylesheets/manual.css
+
+nav:
+  - Home: index.md
+  - Getting started: getting-started.md
+  - Guide:
+      - Overview: guide/index.md
+      - Installation: guide/installation.md
+      - Configuration: guide/configuration.md
+      - Player classes: guide/classes.md
+      - Weapons & ZMarket: guide/weapons.md
+      - Hit groups & knockback: guide/hitgroups.md
+      - Gameplay features: guide/features.md
+      - Map volumes: guide/volumes.md
+      - Admin access: guide/admin.md
+      - How to play: guide/how-to-play.md
+      - Troubleshooting: guide/troubleshooting.md
+      - Server administration: guide/server-admin.md
+  - Reference:
+      - ConVars: reference/convars.md
+      - Commands: reference/commands.md
