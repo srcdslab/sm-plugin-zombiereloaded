@@ -5,9 +5,13 @@ release/
 docs-site/site/
 docs-site/docs/reference/convars.md
 docs-site/docs/reference/commands.md
+docs-site/docs/reference/classes.md
+docs-site/docs/reference/weapons.md
+docs-site/docs/reference/hitgroups.md
 
 .DS_Store
 .vscode
+__pycache__/
 
 *.smx
 plugins/

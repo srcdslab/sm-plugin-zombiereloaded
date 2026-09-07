@@ -69,3 +69,6 @@ nav:
   - Reference:
       - ConVars: reference/convars.md
       - Commands: reference/commands.md
+      - Default classes: reference/classes.md
+      - Default weapons: reference/weapons.md
+      - Default hit groups: reference/hitgroups.md
