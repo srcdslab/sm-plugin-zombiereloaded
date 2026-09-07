@@ -54,6 +54,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      # A PR conversation comment is an "issue comment", but the REST endpoint
+      # accepts "Pull requests: write" when the issue is a pull request - which
+      # is all this job ever touches. No issues: write needed.
       pull-requests: write
     steps:
       - uses: actions/checkout@v7
@@ -82,24 +85,25 @@ jobs:
           report="$RUNNER_TEMP/report.md"
           : > "$report"
           changed=0
+          max_lines=200
           names=$(ls "$RUNNER_TEMP/head" "$RUNNER_TEMP/base-ref" 2>/dev/null | { grep '\.md$' || true; } | sort -u)
           for name in $names; do
-            base="$RUNNER_TEMP/base-ref/$name"
-            head="$RUNNER_TEMP/head/$name"
-            [ -f "$base" ] || base=/dev/null
-            [ -f "$head" ] || head=/dev/null
+            old="$RUNNER_TEMP/base-ref/$name"; [ -f "$old" ] || old=/dev/null
+            new="$RUNNER_TEMP/head/$name";     [ -f "$new" ] || new=/dev/null
             # Ignore the "Auto-generated ... on <timestamp>" line, it always changes.
-            if diff -I '^    Auto-generated ' "$base" "$head" >/dev/null 2>&1; then
+            if diff -I '^    Auto-generated ' "$old" "$new" >/dev/null 2>&1; then
               continue
             fi
             changed=1
-            diff -u -I '^    Auto-generated ' "$base" "$head" > "$RUNNER_TEMP/d.txt" 2>&1 || true
+            # Unified diff without the 2-line "--- / +++" file header.
+            diff -u -I '^    Auto-generated ' "$old" "$new" 2>&1 | tail -n +3 > "$RUNNER_TEMP/d.txt" || true
+            total=$(wc -l < "$RUNNER_TEMP/d.txt")
             {
               echo "<details><summary><code>docs-site/docs/reference/$name</code></summary>"
               echo
               echo '```diff'
-              sed -n '3,203p' "$RUNNER_TEMP/d.txt"
-              if [ "$(wc -l < "$RUNNER_TEMP/d.txt")" -gt 203 ]; then echo '... diff truncated'; fi
+              head -n "$max_lines" "$RUNNER_TEMP/d.txt"
+              if [ "$total" -gt "$max_lines" ]; then echo "... $((total - max_lines)) more diff line(s) truncated"; fi
               echo '```'
               echo
               echo "</details>"
