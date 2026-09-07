@@ -493,6 +493,12 @@ bool ClassAllowInstantChange[MAXPLAYERS + 1];
 char ClassOriginalPlayerModel[MAXPLAYERS + 1][PLATFORM_MAX_PATH];
 
 /**
+ * Whether ClassOriginalPlayerModel has been captured for this client. Captured
+ * once per connection so a later "default" restore can't pick up a class model.
+ */
+bool ClassOriginalPlayerModelCached[MAXPLAYERS + 1];
+
+/**
  * Specifies whether a player has spawned.
  */
 bool ClassPlayerSpawned[MAXPLAYERS + 1];

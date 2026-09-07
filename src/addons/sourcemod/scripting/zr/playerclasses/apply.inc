@@ -150,6 +150,14 @@ bool ClassApplyModel(int client, int classindex, int cachetype = ZR_CLASS_CACHE_
     }
     else if (strcmp(modelpath, "default", false) == 0)
     {
+        // No original model captured yet (client hasn't had its first spawn).
+        // Leave the current model alone rather than restoring an empty or stale
+        // path.
+        if (!ClassOriginalPlayerModel[client][0])
+        {
+            return true;
+        }
+
         // Get current model.
         GetClientModel(client, modelpath, sizeof(modelpath));
 
