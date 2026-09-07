@@ -482,6 +482,16 @@ def render_weapons(weapons: list[dict], version: str) -> str:
 
 _CLASS_TEAM_NAMES = {"0": "Zombie", "1": "Human", "2": "Admin-mode"}
 
+# Only the first file is loaded on a stock install (zr_config_path_playerclasses);
+# the rest ship as alternative sets a server points that cvar at.
+_CLASS_FILE_NOTES = {
+    "playerclasses.txt": "Loaded by default (`zr_config_path_playerclasses`).",
+    "playerclasses-nemesis.txt": (
+        "Alternative nemesis-mode set - **not loaded by default**. Point"
+        " `zr_config_path_playerclasses` at this file to use it."
+    ),
+}
+
 
 def _class_regen(c: dict) -> str:
     interval = c.get("health_regen_interval", "0")
@@ -521,16 +531,19 @@ def _class_notes(c: dict) -> str:
 
 def render_classes(class_sets: list[tuple[str, list[dict]]], version: str) -> str:
     stamp = _dt.datetime.now(_dt.timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
-    total = sum(len(cs) for _, cs in class_sets)
     out = ["# Default player classes\n"]
     out.append(_config_note("configs/zr/playerclasses*.txt", ("Player classes", "../guide/classes.md"), version, stamp))
     out.append(
-        f"\nThe shipped class configs define **{total}** classes. `Speed` is the raw "
-        "config value - with the default `prop` speed method it is an offset from 250. "
-        "`Knockback` and `Jump` apply to zombie classes only.\n"
+        "\nA stock install loads only `playerclasses.txt`; the other files ship as "
+        "alternative sets a server switches to via `zr_config_path_playerclasses`. "
+        "`Speed` is the raw config value - with the default `prop` speed method it is "
+        "an offset from 250. `Knockback` and `Jump` apply to zombie classes only.\n"
     )
     for filename, classes in class_sets:
-        out.append(f"\n## `{filename}`\n")
+        out.append(f"\n## `{filename}` ({len(classes)} classes)\n")
+        note = _CLASS_FILE_NOTES.get(filename)
+        if note:
+            out.append(f"!!! note\n    {note}\n")
         by_team: dict[str, list[dict]] = {}
         for c in classes:
             by_team.setdefault(c.get("team", "0"), []).append(c)
