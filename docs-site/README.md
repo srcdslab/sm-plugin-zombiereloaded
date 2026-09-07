@@ -48,3 +48,8 @@ resolved via their `#define`. The CI job runs it on every push to `master`, so
 any cvar or command change ships with matching docs automatically. The job
 fails if zero cvars or zero commands are parsed, which catches an accidental
 change to the declaration style.
+
+On a pull request the `reference-diff` job regenerates the reference for the PR
+and its base branch and posts (or updates) a single comment with a `diff` of
+what changed, so a cvar/command rename or default change is visible in review
+without checking out the branch.
