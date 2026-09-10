@@ -131,6 +131,10 @@ void ClassClientInit(int client)
     // Reset spawn flag.
     ClassPlayerSpawned[client] = false;
 
+    char trace[CLASS_MODEL_TRACE_LENGTH];
+    ClassModelTraceClient(client, trace, sizeof(trace));
+    LogEvent(false, LogType_Normal, LOG_DEBUG_DETAIL, LogModule_Playerclasses, "Model Trace", "init %s dropped=\"%s\"", trace, ClassOriginalPlayerModel[client]);
+
     // Drop the previous occupant's original model. The new player's own model
     // is captured on their first spawn; until then there is nothing to restore.
     ClassOriginalPlayerModel[client][0] = 0;
@@ -220,6 +224,7 @@ void ClassOnClientDisconnect(int client)
 void ClassOnClientSpawnPre(int client)
 {
     char originalmodel[PLATFORM_MAX_PATH];
+    char trace[CLASS_MODEL_TRACE_LENGTH];
 
     // Check if the player is dead. Spawning into the game is also a event in
     // the connection process.
@@ -230,17 +235,34 @@ void ClassOnClientSpawnPre(int client)
 
     GetClientModel(client, originalmodel, sizeof(originalmodel));
 
+    ClassModelTraceClient(client, trace, sizeof(trace));
+
     // Never record a model this plugin applied. Even this early the player can
     // still be wearing a class model: the game does not always reset the model
     // before player_spawn fires, and InfectOnClientSpawn() respawns team-swapped
     // players through CS_RespawnPlayer(), which fires a nested player_spawn.
     // Keeping the last known good value beats caching a zombie skin.
-    if (!originalmodel[0] ||
-        ModelsIsManagedPath(originalmodel) ||
-        strcmp(originalmodel, ClassAppliedPlayerModel[client], false) == 0)
+    //
+    // The three rejections are kept apart so the trace says which one fired.
+    if (!originalmodel[0])
     {
+        LogEvent(false, LogType_Normal, LOG_DEBUG_DETAIL, LogModule_Playerclasses, "Model Trace", "capture %s read=\"\" result=skipped reason=empty kept=\"%s\"", trace, ClassOriginalPlayerModel[client]);
         return;
     }
+
+    if (ModelsIsManagedPath(originalmodel))
+    {
+        LogEvent(false, LogType_Normal, LOG_DEBUG_DETAIL, LogModule_Playerclasses, "Model Trace", "capture %s read=\"%s\" result=skipped reason=models.txt kept=\"%s\"", trace, originalmodel, ClassOriginalPlayerModel[client]);
+        return;
+    }
+
+    if (strcmp(originalmodel, ClassAppliedPlayerModel[client], false) == 0)
+    {
+        LogEvent(false, LogType_Normal, LOG_DEBUG_DETAIL, LogModule_Playerclasses, "Model Trace", "capture %s read=\"%s\" result=skipped reason=plugin-applied kept=\"%s\"", trace, originalmodel, ClassOriginalPlayerModel[client]);
+        return;
+    }
+
+    LogEvent(false, LogType_Normal, LOG_DEBUG_DETAIL, LogModule_Playerclasses, "Model Trace", "capture %s read=\"%s\" result=stored previous=\"%s\"", trace, originalmodel, ClassOriginalPlayerModel[client]);
 
     strcopy(ClassOriginalPlayerModel[client], PLATFORM_MAX_PATH, originalmodel);
 }

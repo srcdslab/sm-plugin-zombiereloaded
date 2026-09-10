@@ -619,6 +619,31 @@ bool ModelsIsManagedPath(const char[] path)
 }
 
 /**
+ * Converts a team setting to a readable string, for logs.
+ *
+ * @param team      Team setting to convert.
+ * @param buffer    Destination string buffer.
+ * @param maxlen    Size of buffer.
+ * @return          Number of cells written.
+ */
+int ModelsTeamToString(ModelTeam team, char[] buffer, int maxlen)
+{
+    switch (team)
+    {
+        case ModelTeam_Zombies:
+        {
+            return strcopy(buffer, maxlen, "zombies");
+        }
+        case ModelTeam_Humans:
+        {
+            return strcopy(buffer, maxlen, "humans");
+        }
+    }
+
+    return strcopy(buffer, maxlen, "invalid");
+}
+
+/**
  * Converts the specified string to a team setting.
  *
  * @param team  String to convert.
