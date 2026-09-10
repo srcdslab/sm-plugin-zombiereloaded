@@ -585,6 +585,40 @@ void ModelsGetFullPath(int index, char[] buffer, int maxlen)
 }
 
 /**
+ * Checks if a model path is one of the models managed by this plugin (the ones
+ * listed in models.txt).
+ *
+ * Used to tell a player's own game model apart from a model this plugin has
+ * applied, so a class model is never mistaken for the player's original model.
+ *
+ * @param path      Model path to look up, in the same form as GetClientModel()
+ *                  and ModelsGetFullPath() produce.
+ * @return          True if the path belongs to a configured model, false
+ *                  otherwise. An empty path is never a managed model.
+ */
+bool ModelsIsManagedPath(const char[] path)
+{
+    char fullpath[PLATFORM_MAX_PATH];
+
+    if (!path[0])
+    {
+        return false;
+    }
+
+    for (int index = 0; index < ModelCount; index++)
+    {
+        ModelsGetFullPath(index, fullpath, sizeof(fullpath));
+
+        if (strcmp(path, fullpath, false) == 0)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/**
  * Converts the specified string to a team setting.
  *
  * @param team  String to convert.

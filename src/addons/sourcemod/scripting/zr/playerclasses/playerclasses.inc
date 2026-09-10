@@ -489,8 +489,19 @@ bool ClassAllowInstantChange[MAXPLAYERS + 1];
 /**
  * Cache for storing original model path before applying custom models. Used
  * when restoring to old model.
+ *
+ * Only ever holds a model this plugin does not manage - it is refreshed in
+ * ClassOnClientSpawnPre, which skips paths listed in models.txt. Empty means
+ * nothing usable has been seen yet, and "default" leaves the model untouched.
  */
 char ClassOriginalPlayerModel[MAXPLAYERS + 1][PLATFORM_MAX_PATH];
+
+/**
+ * The last model this plugin applied to a player, so ClassOnClientSpawnPre can
+ * recognise it and never mistake it for the player's own model. Covers class
+ * models that aren't listed in models.txt, which ModelsIsManagedPath can't see.
+ */
+char ClassAppliedPlayerModel[MAXPLAYERS + 1][PLATFORM_MAX_PATH];
 
 /**
  * Specifies whether a player has spawned.
