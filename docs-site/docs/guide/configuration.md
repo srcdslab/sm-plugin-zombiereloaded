@@ -96,35 +96,6 @@
 
 <blockquote><table> <caption>Log Console commands</caption> <tr> <th>Syntax:</th> </tr> <tr> <td class="commandheader">zr_log_add_module &lt;module&gt; [modules...]</td> </tr> <tr> <td class="indent"> <p>Adds one or more modules to the module filter. Use short module names, see <a href="#list-of-modules">List Of Modules (3.3.2)</a>.</p> <p>Parameters:</p> <blockquote><table> <tr><td class="parameter">module</td><td>Name of the module to add.</td></tr> <tr><td class="parameter">modules</td><td>Additional modules to add.</td></tr> </table></blockquote> </td> </tr> <tr> <td class="commandheader">zr_log_remove_module &lt;module&gt; [modules...]</td> </tr> <tr> <td class="indent"> <p>Removes one or more modules from the module filter. Use short module names, see <a href="#list-of-modules">List Of Modules (3.3.2)</a>.</p> <p>Parameters:</p> <blockquote><table> <tr><td class="parameter">module</td><td>Name of the module to remove.</td></tr> <tr><td class="parameter">modules</td><td>Additional modules to remove.</td></tr> </table></blockquote> </td> </tr> <tr> <td class="commandheader">zr_log_list</td> </tr> <tr> <td class="indent"> <p>Lists current log flag settings and module filtering settings.</p> </td> </tr> </table></blockquote>
 
-### Model Tracing
-
-<p>Every model decision the plugin makes can be traced, to diagnose players ending up with the wrong skin. Traces are written under <code>LOG_DEBUG_DETAIL</code> with the fixed description <code>Model Trace</code>, so the whole session can be pulled out of the SourceMod log with a single grep.</p>
-
-To enable it, in the main configuration file:
-
-```
-zr_log                  1
-zr_log_flags            18      // 2 (LOG_GAME_EVENTS) + 16 (LOG_DEBUG_DETAIL)
-zr_log_module_filter    1
-zr_log_add_module       playerclasses
-```
-
-Then collect the trace with:
-
-```
-grep "Model Trace" addons/sourcemod/logs/L*.log
-```
-
-Three kinds of line are written, each carrying the player's name, userid, SteamID, team and zombie state so a single player can be followed across rounds:
-
-| Line | When | Key fields |
-| --- | --- | --- |
-| `init` | Client enters a player slot | `dropped` - the cached original model being discarded with the previous occupant |
-| `capture` | Start of every spawn, before any class model is applied | `read` - model found on the player; `result` - `stored` or `skipped`; `reason` - `empty`, `models.txt` or `plugin-applied`; `kept`/`previous` - the cached original |
-| `apply` | Every call that applies a class model | `class`, `cfg` - the class `model_path` as configured; `resolved` - the path actually used; `result` - `applied`, `skipped`, `blocked` or `preset-fallback`; `original` - the cached original model |
-
-<p>A player wearing the wrong skin should show a <code>capture</code> line whose <code>read</code> is a zombie model, or an <code>apply</code> line with <code>cfg="default"</code> whose <code>original</code> is a zombie model. Leave the flag off on a normal server: it writes several lines per player per round.</p>
-
 ### Log Flags
 
 <blockquote><table> <caption>Log Flags</caption> <tr> <th class="namewidth">Flag:</th> <th class="tinywidth">Bit No.:</th> <th class="tinywidth">Value:</th> <th>Description:</th> </tr> <tr> <td class="code">LOG_CORE_EVENTS</td> <td>1</td> <td>1</td> <td>Log events from the plugin core like config validation and other messages.</td> </tr> <tr> <td class="code">LOG_GAME_EVENTS</td> <td>2</td> <td>2</td> <td>Log admin commands, console commands, and game related events from modules like, suicide attempts and weapon restrictions.</td> </tr> <tr> <td class="code">LOG_PLAYER_COMMANDS</td> <td>3</td> <td>4</td> <td>Log events that are triggered by players, like chat triggers, teleporting and class changes.</td> </tr> <tr> <td class="code">LOG_DEBUG</td> <td>4</td> <td>8</td> <td>Log debug messages, if any. Usually only developers need to enable this log flag.</td> </tr> <tr> <td class="code">LOG_DEBUG_DETAIL</td> <td>5</td> <td>16</td> <td>Log additional debug messages with more details. May cause spam depending on module filter settings. Usually only developers need to enable this log flag.</td> </tr> </table></blockquote>

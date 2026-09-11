@@ -504,48 +504,6 @@ char ClassOriginalPlayerModel[MAXPLAYERS + 1][PLATFORM_MAX_PATH];
 char ClassAppliedPlayerModel[MAXPLAYERS + 1][PLATFORM_MAX_PATH];
 
 /**
- * Length of the client description used in model trace log lines.
- */
-#define CLASS_MODEL_TRACE_LENGTH 256
-
-/**
- * Builds the client description shared by every "Model Trace" log line.
- *
- * Traces are written under LOG_DEBUG_DETAIL (zr_log_flags 16) with the fixed
- * description "Model Trace", so a whole session can be pulled out of the
- * SourceMod log with a single grep and followed per player through the SteamID.
- *
- * @param client    The client index.
- * @param buffer    Destination string buffer.
- * @param maxlen    Size of buffer.
- */
-void ClassModelTraceClient(int client, char[] buffer, int maxlen)
-{
-    char name[MAX_NAME_LENGTH];
-    char steamid[32];
-
-    if (!GetClientName(client, name, sizeof(name)))
-    {
-        strcopy(name, sizeof(name), "?");
-    }
-
-    if (!GetClientAuthId(client, AuthId_Steam2, steamid, sizeof(steamid)))
-    {
-        strcopy(steamid, sizeof(steamid), "?");
-    }
-
-    int team = GetClientTeam(client);
-
-    Format(buffer, maxlen, "client=\"%s\" uid=%d steam=%s team=%s zombie=%d alive=%d",
-            name,
-            GetClientUserId(client),
-            steamid,
-            (team == CS_TEAM_T) ? "T" : ((team == CS_TEAM_CT) ? "CT" : "none"),
-            InfectIsClientInfected(client) ? 1 : 0,
-            IsPlayerAlive(client) ? 1 : 0);
-}
-
-/**
  * Specifies whether a player has spawned.
  */
 bool ClassPlayerSpawned[MAXPLAYERS + 1];

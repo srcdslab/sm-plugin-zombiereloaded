@@ -87,10 +87,6 @@ bool ClassApplyModel(int client, int classindex, int cachetype = ZR_CLASS_CACHE_
 {
     bool isAttributePreset = false;
     char modelpath[PLATFORM_MAX_PATH];
-    char configpath[PLATFORM_MAX_PATH];
-    char classname[64];
-    char teamname[16];
-    char trace[CLASS_MODEL_TRACE_LENGTH];
     int index;
     ModelTeam team;
     int access;
@@ -115,13 +111,6 @@ bool ClassApplyModel(int client, int classindex, int cachetype = ZR_CLASS_CACHE_
 
     // Get model team setting from the specified cache.
     team = ModelsTeamIdToTeam(ClassGetTeamID(index, cachetype));
-
-    // Build the trace context. configpath keeps the value straight from the
-    // class config, which modelpath is about to be resolved away from.
-    strcopy(configpath, sizeof(configpath), modelpath);
-    ClassGetName(index, classname, sizeof(classname), cachetype);
-    ModelsTeamToString(team, teamname, sizeof(teamname));
-    ClassModelTraceClient(client, trace, sizeof(trace));
 
     // Check if the user specified a pre-defined model setting. If so, setup
     // model filter settings.
@@ -166,7 +155,6 @@ bool ClassApplyModel(int client, int classindex, int cachetype = ZR_CLASS_CACHE_
         // restoring an empty path.
         if (!ClassOriginalPlayerModel[client][0])
         {
-            LogEvent(false, LogType_Normal, LOG_DEBUG_DETAIL, LogModule_Playerclasses, "Model Trace", "apply %s class=\"%s\" cfg=\"%s\" result=skipped reason=no-original", trace, classname, configpath);
             return true;
         }
 
@@ -181,14 +169,12 @@ bool ClassApplyModel(int client, int classindex, int cachetype = ZR_CLASS_CACHE_
         else
         {
             // Wanted model is already set, don't change.
-            LogEvent(false, LogType_Normal, LOG_DEBUG_DETAIL, LogModule_Playerclasses, "Model Trace", "apply %s class=\"%s\" cfg=\"%s\" resolved=\"%s\" result=skipped reason=already-set", trace, classname, configpath, modelpath);
             return true;
         }
     }
     else if (strcmp(modelpath, "no_change", false) == 0)
     {
         // Do nothing.
-        LogEvent(false, LogType_Normal, LOG_DEBUG_DETAIL, LogModule_Playerclasses, "Model Trace", "apply %s class=\"%s\" cfg=\"%s\" result=skipped reason=no_change", trace, classname, configpath);
         return true;
     }
 
@@ -210,8 +196,6 @@ bool ClassApplyModel(int client, int classindex, int cachetype = ZR_CLASS_CACHE_
             // public model. Then get its path.
             model = ModelsGetRandomModel(-1, team, MODEL_ACCESS_PUBLIC);
             ModelsGetFullPath(model, modelpath, sizeof(modelpath));
-
-            LogEvent(false, LogType_Normal, LOG_DEBUG_DETAIL, LogModule_Playerclasses, "Model Trace", "apply %s class=\"%s\" cfg=\"%s\" result=preset-fallback team=%s access=%d model=%d resolved=\"%s\"", trace, classname, configpath, teamname, access, model, modelpath);
         }
     }
 
@@ -221,7 +205,6 @@ bool ClassApplyModel(int client, int classindex, int cachetype = ZR_CLASS_CACHE_
     // Check if application should be stopped.
     if (result == Plugin_Handled)
     {
-        LogEvent(false, LogType_Normal, LOG_DEBUG_DETAIL, LogModule_Playerclasses, "Model Trace", "apply %s class=\"%s\" cfg=\"%s\" resolved=\"%s\" result=blocked reason=api-forward", trace, classname, configpath, modelpath);
         return false;
     }
 
@@ -229,7 +212,6 @@ bool ClassApplyModel(int client, int classindex, int cachetype = ZR_CLASS_CACHE_
     if (!IsModelPrecached(modelpath))
     {
         LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Playerclasses, "Config Validation", "Warning: Model not precached, not applying model. \"%s\"", modelpath);
-        LogEvent(false, LogType_Normal, LOG_DEBUG_DETAIL, LogModule_Playerclasses, "Model Trace", "apply %s class=\"%s\" cfg=\"%s\" resolved=\"%s\" result=skipped reason=not-precached", trace, classname, configpath, modelpath);
         return true;
     }
 
@@ -238,8 +220,6 @@ bool ClassApplyModel(int client, int classindex, int cachetype = ZR_CLASS_CACHE_
 
     // Remember what we applied, so it can't come back as an "original" model.
     strcopy(ClassAppliedPlayerModel[client], PLATFORM_MAX_PATH, modelpath);
-
-    LogEvent(false, LogType_Normal, LOG_DEBUG_DETAIL, LogModule_Playerclasses, "Model Trace", "apply %s class=\"%s\" cfg=\"%s\" resolved=\"%s\" skin=%d team=%s result=applied original=\"%s\"", trace, classname, configpath, modelpath, skinIndex, teamname, ClassOriginalPlayerModel[client]);
 
     // Trigger API forward.
     APIOnClassModelApplied(client, modelpath, skinIndex);
