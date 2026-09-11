@@ -226,7 +226,7 @@ void ClassOnClientSpawnPre(int client)
     char originalmodel[PLATFORM_MAX_PATH];
     char trace[CLASS_MODEL_TRACE_LENGTH];
 
-    // Check if the player is dead. Spawning into the game is also a event in
+    // Check if the player is dead. Spawning into the game is also an event in
     // the connection process.
     if (!IsPlayerAlive(client))
     {
