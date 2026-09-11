@@ -370,14 +370,14 @@ bool LogModuleFilterAdd(LogModules module)
 {
     char modulename[64];
 
+    // Convert module name.
+    LogGetModuleNameString(modulename, sizeof(modulename), module, true);
+
     // Check if empty.
     if (strlen(modulename) == 0)
     {
         return false;
     }
-
-    // Convert module name.
-    LogGetModuleNameString(modulename, sizeof(modulename), module, true);
 
     // Check if the module isn't already is listed.
     if (hLogModuleFilter.FindString(modulename) < 0)
@@ -402,14 +402,14 @@ bool LogModuleFilterRemove(LogModules module)
     char modulename[64];
     int moduleindex;
 
+    // Convert module name.
+    LogGetModuleNameString(modulename, sizeof(modulename), module, true);
+
     // Check if empty.
     if (strlen(modulename) == 0)
     {
         return false;
     }
-
-    // Convert module name.
-    LogGetModuleNameString(modulename, sizeof(modulename), module, true);
 
     // Get the module index.
     moduleindex = hLogModuleFilter.FindString(modulename);
@@ -540,7 +540,7 @@ public Action Command_LogList(int client, int argc)
     buffer[0] = 0;
 
     // Module status:
-    modulecount = sizeof(LogModuleFilterCache);
+    modulecount = view_as<int>(LogModule_MAXSIZE);
     for (int module = 1; module < modulecount; module++)
     {
         LogGetModuleNameString(modulename, sizeof(modulename), view_as<LogModules>(module));
