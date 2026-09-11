@@ -131,11 +131,10 @@ void ClassClientInit(int client)
     // Reset spawn flag.
     ClassPlayerSpawned[client] = false;
 
-    // The original model is captured on the client's first spawn. Clear the
-    // stored path too, so a slot reused by a new occupant can't hand the
-    // previous player's model to a "default" restore before that capture runs.
-    ClassOriginalPlayerModelCached[client] = false;
+    // Drop the previous occupant's original model. The new player's own model
+    // is captured on their first spawn; until then there is nothing to restore.
     ClassOriginalPlayerModel[client][0] = 0;
+    ClassAppliedPlayerModel[client][0] = 0;
 }
 
 /**
@@ -204,13 +203,55 @@ void ClassOnClientDisconnect(int client)
 }
 
 /**
+ * Client is spawning into the game, before any other module has handled the
+ * spawn.
+ *
+ * Captures the player's original model - the model they would have without this
+ * plugin - for classes whose model is "default".
+ *
+ * This has to run before the other spawn handlers: InfectOnClientSpawn() infects
+ * players who spawn once the mother zombie is out, which applies a class model
+ * straight away. Reading the model after that would record this plugin's zombie
+ * model as the player's own, and a later "default" restore (zr_human, or the
+ * next human life) would hand that zombie skin back - issue #55.
+ *
+ * @param client    The client index.
+ */
+void ClassOnClientSpawnPre(int client)
+{
+    char originalmodel[PLATFORM_MAX_PATH];
+
+    // Check if the player is dead. Spawning into the game is also an event in
+    // the connection process.
+    if (!IsPlayerAlive(client))
+    {
+        return;
+    }
+
+    GetClientModel(client, originalmodel, sizeof(originalmodel));
+
+    // Never record a model this plugin applied. Even this early the player can
+    // still be wearing a class model: the game does not always reset the model
+    // before player_spawn fires, and InfectOnClientSpawn() respawns team-swapped
+    // players through CS_RespawnPlayer(), which fires a nested player_spawn.
+    // Keeping the last known good value beats caching a zombie skin.
+    if (!originalmodel[0] ||
+        ModelsIsManagedPath(originalmodel) ||
+        strcmp(originalmodel, ClassAppliedPlayerModel[client], false) == 0)
+    {
+        return;
+    }
+
+    strcopy(ClassOriginalPlayerModel[client], PLATFORM_MAX_PATH, originalmodel);
+}
+
+/**
  * Client is spawning into the game.
  *
  * @param client    The client index.
  */
 void ClassOnClientSpawn(int client)
 {
-    char originalmodel[PLATFORM_MAX_PATH];
     char classname[64];
     ClassFilter filter;
 
@@ -234,17 +275,8 @@ void ClassOnClientSpawn(int client)
     // Restore class indexes to be selected on spawn, if available.
     ClassRestoreNextIndexes(client);
 
-    // Cache the original player model, once per connection. Re-reading it on
-    // every spawn is unsafe: right after CS_RespawnPlayer() (zr_respawn +
-    // zr_respawn_team_zombie) the player can still be carrying the zombie model
-    // this module applied last life, and caching that would later restore a
-    // zombie skin onto a human through a class whose model is "default".
-    if (!ClassOriginalPlayerModelCached[client])
-    {
-        GetClientModel(client, originalmodel, sizeof(originalmodel));
-        strcopy(ClassOriginalPlayerModel[client], PLATFORM_MAX_PATH, originalmodel);
-        ClassOriginalPlayerModelCached[client] = true;
-    }
+    // Note: The original player model is captured in ClassOnClientSpawnPre,
+    //       before any module can apply a class model.
 
     // Check if the player should spawn in admin mode.
     if (ClassPlayerInAdminMode[client])

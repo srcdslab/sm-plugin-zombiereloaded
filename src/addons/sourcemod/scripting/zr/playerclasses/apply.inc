@@ -150,9 +150,9 @@ bool ClassApplyModel(int client, int classindex, int cachetype = ZR_CLASS_CACHE_
     }
     else if (strcmp(modelpath, "default", false) == 0)
     {
-        // No original model captured yet (client hasn't had its first spawn).
-        // Leave the current model alone rather than restoring an empty or stale
-        // path.
+        // Nothing captured yet, or nothing usable was seen (see
+        // ClassOnClientSpawnPre). Leave the current model alone rather than
+        // restoring an empty path.
         if (!ClassOriginalPlayerModel[client][0])
         {
             return true;
@@ -217,6 +217,9 @@ bool ClassApplyModel(int client, int classindex, int cachetype = ZR_CLASS_CACHE_
 
     SetEntityModel(client, modelpath);
     SetEntProp(client, Prop_Send, "m_nSkin", skinIndex);
+
+    // Remember what we applied, so it can't come back as an "original" model.
+    strcopy(ClassAppliedPlayerModel[client], PLATFORM_MAX_PATH, modelpath);
 
     // Trigger API forward.
     APIOnClassModelApplied(client, modelpath, skinIndex);

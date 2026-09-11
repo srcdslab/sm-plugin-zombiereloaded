@@ -201,6 +201,7 @@ public Action EventPlayerSpawn(Event event, const char[] name, bool dontBroadcas
         return Plugin_Continue;
 
     // Forward event to modules.
+    ClassOnClientSpawnPre(index);   // Must run first: records the player's own model before any class model is applied.
     InfectOnClientSpawn(index);     // Some modules depend on this to finish first.
     AccountOnClientSpawn(index);    // Some modules depend on this to finish first.
     ClassOnClientSpawn(index);
