@@ -114,7 +114,7 @@ jobs:
           echo "changed=$changed" >> "$GITHUB_OUTPUT"
 
       - name: Upsert the PR comment
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         env:
           CHANGED: ${{ steps.diff.outputs.changed }}
         with:
