@@ -111,7 +111,7 @@ stock void TranslationPrintToChat(int client, any ...)
     TranslationPluginFormatString(translation, sizeof(translation));
 
     // Print translated phrase to client.
-    CPrintToChat(client, translation);
+    CPrintToChat(client, "%s", translation);
 }
 
 /**
@@ -137,7 +137,7 @@ stock void TranslationPrintToChatAll(bool server, bool admin, any ...)
         TranslationPluginFormatString(translation, sizeof(translation), false);
 
         // Print phrase to server.
-        PrintToServer(translation);
+        PrintToServer("%s", translation);
     }
 
     // x = client index.
@@ -165,7 +165,7 @@ stock void TranslationPrintToChatAll(bool server, bool admin, any ...)
         TranslationPluginFormatString(translation, sizeof(translation));
 
         // Print translated phrase to client.
-        CPrintToChat(x, translation);
+        CPrintToChat(x, "%s", translation);
     }
 }
 
@@ -192,7 +192,7 @@ stock void TranslationPrintToChatAllExcept(bool server, bool admin, int client, 
         TranslationPluginFormatString(translation, sizeof(translation), false);
 
         // Print phrase to server.
-        PrintToServer(translation);
+        PrintToServer("%s", translation);
     }
 
     // x = client index.
@@ -226,7 +226,7 @@ stock void TranslationPrintToChatAllExcept(bool server, bool admin, int client, 
         TranslationPluginFormatString(translation, sizeof(translation));
 
         // Print translated phrase to client.
-        CPrintToChat(x, translation);
+        CPrintToChat(x, "%s", translation);
     }
 }
 
@@ -249,7 +249,7 @@ stock void TranslationPrintToConsole(int client, any ...)
     TranslationPluginFormatString(translation, sizeof(translation), false);
 
     // Print translated phrase to client.
-    PrintToConsole(client, translation);
+    PrintToConsole(client, "%s", translation);
 }
 
 /**
@@ -274,7 +274,7 @@ stock void TranslationPrintToConsoleAll(bool server, bool admin, any ...)
         TranslationPluginFormatString(translation, sizeof(translation), false);
 
         // Print phrase to server.
-        PrintToServer(translation);
+        PrintToServer("%s", translation);
     }
 
     // x = client index.
@@ -302,7 +302,7 @@ stock void TranslationPrintToConsoleAll(bool server, bool admin, any ...)
         TranslationPluginFormatString(translation, sizeof(translation), false);
 
         // Print translated phrase to client.
-        PrintToConsole(x, translation);
+        PrintToConsole(x, "%s", translation);
     }
 }
 
@@ -322,7 +322,7 @@ stock void TranslationPrintCenterText(int client, any ...)
     VFormat(translation, sizeof(translation), "%t", 2);
 
     // Print translated phrase to client.
-    PrintCenterText(client, translation);
+    PrintCenterText(client, "%s", translation);
 }
 
 /**
@@ -361,7 +361,7 @@ stock void TranslationPrintCenterTextAll(bool admin, any ...)
         VFormat(translation, sizeof(translation), "%t", 2);
 
         // Print translated phrase to client.
-        PrintCenterText(client, translation);
+        PrintCenterText(client, "%s", translation);
     }
 }
 
@@ -381,7 +381,7 @@ stock void TranslationPrintHintText(int client, any ...)
     VFormat(translation, sizeof(translation), "%t", 2);
 
     // Print translated phrase to client.
-    PrintHintText(client, translation);
+    PrintHintText(client, "%s", translation);
 
     // Stop hint text sound in CS:S.
     if (g_Game == Game_CSS)
@@ -408,7 +408,7 @@ stock void TranslationPrintToServer(any ...)
     TranslationPluginFormatString(translation, sizeof(translation), false);
 
     // Print translated phrase to client.
-    PrintToServer(translation);
+    PrintToServer("%s", translation);
 }
 
 /**
@@ -438,5 +438,5 @@ stock void TranslationReplyToCommand(int client, any ...)
     }
 
     // Print translated phrase to server or client's chat/console.
-    CReplyToCommand(client, translation);
+    CReplyToCommand(client, "%s", translation);
 }
