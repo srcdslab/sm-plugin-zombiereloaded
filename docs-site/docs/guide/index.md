@@ -28,7 +28,7 @@
 
 #### Additional testers and contributors from the forums
 
-<ul> <li><strong>daleGEND</strong></li> <li><strong>Darkthrone</strong></li> <li><strong>DreamState</strong></li> <li><strong>exvel</strong></li> <li><strong>Grey Echo</strong></li> <li><strong>NouveauJoueur</strong></li> <li><strong>TESLA-X4</strong></li> <li><strong>thetwistedpanda</strong></li> <li><strong>zhelev81</strong></li> <li><strong>BotoX</strong></li> <li><strong>zaCade</strong></li> <li><strong>neon</strong></li> <li><strong>Boss</strong></li> <li>And more people we haven't listed yet...</li> </ul>
+<ul> <li><strong>daleGEND</strong></li> <li><strong>Darkthrone</strong></li> <li><strong>DreamState</strong></li> <li><strong>exvel</strong></li> <li><strong>Grey Echo</strong></li> <li><strong>NouveauJoueur</strong></li> <li><strong>TESLA-X4</strong></li> <li><strong>thetwistedpanda</strong></li> <li><strong>zhelev81</strong></li> <li><strong>BotoX</strong></li> <li><strong>zaCade</strong></li> <li><strong>maxime1907</strong></li> <li><strong>.Rushaway</strong></li> <li><strong>Dolly132</strong></li> <li><strong>neon</strong></li> <li><strong>Boss</strong></li> <li>And more people we haven't listed yet...</li> </ul>
 
 ## Reporting bugs and problems
 
