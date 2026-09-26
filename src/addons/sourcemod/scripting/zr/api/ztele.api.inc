@@ -59,7 +59,10 @@ public int APIOnClientZtele(Handle plugin, int numParams)
 {
     int client = GetNativeCell(1);
     bool force = GetNativeCell(2);
-    
+
+    // Validate the client index.
+    APIValidateClientIndex(client);
+
     // ZTele the client.
     ZTeleClient(client, force);
     return -1;
