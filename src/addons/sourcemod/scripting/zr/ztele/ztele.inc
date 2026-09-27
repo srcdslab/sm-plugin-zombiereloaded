@@ -156,8 +156,8 @@ void ZTele_OnClientInfected(int client)
  */
 bool ZTeleClient(int client, bool force = false)
 {
-    // If the client is dead, then stop.
-    if (!IsPlayerAlive(client))
+    // If the client is not in game or dead, then stop.
+    if (!IsClientInGame(client) || !IsPlayerAlive(client))
     {
         return false;
     }
