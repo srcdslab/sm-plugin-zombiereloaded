@@ -338,17 +338,17 @@
 
 	"Immunity Shield Not Available"
 	{
-		"no"		"Du har ikke skjold."
+		"en"		"Du har ikke skjold."
 	}
 
 	"Immunity Shield Cooldown"
 	{
-		"no"		"{1} sekunder igjen til skjoldet er tilgjengelig."
+		"en"		"{1} sekunder igjen til skjoldet er tilgjengelig."
 	}
 
 	"Immunity Shield Time Left"
 	{
-		"no"		"Tid igjen med skjold: {1}"
+		"en"		"Tid igjen med skjold: {1}"
 	}
 
 	// ===========================

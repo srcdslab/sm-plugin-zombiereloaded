@@ -337,6 +337,21 @@
 	// Immunity
 	// ===========================
 
+	"Immunity Shield Not Available"
+	{
+		"en"		"You don't have a shield."
+	}
+
+	"Immunity Shield Cooldown"
+	{
+		"en"		"{1} seconds until shield is available."
+	}
+
+	"Immunity Shield Time Left"
+	{
+		"en"		"Shield time left: {1}"
+	}
+
 	// ===========================
 	// Overlays (core)
 	// ===========================
