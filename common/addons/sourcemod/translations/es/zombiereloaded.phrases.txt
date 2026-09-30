@@ -339,17 +339,17 @@
 
 	"Immunity Shield Not Available"
 	{
-		"en"		"You don't have a shield."
+		"es"		"No tienes escudo."
 	}
 
 	"Immunity Shield Cooldown"
 	{
-		"en"		"{1} seconds until shield is available."
+		"es"		"{1} segundos hasta que el escudo esté disponible."
 	}
 
 	"Immunity Shield Time Left"
 	{
-		"en"		"Shield time left: {1}"
+		"es"		"Tiempo restante del escudo: {1}"
 	}
 
 	// ===========================
@@ -742,7 +742,6 @@
 
 	"Weapons menu zmarket loadout default"
 	{
-		"#format"	"{1:s}"
 		"es"		"Predeterminado ({1})"
 	}
 

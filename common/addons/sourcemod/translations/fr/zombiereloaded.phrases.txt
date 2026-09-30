@@ -740,7 +740,6 @@
 
 	"Weapons menu zmarket loadout default"
 	{
-		"#format"	"{1:s}"
 		"fr"		"Par défaut ({1})"
 	}
 
