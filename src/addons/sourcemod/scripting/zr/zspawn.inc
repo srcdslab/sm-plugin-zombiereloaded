@@ -186,21 +186,40 @@ void ZSpawnOnClientClassPost(int client)
  */
 void ZSpawnOnClientSpawn(int client)
 {
-    // Check if client is spawning on a team.
-    if (ZRIsClientOnTeam(client) && InfectHasZombieSpawned())
+    // RespawnSpawnClient infects the client itself once the spawn is done.
+    if (RespawnIsClientSpawning(client))
     {
-        // Get our zspawn condition.
-        ZSpawnCondition condition = GetZSpawnCondition(client);
-
-        switch(condition)
-        {
-            case ZSpawn_Zombie:
-            {
-                // Infect client.
-                InfectHumanToZombie(client);
-            }
-        }
+        return;
     }
+
+    if (ZSpawnShouldInfect(client))
+    {
+        // Infect client.
+        InfectHumanToZombie(client);
+    }
+}
+
+/**
+ * Returns if a spawning client should be infected according to zspawn rules.
+ *
+ * @param client    The client index.
+ * @return          True if the client should be infected, false otherwise.
+ */
+bool ZSpawnShouldInfect(int client)
+{
+    // Check if client is spawning on a team.
+    if (!ZRIsClientOnTeam(client) || !InfectHasZombieSpawned())
+    {
+        return false;
+    }
+
+    // Client may already be infected by a nested respawn (InfectOnClientSpawn).
+    if (InfectIsClientInfected(client))
+    {
+        return false;
+    }
+
+    return GetZSpawnCondition(client) == ZSpawn_Zombie;
 }
 
 /**

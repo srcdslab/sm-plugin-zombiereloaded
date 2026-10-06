@@ -47,6 +47,11 @@ Handle tRespawn[MAXPLAYERS + 1];
 bool bKilledByWorld[MAXPLAYERS + 1];
 
 /**
+ * Array for flagging clients being respawned by RespawnSpawnClient.
+ */
+bool g_bRespawnSpawning[MAXPLAYERS + 1];
+
+/**
  * Client is joining the server.
  */ 
 void RespawnClientInit(int client)
@@ -185,32 +190,30 @@ bool RespawnSpawnClient(int client, bool zombie = false, bool zombieIfSuicide = 
         RagdollResetClientRagdoll(client);
     }
 
-    // Spawn player.
+    // Spawn player. ZSpawnOnClientSpawn doesn't infect the client meanwhile,
+    // the infection is done below once all player_spawn handlers have run.
+    g_bRespawnSpawning[client] = true;
     CS_RespawnPlayer(client);
+    g_bRespawnSpawning[client] = false;
 
     // Check if first zombie has spawned.
     if (InfectHasZombieSpawned())
     {
-        // The player_spawn event fired by CS_RespawnPlayer may already have
-        // infected the client (ZSpawnOnClientSpawn), don't infect twice.
-        bool infected = InfectIsClientInfected(client);
-
         // Infect if player should spawn as zombie.
         if (zombie)
         {
-            if (!infected)
-            {
-                InfectHumanToZombie(client);
-            }
+            InfectHumanToZombie(client);
         }
         // Infect if player committed suicide by world damage.
         else if (zombieIfSuicide && bKilledByWorld[client])
         {
-            if (!infected)
-            {
-                InfectHumanToZombie(client);
-            }
+            InfectHumanToZombie(client);
             bKilledByWorld[client] = false;
+        }
+        // Infect if zspawn rules say the player should spawn as zombie.
+        else if (ZSpawnShouldInfect(client))
+        {
+            InfectHumanToZombie(client);
         }
     }
 
@@ -218,6 +221,17 @@ bool RespawnSpawnClient(int client, bool zombie = false, bool zombieIfSuicide = 
     APIOnClientRespawned(client, condition);
 
     return true;
+}
+
+/**
+ * Returns if a client is being respawned by RespawnSpawnClient.
+ *
+ * @param client    The client index.
+ * @return          True if the client is being respawned, false otherwise.
+ */
+bool RespawnIsClientSpawning(int client)
+{
+    return g_bRespawnSpawning[client];
 }
 
 /**
