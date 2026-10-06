@@ -191,15 +191,25 @@ bool RespawnSpawnClient(int client, bool zombie = false, bool zombieIfSuicide = 
     // Check if first zombie has spawned.
     if (InfectHasZombieSpawned())
     {
+        // The player_spawn event fired by CS_RespawnPlayer may already have
+        // infected the client (ZSpawnOnClientSpawn), don't infect twice.
+        bool infected = InfectIsClientInfected(client);
+
         // Infect if player should spawn as zombie.
         if (zombie)
         {
-            InfectHumanToZombie(client);
+            if (!infected)
+            {
+                InfectHumanToZombie(client);
+            }
         }
         // Infect if player committed suicide by world damage.
         else if (zombieIfSuicide && bKilledByWorld[client])
         {
-            InfectHumanToZombie(client);
+            if (!infected)
+            {
+                InfectHumanToZombie(client);
+            }
             bKilledByWorld[client] = false;
         }
     }
