@@ -4,11 +4,13 @@
 	{
 		"Offsets"
 		{
+			// CCSPlayer::TraceAttack stores trace.hitgroup here (x86: 0x12AC, x86_64: 0x1530)
 			"m_LastHitGroup"
 			{
 				"windows"	"4779"
 				"windows64" "4779"
 				"linux"		"4780"
+				"linux64"		"5424"
 			}
 		}
 	}
