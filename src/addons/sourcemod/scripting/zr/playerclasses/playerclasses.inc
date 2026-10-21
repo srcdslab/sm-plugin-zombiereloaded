@@ -618,7 +618,7 @@ void ClassLoad()
     LogEvent(false, LogType_Normal, LOG_CORE_EVENTS, LogModule_Playerclasses, "Config Validation", "Loading classes from file \"%s\".", pathclasses);
 
     // Put file data into memory.
-    FileToKeyValues(kvClassData, pathclasses);
+    kvClassData.ImportFromFile(pathclasses);
 
     // Try to find the first class.
     kvClassData.Rewind();

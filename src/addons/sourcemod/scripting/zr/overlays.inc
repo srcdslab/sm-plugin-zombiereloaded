@@ -64,7 +64,7 @@ char g_strOverlayPath[MAXPLAYERS + 1][OVERLAYS_CHANNEL_MAXSIZE][PLATFORM_MAX_PAT
 /**
  * Create variable to store global timer handle.
  */
-Handle tOverlays = INVALID_HANDLE;
+Handle tOverlays = null;
 
 /**
  * Map is starting.
@@ -72,7 +72,7 @@ Handle tOverlays = INVALID_HANDLE;
 void OverlaysOnMapStart()
 {
     // Reset timer handle.
-    tOverlays = INVALID_HANDLE;
+    tOverlays = null;
 }
 
 /**
@@ -81,10 +81,9 @@ void OverlaysOnMapStart()
 void OverlaysOnMapEnd()
 {
     // If timer is running, kill it.
-    if (tOverlays != INVALID_HANDLE)
+    if (tOverlays != null)
     {
-        KillTimer(tOverlays);
-        tOverlays = INVALID_HANDLE;
+        delete tOverlays;
     }
 }
 
@@ -159,14 +158,13 @@ public void OverlaysQueryClientDXLevel(QueryCookie cookie, int client, ConVarQue
 void OverlaysOnRoundStart()
 {
     // If timer is running, kill it.
-    if (tOverlays != INVALID_HANDLE)
+    if (tOverlays != null)
     {
-        KillTimer(tOverlays);
-        tOverlays = INVALID_HANDLE;
+        delete tOverlays;
     }
 
     // If antistick is disabled, then stop.
-    float overlaysupdate = GetConVarFloat(g_hCvarsList.CVAR_OVERLAYS_UPDATE_TIME);
+    float overlaysupdate = g_hCvarsList.CVAR_OVERLAYS_UPDATE_TIME.FloatValue;
     if (overlaysupdate <= 0.0)
     {
         return;
@@ -213,7 +211,7 @@ void OverlaysClientUpdateOverlay(int client, OverlaysChannel channel = OVERLAYS_
     }
 
     // If client doesn't meet DXLevel requirement, then tell client and stop.
-    int minDxLevel = GetConVarInt(g_hCvarsList.CVAR_OVERLAYS_MIN_DXLEVEL);
+    int minDxLevel = g_hCvarsList.CVAR_OVERLAYS_MIN_DXLEVEL.IntValue;
     if (g_iOverlaysDXL[client] < minDxLevel)
     {
         TranslationPrintCenterText(client, "Overlays not supported", g_iOverlaysDXL[client], minDxLevel);

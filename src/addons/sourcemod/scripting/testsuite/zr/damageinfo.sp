@@ -34,12 +34,12 @@ public Plugin myinfo =
     name = "Damage information",
     author = "Greyscale | Richard Helgeby",
     description = "Dumps damage information.",
-    version = "1.0.1",
+    version = "1.0.2",
     url = "http://code.google.com/p/zombiereloaded/"
 };
 
-Handle hBlockOnTakeDamage = INVALID_HANDLE;
-Handle hBlockTraceAttack = INVALID_HANDLE;
+ConVar hBlockOnTakeDamage = null;
+ConVar hBlockTraceAttack = null;
 
 public void OnPluginStart()
 {
@@ -64,16 +64,16 @@ public void OnClientDisconnect(int client)
     SDKUnhook(client, SDKHook_OnTakeDamage, OnTakeDamage);
 }
 
-public Action Event_PlayerHurt(Handle event, const char[] name, bool dontBroadcast)
+public Action Event_PlayerHurt(Event event, const char[] name, bool dontBroadcast)
 {
-    int victim = GetClientOfUserId(GetEventInt(event, "userid"));
-    int attacker = GetClientOfUserId(GetEventInt(event, "attacker"));
-    int hitgroup = GetEventInt(event, "hitgroup");
-    int damage = GetEventInt(event, "dmg_health");
-    int damageArmor = GetEventInt(event, "dmg_armor");
+    int victim = GetClientOfUserId(event.GetInt("userid"));
+    int attacker = GetClientOfUserId(event.GetInt("attacker"));
+    int hitgroup = event.GetInt("hitgroup");
+    int damage = event.GetInt("dmg_health");
+    int damageArmor = event.GetInt("dmg_armor");
     char weapon[64];
     weapon[0] = 0;
-    GetEventString(event, "weapon", weapon, sizeof(weapon));
+    event.GetString("weapon", weapon, sizeof(weapon));
 
     char msg[128];
     msg[0] = 0;
@@ -119,7 +119,7 @@ public Action OnTakeDamage(int victim, int &attacker, int &inflictor, float &dam
         PrintToConsole(attacker, "Damage given -- %s", msg);
     }
 
-    if (GetConVarBool(hBlockOnTakeDamage))
+    if (hBlockOnTakeDamage.BoolValue)
     {
         return Plugin_Handled;
     }
@@ -151,7 +151,7 @@ public Action TraceAttack(int victim, int &attacker, int &inflictor, float &dama
         PrintToConsole(attacker, "Attacking -- %s", msg);
     }
 
-    if (GetConVarBool(hBlockTraceAttack))
+    if (hBlockTraceAttack.BoolValue)
     {
         return Plugin_Handled;
     }

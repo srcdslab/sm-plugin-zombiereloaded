@@ -93,7 +93,7 @@ void ZombieSoundsOnClientSpawn(int client)
     // If timer is running, kill it.
     if (tSEffectsMoan[client] != null)
     {
-        KillTimer(tSEffectsMoan[client]);
+        delete tSEffectsMoan[client];
     }
 
     // Reset timer handle.
@@ -114,7 +114,7 @@ void ZombieSoundsOnClientDeath(int client)
     // If timer is running, kill it.
     if (tSEffectsMoan[client] != null)
     {
-        KillTimer(tSEffectsMoan[client]);
+        delete tSEffectsMoan[client];
     }
 
     // Reset timer handle.
@@ -192,7 +192,7 @@ void ZombieSoundsOnClientInfected(int client)
     // If timer is currently running, kill it.
     if (tSEffectsMoan[client] != null)
     {
-        KillTimer(tSEffectsMoan[client]);
+        delete tSEffectsMoan[client];
     }
 
     // Start repeating timer.

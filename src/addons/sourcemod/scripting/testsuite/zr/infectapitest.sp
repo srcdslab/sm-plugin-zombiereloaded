@@ -34,12 +34,12 @@ public Plugin myinfo =
     name = "Zombie:Reloaded Infection API Test",
     author = "Greyscale | Richard Helgeby",
     description = "Tests the infection API for ZR",
-    version = "1.0.0",
+    version = "1.0.1",
     url = "http://code.google.com/p/zombiereloaded/"
 };
 
-Handle cvarBlockInfect;
-Handle cvarBlockHuman;
+ConVar cvarBlockInfect;
+ConVar cvarBlockHuman;
 
 public void OnPluginStart()
 {
@@ -143,7 +143,7 @@ public Action HumanClientCommand(int client, int argc)
 
 public Action ZR_OnClientInfect(int &client, int &attacker, bool &motherInfect, bool &respawnOverride, bool &respawn)
 {
-    if (GetConVarBool(cvarBlockInfect))
+    if (cvarBlockInfect.BoolValue)
     {
         PrintToChatAll("Infection blocked on client %d.", client);
         return Plugin_Handled;
@@ -160,7 +160,7 @@ public void ZR_OnClientInfected(int client, int attacker, bool motherInfect, boo
 
 public Action ZR_OnClientHuman(int &client, bool &respawn, bool &protect)
 {
-    if (GetConVarBool(cvarBlockHuman))
+    if (cvarBlockHuman.BoolValue)
     {
         PrintToChatAll("Turning human blocked on client %d.", client);
         return Plugin_Handled;

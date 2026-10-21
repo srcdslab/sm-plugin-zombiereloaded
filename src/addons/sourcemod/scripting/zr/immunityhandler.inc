@@ -38,7 +38,7 @@
 /**
  * Timers for handling timed immunity actions.
  */
-Handle PlayerImmunityTimer[MAXPLAYERS + 1] = {INVALID_HANDLE, ...};
+Handle PlayerImmunityTimer[MAXPLAYERS + 1] = {null, ...};
 
 /**
  * Remaining time of timed immunity actions.
@@ -240,7 +240,7 @@ bool ImmunityOnClientTraceAttack(int client, int &attacker, int &inflictor, floa
             }
 
             // Check if shield is active.
-            if (PlayerImmunityTimer[client] != INVALID_HANDLE)
+            if (PlayerImmunityTimer[client] != null)
             {
                 // Block damage for humans with shield enabled (preventing
                 // zombies from stabbing them to death).
@@ -391,7 +391,7 @@ bool ImmunityInfectModeHandler(int client)
 bool ImmunityDelayModeHandler(int client, int attacker)
 {
     // Check if an infection is in progress
-    if (PlayerImmunityTimer[client] != INVALID_HANDLE)
+    if (PlayerImmunityTimer[client] != null)
     {
         // Additional attacks while a delayed infection is in progress will
         // speedup the infection.
@@ -481,7 +481,7 @@ public Action ImmunityDelayTimerHandler(Handle timer, any client)
 bool ImmunityShieldModeHandler(int client)
 {
     // Check if shield is active.
-    if (PlayerImmunityTimer[client] != INVALID_HANDLE)
+    if (PlayerImmunityTimer[client] != null)
     {
         // Block infection.
         return true;
@@ -610,7 +610,7 @@ bool ImmunityOnClientKnockBack(int client)
         }
 
         // Block knock back if shield is deployed.
-        if (PlayerImmunityTimer[client] != INVALID_HANDLE)
+        if (PlayerImmunityTimer[client] != null)
         {
             // Block knock back.
             return true;
@@ -1042,7 +1042,7 @@ bool ImmunityCanDeployShield(int client, bool printResponse = true)
     }
 
     // Check if a shield is already deployed.
-    if (PlayerImmunityTimer[client] != INVALID_HANDLE)
+    if (PlayerImmunityTimer[client] != null)
     {
         return false;
     }

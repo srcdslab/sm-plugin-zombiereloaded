@@ -62,7 +62,7 @@ void SpawnProtectOnClientSpawnPost(int client)
     // If timer is currently running, kill it.
     if (g_tSpawnProtect[client] != null)
     {
-        KillTimer(g_tSpawnProtect[client]);
+        delete g_tSpawnProtect[client];
     }
 
     // Reset timer handle.
@@ -92,7 +92,7 @@ void SpawnProtectOnClientDeath(int client)
     // If timer is running, kill it.
     if (g_tSpawnProtect[client] != null)
     {
-        KillTimer(g_tSpawnProtect[client]);
+        delete g_tSpawnProtect[client];
     }
 
     // Reset timer handle.
@@ -165,7 +165,7 @@ void SpawnProtectStart(int client)
     ToolsSetClientAlpha(client, alpha);
 
     // Set time left to zr_protect_time's value.
-    int protect_time = GetConVarInt(g_hCvarsList.CVAR_SPAWNPROTECT_TIME);
+    int protect_time = g_hCvarsList.CVAR_SPAWNPROTECT_TIME.IntValue;
     pSpawnProtectTime[client] = protect_time;
 
     // Tell client they are being protected.

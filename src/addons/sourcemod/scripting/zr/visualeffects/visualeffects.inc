@@ -142,7 +142,7 @@ void VEffectsShakeClientScreen(int client, float amplitude, float frequency, flo
     Handle hShake = StartMessageOne("Shake", client);
 
     // Validate.
-    if (hShake == INVALID_HANDLE)
+    if (hShake == null)
     {
         return;
     }

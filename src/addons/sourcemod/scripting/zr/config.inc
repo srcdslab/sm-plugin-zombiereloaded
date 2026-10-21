@@ -762,16 +762,17 @@ stock bool ConfigOpenConfigFile(ConfigFile config, Handle &hConfig)
 		}
 		case Structure_Keyvalue:
 		{
-			hConfig = new KeyValues(configalias);
+			KeyValues kv = new KeyValues(configalias);
 
 			// If the file couldn't be parsed, destroy the handle so callers
 			// that only check the return value don't leak it.
-			if (!FileToKeyValues(hConfig, configpath))
+			if (!kv.ImportFromFile(configpath))
 			{
-				delete hConfig;
+				delete kv;
 				return false;
 			}
 
+			hConfig = kv;
 			return true;
 		}
 	}

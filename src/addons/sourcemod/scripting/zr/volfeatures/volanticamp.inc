@@ -101,7 +101,7 @@ void VolAnticampEnable(int volumeIndex)
         timer = AnticampData[dataindex].Anticamp_Timer;
         if (timer != null)
         {
-            KillTimer(timer);
+            delete timer;
             AnticampData[dataindex].Anticamp_Timer = null;
         }
 
@@ -151,7 +151,7 @@ stock void VolAnticampEnableAll()
             Handle timer = AnticampData[dataindex].Anticamp_Timer;
             if (timer != null)
             {
-                KillTimer(timer);
+                delete timer;
                 AnticampData[dataindex].Anticamp_Timer = null;
             }
 
@@ -201,7 +201,7 @@ void VolAnticampDisable(int volumeIndex)
         timerbuffer = AnticampData[dataindex].Anticamp_Timer;
         if (timerbuffer != null)
         {
-            KillTimer(timerbuffer);
+            delete timerbuffer;
             AnticampData[dataindex].Anticamp_Timer = null;
         }
 
@@ -227,7 +227,7 @@ stock void VolAnticampDisableAll()
             timerbuffer = AnticampData[dataindex].Anticamp_Timer;
             if (timerbuffer != null)
             {
-                KillTimer(timerbuffer);
+                delete timerbuffer;
                 AnticampData[dataindex].Anticamp_Timer = null;
             }
         }
@@ -246,8 +246,7 @@ void VolAnticampReset(int dataIndex)
     AnticampData[dataIndex].Anticamp_Interval = 1.0;
     if (AnticampData[dataIndex].Anticamp_Timer != null)
     {
-        KillTimer(AnticampData[dataIndex].Anticamp_Timer);
-        AnticampData[dataIndex].Anticamp_Timer = null;
+        delete AnticampData[dataIndex].Anticamp_Timer;
     }
 
     AnticampData[dataIndex].Anticamp_Action = Anticamp_Damage;

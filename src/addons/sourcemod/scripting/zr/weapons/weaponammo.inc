@@ -221,10 +221,10 @@ stock int WeaponAmmoGetGrenadeLimit(WeaponAmmoGrenadeType grenadetype)
         case GrenadeType_HEGrenade:
         {
             // Attempt to find a cvar provided by an outside plugin.
-            Handle gplimit = FindConVar(GRENADE_PACK_CVAR_LIMIT);
+            ConVar gplimit = FindConVar(GRENADE_PACK_CVAR_LIMIT);
 
             // If Grenade Pack is loaded and the cvar was found, then get the value of the outside cvar, if not return CS:S default.
-            return (g_bGrenadePack && gplimit != INVALID_HANDLE) ? GetConVarInt(gplimit) : WEAPONAMMO_HEGRENADE_LIMIT;
+            return (g_bGrenadePack && gplimit != null) ? gplimit.IntValue : WEAPONAMMO_HEGRENADE_LIMIT;
         }
         case GrenadeType_Flashbang:
         {

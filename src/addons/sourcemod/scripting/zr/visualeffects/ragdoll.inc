@@ -64,7 +64,7 @@ void RagdollOnOffsetsFound()
 void RagdollOnClientDeath(int client)
 {
     // If ragdoll removal is disabled, then stop.
-    bool ragdollremove = GetConVarBool(g_hCvarsList.CVAR_VEFFECTS_RAGDOLL_REMOVE);
+    bool ragdollremove = g_hCvarsList.CVAR_VEFFECTS_RAGDOLL_REMOVE.BoolValue;
     if (!ragdollremove)
     {
         return;
@@ -79,12 +79,12 @@ void RagdollOnClientDeath(int client)
     }
 
     // Get the delay.
-    float dissolvedelay = GetConVarFloat(g_hCvarsList.CVAR_VEFFECTS_RAGDOLL_DELAY);
+    float dissolvedelay = g_hCvarsList.CVAR_VEFFECTS_RAGDOLL_DELAY.FloatValue;
 
     // If the delay is 0 or less, then remove right now.
     if (dissolvedelay <= 0)
     {
-        RagdollTimer(INVALID_HANDLE, ragdoll);
+        RagdollTimer(null, ragdoll);
         return;
     }
 
@@ -100,7 +100,7 @@ void RagdollOnClientDeath(int client)
 void RagdollRemove(int ragdoll)
 {
     // Get the dissolve type.
-    int dissolve = GetConVarInt(g_hCvarsList.CVAR_VEFFECTS_RAGDOLL_DISSOLVE);
+    int dissolve = g_hCvarsList.CVAR_VEFFECTS_RAGDOLL_DISSOLVE.IntValue;
 
     if (dissolve == VEFFECTS_RAGDOLL_DISSOLVE_EFFECTLESS)
     {
@@ -147,7 +147,7 @@ void RagdollRemove(int ragdoll)
 public Action RagdollTimer(Handle timer, any ragdoll)
 {
     // If ragdoll removal is disabled, then stop.
-    bool ragdollremove = GetConVarBool(g_hCvarsList.CVAR_VEFFECTS_RAGDOLL_REMOVE);
+    bool ragdollremove = g_hCvarsList.CVAR_VEFFECTS_RAGDOLL_REMOVE.BoolValue;
     if (!ragdollremove)
     {
         return Plugin_Continue;

@@ -71,7 +71,7 @@ void ModelsLoad()
     LogEvent(false, LogType_Normal, LOG_CORE_EVENTS, LogModule_Models, "Config Validation", "Loading models from file \"%s\".", modelPath);
 
     // Load model data file.
-    FileToKeyValues(kvModels, modelPath);
+    kvModels.ImportFromFile(modelPath);
 
     // Try to find the first model.
     kvModels.Rewind();
@@ -185,7 +185,7 @@ void ModelsLoad()
 
         // Search for model files with the specified name and add them to
         // downloads table.
-        while (ReadDirEntry(dir, file, sizeof(file), type))
+        while (dir.GetNext(file, sizeof(file), type))
         {
             // Skip if entry isn't a file.
             if (type != FileType_File)

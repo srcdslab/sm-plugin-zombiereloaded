@@ -149,7 +149,7 @@ public void VAmbienceCvarsHookLightStyle(ConVar cvar, const char[] oldvalue, con
  * @param oldvalue  The value before change.
  * @param newvalue  The new value.
  */
-public void VAmbienceCvarsHookSky(Handle cvar, const char[] oldvalue, const char[] newvalue)
+public void VAmbienceCvarsHookSky(ConVar cvar, const char[] oldvalue, const char[] newvalue)
 {
     // If sky is disabled, then disable.
     bool sky = g_hCvarsList.CVAR_VEFFECTS_SKY.BoolValue;
@@ -166,7 +166,7 @@ public void VAmbienceCvarsHookSky(Handle cvar, const char[] oldvalue, const char
  * @param oldvalue  The value before change.
  * @param newvalue  The new value.
  */
-public void VAmbienceCvarsHookSunDisable(Handle cvar, const char[] oldvalue, const char[] newvalue)
+public void VAmbienceCvarsHookSunDisable(ConVar cvar, const char[] oldvalue, const char[] newvalue)
 {
     // If fog is disabled, then disable.
     bool sun = g_hCvarsList.CVAR_VEFFECTS_SUN_DISABLE.BoolValue;
@@ -183,7 +183,7 @@ public void VAmbienceCvarsHookSunDisable(Handle cvar, const char[] oldvalue, con
  * @param oldvalue  The value before change.
  * @param newvalue  The new value.
  */
-public void VAmbienceCvarsHookFog(Handle cvar, const char[] oldvalue, const char[] newvalue)
+public void VAmbienceCvarsHookFog(ConVar cvar, const char[] oldvalue, const char[] newvalue)
 {
     // If fog is disabled, then disable.
     bool fogoverride = g_hCvarsList.CVAR_VEFFECTS_FOG_OVERRIDE.BoolValue;
