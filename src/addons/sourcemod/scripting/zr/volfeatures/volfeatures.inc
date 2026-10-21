@@ -309,8 +309,7 @@ void VolStopUpdateTimer()
     // Kill the timer if it's running.
     if (hVolUpdateTimer != null)
     {
-        KillTimer(hVolUpdateTimer);
-        hVolUpdateTimer = null;
+        delete hVolUpdateTimer;
     }
 
     // Also stop trigger delay timer.
@@ -358,8 +357,7 @@ void VolStopTriggerTimer()
     // Kill the timer if it's running.
     if (hVolTriggerTimer != null)
     {
-        KillTimer(hVolTriggerTimer);
-        hVolTriggerTimer = null;
+        delete hVolTriggerTimer;
     }
 }
 

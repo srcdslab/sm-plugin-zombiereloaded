@@ -501,7 +501,7 @@ void ZTele_StopTimer(int client)
 {
     if (ZTele_ClientInProgress(client))
     {
-        KillTimer(tZTele[client]);
+        delete tZTele[client];
     }
     tZTele[client] = null;
 }

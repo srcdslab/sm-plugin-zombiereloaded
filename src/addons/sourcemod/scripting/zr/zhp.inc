@@ -104,7 +104,7 @@ void ZHPOnClientSpawn(int client)
     // If timer is running, kill it.
     if (tZHP[client] != null)
     {
-        KillTimer(tZHP[client]);
+        delete tZHP[client];
     }
 
     // Reset timer handle.
@@ -121,7 +121,7 @@ void ZHPOnClientDeath(int client)
     // If timer is running, kill it.
     if (tZHP[client] != null)
     {
-        KillTimer(tZHP[client]);
+        delete tZHP[client];
     }
 
     // Reset timer handle.
@@ -148,7 +148,7 @@ void ZHPOnClientInfected(int client)
     // If timer is currently running, kill it.
     if (tZHP[client] != null)
     {
-        KillTimer(tZHP[client]);
+        delete tZHP[client];
     }
 
     // Start repeating timer to update display.

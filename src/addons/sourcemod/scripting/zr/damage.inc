@@ -290,7 +290,7 @@ public Action DamageOnTakeDamage(int client, int &attacker, int &inflictor, floa
         }
 
         // Check if distance between clients is too high. (Anti lagcompensation / longknife)
-        float maxDistance = GetConVarFloat(g_hCvarsList.CVAR_INFECT_MAX_DISTANCE);
+        float maxDistance = g_hCvarsList.CVAR_INFECT_MAX_DISTANCE.FloatValue;
         if (maxDistance != 0.0)
         {
             float clientPosition[3];
@@ -327,7 +327,7 @@ public Action DamageOnTakeDamage(int client, int &attacker, int &inflictor, floa
     else if (damagetype & DMG_BLAST)
     {
         // If blast damage is blocked, then stop.
-        bool damageblockblast = GetConVarBool(g_hCvarsList.CVAR_DAMAGE_BLOCK_BLAST);
+        bool damageblockblast = g_hCvarsList.CVAR_DAMAGE_BLOCK_BLAST.BoolValue;
         if (!damageblockblast)
         {
             return Plugin_Continue;

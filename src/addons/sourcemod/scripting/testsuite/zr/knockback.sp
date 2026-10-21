@@ -35,11 +35,11 @@ public Plugin myinfo =
     name = "Knock back",
     author = "Greyscale | Richard Helgeby",
     description = "Tests basic knock back.",
-    version = "1.0.1",
+    version = "1.0.2",
     url = "http://code.google.com/p/zombiereloaded/"
 };
 
-Handle hKnockBackMultiplier;
+ConVar hKnockBackMultiplier;
 int g_iToolsVelocity;
 bool VelocityMonitor[MAXPLAYERS];
 
@@ -146,11 +146,11 @@ public void OnClientDisconnect(int client)
     //SDKUnhook(client, SDKHook_PostThinkPost, PostThinkPost);
 }
 
-public Action Event_PlayerHurt(Handle event, const char[] name, bool dontBroadcast)
+public Action Event_PlayerHurt(Event event, const char[] name, bool dontBroadcast)
 {
-    int victim = GetClientOfUserId(GetEventInt(event, "userid"));
-    int damage = GetEventInt(event, "dmg_health");
-    int attacker = GetClientOfUserId(GetEventInt(event, "attacker"));
+    int victim = GetClientOfUserId(event.GetInt("userid"));
+    int damage = event.GetInt("dmg_health");
+    int attacker = GetClientOfUserId(event.GetInt("attacker"));
     KnockbackOnClientHurt(victim, attacker, float(damage));
     return Plugin_Continue;
 }
@@ -230,7 +230,7 @@ void KnockbackOnClientHurt(int client, int attacker, float dmg_health)
     }
 
     // Get zombie knockback value.
-    float knockback = GetConVarFloat(hKnockBackMultiplier);
+    float knockback = hKnockBackMultiplier.FloatValue;
 
     float clientloc[3];
     float attackerloc[3];

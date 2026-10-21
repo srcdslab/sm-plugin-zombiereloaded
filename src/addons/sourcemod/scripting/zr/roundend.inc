@@ -158,7 +158,7 @@ void RoundEndOnRoundStart()
     if (g_tRoundEnd != null)
     {
         // Kill timer.
-        KillTimer(g_tRoundEnd);
+        delete g_tRoundEnd;
 
         // Reset timer handle.
         g_tRoundEnd = null;
@@ -203,7 +203,7 @@ void RoundEndOnRoundEnd(int reason)
     if (g_tRoundEnd != null)
     {
         // Kill timer.
-        KillTimer(g_tRoundEnd);
+        delete g_tRoundEnd;
 
         // Reset timer handle.
         g_tRoundEnd = null;

@@ -81,8 +81,7 @@ void ClassHealthRegenStop(int client)
     // Kill the timer if it exist.
     if (tHealthRegen[client] != null)
     {
-        KillTimer(tHealthRegen[client]);
-        tHealthRegen[client] = null;
+        delete tHealthRegen[client];
     }
 }
 

@@ -574,7 +574,7 @@ public int ClassMultiplierSelectHandle(Menu menu, MenuAction action, int client,
         case MenuAction_Select:
         {
             // Get attribute name.
-            GetMenuItem(menu, slot, attributename, sizeof(attributename));
+            menu.GetItem(slot, attributename, sizeof(attributename));
 
             // Initialize in case of errors.
             attribute = ClassM_Knockback;

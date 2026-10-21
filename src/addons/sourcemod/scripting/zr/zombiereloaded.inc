@@ -197,7 +197,7 @@ stock bool ZREndTimer(Handle &timer, bool kill = true)
         // Kill if caller says to.
         if (kill)
         {
-            KillTimer(timer);
+            delete timer;
         }
 
         // Reset variable.
