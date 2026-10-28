@@ -985,13 +985,27 @@ bool InfectHumanToZombie(int client, int attacker = -1, bool motherinfect = fals
         return false;
     }
 
-    // Forward pre-event to modules.
     // We need to check if client was ever changed.
     finalclient = client;
+
+    // A mother zombie candidate may already be a zombie if the API redirected
+    // an earlier mother infection to it.
+    if (motherinfect && InfectIsClientInfected(client))
+    {
+        return false;
+    }
+
+    // Forward pre-event to modules.
     Action result = APIOnClientInfect(client, attacker, motherinfect, respawnoverride, respawn);
 
     // Check if infection should be blocked.
     if (result == Plugin_Handled)
+    {
+        return false;
+    }
+
+    // The API may have redirected the infection to a client that is already a zombie.
+    if (motherinfect && InfectIsClientInfected(client))
     {
         return false;
     }
