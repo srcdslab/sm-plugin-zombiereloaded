@@ -1494,8 +1494,7 @@ stock void InfectManualInfect(int client, int[] targets, int count, bool respawn
         // Stop mother infect timer.
         if (g_tInfect != null)
         {
-            KillTimer(g_tInfect);
-            g_tInfect = null;
+            delete g_tInfect;
         }
 
         // Move all clients to CT

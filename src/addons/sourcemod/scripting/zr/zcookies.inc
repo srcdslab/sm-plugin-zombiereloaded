@@ -66,9 +66,9 @@ void ZCookiesMenuMain(int client)
     Format(zmarket, sizeof(zmarket), "%t", "ZCookies zmarket loadout");
 
     // Get conditional values for each option.
-    bool zhpcvar = GetConVarBool(g_hCvarsList.CVAR_ZHP);                                   // For ZHP.
-    bool overlaytoggle = GetConVarBool(g_hCvarsList.CVAR_CLASSES_OVERLAY_TOGGLE);          // For class overlay.
-    bool zmarketenabled = GetConVarBool(g_hCvarsList.CVAR_WEAPONS_ZMARKET);                // For ZMarket loadout.
+    bool zhpcvar = g_hCvarsList.CVAR_ZHP.BoolValue;                                   // For ZHP.
+    bool overlaytoggle = g_hCvarsList.CVAR_CLASSES_OVERLAY_TOGGLE.BoolValue;          // For class overlay.
+    bool zmarketenabled = g_hCvarsList.CVAR_WEAPONS_ZMARKET.BoolValue;                // For ZMarket loadout.
 
     // Add items to menu.
     zcookies_menu_main.SetTitle(title);

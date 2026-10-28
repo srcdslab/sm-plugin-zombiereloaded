@@ -505,14 +505,27 @@ public void ClassPreThinkPost(int client)
     // Only apply speed if the prop method is used.
     if (ClassSpeedMethod == ClassSpeed_Prop)
     {
+        // Adding nothing would write back the same value, skip the prop access.
+        if (g_flClassApplySpeed[client] == 0.0)
+        {
+            return;
+        }
+
         if (!IsPlayerAlive(client))
         {
             return;
         }
 
+        // This runs every tick for every player, so look the offset up only once.
+        static int s_iMaxspeedOffset = -1;
+        if (s_iMaxspeedOffset == -1)
+        {
+            s_iMaxspeedOffset = FindDataMapInfo(client, "m_flMaxspeed");
+        }
+
         // Note: Default is around 200.0 - 250.0
-        float newspeed = GetEntPropFloat(client, Prop_Data, "m_flMaxspeed") + g_flClassApplySpeed[client];
-        SetEntPropFloat(client, Prop_Data, "m_flMaxspeed", newspeed);
+        float newspeed = GetEntDataFloat(client, s_iMaxspeedOffset) + g_flClassApplySpeed[client];
+        SetEntDataFloat(client, s_iMaxspeedOffset, newspeed);
     }
 }
 

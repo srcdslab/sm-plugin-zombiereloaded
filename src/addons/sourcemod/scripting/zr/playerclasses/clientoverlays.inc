@@ -136,7 +136,7 @@ public void ClassOverlayInitialize(int client, const char[] overlay)
     if (overlaytoggle && overlaypath[0])
     {
         char togglecmds[CLASSOVERLAY_TOGGLE_MAX_CMDS * CLASSOVERLAY_TOGGLE_MAX_LENGTH];
-        GetConVarString(g_hCvarsList.CVAR_CLASSES_OVERLAY_TOGGLECMDS, togglecmds, sizeof(togglecmds));
+        g_hCvarsList.CVAR_CLASSES_OVERLAY_TOGGLECMDS.GetString(togglecmds, sizeof(togglecmds));
 
         TranslationPrintHintText(client, "Classes overlay toggle", togglecmds);
     }

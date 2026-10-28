@@ -79,7 +79,7 @@ stock void ShoppingListConstruct(const char[] list, char[] shoppinglist, int sli
     ExplodeString(list, in_token, items, SHOPPINGLIST_MAXITEMS, SHOPPINGLIST_MAXLEN);
 
     // Put each item in a trie where we count each item.
-    StringMap trieItems = CreateTrie();
+    StringMap trieItems = new StringMap();
     int item_count;
     int validstrings;
 

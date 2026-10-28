@@ -258,7 +258,7 @@ void ZSpawnOnRoundStart()
     if (tZSpawn != null)
     {
         // Kill timer.
-        KillTimer(tZSpawn);
+        delete tZSpawn;
 
         // Reset timer handle.
         tZSpawn = null;
@@ -274,7 +274,7 @@ void ZSpawnOnRoundFreezeEnd()
     if (tZSpawn != null)
     {
         // Kill timer.
-        KillTimer(tZSpawn);
+        delete tZSpawn;
     }
 
     // If zspawn is disabled, then stop.
@@ -307,7 +307,7 @@ void ZSpawnOnRoundEnd()
     if (tZSpawn != null)
     {
         // Kill timer.
-        KillTimer(tZSpawn);
+        delete tZSpawn;
 
         // Reset timer handle.
         tZSpawn = null;

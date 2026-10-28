@@ -289,7 +289,7 @@ void KnockbackApplyVector(int client, float vector[3], bool limitvel)
     AddVectors(vector, velocity, velocity);
 
     // Should we limit their knockback velocity?
-    float maxvel = GetConVarFloat(g_hCvarsList.CVAR_KNOCKBACK_MAXVEL);
+    float maxvel = g_hCvarsList.CVAR_KNOCKBACK_MAXVEL.FloatValue;
     if (limitvel && g_fKnockbackVelLimit[client] >= 0.0 || maxvel > 0.0)
     {
         if (g_fKnockbackVelLimit[client] >= 0.0 && g_fKnockbackVelLimit[client] < maxvel)

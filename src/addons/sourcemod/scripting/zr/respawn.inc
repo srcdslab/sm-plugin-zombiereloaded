@@ -73,7 +73,7 @@ void RespawnOnClientSpawn(int client)
     // If timer is running, kill it.
     if (tRespawn[client] != null)
     {
-        KillTimer(tRespawn[client]);
+        delete tRespawn[client];
     }
 
     // Reset timer handle.
@@ -101,8 +101,7 @@ void RespawnOnClientDeath(int client, int attacker, const char[] weapon)
     // If timer is running, kill it.
     if (tRespawn[client] != null)
     {
-        KillTimer(tRespawn[client]);
-        tRespawn[client] = null;
+        delete tRespawn[client];
     }
 
     // If player was infected, then stop.
@@ -144,7 +143,7 @@ void RespawnOnRoundEnd()
         }
 
         // Stop timer.
-        KillTimer(tRespawn[x]);
+        delete tRespawn[x];
 
         // Reset timer handle.
         tRespawn[x] = null;

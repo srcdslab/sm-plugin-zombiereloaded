@@ -61,8 +61,7 @@ void SEffectsOnMapEnd()
     // If timer is running, kill it.
     if (tAmbientSounds != null)
     {
-        KillTimer(tAmbientSounds);
-        tAmbientSounds = null;
+        delete tAmbientSounds;
     }
 }
 

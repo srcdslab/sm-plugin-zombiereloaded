@@ -171,7 +171,7 @@ void HitgroupsCacheData()
         bool damage = ConfigKvGetStringBool(kvHitgroups, "damage", "yes");
 
         // Knockback (module)
-        float knockback = KvGetFloat(kvHitgroups, "knockback", 1.0);
+        float knockback = kvHitgroups.GetFloat("knockback", 1.0);
 
         ArrayList arrayHitgroup = arrayHitgroups.Get(x);
 

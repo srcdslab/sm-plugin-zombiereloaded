@@ -34,12 +34,12 @@ public Plugin myinfo =
     name = "Zombie:Reloaded Respawn API Test",
     author = "Greyscale | Richard Helgeby",
     description = "Tests the respawn API for ZR",
-    version = "1.0.0",
+    version = "1.0.1",
     url = "http://code.google.com/p/zombiereloaded/"
 };
 
-Handle cvarBlockRespawn;
-Handle cvarAllSuicide;
+ConVar cvarBlockRespawn;
+ConVar cvarAllSuicide;
 
 public void OnPluginStart()
 {
@@ -108,7 +108,7 @@ public Action RespawnClientCommand(int client, int argc)
 
 public Action ZR_OnClientRespawn(int &client, ZR_RespawnCondition &condition)
 {
-    if (GetConVarBool(cvarBlockRespawn))
+    if (cvarBlockRespawn.BoolValue)
     {
         PrintToChatAll("Respawn blocked on client %d.", client);
         return Plugin_Handled;
@@ -116,7 +116,7 @@ public Action ZR_OnClientRespawn(int &client, ZR_RespawnCondition &condition)
 
     PrintToChatAll("Client %d is about to respawn. Condition: %d", client, condition);
 
-    if (GetConVarBool(cvarAllSuicide))
+    if (cvarAllSuicide.BoolValue)
     {
         // Set client suicide.
         ZR_SetKilledByWorld(client, true);

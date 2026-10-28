@@ -103,7 +103,7 @@ void ZMarketLoad()
     char commands[8][32];
     int count;
 
-    int size = GetArraySize(arrayWeapons);
+    int size = arrayWeapons.Length;
     for (int weaponindex = 0; weaponindex < size; weaponindex++)
     {
         WeaponsGetZMarketCommand(weaponindex, zmarketcommand, sizeof(zmarketcommand));
@@ -138,7 +138,7 @@ void ZMarketLoad()
 
 public Action ZMarketBuyCommand(int client, int argc)
 {
-    bool zmarketenabled = GetConVarBool(g_hCvarsList.CVAR_WEAPONS_ZMARKET);
+    bool zmarketenabled = g_hCvarsList.CVAR_WEAPONS_ZMARKET.BoolValue;
     char command[CONFIG_MAX_LENGTH];
     char zmarketcommand[CONFIG_MAX_LENGTH];
     char weaponname[WEAPONS_MAX_LENGTH];
@@ -153,7 +153,7 @@ public Action ZMarketBuyCommand(int client, int argc)
         return Plugin_Handled;
     }
 
-    int size = GetArraySize(arrayWeapons);
+    int size = arrayWeapons.Length;
     for (int weaponindex = 0; weaponindex < size; weaponindex++)
     {
         WeaponsGetZMarketCommand(weaponindex, zmarketcommand, sizeof(zmarketcommand));
@@ -342,7 +342,7 @@ int ZMarketGetPurchaseCount(int client, const char[] weapon)
 bool ZMarketMenuMain(int client)
 {
     // If weapons module is disabled, then stop.
-    bool weapons = GetConVarBool(g_hCvarsList.CVAR_WEAPONS);
+    bool weapons = g_hCvarsList.CVAR_WEAPONS.BoolValue;
     if (!weapons)
     {
         // Telle client feature is disabled.
@@ -351,7 +351,7 @@ bool ZMarketMenuMain(int client)
     }
 
     // If ZMarket module is disabled, then stop.
-    bool zmarket = GetConVarBool(g_hCvarsList.CVAR_WEAPONS_ZMARKET);
+    bool zmarket = g_hCvarsList.CVAR_WEAPONS_ZMARKET.BoolValue;
     if (!zmarket)
     {
         // Telle client feature is disabled.
@@ -384,7 +384,7 @@ bool ZMarketMenuMain(int client)
     Format(weaponslist, sizeof(weaponslist), "%t", "Weapons menu zmarket main weapons list");
 
     // Add formatted options to menu.
-    SetMenuTitle(menu_zmarket_main, title);
+    menu_zmarket_main.SetTitle(title);
     menu_zmarket_main.AddItem("Get Loadout", getloadout, MenuGetItemDraw(zmarketrebuy || zmarketrebuyauto));
     menu_zmarket_main.AddItem("Edit Loadout", editloadout, MenuGetItemDraw(zmarketrebuy || zmarketrebuyauto));
     menu_zmarket_main.AddItem("Rebuy", rebuy, MenuGetItemDraw(zmarketrebuy || zmarketrebuyauto));
@@ -532,7 +532,7 @@ void ZMarketMenuLoadout(int client)
  * @param client                The client index.
  * @param slot                  The slot index selected (starting from 0).
  */
-public int ZMarketMenuLoadoutHandle(Handle menu_zmarket_loadout, MenuAction action, int client, int slot)
+public int ZMarketMenuLoadoutHandle(Menu menu_zmarket_loadout, MenuAction action, int client, int slot)
 {
     // Client selected an option.
     if (action == MenuAction_Select)
@@ -589,11 +589,11 @@ void ZMarketMenuLoadoutWeapons(int client, WeaponsSlot slot)
     {
         case Slot_Primary:
         {
-            GetConVarString(g_hCvarsList.CVAR_WEAPONS_ZMARKET_REBUY_PRIMARY, weaponname, sizeof(weaponname));
+            g_hCvarsList.CVAR_WEAPONS_ZMARKET_REBUY_PRIMARY.GetString(weaponname, sizeof(weaponname));
         }
         case Slot_Secondary:
         {
-            GetConVarString(g_hCvarsList.CVAR_WEAPONS_ZMARKET_REBUY_SECONDARY, weaponname, sizeof(weaponname));
+            g_hCvarsList.CVAR_WEAPONS_ZMARKET_REBUY_SECONDARY.GetString(weaponname, sizeof(weaponname));
         }
     }
 
@@ -601,7 +601,7 @@ void ZMarketMenuLoadoutWeapons(int client, WeaponsSlot slot)
     Format(weapondisplay, sizeof(weapondisplay), "%t", "Weapons menu zmarket loadout default", weaponname);
     menu_zmarket_loadout_weapons.AddItem("", weapondisplay);
 
-    int size = GetArraySize(arrayWeapons);
+    int size = arrayWeapons.Length;
     for (int weaponindex = 0; weaponindex < size; weaponindex++)
     {
         // Get weapons slot
@@ -802,7 +802,7 @@ void ZMarketMenuTypeWeapons(int client)
     for (int x = 0; x < count; x++)
     {
         // Get weapon index to check restricted status of.
-        int weaponindex = GetArrayCell(arrayTypeWeapons, x);
+        int weaponindex = arrayTypeWeapons.Get(x);
 
         // Get name of weapon.
         WeaponsGetName(weaponindex, typeweapon, sizeof(typeweapon));
@@ -1034,7 +1034,7 @@ stock bool ZMarketEquip(int client, const char[] weapon, bool rebuy = false)
         return false;
     }
 
-    bool zmarketbuyzone = GetConVarBool(g_hCvarsList.CVAR_WEAPONS_ZMARKET_BUYZONE);
+    bool zmarketbuyzone = g_hCvarsList.CVAR_WEAPONS_ZMARKET_BUYZONE.BoolValue;
     if (!rebuy && zmarketbuyzone && !WeaponsIsClientInBuyZone(client))
     {
         TranslationPrintToChat(client, "Must be in buyzone");
@@ -1180,7 +1180,7 @@ stock bool ZMarketEquip(int client, const char[] weapon, bool rebuy = false)
             // If client isn't rebuying the weapon, then tell them the weapon has been purchased.
             TranslationPrintToChat(client, "Weapons zmarket purchase", weapondisplay);
 
-            bool zmarketnorefill = GetConVarBool(g_hCvarsList.CVAR_WEAPONS_ZMARKET_NOREFILL);
+            bool zmarketnorefill = g_hCvarsList.CVAR_WEAPONS_ZMARKET_NOREFILL.BoolValue;
             if (IsValidEntity(entity) && !WeaponsIsClientInBuyZone(client) && zmarketnorefill)
             {
                 int newclip = 0;
