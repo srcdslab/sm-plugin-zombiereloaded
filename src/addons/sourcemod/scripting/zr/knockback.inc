@@ -174,8 +174,14 @@ public void KnockbackOnClientHurt(int victim, int attacker, int inflictor, const
     // Check if a grenade was thrown.
     if (strcmp(weaponname, "hegrenade", false) == 0)
     {
+        // The inflictor is normally the exploding grenade itself, so use it
+        // directly instead of scanning every entity for it.
+        if (inflictor != attacker && KnockbackIsExplodingGrenade(inflictor))
+        {
+            GetEntPropVector(inflictor, Prop_Send, "m_vecOrigin", attackerloc);
+        }
         // Get the location of the grenade.
-        if (KnockbackFindExplodingGrenade(attackerloc) == -1)
+        else if (KnockbackFindExplodingGrenade(attackerloc) == -1)
         {
             // If the grenade wasn't found, then stop.
             return;
@@ -183,16 +189,15 @@ public void KnockbackOnClientHurt(int victim, int attacker, int inflictor, const
     }
     else
     {
-        // Get attackers eye position.
-        GetClientEyePosition(attacker, attackerloc);
-
         // Get attackers eye angles.
         float attackerang[3];
         GetClientEyeAngles(attacker, attackerang);
 
-        // Calculate knockback end-vector.
-        TR_TraceRayFilter(attackerloc, attackerang, MASK_ALL, RayType_Infinite, KnockbackTRFilter);
-        TR_GetEndPosition(clientloc);
+        // Knockback is applied along the attacker's aim direction. Tracing a
+        // ray from the eye position along the eye angles and pushing towards
+        // its end point gives this exact same direction, so use the forward
+        // vector directly (attackerloc stays at the origin).
+        GetAngleVectors(attackerang, clientloc, NULL_VECTOR, NULL_VECTOR);
     }
 
     bool weapons = g_hCvarsList.CVAR_WEAPONS.BoolValue;
@@ -315,22 +320,29 @@ void KnockbackApplyVector(int client, float vector[3], bool limitvel)
 }
 
 /**
- * Trace Ray forward, used as a filter to continue tracing if told so. (See sdktools_trace.inc)
+ * Check if an entity is an exploding grenade (currently inflicting damage in player_hurt).
  *
- * @param entity        The entity index.
- * @param contentsMask  The contents mask.
- * @return              True to allow hit, false to continue tracing. 
+ * @param entity    The entity index.
+ * @return          True if the entity is an exploding grenade, false otherwise.
  */
-public bool KnockbackTRFilter(int entity, int contentsMask)
+bool KnockbackIsExplodingGrenade(int entity)
 {
-    // If entity is a player, continue tracing.
-    if (entity > 0 && entity < MaxClients)
+    // If entity is invalid, then stop.
+    if (entity <= MaxClients || !IsValidEdict(entity))
     {
         return false;
     }
 
-    // Allow hit.
-    return true;
+    // If entity isn't a grenade, then stop.
+    char classname[64];
+    GetEdictClassname(entity, classname, sizeof(classname));
+    if (strcmp(classname, "hegrenade_projectile", false) != 0)
+    {
+        return false;
+    }
+
+    // If m_takedamage is set to 0, it's exploding.
+    return GetEntProp(entity, Prop_Data, "m_takedamage") == 0;
 }
 
 /**
@@ -341,28 +353,12 @@ public bool KnockbackTRFilter(int entity, int contentsMask)
  */
 int KnockbackFindExplodingGrenade(float heLoc[3])
 {
-    char classname[64];
-
     // Find max entities and loop through all of them.
     int maxentities = GetMaxEntities();
     for (int x = MaxClients; x <= maxentities; x++)
     {
-        // If entity is invalid, then stop.
-        if (!IsValidEdict(x))
-        {
-            continue;
-        }
-
-        // If entity isn't a grenade, then stop.
-        GetEdictClassname(x, classname, sizeof(classname));
-        if (strcmp(classname, "hegrenade_projectile", false) != 0)
-        {
-            continue;
-        }
-
-        // If m_takedamage is set to 0, we found our grenade.
-        int takedamage = GetEntProp(x, Prop_Data, "m_takedamage");
-        if (takedamage == 0)
+        // If entity is an exploding grenade, we found our grenade.
+        if (KnockbackIsExplodingGrenade(x))
         {
             // Return its location.
             GetEntPropVector(x, Prop_Send, "m_vecOrigin", heLoc);
