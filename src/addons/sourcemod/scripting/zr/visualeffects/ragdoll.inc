@@ -102,6 +102,14 @@ void RagdollOnClientDeath(int client)
  */
 void RagdollRemove(int ragdoll)
 {
+    // Make sure this entity is a ragdoll before killing it.
+    char classname[64];
+    GetEdictClassname(ragdoll, classname, sizeof(classname));
+    if (strcmp(classname, "cs_ragdoll") != 0)
+    {
+        return;
+    }
+
     // Get the dissolve type.
     int dissolve = g_hCvarsList.CVAR_VEFFECTS_RAGDOLL_DISSOLVE.IntValue;
 
