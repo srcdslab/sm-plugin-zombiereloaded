@@ -204,6 +204,9 @@ void AmbientSoundsRestart()
 */
 public Action AmbientSoundsTimer(Handle timer)
 {
+    // Reset timer handle.
+    tAmbientSounds = null;
+
     // If ambience is disabled, then stop.
     if (!g_bAmbientSounds)
     {
