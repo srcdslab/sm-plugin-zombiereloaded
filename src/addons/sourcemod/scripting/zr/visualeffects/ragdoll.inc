@@ -81,15 +81,18 @@ void RagdollOnClientDeath(int client)
     // Get the delay.
     float dissolvedelay = g_hCvarsList.CVAR_VEFFECTS_RAGDOLL_DELAY.FloatValue;
 
+    // Pass a reference, the index may be reused by another entity before the timer fires.
+    int ragdollref = EntIndexToEntRef(ragdoll);
+
     // If the delay is 0 or less, then remove right now.
     if (dissolvedelay <= 0)
     {
-        RagdollTimer(null, ragdoll);
+        RagdollTimer(null, ragdollref);
         return;
     }
 
     // Create a timer to remove/dissolve ragdoll.
-    CreateTimer(dissolvedelay, RagdollTimer, ragdoll, TIMER_FLAG_NO_MAPCHANGE);
+    CreateTimer(dissolvedelay, RagdollTimer, ragdollref, TIMER_FLAG_NO_MAPCHANGE);
 }
 
 /**
@@ -99,6 +102,14 @@ void RagdollOnClientDeath(int client)
  */
 void RagdollRemove(int ragdoll)
 {
+    // Make sure this entity is a ragdoll before killing it.
+    char classname[64];
+    GetEdictClassname(ragdoll, classname, sizeof(classname));
+    if (strcmp(classname, "cs_ragdoll") != 0)
+    {
+        return;
+    }
+
     // Get the dissolve type.
     int dissolve = g_hCvarsList.CVAR_VEFFECTS_RAGDOLL_DISSOLVE.IntValue;
 
@@ -142,9 +153,9 @@ void RagdollRemove(int ragdoll)
  * Timer callback.  Removed a client's ragdoll.
  *
  * @param timer     The timer handle.
- * @param ragdoll   The ragdoll index.
+ * @param ragdollref The ragdoll entity reference.
  */
-public Action RagdollTimer(Handle timer, any ragdoll)
+public Action RagdollTimer(Handle timer, any ragdollref)
 {
     // If ragdoll removal is disabled, then stop.
     bool ragdollremove = g_hCvarsList.CVAR_VEFFECTS_RAGDOLL_REMOVE.BoolValue;
@@ -154,15 +165,8 @@ public Action RagdollTimer(Handle timer, any ragdoll)
     }
 
     // If the ragdoll is already gone, then stop.
-    if (!IsValidEdict(ragdoll))
-    {
-        return Plugin_Continue;
-    }
-
-    // Make sure this edict is still a ragdoll and not become a new valid entity.
-    char classname[64];
-    GetEdictClassname(ragdoll, classname, sizeof(classname));
-    if (strcmp(classname, "cs_ragdoll") != 0)
+    int ragdoll = EntRefToEntIndex(ragdollref);
+    if (ragdoll == INVALID_ENT_REFERENCE)
     {
         return Plugin_Continue;
     }
