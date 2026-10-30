@@ -663,8 +663,9 @@ public void InfectMotherZombie()
                 // just add the numbers. (Zero ratio is catched by validator.)
                 mothercount = humancount + ratio;
 
-                // Force at least one mother zombie.
-                if (mothercount == 0)
+                // Force at least one mother zombie. The result is negative
+                // when there are fewer humans than the ratio keeps.
+                if (mothercount < 1)
                 {
                     mothercount = 1;
                 }
@@ -1856,7 +1857,7 @@ InfectMode InfectGetModeOrFail()
             }
             if (min > max || max < min)
             {
-                LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Infect, "Config Validation", "Warning: Infection range values are overlapping or reversed. Check zr_infect_mzombie_min and zr_infect_mzombie_min. Falling back to one mother zombie.");
+                LogEvent(false, LogType_Error, LOG_CORE_EVENTS, LogModule_Infect, "Config Validation", "Warning: Infection range values are overlapping or reversed. Check zr_infect_mzombie_min and zr_infect_mzombie_max. Falling back to one mother zombie.");
                 failed = true;
             }
 
