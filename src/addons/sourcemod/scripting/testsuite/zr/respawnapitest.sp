@@ -29,6 +29,8 @@
 #include <sourcemod>
 #include <zombiereloaded>
 
+#pragma newdecls required
+
 public Plugin myinfo =
 {
     name = "Zombie:Reloaded Respawn API Test",

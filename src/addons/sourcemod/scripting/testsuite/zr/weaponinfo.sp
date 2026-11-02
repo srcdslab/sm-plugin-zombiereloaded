@@ -29,6 +29,8 @@
 #include <sourcemod>
 #include <sdktools>
 
+#pragma newdecls required
+
 public Plugin myinfo =
 {
     name = "Weapon information",
