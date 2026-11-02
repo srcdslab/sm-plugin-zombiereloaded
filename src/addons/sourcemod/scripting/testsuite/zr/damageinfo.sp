@@ -29,6 +29,8 @@
 #include <sourcemod>
 #include <sdkhooks>
 
+#pragma newdecls required
+
 public Plugin myinfo =
 {
     name = "Damage information",

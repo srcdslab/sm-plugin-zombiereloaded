@@ -30,6 +30,8 @@
 #include <sdktools>
 #include <sdkhooks>
 
+#pragma newdecls required
+
 public Plugin myinfo =
 {
     name = "Knock back",
@@ -369,7 +371,7 @@ stock void GetVelocity(int client, float velocity[3])
     velocity[2] = GetEntPropFloat(client, Prop_Send, "m_vecVelocity[2]");
 }
 
-stock void SetVelocity(client, const float velocity[3])
+stock void SetVelocity(int client, const float velocity[3])
 {
     SetEntPropFloat(client, Prop_Send, "m_vecVelocity[0]", velocity[0]);
     SetEntPropFloat(client, Prop_Send, "m_vecVelocity[1]", velocity[1]);

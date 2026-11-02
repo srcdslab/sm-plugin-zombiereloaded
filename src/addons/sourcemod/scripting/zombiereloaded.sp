@@ -26,7 +26,6 @@
  */
 
 #pragma semicolon 1
-#pragma newdecls optional
 
 #include <sourcemod>
 #include <sdktools>
