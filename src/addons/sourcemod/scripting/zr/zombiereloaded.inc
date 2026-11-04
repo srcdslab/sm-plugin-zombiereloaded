@@ -195,9 +195,11 @@ stock bool ZREndTimer(Handle &timer, bool kill = true)
     if (ZRIsTimerRunning(timer))
     {
         // Kill if caller says to.
+        // KillTimer, not delete: callers like InfectStopCountdown can run from
+        // the timer's own callback, and deleting a running timer frees its handle twice.
         if (kill)
         {
-            delete timer;
+            KillTimer(timer);
         }
 
         // Reset variable.
