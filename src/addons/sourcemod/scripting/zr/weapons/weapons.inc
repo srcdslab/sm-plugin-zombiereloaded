@@ -110,6 +110,15 @@ enum WeaponsSlot
  */
 ArrayList arrayWeapons = null;
 
+/**
+ * Weapon array index by lowercase weapon name, and by lowercase entity classname.
+ * Filled by WeaponsCacheData(). The name and entity lookups run on every bullet that
+ * hits a zombie (knockback) and on every weapon pickup check (every tick a human
+ * stands on a weapon), so they must not walk the whole weapon list.
+ */
+StringMap g_smWeaponsByName = null;
+StringMap g_smWeaponsByEntity = null;
+
 #include "restrict"
 #include "weaponammo"
 #include "zmarket"
@@ -256,12 +265,30 @@ void WeaponsCacheData()
     }
 
     char weaponname[WEAPONS_MAX_LENGTH];
+    char weaponkey[WEAPONS_MAX_LENGTH];
+
+    // Rebuild the name and entity lookups along with the data.
+    if (g_smWeaponsByName == null)
+    {
+        g_smWeaponsByName = new StringMap();
+        g_smWeaponsByEntity = new StringMap();
+    }
+    else
+    {
+        g_smWeaponsByName.Clear();
+        g_smWeaponsByEntity.Clear();
+    }
 
     // x = array index
     int size = arrayWeapons.Length;
     for (int x = 0; x < size; x++)
     {
         WeaponsGetName(x, weaponname, sizeof(weaponname));
+
+        // Keep the first index for a name, like the linear search did.
+        WeaponsLookupKey(weaponname, weaponkey, sizeof(weaponkey));
+        g_smWeaponsByName.SetValue(weaponkey, x, false);
+
         kvWeapons.Rewind();
         if (!kvWeapons.JumpToKey(weaponname))
         {
@@ -317,6 +344,10 @@ void WeaponsCacheData()
 
         // Initialize other stored weapon info here.
         arrayWeapon.Push(restrictdefault);        // Index: 13
+
+        // Same truncation as the WEAPONS_MAX_LENGTH buffer the linear search compared with.
+        WeaponsLookupKey(weaponentity, weaponkey, sizeof(weaponkey));
+        g_smWeaponsByEntity.SetValue(weaponkey, x, false);
     }
 
     // We're done with this file now, so we can close it.
@@ -427,28 +458,60 @@ stock void WeaponsClearCache(int index)
  */
 stock int WeaponsNameToIndex(const char[] weapon)
 {
-    if (arrayWeapons == null)
+    if (arrayWeapons == null || g_smWeaponsByName == null)
     {
         return -1;
     }
 
-    char weaponname[WEAPONS_MAX_LENGTH];
+    // Case-insensitive lookup, like the strcmp(..., false) it replaces.
+    return WeaponsLookup(g_smWeaponsByName, weapon);
+}
 
-    // x = Array index.
-    int size = arrayWeapons.Length;
-    for (int x = 0; x < size; x++)
+/**
+ * Builds the key of a weapon lookup: the string in lowercase, cut to maxlen.
+ *
+ * @param str       The weapon name or entity classname.
+ * @param key       The string to return the key in.
+ * @param maxlen    The max length of the key.
+ */
+stock void WeaponsLookupKey(const char[] str, char[] key, int maxlen)
+{
+    // ASCII lowercase like strcmp(..., false), with plain arithmetic:
+    // CharToLower() calls a native per character.
+    int i;
+    for (i = 0; i < maxlen - 1 && str[i] != '\0'; i++)
     {
-        WeaponsGetName(x, weaponname, sizeof(weaponname));
+        int c = str[i];
+        key[i] = ('A' <= c <= 'Z') ? c + ('a' - 'A') : c;
+    }
+    key[i] = '\0';
+}
 
-        // If names match, then return index.
-        if (strcmp(weapon, weaponname, false) == 0)
-        {
-            return x;
-        }
+/**
+ * Finds a weapon index in one of the weapon lookups.
+ *
+ * @param lookup    g_smWeaponsByName or g_smWeaponsByEntity.
+ * @param str       The weapon name or entity classname (any case).
+ * @return          The weapon index, -1 if not found.
+ */
+stock int WeaponsLookup(StringMap lookup, const char[] str)
+{
+    // The keys come from WEAPONS_MAX_LENGTH buffers: a longer string never matched.
+    if (strlen(str) >= WEAPONS_MAX_LENGTH)
+    {
+        return -1;
     }
 
-    // Name doesn't exist.
-    return -1;
+    char key[WEAPONS_MAX_LENGTH];
+    WeaponsLookupKey(str, key, sizeof(key));
+
+    int index;
+    if (!lookup.GetValue(key, index))
+    {
+        return -1;
+    }
+
+    return index;
 }
 
 /**
@@ -472,6 +535,19 @@ stock int WeaponsEntityToDisplay(const char[] entityname, char[] display, int di
 
     // Initialize string to null.
     strcopy(display, displaymaxlen, "");
+
+    // Called on every weapon pickup check: use the entity lookup.
+    // The prefix-less search (admin commands only) keeps the loop below.
+    if (!noprefix && g_smWeaponsByEntity != null)
+    {
+        int index = WeaponsLookup(g_smWeaponsByEntity, entityname);
+        if (index != -1)
+        {
+            WeaponsGetName(index, display, displaymaxlen);
+        }
+
+        return index;
+    }
 
     // x = Array index.
     int size = arrayWeapons.Length;
