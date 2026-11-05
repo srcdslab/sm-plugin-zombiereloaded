@@ -476,10 +476,13 @@ stock int WeaponsNameToIndex(const char[] weapon)
  */
 stock void WeaponsLookupKey(const char[] str, char[] key, int maxlen)
 {
+    // ASCII lowercase like strcmp(..., false), with plain arithmetic:
+    // CharToLower() calls a native per character.
     int i;
     for (i = 0; i < maxlen - 1 && str[i] != '\0'; i++)
     {
-        key[i] = CharToLower(str[i]);
+        int c = str[i];
+        key[i] = ('A' <= c <= 'Z') ? c + ('a' - 'A') : c;
     }
     key[i] = '\0';
 }
