@@ -131,8 +131,9 @@ stock int ClassValidateAttributes(int classindex, bool logErrors = false)
             }
         }
 
-        // Check for duplicate use.
-        int duplicate = ClassGetIndexByIdentifier(identifier);
+        // Check for duplicate use among the classes loaded so far. The modified
+        // cache still holds the previous class file while a new one is loaded.
+        int duplicate = ClassGetIndexByIdentifier(identifier, ZR_CLASS_CACHE_ORIGINAL);
         if (duplicate >= 0)
         {
             flags += ZR_CLASS_IDENTIFIER;
