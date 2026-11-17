@@ -105,15 +105,15 @@ public void VolumeControlMenu(int client)
 	Menu menu = new Menu(VolumeControlMenuHandler, MENU_ACTIONS_DEFAULT);
 
 	char sMenuTitle[128];
-	Format(sMenuTitle, sizeof(sMenuTitle), "%t", "Volume_Menu_Title");
+	Format(sMenuTitle, sizeof(sMenuTitle), "%T", "Volume_Menu_Title", client);
 	menu.SetTitle(sMenuTitle);
 
 	char sItem[64];
 
-	Format(sItem, sizeof(sItem), "%t", "Zombie Voice");
+	Format(sItem, sizeof(sItem), "%T", "Zombie Voice", client);
 	menu.AddItem("1" ,sItem);
 
-	Format(sItem, sizeof(sItem), "%t", "Ambient");
+	Format(sItem, sizeof(sItem), "%T", "Ambient", client);
 	menu.AddItem("2" ,sItem);
 
 	menu.ExitBackButton = true;
@@ -181,7 +181,7 @@ public void ZombieVoiceVolumeMenu(int client)
 	Menu menu = new Menu(ZombieVoiceVolumeMenuHandler, MENU_ACTIONS_DEFAULT);
 
 	char sMenuTitle[128];
-	Format(sMenuTitle, sizeof(sMenuTitle), "%t\n%t", "ZombieVoice_Title_Menu", RoundToNearest(zfZSoundVolume[client] * 100), "ZombieVoice_CommandUsage");
+	Format(sMenuTitle, sizeof(sMenuTitle), "%T\n%T", "ZombieVoice_Title_Menu", client, RoundToNearest(zfZSoundVolume[client] * 100), "ZombieVoice_CommandUsage", client);
 	menu.SetTitle(sMenuTitle);
 
 	menu.AddItem("1" ,"100%");
@@ -284,7 +284,7 @@ public void AmbientVolumeMenu(int client)
 	Menu menu = new Menu(AmbientVolumeMenuHandler, MENU_ACTIONS_DEFAULT);
 
 	char sMenuTitle[128];
-	Format(sMenuTitle, sizeof(sMenuTitle), "%t\n%t", "Ambient_Title_Menu", RoundToNearest(zfAmbientVolume[client] * 100), "Ambient_CommandUsage");
+	Format(sMenuTitle, sizeof(sMenuTitle), "%T\n%T", "Ambient_Title_Menu", client, RoundToNearest(zfAmbientVolume[client] * 100), "Ambient_CommandUsage", client);
 	menu.SetTitle(sMenuTitle);
 
 	menu.AddItem("1" ,"100%");
