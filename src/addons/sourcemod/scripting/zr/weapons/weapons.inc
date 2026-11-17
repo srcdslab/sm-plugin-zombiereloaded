@@ -268,16 +268,10 @@ void WeaponsCacheData()
     char weaponkey[WEAPONS_MAX_LENGTH];
 
     // Rebuild the name and entity lookups along with the data.
-    if (g_smWeaponsByName == null)
-    {
-        g_smWeaponsByName = new StringMap();
-        g_smWeaponsByEntity = new StringMap();
-    }
-    else
-    {
-        g_smWeaponsByName.Clear();
-        g_smWeaponsByEntity.Clear();
-    }
+    delete g_smWeaponsByName;
+    delete g_smWeaponsByEntity;
+    g_smWeaponsByName = new StringMap();
+    g_smWeaponsByEntity = new StringMap();
 
     // x = array index
     int size = arrayWeapons.Length;
