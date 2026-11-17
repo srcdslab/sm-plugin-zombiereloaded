@@ -63,6 +63,17 @@ enum HitgroupsData
 ArrayList arrayHitgroups = null;
 
 /**
+ * Size of the hitgroup lookup table (engine hitgroups go from 0 to HITGROUP_GEAR).
+ */
+#define HITGROUPS_LOOKUP_SIZE 16
+
+/**
+ * Array index of each hitgroup index, -1 if not in the config. Filled by HitgroupsCacheData().
+ * HitgroupToIndex() runs on every bullet that hits a zombie (damage and knockback).
+ */
+int g_iHitgroupsLookup[HITGROUPS_LOOKUP_SIZE] = {-1, ...};
+
+/**
  * Create commands related to config here.
  */
 void HitgroupsOnCommandsCreate()
@@ -151,6 +162,12 @@ void HitgroupsCacheData()
 
     char hitgroupname[HITGROUPS_MAX_LENGTH];
 
+    // Rebuild the hitgroup lookup along with the data.
+    for (int i = 0; i < HITGROUPS_LOOKUP_SIZE; i++)
+    {
+        g_iHitgroupsLookup[i] = -1;
+    }
+
     // x = array index
     int size = arrayHitgroups.Length;
     for (int x = 0; x < size; x++)
@@ -179,6 +196,12 @@ void HitgroupsCacheData()
        	arrayHitgroup.Push(index);        // Index: 1
         arrayHitgroup.Push(damage);       // Index: 2
         arrayHitgroup.Push(knockback);    // Index: 3
+
+        // Keep the first array index for a hitgroup, like the linear search did.
+        if (index >= 0 && index < HITGROUPS_LOOKUP_SIZE && g_iHitgroupsLookup[index] == -1)
+        {
+            g_iHitgroupsLookup[index] = x;
+        }
     }
 
     // We're done with this file now, so we can close it.
@@ -241,6 +264,12 @@ stock int HitgroupsNameToIndex(char[] hitgroup, int maxlen = 0, bool overwritena
  */
 stock int HitgroupToIndex(int hitgroup)
 {
+    // Every hitgroup the engine uses is in the lookup table.
+    if (hitgroup >= 0 && hitgroup < HITGROUPS_LOOKUP_SIZE)
+    {
+        return g_iHitgroupsLookup[hitgroup];
+    }
+
     // x = Array index.
     int size = arrayHitgroups.Length;
     for (int x = 0; x < size; x++)
