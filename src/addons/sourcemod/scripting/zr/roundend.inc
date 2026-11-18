@@ -338,9 +338,15 @@ public Action RoundEndTimer(Handle timer)
     // Set the global timer handle variable to null.
     g_tRoundEnd = null;
 
-    // If there aren't clients on both teams, then stop.
+    // If there aren't clients on both teams, end the round as a draw when
+    // someone is still playing. With mp_ignore_round_win_conditions 1 the game
+    // never ends it by itself, so a round without zombies would never end.
     if (!ZRTeamHasClients())
     {
+        if (ZRTeamHasClients(CS_TEAM_T) || ZRTeamHasClients(CS_TEAM_CT))
+        {
+            RoundEndTerminateRound(ROUNDEND_DELAY, Draw);
+        }
         return Plugin_Continue;
     }
 
