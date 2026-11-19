@@ -1,0 +1,1207 @@
+"Phrases"
+{
+	// ===========================
+	// General (base)
+	// ===========================
+
+	"General round objective"
+	{
+		"cze"		"Hra je {green}Lidé proti Zombíkům{default}, cílem zombíků je nakazit všechny lidi nožem."
+	}
+
+	"General zmenu reminder"
+	{
+		"cze"		"Nápovědu k příkazům Zombie:Reloaded získáte zadáním \"{1}{2}\" do chatu."
+	}
+
+	// ===========================
+	// Generic (base)
+	// ===========================
+
+	// General
+
+	"Literal text"
+	{
+		"cze"		"{1}"
+	}
+
+	"Feature is disabled"
+	{
+		"cze"		"Tato funkce je momentálně vypnutá správcem serveru."
+	}
+
+	"Not enough money"
+	{
+		"cze"		"Nemáte dost peněz na koupi tohoto předmětu."
+	}
+
+	"Must be player"
+	{
+		"cze"		"Tato funkce je vyhrazena pouze hráčům."
+	}
+
+	"Must be admin"
+	{
+		"cze"		"Tato funkce je vyhrazena pouze administrátorům."
+	}
+
+	"No access to command"
+	{
+		"cze"		"K tomuto příkazu nemáte přístup."
+	}
+
+	"Must be alive"
+	{
+		"cze"		"Tato funkce vyžaduje, abyste byli naživu."
+	}
+
+	"Must be dead"
+	{
+		"cze"		"Tato funkce vyžaduje, abyste byli mrtví."
+	}
+
+	"Must be on team"
+	{
+		"cze"		"Tato funkce vyžaduje, abyste byli v týmu."
+	}
+
+	"Must be zombie"
+	{
+		"cze"		"Tato funkce vyžaduje, abyste byli zombík."
+	}
+
+	"Must be human"
+	{
+		"cze"		"Tato funkce vyžaduje, abyste byli člověk."
+	}
+
+	"Must be in buyzone"
+	{
+		"cze"		"Tato funkce vyžaduje, abyste byli v nákupní zóně."
+	}
+
+	"Increase by"
+	{
+		"cze"		"Zvýšit o {1}"
+	}
+
+	"Decrease by"
+	{
+		"cze"		"Snížit o {1}"
+	}
+
+	"Current Value"
+	{
+		"cze"		"Aktuální hodnota:"
+	}
+
+	"Zombie"
+	{
+		"cze"		"Zombík"
+	}
+
+	"Human"
+	{
+		"cze"		"Člověk"
+	}
+
+	// Menu
+
+	"Menu empty"
+	{
+		"cze"		"(Prázdné)"
+	}
+
+	// ===========================
+	// Config (core)
+	// ===========================
+
+	// Commands
+
+	"Config command reload syntax"
+	{
+		"cze"		"Syntaxe: zr_reloadconfig <alias souboru 1> [alias souboru 2] ... - Znovu načte konfigurační soubor."
+	}
+
+	"Config command reload related commands"
+	{
+		"cze"		"Související příkazy: zr_config_reloadall"
+	}
+
+	"Config command reload syntax aliases"
+	{
+		"cze"		"Aliasy souborů:\n* \"{1}\"\n* \"{2}\"\n* \"{3}\"\n* \"{4}\"\n* \"{5}\""
+	}
+
+	"Config command reload invalid"
+	{
+		"cze"		"Neplatný alias souboru: \"{1}\""
+	}
+
+	"Config command reload not loaded"
+	{
+		"cze"		"Konfigurační soubor \"{1}\" se nepodařilo načíst. (Je vypnutý nebo má neplatný obsah.)"
+	}
+
+	"Config command reload all stats begin"
+	{
+		"cze"		"Znovu se načítají všechny konfigurační soubory Zombie:Reloaded...\n------------------------------------------------"
+	}
+
+	"Config command reload all stats successful"
+	{
+		"cze"		"\"{1}\" - Úspěšné."
+	}
+
+	"Config command reload all stats failed"
+	{
+		"cze"		"\"{1}\" - Selhalo. (Je vypnutý nebo má neplatný obsah.)"
+	}
+
+	// ===========================
+	// Log (core)
+	// ===========================
+
+	"Log Generic Flag"
+	{
+		// Max length: 19 characters.
+		"cze"		"Obecný příznak:"
+	}
+
+	"Log Value"
+	{
+		// Max length: 7 characters:
+		"cze"		"Hodnota:"
+	}
+
+	"Log Module"
+	{
+		// Max length: 23 characters:
+		"cze"		"Modul:"
+	}
+
+	"Log Status"
+	{
+		"cze"		"Stav filtru:"
+	}
+
+	"Log Module Filtering"
+	{
+		"cze"		"Filtrování modulů:"
+	}
+
+	"Log Module Short Name"
+	{
+		"cze"		"Zkrácený název:"
+	}
+
+	// ===========================
+	// Classes
+	// ===========================
+
+	// General
+
+	"Classes admin mode enabled"
+	{
+		"cze"		"Admin režim je zapnutý!"
+	}
+
+	"Classes random assignment"
+	{
+		"cze"		"Byla vám náhodně přiřazena třída {green}\"{1}\"{default}."
+	}
+
+	// Center Text/HUD
+
+	"Classes overlay toggle"
+	{
+		"cze"		"Příkazy pro přepnutí překryvu třídy: {1}"
+	}
+
+	// Menu
+
+	"Classes menu title"
+	{
+		"cze"		"Výběr třídy:"
+	}
+
+	"Classes menu active"
+	{
+		"cze"		"Aktivní: {1}"
+	}
+
+	"Classes menu next"
+	{
+		"cze"		"Další spawn: {1}"
+	}
+
+	"Classes menu select zombie"
+	{
+		"cze"		"Vybrat třídu zombíka"
+	}
+
+	"Classes menu select human"
+	{
+		"cze"		"Vybrat třídu člověka"
+	}
+
+	"Classes menu select admin"
+	{
+		"cze"		"Vybrat třídu admin režimu"
+	}
+
+	"Classes menu admin mode toggle"
+	{
+		"cze"		"Přepnout admin režim"
+	}
+
+	"Classes Menu Team Select Title"
+	{
+		"cze"		"Vyberte tým:"
+	}
+
+	"Classes Menu Zombies"
+	{
+		"cze"		"Zombíci"
+	}
+
+	"Classes Menu Humans"
+	{
+		"cze"		"Lidé"
+	}
+
+	"Classes Menu Multiplier Select Title"
+	{
+		"cze"		"Vyberte násobitel:"
+	}
+
+	"Classes Menu Adjust Value"
+	{
+		"cze"		"Upravit hodnotu:"
+	}
+
+	// Attributes
+
+	"Classes Attrib Napalm Time"
+	{
+		"cze"		"Doba napalmu"
+	}
+
+	"Classes Attrib Health"
+	{
+		"cze"		"Zdraví"
+	}
+
+	"Classes Attrib Regen Interval"
+	{
+		"cze"		"Interval regenerace zdraví"
+	}
+
+	"Classes Attrib Regen Amount"
+	{
+		"cze"		"Množství regenerace zdraví"
+	}
+
+	"Classes Attrib Infect Gain"
+	{
+		"cze"		"Zisk zdraví za nakažení"
+	}
+
+	"Classes Attrib Speed"
+	{
+		"cze"		"Rychlost běhu"
+	}
+
+	"Classes Attrib Knockback"
+	{
+		"cze"		"Odhození"
+	}
+
+	"Classes Attrib Jump Height"
+	{
+		"cze"		"Výška skoku"
+	}
+
+	"Classes Attrib Jump Distance"
+	{
+		"cze"		"Délka skoku"
+	}
+
+	"Classes Selection Not Allowed"
+	{
+		"cze"		"Změna třídy není povolena."
+	}
+
+	// ===========================
+	// Immunity
+	// ===========================
+
+	"Immunity Shield Not Available"
+	{
+		"cze"		"Nemáte štít."
+	}
+
+	"Immunity Shield Cooldown"
+	{
+		"cze"		"{1} s do zpřístupnění štítu."
+	}
+
+	"Immunity Shield Time Left"
+	{
+		"cze"		"Zbývající čas štítu: {1}"
+	}
+
+	// ===========================
+	// Overlays (core)
+	// ===========================
+
+	"Overlays not supported"
+	{
+		"cze"		"Překryv blokován - zjištěno DX{1} (vyžadováno DX{2})"
+	}
+
+	// ===========================
+	// Infect (core)
+	// ===========================
+
+	// General
+
+	"Infect spawning warning"
+	{
+		"cze"		"Zombíci se objeví mezi lidmi!"
+	}
+
+	"Infect infected"
+	{
+		"cze"		"Byli jste nakaženi!  Předejte nákazu co nejvíce dalším hráčům."
+	}
+
+	"Infect human"
+	{
+		"cze"		"Milostiví bohové (známí jako admini) vzkřísili vaši duši, najděte si úkryt!"
+	}
+
+	"Infect disconnect"
+	{
+		"cze"		"Poslední zombík opustil hru a předal nákazu vám."
+	}
+
+	"Mother zombie infect cycle reset"
+	{
+		"cze"		"Cyklus nakažení matky zombíků byl resetován."
+	}
+
+	// Center Text
+
+	"Infect countdown"
+	{
+		"cze"		"První nakažení za {1} s."
+	}
+
+	// Menu
+
+	"Infect menu clients title"
+	{
+		"cze"		"Správa zombíků\nPřepnout nakažení:\n[] = Nakažený"
+	}
+
+	// Commands
+
+	"Infect command infect syntax"
+	{
+		"cze"		"Nakazí hráče. Použití: zr_infect <filtr> [respawn - 1/0]"
+	}
+
+	"Infect command human syntax"
+	{
+		"cze"		"Změní hráče v člověka. Použití: zr_human <filtr> [respawn - 1/0] [ochrana - 1/0]"
+	}
+
+	"Infect command round not started"
+	{
+		"cze"		"Nakažení nelze provést. Kolo ještě plně nezačalo."
+	}
+
+	"Infect command infect successful"
+	{
+		"cze"		"{green}{1}{default} byl úspěšně nakažen."
+	}
+
+	"Infect command infect successful public"
+	{
+		"cze"		"{lightgreen}{1}{default} nakazil hráče {green}{2}{default}."
+	}
+
+	"Infect command infect mother successful"
+	{
+		"cze"		"{green}{1}{default} byl úspěšně nakažen jako matka zombíků."
+	}
+
+	"Infect command infect mother successful public"
+	{
+		"cze"		"{lightgreen}{1}{default} nakazil hráče {green}{2}{default} jako matku zombíků."
+	}
+
+	"Infect command infect unsuccessful"
+	{
+		"cze"		"Hráče {green}{1}{default} se nepodařilo nakazit."
+	}
+
+	"Infect command human successful"
+	{
+		"cze"		"Hráč {green}{1}{default} byl úspěšně vrácen k životu."
+	}
+
+	"Infect command human successful public"
+	{
+		"cze"		"{lightgreen}{1}{default} vrátil k životu hráče {green}{2}{default}."
+	}
+
+	"Infect command human unsuccessful"
+	{
+		"cze"		"Hráče {green}{1}{default} se nepodařilo vrátit k životu."
+	}
+
+	// ===========================
+	// Damage (core)
+	// ===========================
+
+	"Damage suicide intercept"
+	{
+		"cze"		"Pokus o sebevraždu byl zablokován."
+	}
+
+	// ===========================
+	// Menu (core)
+	// ===========================
+
+	// General
+
+	"Menu main title"
+	{
+		"cze"		"Příkazy ZR:\nPřed příkaz v chatu dejte \"{1}\" nebo \"{2}\" (tiše)."
+	}
+
+	"Menu main zadmin"
+	{
+		"cze"		"ZAdmin - Otevřít admin menu"
+	}
+
+	"Menu main zclass"
+	{
+		"cze"		"ZClass - Nastavit třídy"
+	}
+
+	"Menu main zcookies"
+	{
+		"cze"		"ZCookies - Přepínání osobních nastavení ZR"
+	}
+
+	"Menu main zspawn"
+	{
+		"cze"		"ZSpawn - Připojili jste se pozdě?  Objevte se pomocí tohoto"
+	}
+
+	"Menu main ztele"
+	{
+		"cze"		"ZTele - Uvízli jste?  Teleportujte se zpět na spawn"
+	}
+
+	"Menu main zhp"
+	{
+		"cze"		"ZHP - Zobrazí skutečné HP jako zombík"
+	}
+
+	"Menu main zmarket"
+	{
+		"cze"		"ZMarket - Zde upravte svou výbavu"
+	}
+
+	"Menu main zvolume"
+	{
+		"cze"		"ZVolume - Upravit hlasitost zombíků"
+	}
+
+	// ===========================
+	// Weapons (core)
+	// ===========================
+
+	// General
+
+	"Zombie cant use weapon"
+	{
+		"cze"		"Zombíci nemohou používat zbraně!"
+	}
+
+	// Restrict
+
+	"Restrict weapon"
+	{
+		"cze"		"Zbraň {green}\"{1}\"{default} byla omezena."
+	}
+
+	"Unrestrict weapon"
+	{
+		"cze"		"Omezení zbraně {green}\"{1}\"{default} bylo zrušeno."
+	}
+
+	"Restrict weapon stopped"
+	{
+		"cze"		"Zbraň {green}\"{1}\"{default} je již omezena."
+	}
+
+	"Unrestrict weapon stopped"
+	{
+		"cze"		"Zbraň {green}\"{1}\"{default} nemá nastavená žádná omezení."
+	}
+
+	"Restrict weapon type"
+	{
+		"cze"		"Zbraně typu {green}\"{1}\"{default} byly omezeny."
+	}
+
+	"Unrestrict weapon type"
+	{
+		"cze"		"Omezení zbraní typu {green}\"{1}\"{default} bylo zrušeno."
+	}
+
+	"Restrict weapon type stopped"
+	{
+		"cze"		"Zbraně typu {green}\"{1}\"{default} jsou již všechny omezeny."
+	}
+
+	"Unrestrict weapon type stopped"
+	{
+		"cze"		"Zbraně typu {green}\"{1}\"{default} nemají nastavená žádná omezení."
+	}
+
+	"Restrict weapon untoggleable"
+	{
+		"cze"		"Omezení zbraně {green}\"{1}\"{default} nelze přepínat."
+	}
+
+	"Weapon invalid"
+	{
+		"cze"		"Zbraň {green}\"{1}\"{default} není platný název zbraně (typu)."
+	}
+
+	"Weapon is restricted"
+	{
+		"cze"		"Zbraň {green}{1}{default} je omezena."
+	}
+
+	// ZMarket
+
+	"Weapons zmarket buyzone"
+	{
+		"cze"		"Pro použití ZMarketu musíte být v nákupní zóně."
+	}
+
+	"Weapons zmarket purchase"
+	{
+		"cze"		"Koupili jste zbraň {green}{1}.{default} Vyberte předmět znovu, abyste dokoupili munici, když ji budete mít málo."
+	}
+
+	"Weapons zmarket purchase max"
+	{
+		"cze"		"Zbraň {green}{1}{default} má limit nákupu {green}{2}{default}.  Počkejte do respawnu a zkuste to znovu."
+	}
+
+	"Weapons zmarket grenade max"
+	{
+		"cze"		"Můžete nést pouze {1} granát(ů) tohoto typu."
+	}
+
+	"Weapons zmarket not enough money"
+	{
+		"cze"		"Nemáte dostatek prostředků."
+	}
+
+	"Weapons zmarket updated loadout"
+	{
+		"cze"		"Právě teď si nemůžete koupit zbraň, ale vaše výbava byla touto zbraní aktualizována."
+	}
+
+	"Weapons zmarket get current loadout"
+	{
+		"cze"		"Aktuální výbava byla aktualizována, pomocí volby opětovného nákupu tyto zbraně koupíte znovu."
+	}
+
+	// Commands
+
+	"Weapons command restrict syntax"
+	{
+		"cze"		"Omezí zbraň nebo typ zbraní. Použití: zr_restrict <zbraň|typ zbraně> [zbraň2|typ2] ..."
+	}
+
+	"Weapons command unrestrict syntax"
+	{
+		"cze"		"Zruší omezení zbraně nebo typu zbraní. Použití: zr_unrestrict <zbraň|typ zbraně> [zbraň2|typ2] ..."
+	}
+
+	"Weapons command setknockback syntax"
+	{
+		"cze"		"Nastaví odhození zbraně. Použití: zr_setknockback <zbraň> <odhození>"
+	}
+
+	"Weapons command setknockback success"
+	{
+		"cze"		"Odhození pro {green}\"{1}\"{default} nastaveno na {green}{2}{default}."
+	}
+
+	"Weapons command setknockback failed"
+	{
+		"cze"		"Nepodařilo se nastavit odhození pro {green}\"{1}\"{default} na {green}{2}{default}."
+	}
+
+	// Menu (Restrict)
+
+	"Weapons menu restrict main title"
+	{
+		"cze"		"Správa zbraní"
+	}
+
+	"Weapons menu restrict main restrict"
+	{
+		"cze"		"Omezení zbraní"
+	}
+
+	"Weapons menu restrict main market"
+	{
+		"cze"		"ZMarket"
+	}
+
+	"Weapons menu restrict types title"
+	{
+		"cze"		"Omezení zbraní\nVyberte typ zbraně:"
+	}
+
+	"Weapons menu restrict types weapon type title"
+	{
+		"cze"		"Omezení zbraní\nTyp zbraně: {1}\n[] = Omezená"
+	}
+
+	"Weapons menu restrict types restrict all"
+	{
+		"cze"		"Omezit typ zbraně {1}"
+	}
+
+	"Weapons menu restrict types unrestrict all"
+	{
+		"cze"		"Zrušit omezení typu zbraně {1}"
+	}
+
+	"Weapons menu restrict zmarket title"
+	{
+		"cze"		"ZMarket\nVyberte nastavení:"
+	}
+
+	"Weapons menu restrict zmarket buyzone"
+	{
+		"cze"		"Pouze v nákupní zóně - {1}"
+	}
+
+	// Menu (ZMarket)
+
+	"Weapons menu zmarket main title"
+	{
+		"cze"		"ZMarket\nVyberte možnost:"
+	}
+
+	"Weapons menu zmarket main get loadout"
+	{
+		"cze"		"Uložit aktuální výbavu"
+	}
+
+	"Weapons menu zmarket main edit loadout"
+	{
+		"cze"		"Upravit uloženou výbavu"
+	}
+
+	"Weapons menu zmarket main rebuy"
+	{
+		"cze"		"Koupit uloženou výbavu"
+	}
+
+	"Weapons menu zmarket main weapons list"
+	{
+		"cze"		"Koupit zbraně"
+	}
+
+	"Weapons menu zmarket loadout title"
+	{
+		"cze"		"ZMarket\nMoje aktuální výbava:\nVyberte slot zbraně ke změně.\nPoznámka: opětovný nákup se týká těchto zbraní.\nObjevíte se s těmito zbraněmi."
+	}
+
+	"Weapons menu zmarket loadout primary"
+	{
+		"cze"		"Primární: {1}"
+	}
+
+	"Weapons menu zmarket loadout secondary"
+	{
+		"cze"		"Sekundární: {1}"
+	}
+
+	"Weapons menu zmarket loadout default"
+	{
+		"cze"		"Výchozí ({1})"
+	}
+
+	"Weapons menu zmarket loadout weapons title"
+	{
+		"cze"		"ZMarket\nVyberte výbavu zbraní:"
+	}
+
+	"Weapons menu zmarket types title"
+	{
+		"cze"		"ZMarket\nVyberte typ zbraně:"
+	}
+
+	"Weapons menu zmarket types weapon type title"
+	{
+		"cze"		"ZMarket\nTyp zbraně: {1}\n[] = Omezená"
+	}
+
+	"Weapons menu zmarket types weapon info"
+	{
+		"cze"		"{1} (${2})\nZbývající nákupy: {3}"
+	}
+
+	"Weapons menu zmarket types weapon ammo"
+	{
+		"cze"		"Munice"
+	}
+
+	// ===========================
+	// Hitgroups (core)
+	// ===========================
+
+	// Menu
+
+	"Hitgroups menu hitgroups title"
+	{
+		"cze"		"Správa hitgroup\nPříkazy: zr_hitgroup(_enable_all/_headshots_only)\nVyberte hitgroup k přepnutí:"
+	}
+
+	"Hitgroups menu hitgroups enable all"
+	{
+		"cze"		"Povolit všechny hitgroupy"
+	}
+
+	"Hitgroups menu hitgroups headshots only"
+	{
+		"cze"		"Pouze headshoty"
+	}
+
+	// Commands
+
+	"Hitgroups command syntax"
+	{
+		"cze"		"Přepne nebo nastaví, zda lze hitgroup zombíka poškodit. Použití: zr_hitgroup <alias hitgroupy> [1/0]"
+	}
+
+	"Hitgroups command related commands"
+	{
+		"cze"		"Související příkazy: zr_hitgroup_enable_all, zr_hitgroup_headshots_only"
+	}
+
+	"Hitgroups command syntax names"
+	{
+		"cze"		"Názvy hitgroup:"
+	}
+
+	"Hitgroups command successful on"
+	{
+		"cze"		"Poškození pro hitgroup \"{1}\" bylo zapnuto."
+	}
+
+	"Hitgroups command successful off"
+	{
+		"cze"		"Poškození pro hitgroup \"{1}\" bylo vypnuto."
+	}
+
+	"Hitgroups command invalid hitgroup"
+	{
+		"cze"		"\"{1}\" není platný alias hitgroupy.  Zadejte zr_hitgroup pro zobrazení všech aliasů."
+	}
+
+	"Hitgroups command enable all successful"
+	{
+		"cze"		"Všechny hitgroupy zombíků byly povoleny pro poškození."
+	}
+
+	"Hitgroups command headshots only successful"
+	{
+		"cze"		"Zombíci mohou být nyní poškozeni pouze headshoty."
+	}
+
+	// ===========================
+	// ZAdmin (core)
+	// ===========================
+
+	"ZAdmin main title"
+	{
+		"cze"		"ZAdmin\nVyberte kategorii:"
+	}
+
+	"ZAdmin main class multipliers"
+	{
+		"cze"		"Násobitele tříd"
+	}
+
+	"ZAdmin main weapons"
+	{
+		"cze"		"Správa zbraní"
+	}
+
+	"ZAdmin main hitgroups"
+	{
+		"cze"		"Správa hitgroup"
+	}
+
+	"ZAdmin main zombie"
+	{
+		"cze"		"Správa zombíků"
+	}
+
+	"ZAdmin main force zspawn"
+	{
+		"cze"		"Vynutit ZSpawn"
+	}
+
+	"ZAdmin main force ztele"
+	{
+		"cze"		"Vynutit ZTele"
+	}
+
+	// ===========================
+	// AntiStick (module)
+	// ===========================
+
+	// Commands
+
+	"AntiStick command set width syntax"
+	{
+		"cze"		"Nastaví šířku hullu modelu. (Viz zr_antistick_list_models) Použití: zr_antistick_set_width <model/hráč> <šířka>"
+	}
+
+	"AntiStick command list models list"
+	{
+		"cze"		"Jméno hráče:                        Model:                                               Šířka hullu:\n-------------------------------------------------------------------------------------------------------------"
+	}
+
+	"AntiStick command list models name"
+	{
+		"cze"		"{1} {2} {3}"
+	}
+
+	"AntiStick command set width successful"
+	{
+		"cze"		"Šířka hullu modelu \"{1}\" byla změněna na \"{2}.\""
+	}
+
+	"AntiStick command set width invalid model"
+	{
+		"cze"		"Zadán neplatný model/hráč: \"{1}\""
+	}
+
+	"AntiStick command set width invalid width"
+	{
+		"cze"		"Zadána neplatná šířka hullu modelu: \"{1}\""
+	}
+
+	// ===========================
+	// Spawn Protect (module)
+	// ===========================
+
+	// General
+
+	"Spawn protection begin"
+	{
+		"cze"		"Zombíci jsou tady, máte {1} s na nalezení bezpečného místa, než ztratíte imunitu."
+	}
+
+	"Spawn protection end"
+	{
+		"cze"		"Nyní jste náchylní k nakažení zombíky."
+	}
+
+	// HUD
+
+	"Spawn Protect"
+	{
+		"cze"		"Ochrana před zombíky skončí za: {1} s."
+	}
+
+	// ===========================
+	// ZCookies (module)
+	// ===========================
+
+	"ZCookies Menu main title"
+	{
+		"cze"		"ZCookies\nVyberte cookie:"
+	}
+
+	"ZCookies menu main auto-rebuy"
+	{
+		"cze"		"Automatický opětovný nákup ZMarket: {1}"
+	}
+
+	"ZCookies menu main zhp"
+	{
+		"cze"		"Zobrazení ZHP: {1}"
+	}
+
+	"ZCookies menu main overlay"
+	{
+		"cze"		"Překryv třídy člověka/zombíka: {1}"
+	}
+
+	"ZCookies zmarket loadout"
+	{
+		"cze"		"Výbava ZMarket"
+	}
+
+	// ===========================
+	// ZSpawn (module)
+	// ===========================
+
+	// General
+
+	"ZSpawn double spawn"
+	{
+		"cze"		"ZSpawn lze použít pouze tehdy, pokud jste se připojili pozdě během probíhajícího kola."
+	}
+
+	"ZSpawn timelimit"
+	{
+		"cze"		"Časový limit ({1} s) pro použití ZSpawn již vypršel."
+	}
+
+	// Menu
+
+	"ZSpawn clients title"
+	{
+		"cze"		"Vynutit ZSpawn (zr_zspawn_force)\nVyberte hráče:"
+	}
+
+	// Commands
+
+	"ZSpawn command force syntax"
+	{
+		"cze"		"Vynutí ZSpawn na hráči. Použití: zr_zspawn_force <hráč> ['0' = Objevit se jako člověk | '1' = Objevit se jako zombík]"
+	}
+
+	"ZSpawn command force successful"
+	{
+		"cze"		"Hráč {lightgreen}{1}{default} byl úspěšně spawnut."
+	}
+
+	"ZSpawn command force successful public"
+	{
+		"cze"		"{lightgreen}{1}{default} spawnul hráče {green}{2}{default} jako {lightgreen}{3}{default}."
+	}
+
+	"ZSpawn command force unsuccessful"
+	{
+		"cze"		"ZSpawn na hráči {lightgreen}{1}{default} se nepodařil."
+	}
+
+	// ===========================
+	// ZTele (module)
+	// ===========================
+
+	// General
+
+	"ZTele restricted human"
+	{
+		"cze"		"ZTele je momentálně pro lidi omezeno."
+	}
+
+	"ZTele max"
+	{
+		"cze"		"Dosáhli jste maxima {1} teleportů za kolo."
+	}
+
+	"ZTele in progress"
+	{
+		"cze"		"Právě čekáte na teleportaci."
+	}
+
+	"ZTele autocancel text"
+	{
+		"cze"		"Teleport byl zrušen.  (Omezující hranice je {1} ft.)"
+	}
+
+	// Center Text
+
+	"ZTele countdown"
+	{
+		"cze"		"Teleportace zpět na spawn za: {1} s."
+	}
+
+	"ZTele autocancel centertext"
+	{
+		"cze"		"Teleport zrušen."
+	}
+
+	"ZTele countdown end"
+	{
+		"cze"		"Teleportováno zpět na spawn. (Počet: {1}/{2})"
+	}
+
+	// Menu
+
+	"ZTele clients title"
+	{
+		"cze"		"Vynutit ZTele (zr_ztele_force)\nVyberte hráče:"
+	}
+
+	// Commands
+
+	"ZTele command force syntax"
+	{
+		"cze"		"Vynutí ZTele na hráči. Použití: zr_ztele_force <hráč>"
+	}
+
+	"ZTele command force successful"
+	{
+		"cze"		"Hráč {lightgreen}{1}{default} byl úspěšně teleportován."
+	}
+
+	"ZTele command force unsuccessful"
+	{
+		"cze"		"Hráče {lightgreen}{1}{default} se nepodařilo teleportovat."
+	}
+
+	// ===========================
+	// ZHP (module)
+	// ===========================
+
+	// General
+
+	"ZHP enable"
+	{
+		"cze"		"Zobrazení HP zapnuto, vaše skutečné HP se zobrazí po nakažení."
+	}
+
+	"ZHP disable"
+	{
+		"cze"		"Zobrazení HP vypnuto."
+	}
+
+	// HUD
+
+	"Display HP"
+	{
+		"cze"		"HP: {1}"
+	}
+
+	// ===========================
+	// ZVolume (module)
+	// ===========================
+
+	// General
+	"Volume_Menu_Title"
+	{
+		"cze"		"[ZR] Menu ovládání hlasitosti\nPříkaz: !zvolume"
+	}
+
+	"Zombie Voice"
+	{
+		"cze"		"Hlas zombíka"
+	}
+
+	"Ambient"
+	{
+		"cze"		"Okolí"
+	}
+
+	"Infect Countdown"
+	{
+		"cze"		"Odpočet nakažení"
+	}
+
+	// Countdown
+	"Countdown_Usage"
+	{
+		"cze"		"Použití: zr_countdown_volume <0 - 100>"
+	}
+
+	"Countdown_Title_Menu"
+	{
+		"cze"		"[ZR] Hlasitost odpočtu (Aktuální: {1}%)"
+	}
+
+	"Countdown_CommandUsage"
+	{
+		"cze"		"Příkaz: !countdown_volume <1-100>"
+	}
+
+	"Set_Countdown_Volume"
+	{
+		"cze"		"Hlasitost odpočtu nastavena na {lightgreen}{1}%."
+	}
+
+	// Zombie Voice
+	"ZombieVoice_Usage"
+	{
+		"cze"		"Použití: zr_zombie_volume <0 - 100>"
+	}
+
+	"ZombieVoice_Title_Menu"
+	{
+		"cze"		"[ZR] Hlasitost hlasu zombíka (Aktuální: {1}%)"
+	}
+
+	"ZombieVoice_CommandUsage"
+	{
+		"cze"		"Příkaz: !zombie_volume <1-100>"
+	}
+
+	"Set_ZombieVoice_Volume"
+	{
+		"cze"		"Hlasitost hlasu zombíka nastavena na {lightgreen}{1}%."
+	}
+
+	// Ambient
+	"Ambient_Usage"
+	{
+		"cze"		"Použití: zr_ambient_volume <0 - 100>"
+	}
+
+	"Ambient_Title_Menu"
+	{
+		"cze"		"[ZR] Hlasitost okolí (Aktuální: {1}%)"
+	}
+
+	"Ambient_CommandUsage"
+	{
+		"cze"		"Příkaz: !ambient_volume <1-100>"
+	}
+
+	"Set_Ambient_Volume"
+	{
+		"cze"		"Hlasitost okolí nastavena na {lightgreen}{1}%."
+	}
+
+	// ===========================
+	// Volumetric features (module)
+	// ===========================
+
+	"Vol Anticamp Message"
+	{
+		"cze"		"Tato oblast je zakázaná, odejděte prosím."
+	}
+
+	"Vol Slay"
+	{
+		"cze"		"Hráč \"{1}\" byl zabit za campení v zakázané oblasti (ID: {2})."
+	}
+
+	"Vol Ignite"
+	{
+		"cze"		"Hráč \"{1}\" byl zapálen za campení v zakázané oblasti (ID: {2})."
+	}
+}

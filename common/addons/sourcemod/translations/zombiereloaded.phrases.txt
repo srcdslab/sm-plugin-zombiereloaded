@@ -1209,7 +1209,7 @@
 	"Countdown_Title_Menu"
 	{
 		"#format"	"{1:d}"
-		"en"		"[ZR] Countdown Volume (Current: {1:d}%)"
+		"en"		"[ZR] Countdown Volume (Current: {1}%)"
 	}
 
 	"Countdown_CommandUsage"
@@ -1220,7 +1220,7 @@
 	"Set_Countdown_Volume"
 	{
 		"#format"	"{1:d}"
-		"en"		"Set Countdown Volume to {lightgreen}{1:d}%."
+		"en"		"Set Countdown Volume to {lightgreen}{1}%."
 	}
 
 	// Zombie Voice
@@ -1232,7 +1232,7 @@
 	"ZombieVoice_Title_Menu"
 	{
 		"#format"	"{1:d}"
-		"en"		"[ZR] Zombie Voice Volume (Current: {1:d}%)"
+		"en"		"[ZR] Zombie Voice Volume (Current: {1}%)"
 	}
 
 	"ZombieVoice_CommandUsage"
@@ -1243,7 +1243,7 @@
 	"Set_ZombieVoice_Volume"
 	{
 		"#format"	"{1:d}"
-		"en"		"Set Zombie Voice Volume to {lightgreen}{1:d}%."
+		"en"		"Set Zombie Voice Volume to {lightgreen}{1}%."
 	}
 
 	// Ambient
@@ -1255,7 +1255,7 @@
 	"Ambient_Title_Menu"
 	{
 		"#format"	"{1:d}"
-		"en"		"[ZR] Ambient Volume (Current: {1:d}%)"
+		"en"		"[ZR] Ambient Volume (Current: {1}%)"
 	}
 
 	"Ambient_CommandUsage"
@@ -1266,7 +1266,7 @@
 	"Set_Ambient_Volume"
 	{
 		"#format"	"{1:d}"
-		"en"		"Set Ambient Volume to {lightgreen}{1:d}%."
+		"en"		"Set Ambient Volume to {lightgreen}{1}%."
 	}
 
 	// ===========================
