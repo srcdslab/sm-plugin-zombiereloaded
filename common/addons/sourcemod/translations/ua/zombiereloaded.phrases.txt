@@ -1,0 +1,1207 @@
+"Phrases"
+{
+	// ===========================
+	// General (base)
+	// ===========================
+
+	"General round objective"
+	{
+		"ua"		"Гра {green}Люди проти Зомбі{default}, мета зомбі: заразити всіх людей ударом ножа."
+	}
+
+	"General zmenu reminder"
+	{
+		"ua"		"Щоб отримати допомогу з командами Zombie:Reloaded, напишіть \"{1}{2}\" у чаті."
+	}
+
+	// ===========================
+	// Generic (base)
+	// ===========================
+
+	// General
+
+	"Literal text"
+	{
+		"ua"		"{1}"
+	}
+
+	"Feature is disabled"
+	{
+		"ua"		"Ця функція наразі вимкнена власником сервера."
+	}
+
+	"Not enough money"
+	{
+		"ua"		"У вас недостатньо грошей, щоб купити цей предмет."
+	}
+
+	"Must be player"
+	{
+		"ua"		"Ця функція доступна лише для гравців."
+	}
+
+	"Must be admin"
+	{
+		"ua"		"Ця функція доступна лише для адміністраторів."
+	}
+
+	"No access to command"
+	{
+		"ua"		"У вас немає доступу до цієї команди."
+	}
+
+	"Must be alive"
+	{
+		"ua"		"Ця функція вимагає, щоб ви були живі."
+	}
+
+	"Must be dead"
+	{
+		"ua"		"Ця функція вимагає, щоб ви були мертві."
+	}
+
+	"Must be on team"
+	{
+		"ua"		"Ця функція вимагає, щоб ви були в команді."
+	}
+
+	"Must be zombie"
+	{
+		"ua"		"Ця функція вимагає, щоб ви були зомбі."
+	}
+
+	"Must be human"
+	{
+		"ua"		"Ця функція вимагає, щоб ви були людиною."
+	}
+
+	"Must be in buyzone"
+	{
+		"ua"		"Ця функція вимагає, щоб ви були в зоні закупівлі."
+	}
+
+	"Increase by"
+	{
+		"ua"		"Збільшити на {1}"
+	}
+
+	"Decrease by"
+	{
+		"ua"		"Зменшити на {1}"
+	}
+
+	"Current Value"
+	{
+		"ua"		"Поточне значення:"
+	}
+
+	"Zombie"
+	{
+		"ua"		"Зомбі"
+	}
+
+	"Human"
+	{
+		"ua"		"Людина"
+	}
+
+	// Menu
+
+	"Menu empty"
+	{
+		"ua"		"(Порожньо)"
+	}
+
+	// ===========================
+	// Config (core)
+	// ===========================
+
+	// Commands
+
+	"Config command reload syntax"
+	{
+		"ua"		"Синтаксис: zr_reloadconfig <псевдонім файлу 1> [псевдонім файлу 2] ... - Перезавантажує файл конфігурації."
+	}
+
+	"Config command reload related commands"
+	{
+		"ua"		"Пов'язані команди: zr_config_reloadall"
+	}
+
+	"Config command reload syntax aliases"
+	{
+		"ua"		"Псевдоніми файлів:\n* \"{1}\"\n* \"{2}\"\n* \"{3}\"\n* \"{4}\"\n* \"{5}\""
+	}
+
+	"Config command reload invalid"
+	{
+		"ua"		"Недійсний псевдонім файлу: \"{1}\""
+	}
+
+	"Config command reload not loaded"
+	{
+		"ua"		"Не вдалося завантажити файл конфігурації \"{1}\". (Вимкнено або вміст недійсний.)"
+	}
+
+	"Config command reload all stats begin"
+	{
+		"ua"		"Перезавантаження всіх файлів конфігурації Zombie:Reloaded...\n------------------------------------------------"
+	}
+
+	"Config command reload all stats successful"
+	{
+		"ua"		"\"{1}\" - Успішно."
+	}
+
+	"Config command reload all stats failed"
+	{
+		"ua"		"\"{1}\" - Помилка. (Вимкнено або вміст недійсний.)"
+	}
+
+	// ===========================
+	// Log (core)
+	// ===========================
+
+	"Log Generic Flag"
+	{
+		// Max length: 19 characters.
+		"ua"		"Загальний прапор:"
+	}
+
+	"Log Value"
+	{
+		// Max length: 7 characters:
+		"ua"		"Значення:"
+	}
+
+	"Log Module"
+	{
+		// Max length: 23 characters:
+		"ua"		"Модуль:"
+	}
+
+	"Log Status"
+	{
+		"ua"		"Статус фільтра:"
+	}
+
+	"Log Module Filtering"
+	{
+		"ua"		"Фільтрація модулів:"
+	}
+
+	"Log Module Short Name"
+	{
+		"ua"		"Коротка назва:"
+	}
+
+	// ===========================
+	// Classes
+	// ===========================
+
+	// General
+
+	"Classes admin mode enabled"
+	{
+		"ua"		"Режим адміністратора увімкнено!"
+	}
+
+	"Classes random assignment"
+	{
+		"ua"		"Вам випадково призначено клас {green}\"{1}\"{default}."
+	}
+
+	// Center Text/HUD
+
+	"Classes overlay toggle"
+	{
+		"ua"		"Команди перемикання оверлея класу: {1}"
+	}
+
+	// Menu
+
+	"Classes menu title"
+	{
+		"ua"		"Вибір класу:"
+	}
+
+	"Classes menu active"
+	{
+		"ua"		"Активний: {1}"
+	}
+
+	"Classes menu next"
+	{
+		"ua"		"Наступний спавн: {1}"
+	}
+
+	"Classes menu select zombie"
+	{
+		"ua"		"Обрати клас зомбі"
+	}
+
+	"Classes menu select human"
+	{
+		"ua"		"Обрати клас людини"
+	}
+
+	"Classes menu select admin"
+	{
+		"ua"		"Обрати клас режиму адміністратора"
+	}
+
+	"Classes menu admin mode toggle"
+	{
+		"ua"		"Перемкнути режим адміністратора"
+	}
+
+	"Classes Menu Team Select Title"
+	{
+		"ua"		"Обрати команду:"
+	}
+
+	"Classes Menu Zombies"
+	{
+		"ua"		"Зомбі"
+	}
+
+	"Classes Menu Humans"
+	{
+		"ua"		"Люди"
+	}
+
+	"Classes Menu Multiplier Select Title"
+	{
+		"ua"		"Обрати множник:"
+	}
+
+	"Classes Menu Adjust Value"
+	{
+		"ua"		"Налаштувати значення:"
+	}
+
+	// Attributes
+
+	"Classes Attrib Napalm Time"
+	{
+		"ua"		"Тривалість напалму"
+	}
+
+	"Classes Attrib Health"
+	{
+		"ua"		"Здоров'я"
+	}
+
+	"Classes Attrib Regen Interval"
+	{
+		"ua"		"Інтервал регенерації здоров'я"
+	}
+
+	"Classes Attrib Regen Amount"
+	{
+		"ua"		"Кількість регенерації здоров'я"
+	}
+
+	"Classes Attrib Infect Gain"
+	{
+		"ua"		"Здоров'я за зараження"
+	}
+
+	"Classes Attrib Speed"
+	{
+		"ua"		"Швидкість бігу"
+	}
+
+	"Classes Attrib Knockback"
+	{
+		"ua"		"Відкидання"
+	}
+
+	"Classes Attrib Jump Height"
+	{
+		"ua"		"Висота стрибка"
+	}
+
+	"Classes Attrib Jump Distance"
+	{
+		"ua"		"Дальність стрибка"
+	}
+
+	"Classes Selection Not Allowed"
+	{
+		"ua"		"Змінювати клас заборонено."
+	}
+
+	// ===========================
+	// Immunity
+	// ===========================
+
+	"Immunity Shield Not Available"
+	{
+		"ua"		"У вас немає щита."
+	}
+
+	"Immunity Shield Cooldown"
+	{
+		"ua"		"{1} с до появи щита."
+	}
+
+	"Immunity Shield Time Left"
+	{
+		"ua"		"Залишилось часу щита: {1}"
+	}
+
+	// ===========================
+	// Overlays (core)
+	// ===========================
+
+	"Overlays not supported"
+	{
+		"ua"		"Оверлей заблоковано - виявлено DX{1} (потрібно DX{2})"
+	}
+
+	// ===========================
+	// Infect (core)
+	// ===========================
+
+	// General
+
+	"Infect spawning warning"
+	{
+		"ua"		"Зомбі з'являться серед людей!"
+	}
+
+	"Infect infected"
+	{
+		"ua"		"Ви заражені!  Передайте зараження якомога більшій кількості гравців."
+	}
+
+	"Infect human"
+	{
+		"ua"		"Милосердні боги (відомі як адміни) воскресили вашу душу, шукайте укриття!"
+	}
+
+	"Infect disconnect"
+	{
+		"ua"		"Останній зомбі залишив гру й передав зараження вам."
+	}
+
+	"Mother zombie infect cycle reset"
+	{
+		"ua"		"Цикл зараження матері-зомбі скинуто."
+	}
+
+	// Center Text
+
+	"Infect countdown"
+	{
+		"ua"		"Перше зараження через {1} с."
+	}
+
+	// Menu
+
+	"Infect menu clients title"
+	{
+		"ua"		"Керування зомбі\nПеремкнути зараження:\n[] = Заражений"
+	}
+
+	// Commands
+
+	"Infect command infect syntax"
+	{
+		"ua"		"Заражає гравця. Використання: zr_infect <фільтр> [респавн - 1/0]"
+	}
+
+	"Infect command human syntax"
+	{
+		"ua"		"Перетворює гравця на людину. Використання: zr_human <фільтр> [респавн - 1/0] [захист - 1/0]"
+	}
+
+	"Infect command round not started"
+	{
+		"ua"		"Не вдалося заразити. Раунд ще не розпочався повністю."
+	}
+
+	"Infect command infect successful"
+	{
+		"ua"		"{green}{1}{default} успішно заражено."
+	}
+
+	"Infect command infect successful public"
+	{
+		"ua"		"{lightgreen}{1}{default} заразив {green}{2}{default}."
+	}
+
+	"Infect command infect mother successful"
+	{
+		"ua"		"{green}{1}{default} успішно заражено як матір-зомбі."
+	}
+
+	"Infect command infect mother successful public"
+	{
+		"ua"		"{lightgreen}{1}{default} заразив {green}{2}{default} як матір-зомбі."
+	}
+
+	"Infect command infect unsuccessful"
+	{
+		"ua"		"Не вдалося заразити {green}{1}{default}."
+	}
+
+	"Infect command human successful"
+	{
+		"ua"		"{green}{1}{default} успішно повернуто до життя."
+	}
+
+	"Infect command human successful public"
+	{
+		"ua"		"{lightgreen}{1}{default} повернув до життя {green}{2}{default}."
+	}
+
+	"Infect command human unsuccessful"
+	{
+		"ua"		"Не вдалося повернути до життя {green}{1}{default}."
+	}
+
+	// ===========================
+	// Damage (core)
+	// ===========================
+
+	"Damage suicide intercept"
+	{
+		"ua"		"Спробу самогубства заблоковано."
+	}
+
+	// ===========================
+	// Menu (core)
+	// ===========================
+
+	// General
+
+	"Menu main title"
+	{
+		"ua"		"Команди ZR:\nДодавайте перед командою \"{1}\" або \"{2}\" (тихо) під час введення в чаті."
+	}
+
+	"Menu main zadmin"
+	{
+		"ua"		"ZAdmin - Відкрити меню адміністратора"
+	}
+
+	"Menu main zclass"
+	{
+		"ua"		"ZClass - Налаштування класів"
+	}
+
+	"Menu main zcookies"
+	{
+		"ua"		"ZCookies - Перемикайте особисті налаштування ZR"
+	}
+
+	"Menu main zspawn"
+	{
+		"ua"		"ZSpawn - Зайшли пізно?  З'явіться за допомогою цього"
+	}
+
+	"Menu main ztele"
+	{
+		"ua"		"ZTele - Застрягли?  Телепортуйтеся на спавн"
+	}
+
+	"Menu main zhp"
+	{
+		"ua"		"ZHP - Показує справжнє HP зомбі"
+	}
+
+	"Menu main zmarket"
+	{
+		"ua"		"ZMarket - Налаштуйте тут своє спорядження"
+	}
+
+	"Menu main zvolume"
+	{
+		"ua"		"ZVolume - Налаштувати гучність зомбі"
+	}
+
+	// ===========================
+	// Weapons (core)
+	// ===========================
+
+	// General
+
+	"Zombie cant use weapon"
+	{
+		"ua"		"Зомбі не можуть користуватися зброєю!"
+	}
+
+	// Restrict
+
+	"Restrict weapon"
+	{
+		"ua"		"Зброю {green}\"{1}\"{default} обмежено."
+	}
+
+	"Unrestrict weapon"
+	{
+		"ua"		"Обмеження зброї {green}\"{1}\"{default} знято."
+	}
+
+	"Restrict weapon stopped"
+	{
+		"ua"		"Зброя {green}\"{1}\"{default} вже обмежена."
+	}
+
+	"Unrestrict weapon stopped"
+	{
+		"ua"		"Для зброї {green}\"{1}\"{default} не встановлено обмежень."
+	}
+
+	"Restrict weapon type"
+	{
+		"ua"		"Зброю типу {green}\"{1}\"{default} обмежено."
+	}
+
+	"Unrestrict weapon type"
+	{
+		"ua"		"Обмеження зброї типу {green}\"{1}\"{default} знято."
+	}
+
+	"Restrict weapon type stopped"
+	{
+		"ua"		"Зброя типу {green}\"{1}\"{default} вже повністю обмежена."
+	}
+
+	"Unrestrict weapon type stopped"
+	{
+		"ua"		"Для зброї типу {green}\"{1}\"{default} не встановлено обмежень."
+	}
+
+	"Restrict weapon untoggleable"
+	{
+		"ua"		"Обмеження зброї {green}\"{1}\"{default} не можна перемикати."
+	}
+
+	"Weapon invalid"
+	{
+		"ua"		"Зброя {green}\"{1}\"{default} не є дійсною назвою зброї (типу)."
+	}
+
+	"Weapon is restricted"
+	{
+		"ua"		"Зброя {green}{1}{default} обмежена."
+	}
+
+	// ZMarket
+
+	"Weapons zmarket buyzone"
+	{
+		"ua"		"Щоб користуватися ZMarket, потрібно бути в зоні закупівлі."
+	}
+
+	"Weapons zmarket purchase"
+	{
+		"ua"		"Ви придбали зброю {green}{1}.{default} Виберіть предмет ще раз, щоб докупити набої, коли їх мало."
+	}
+
+	"Weapons zmarket purchase max"
+	{
+		"ua"		"Зброя {green}{1}{default} має ліміт купівлі {green}{2}{default}.  Дочекайтеся відродження й спробуйте ще раз."
+	}
+
+	"Weapons zmarket grenade max"
+	{
+		"ua"		"Ви можете носити лише {1} гранат(у/и) цього типу."
+	}
+
+	"Weapons zmarket not enough money"
+	{
+		"ua"		"У вас недостатньо коштів."
+	}
+
+	"Weapons zmarket updated loadout"
+	{
+		"ua"		"Зараз ви не можете купити зброю, але ваше спорядження оновлено цією зброєю."
+	}
+
+	"Weapons zmarket get current loadout"
+	{
+		"ua"		"Поточне спорядження оновлено, скористайтеся опцією повторної купівлі, щоб знову придбати цю зброю."
+	}
+
+	// Commands
+
+	"Weapons command restrict syntax"
+	{
+		"ua"		"Обмежує зброю або тип зброї. Використання: zr_restrict <зброя|тип зброї> [зброя2|тип2] ..."
+	}
+
+	"Weapons command unrestrict syntax"
+	{
+		"ua"		"Знімає обмеження зі зброї або типу зброї. Використання: zr_unrestrict <зброя|тип зброї> [зброя2|тип2] ..."
+	}
+
+	"Weapons command setknockback syntax"
+	{
+		"ua"		"Встановлює відкидання зброї. Використання: zr_setknockback <зброя> <відкидання>"
+	}
+
+	"Weapons command setknockback success"
+	{
+		"ua"		"Відкидання для {green}\"{1}\"{default} встановлено на {green}{2}{default}."
+	}
+
+	"Weapons command setknockback failed"
+	{
+		"ua"		"Не вдалося встановити відкидання для {green}\"{1}\"{default} на {green}{2}{default}."
+	}
+
+	// Menu (Restrict)
+
+	"Weapons menu restrict main title"
+	{
+		"ua"		"Керування зброєю"
+	}
+
+	"Weapons menu restrict main restrict"
+	{
+		"ua"		"Обмеження зброї"
+	}
+
+	"Weapons menu restrict main market"
+	{
+		"ua"		"ZMarket"
+	}
+
+	"Weapons menu restrict types title"
+	{
+		"ua"		"Обмеження зброї\nОберіть тип зброї:"
+	}
+
+	"Weapons menu restrict types weapon type title"
+	{
+		"ua"		"Обмеження зброї\nТип зброї: {1}\n[] = Обмежена"
+	}
+
+	"Weapons menu restrict types restrict all"
+	{
+		"ua"		"Обмежити тип зброї {1}"
+	}
+
+	"Weapons menu restrict types unrestrict all"
+	{
+		"ua"		"Зняти обмеження з типу зброї {1}"
+	}
+
+	"Weapons menu restrict zmarket title"
+	{
+		"ua"		"ZMarket\nОберіть налаштування:"
+	}
+
+	"Weapons menu restrict zmarket buyzone"
+	{
+		"ua"		"Лише в зоні закупівлі - {1}"
+	}
+
+	// Menu (ZMarket)
+
+	"Weapons menu zmarket main title"
+	{
+		"ua"		"ZMarket\nОберіть опцію:"
+	}
+
+	"Weapons menu zmarket main get loadout"
+	{
+		"ua"		"Зберегти поточне спорядження"
+	}
+
+	"Weapons menu zmarket main edit loadout"
+	{
+		"ua"		"Редагувати збережене спорядження"
+	}
+
+	"Weapons menu zmarket main rebuy"
+	{
+		"ua"		"Купити збережене спорядження"
+	}
+
+	"Weapons menu zmarket main weapons list"
+	{
+		"ua"		"Купити зброю"
+	}
+
+	"Weapons menu zmarket loadout title"
+	{
+		"ua"		"ZMarket\nМоє поточне спорядження:\nОберіть слот зброї для зміни.\nПримітка: повторна купівля стосується цієї зброї.\nВи з'явитеся з цією зброєю."
+	}
+
+	"Weapons menu zmarket loadout primary"
+	{
+		"ua"		"Основна: {1}"
+	}
+
+	"Weapons menu zmarket loadout secondary"
+	{
+		"ua"		"Додаткова: {1}"
+	}
+
+	"Weapons menu zmarket loadout default"
+	{
+		"ua"		"Типова ({1})"
+	}
+
+	"Weapons menu zmarket loadout weapons title"
+	{
+		"ua"		"ZMarket\nОберіть набір зброї:"
+	}
+
+	"Weapons menu zmarket types title"
+	{
+		"ua"		"ZMarket\nОберіть тип зброї:"
+	}
+
+	"Weapons menu zmarket types weapon type title"
+	{
+		"ua"		"ZMarket\nТип зброї: {1}\n[] = Обмежена"
+	}
+
+	"Weapons menu zmarket types weapon info"
+	{
+		"ua"		"{1} (${2})\nЗалишилось покупок: {3}"
+	}
+
+	"Weapons menu zmarket types weapon ammo"
+	{
+		"ua"		"Набої"
+	}
+
+	// ===========================
+	// Hitgroups (core)
+	// ===========================
+
+	// Menu
+
+	"Hitgroups menu hitgroups title"
+	{
+		"ua"		"Керування хітгрупами\nКоманди: zr_hitgroup(_enable_all/_headshots_only)\nОберіть хітгрупу для перемикання:"
+	}
+
+	"Hitgroups menu hitgroups enable all"
+	{
+		"ua"		"Увімкнути всі хітгрупи"
+	}
+
+	"Hitgroups menu hitgroups headshots only"
+	{
+		"ua"		"Лише хедшоти"
+	}
+
+	// Commands
+
+	"Hitgroups command syntax"
+	{
+		"ua"		"Перемикає або встановлює, чи може хітгрупа зомбі отримувати шкоду. Використання: zr_hitgroup <псевдонім хітгрупи> [1/0]"
+	}
+
+	"Hitgroups command related commands"
+	{
+		"ua"		"Пов'язані команди: zr_hitgroup_enable_all, zr_hitgroup_headshots_only"
+	}
+
+	"Hitgroups command syntax names"
+	{
+		"ua"		"Назви хітгруп:"
+	}
+
+	"Hitgroups command successful on"
+	{
+		"ua"		"Шкоду для хітгрупи \"{1}\" увімкнено."
+	}
+
+	"Hitgroups command successful off"
+	{
+		"ua"		"Шкоду для хітгрупи \"{1}\" вимкнено."
+	}
+
+	"Hitgroups command invalid hitgroup"
+	{
+		"ua"		"\"{1}\" не є дійсним псевдонімом хітгрупи.  Введіть zr_hitgroup, щоб побачити всі псевдоніми."
+	}
+
+	"Hitgroups command enable all successful"
+	{
+		"ua"		"Усі хітгрупи зомбі ввімкнено для отримання шкоди."
+	}
+
+	"Hitgroups command headshots only successful"
+	{
+		"ua"		"Тепер зомбі можна ушкодити лише хедшотами."
+	}
+
+	// ===========================
+	// ZAdmin (core)
+	// ===========================
+
+	"ZAdmin main title"
+	{
+		"ua"		"ZAdmin\nОберіть категорію:"
+	}
+
+	"ZAdmin main class multipliers"
+	{
+		"ua"		"Множники класів"
+	}
+
+	"ZAdmin main weapons"
+	{
+		"ua"		"Керування зброєю"
+	}
+
+	"ZAdmin main hitgroups"
+	{
+		"ua"		"Керування хітгрупами"
+	}
+
+	"ZAdmin main zombie"
+	{
+		"ua"		"Керування зомбі"
+	}
+
+	"ZAdmin main force zspawn"
+	{
+		"ua"		"Примусовий ZSpawn"
+	}
+
+	"ZAdmin main force ztele"
+	{
+		"ua"		"Примусовий ZTele"
+	}
+
+	// ===========================
+	// AntiStick (module)
+	// ===========================
+
+	// Commands
+
+	"AntiStick command set width syntax"
+	{
+		"ua"		"Встановлює ширину хулу моделі. (Див. zr_antistick_list_models) Використання: zr_antistick_set_width <модель/гравець> <ширина>"
+	}
+
+	"AntiStick command list models list"
+	{
+		"ua"		"Ім'я гравця:                        Модель:                                              Ширина хулу:\n-------------------------------------------------------------------------------------------------------------"
+	}
+
+	"AntiStick command list models name"
+	{
+		"ua"		"{1} {2} {3}"
+	}
+
+	"AntiStick command set width successful"
+	{
+		"ua"		"Ширину хулу моделі \"{1}\" змінено на \"{2}.\""
+	}
+
+	"AntiStick command set width invalid model"
+	{
+		"ua"		"Вказано недійсну модель/гравця: \"{1}\""
+	}
+
+	"AntiStick command set width invalid width"
+	{
+		"ua"		"Вказано недійсну ширину хулу моделі: \"{1}\""
+	}
+
+	// ===========================
+	// Spawn Protect (module)
+	// ===========================
+
+	// General
+
+	"Spawn protection begin"
+	{
+		"ua"		"Зомбі вже тут, у вас є {1} с, щоб знайти безпечне місце, перш ніж втратите імунітет."
+	}
+
+	"Spawn protection end"
+	{
+		"ua"		"Тепер ви вразливі до зараження зомбі."
+	}
+
+	// HUD
+
+	"Spawn Protect"
+	{
+		"ua"		"Захист від зомбі закінчується через: {1} с."
+	}
+
+	// ===========================
+	// ZCookies (module)
+	// ===========================
+
+	"ZCookies Menu main title"
+	{
+		"ua"		"ZCookies\nОберіть cookie:"
+	}
+
+	"ZCookies menu main auto-rebuy"
+	{
+		"ua"		"Автоповторна купівля ZMarket: {1}"
+	}
+
+	"ZCookies menu main zhp"
+	{
+		"ua"		"Відображення ZHP: {1}"
+	}
+
+	"ZCookies menu main overlay"
+	{
+		"ua"		"Оверлей класу людини/зомбі: {1}"
+	}
+
+	"ZCookies zmarket loadout"
+	{
+		"ua"		"Спорядження ZMarket"
+	}
+
+	// ===========================
+	// ZSpawn (module)
+	// ===========================
+
+	// General
+
+	"ZSpawn double spawn"
+	{
+		"ua"		"ZSpawn можна використати лише якщо ви приєдналися пізніше під час поточного раунду."
+	}
+
+	"ZSpawn timelimit"
+	{
+		"ua"		"Ліміт часу ({1} с) на використання ZSpawn уже вичерпано."
+	}
+
+	// Menu
+
+	"ZSpawn clients title"
+	{
+		"ua"		"Примусовий ZSpawn (zr_zspawn_force)\nОберіть гравця:"
+	}
+
+	// Commands
+
+	"ZSpawn command force syntax"
+	{
+		"ua"		"Примусово виконує ZSpawn для гравця. Використання: zr_zspawn_force <гравець> ['0' = З'явитися людиною | '1' = З'явитися зомбі]"
+	}
+
+	"ZSpawn command force successful"
+	{
+		"ua"		"{lightgreen}{1}{default} успішно з'явився."
+	}
+
+	"ZSpawn command force successful public"
+	{
+		"ua"		"{lightgreen}{1}{default} відродив {green}{2}{default} як {lightgreen}{3}{default}."
+	}
+
+	"ZSpawn command force unsuccessful"
+	{
+		"ua"		"Не вдалося виконати ZSpawn для {lightgreen}{1}{default}."
+	}
+
+	// ===========================
+	// ZTele (module)
+	// ===========================
+
+	// General
+
+	"ZTele restricted human"
+	{
+		"ua"		"ZTele наразі обмежено для людей."
+	}
+
+	"ZTele max"
+	{
+		"ua"		"Ви досягли максимуму в {1} телепорт(ів) за раунд."
+	}
+
+	"ZTele in progress"
+	{
+		"ua"		"Ви вже очікуєте телепортації."
+	}
+
+	"ZTele autocancel text"
+	{
+		"ua"		"Телепортацію скасовано.  (Межа становить {1} ft.)"
+	}
+
+	// Center Text
+
+	"ZTele countdown"
+	{
+		"ua"		"Телепортація на спавн через: {1} с."
+	}
+
+	"ZTele autocancel centertext"
+	{
+		"ua"		"Телепортацію скасовано."
+	}
+
+	"ZTele countdown end"
+	{
+		"ua"		"Телепортовано на спавн. (Кількість: {1}/{2})"
+	}
+
+	// Menu
+
+	"ZTele clients title"
+	{
+		"ua"		"Примусовий ZTele (zr_ztele_force)\nОберіть гравця:"
+	}
+
+	// Commands
+
+	"ZTele command force syntax"
+	{
+		"ua"		"Примусово виконує ZTele для гравця. Використання: zr_ztele_force <гравець>"
+	}
+
+	"ZTele command force successful"
+	{
+		"ua"		"{lightgreen}{1}{default} успішно телепортовано."
+	}
+
+	"ZTele command force unsuccessful"
+	{
+		"ua"		"Не вдалося телепортувати {lightgreen}{1}{default}."
+	}
+
+	// ===========================
+	// ZHP (module)
+	// ===========================
+
+	// General
+
+	"ZHP enable"
+	{
+		"ua"		"Відображення HP увімкнено, ваше справжнє HP буде показано після зараження."
+	}
+
+	"ZHP disable"
+	{
+		"ua"		"Відображення HP вимкнено."
+	}
+
+	// HUD
+
+	"Display HP"
+	{
+		"ua"		"HP: {1}"
+	}
+
+	// ===========================
+	// ZVolume (module)
+	// ===========================
+
+	// General
+	"Volume_Menu_Title"
+	{
+		"ua"		"[ZR] Меню керування гучністю\nКоманда: !zvolume"
+	}
+
+	"Zombie Voice"
+	{
+		"ua"		"Голос зомбі"
+	}
+
+	"Ambient"
+	{
+		"ua"		"Фон"
+	}
+
+	"Infect Countdown"
+	{
+		"ua"		"Відлік зараження"
+	}
+
+	// Countdown
+	"Countdown_Usage"
+	{
+		"ua"		"Використання: zr_countdown_volume <0 - 100>"
+	}
+
+	"Countdown_Title_Menu"
+	{
+		"ua"		"[ZR] Гучність відліку (Поточна: {1}%)"
+	}
+
+	"Countdown_CommandUsage"
+	{
+		"ua"		"Команда: !countdown_volume <1-100>"
+	}
+
+	"Set_Countdown_Volume"
+	{
+		"ua"		"Гучність відліку встановлено на {lightgreen}{1}%."
+	}
+
+	// Zombie Voice
+	"ZombieVoice_Usage"
+	{
+		"ua"		"Використання: zr_zombie_volume <0 - 100>"
+	}
+
+	"ZombieVoice_Title_Menu"
+	{
+		"ua"		"[ZR] Гучність голосу зомбі (Поточна: {1}%)"
+	}
+
+	"ZombieVoice_CommandUsage"
+	{
+		"ua"		"Команда: !zombie_volume <1-100>"
+	}
+
+	"Set_ZombieVoice_Volume"
+	{
+		"ua"		"Гучність голосу зомбі встановлено на {lightgreen}{1}%."
+	}
+
+	// Ambient
+	"Ambient_Usage"
+	{
+		"ua"		"Використання: zr_ambient_volume <0 - 100>"
+	}
+
+	"Ambient_Title_Menu"
+	{
+		"ua"		"[ZR] Гучність фону (Поточна: {1}%)"
+	}
+
+	"Ambient_CommandUsage"
+	{
+		"ua"		"Команда: !ambient_volume <1-100>"
+	}
+
+	"Set_Ambient_Volume"
+	{
+		"ua"		"Гучність фону встановлено на {lightgreen}{1}%."
+	}
+
+	// ===========================
+	// Volumetric features (module)
+	// ===========================
+
+	"Vol Anticamp Message"
+	{
+		"ua"		"Ця зона заборонена, будь ласка, відійдіть."
+	}
+
+	"Vol Slay"
+	{
+		"ua"		"Гравця \"{1}\" убито за кемпінг у забороненій зоні (ID: {2})."
+	}
+
+	"Vol Ignite"
+	{
+		"ua"		"Гравця \"{1}\" підпалено за кемпінг у забороненій зоні (ID: {2})."
+	}
+}
