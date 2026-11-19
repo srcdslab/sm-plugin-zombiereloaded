@@ -325,6 +325,10 @@ RoundEndOutcome RoundEndReasonToOutcome(int reason)
     if (view_as<e_RoundEndReason>(reason) == Terrorists_Win)
         return ZombiesWin;
 
+    // Nobody won, e.g. the round time ran out before any zombie spawned.
+    if (view_as<e_RoundEndReason>(reason) == Round_Draw)
+        return Draw;
+
     return HumansWin;
 }
 
@@ -338,9 +342,15 @@ public Action RoundEndTimer(Handle timer)
     // Set the global timer handle variable to null.
     g_tRoundEnd = null;
 
-    // If there aren't clients on both teams, then stop.
-    if (!ZRTeamHasClients())
+    // Nobody can win a round that never had a zombie, or that only has players
+    // on one team: end it as a draw when someone is still playing. With
+    // mp_ignore_round_win_conditions 1 the game never ends it by itself.
+    if (!InfectHasZombieSpawned() || !ZRTeamHasClients())
     {
+        if (ZRTeamHasClients(CS_TEAM_T) || ZRTeamHasClients(CS_TEAM_CT))
+        {
+            RoundEndTerminateRound(ROUNDEND_DELAY, Draw);
+        }
         return Plugin_Continue;
     }
 

@@ -66,6 +66,12 @@ bool g_TeamManagerLoaded = false;
  * @section Other defines.
  */
 #define MAX_EVENT_LENGTH 32
+
+/**
+ * Shortest delay before the mother zombie timer tries again after infecting
+ * nobody. zr_infect_spawntime_min is used when it is longer.
+ */
+#define INFECT_RETRY_DELAY_MIN 5.0
 /**
  * @endsection
  */
@@ -78,6 +84,13 @@ Handle g_tInfectCountdown = null;
 /**
  * @endsection
  */
+
+/**
+ * True when the mother zombie timer of this round found nobody eligible.
+ * The next living human who spawns starts a new mother zombie timer, with its
+ * countdown, instead of the silent retry.
+ */
+bool g_bInfectPending = false;
 
 /**
  * Infection countdown data pack.
@@ -176,6 +189,7 @@ void InfectOnMapEnd()
     ZREndTimer(g_tInfect);
     ZREndTimer(g_tInfectCountdown);
     InfectStopCountdown();
+    g_bInfectPending = false;
 
     // Clear mother zombie round-robin cycle storage.
     SteamidCacheReset(g_hInfectMotherCycle);
@@ -397,6 +411,16 @@ void InfectOnClientSpawn(int client)
         CS_RespawnPlayer(client);
     }
 
+    // The mother zombie timer found nobody eligible earlier this round (empty
+    // server, everyone dead or not eligible). Give the players a normal mother
+    // zombie timer and countdown instead of the silent retry.
+    if (g_bInfectPending && g_bRoundFullyStarted && !InfectHasZombieSpawned() && IsPlayerAlive(client))
+    {
+        g_bInfectPending = false;
+        ZREndTimer(g_tInfect);
+        InfectStartMotherZombieTimer();
+    }
+
     // Unglitch kevlar, set last hitgroup to HITGROUP_GENERIC
     ToolsSetClientLastHitGroup(client, HITGROUP_GENERIC);
 
@@ -497,6 +521,7 @@ void InfectOnRoundStart()
 
     // Tell plugin there are no zombies.
     g_bZombieSpawned = false;
+    g_bInfectPending = false;
 }
 
 /**
@@ -522,6 +547,14 @@ void InfectOnRoundFreezeEnd()
     }
     #endif
 
+    InfectStartMotherZombieTimer();
+}
+
+/**
+ * Starts the mother zombie timer, and its countdown if enabled.
+ */
+void InfectStartMotherZombieTimer()
+{
     // Get min and max times.
     float infectspawntimemin = g_hCvarsList.CVAR_INFECT_SPAWNTIME_MIN.FloatValue;
     float infectspawntimemax = g_hCvarsList.CVAR_INFECT_SPAWNTIME_MAX.FloatValue;
@@ -550,6 +583,34 @@ void InfectOnRoundFreezeEnd()
 }
 
 /**
+ * Called when a mother zombie pass infected nobody. Tries again after
+ * zr_infect_spawntime_min (at least INFECT_RETRY_DELAY_MIN), without a
+ * countdown, so the round still gets a zombie when nobody spawns.
+ *
+ * @param waitspawn     True when nobody was eligible: the next living human
+ *                      who spawns gets a new mother zombie timer and countdown.
+ */
+void InfectRetryMotherZombie(bool waitspawn)
+{
+    // The round is over: InfectOnRoundEnd stops the timers.
+    if (!g_bRoundFullyStarted)
+    {
+        return;
+    }
+
+    g_bInfectPending = waitspawn;
+
+    float delay = g_hCvarsList.CVAR_INFECT_SPAWNTIME_MIN.FloatValue;
+    if (delay < INFECT_RETRY_DELAY_MIN)
+    {
+        delay = INFECT_RETRY_DELAY_MIN;
+    }
+
+    ZREndTimer(g_tInfect);
+    g_tInfect = CreateTimer(delay, InfectMotherZombieTimer, _, TIMER_FLAG_NO_MAPCHANGE);
+}
+
+/**
  * The round is ending.
  */
 public Action InfectOnRoundEnd(Handle Timer)
@@ -557,6 +618,7 @@ public Action InfectOnRoundEnd(Handle Timer)
     // Stop infect timers if running.
     ZREndTimer(g_tInfect);
     ZREndTimer(g_tInfectCountdown);
+    g_bInfectPending = false;
 
     // x = client index.
     for (int x = 1; x <= MaxClients; x++)
@@ -598,9 +660,12 @@ public void InfectMotherZombie()
     ArrayList arrayEligibleClients = new ArrayList();
     int eligibleclients = ZRCreateEligibleClientList(arrayEligibleClients, true, true, true, true);
 
-    // If there are no eligible client's then stop.
+    // If there are no eligible client's then try again later.
     if (!eligibleclients)
     {
+        LogEvent(false, LogType_Normal, LOG_DEBUG, LogModule_Infect, "Mother zombie", "No eligible client to infect, trying again later.");
+        InfectRetryMotherZombie(true);
+
         // Destroy handle.
         delete arrayEligibleClients;
         return;
@@ -714,13 +779,18 @@ public void InfectMotherZombie()
         }
     }
 
-    // Remove mother zombie last flag from all players.
+    // Remove mother zombie last flag from all players. Keep a copy to put
+    // back if nobody gets infected, so the retry still protects them.
+    bool motherlast[MAXPLAYERS + 1];
     for (int client = 0; client <= MaxClients; client++)
     {
+        motherlast[client] = g_bInfectMotherLast[client];
         g_bInfectMotherLast[client] = false;
     }
 
     bool resetcycle;
+    ArrayList oldcycle = null;
+    ArrayList oldcyclertd = null;
 
     // Infect players.
     int infected = 0;
@@ -749,12 +819,14 @@ public void InfectMotherZombie()
             if (infectroundrobin && !resetcycle)
             {
                 resetcycle = true;
+
+                // Keep the old cycle to put back if nobody gets infected.
+                oldcycle = g_hInfectMotherCycle.Clone();
+                oldcyclertd = g_hInfectMotherCycleRTD.Clone();
+
                 // Clear mother zombie round-robin cycle storage.
                 SteamidCacheReset(g_hInfectMotherCycle);
                 SteamidCacheReset(g_hInfectMotherCycleRTD);
-
-                // Announce start of new cycle
-                TranslationPrintToChatAll(true, false, "Mother zombie infect cycle reset");
             }
 
             // Infect one of the alternate candidates.
@@ -857,7 +929,41 @@ public void InfectMotherZombie()
     }
 
     // Mother zombies have been infected.
-    g_bZombieSpawned = true;
+    if (infected)
+    {
+        g_bZombieSpawned = true;
+        g_bInfectPending = false;
+
+        // Announce start of new cycle
+        if (resetcycle)
+        {
+            TranslationPrintToChatAll(true, false, "Mother zombie infect cycle reset");
+        }
+
+        delete oldcycle;
+        delete oldcyclertd;
+    }
+    else
+    {
+        // Every infection was refused. Undo this pass, so the retry picks from
+        // the same candidates, and try again later. No new countdown: the
+        // players already saw one.
+        for (int client = 0; client <= MaxClients; client++)
+        {
+            g_bInfectMotherLast[client] = motherlast[client];
+        }
+
+        if (resetcycle)
+        {
+            delete g_hInfectMotherCycle;
+            delete g_hInfectMotherCycleRTD;
+            g_hInfectMotherCycle = oldcycle;
+            g_hInfectMotherCycleRTD = oldcyclertd;
+        }
+
+        LogEvent(false, LogType_Normal, LOG_DEBUG, LogModule_Infect, "Mother zombie", "No mother zombie infected, trying again later.");
+        InfectRetryMotherZombie(false);
+    }
 
     // Destroy client list.
     delete arrayEligibleClients;
@@ -1519,6 +1625,7 @@ stock void InfectManualInfect(int client, int[] targets, int count, bool respawn
 
         // Tell the plugin a mother zombie has spawned.
         g_bZombieSpawned = true;
+        g_bInfectPending = false;
     }
 
     char targetname[MAX_NAME_LENGTH];
